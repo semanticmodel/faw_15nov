@@ -1,0 +1,73 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - GL Account CogsCosting",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "COGS Account Combination Key" ],
+    "logicalColumns" : [ {
+      "name" : "COGS Account Combination Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GL_CODE_COMBINATION_D_CogsCosting",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D_CogsCosting.CODE_COMBINATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "COGS Account Combination",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GL_CODE_COMBINATION_D_CogsCosting",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D_CogsCosting.CONCAT_SEGMENTS" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_GL_CODE_COMBINATION_D_CogsCosting",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D_CogsCosting" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - GL Account CogsCosting.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "COGS Account Combination Key" ],
+        "displayKey" : "COGS Account Combination",
+        "additionalKeys" : [ [ "COGS Account Combination" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "GL Account CogsCosting",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,89 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Event Type",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Event Type Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Event Type Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_EVENT_TYPE_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EVENT_TYPE_D.EVENT_TYPE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Event Type Detail"
+    }, {
+      "name" : "Event Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Event Type Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_EVENT_TYPE_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PROJECT_EVENT_TYPE_D_TL.EVENT_TYPE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EVENT_TYPE_D.EVENT_TYPE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Event Type Detail"
+    }, {
+      "name" : "Event Type Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Event Type Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_EVENT_TYPE_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PROJECT_EVENT_TYPE_D_TL.DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EVENT_TYPE_D.EVENT_TYPE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_PROJECT_EVENT_TYPE_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EVENT_TYPE_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Event Type.Event Type Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "All",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "All",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Event Type Detail",
+        "numberOfElements" : 20,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Event Type Identifier" ],
+        "displayKey" : "Event Type",
+        "additionalKeys" : [ [ "Event Type" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Event Type",
+        "levels" : [ "All", "Event Type Detail" ]
+      } ]
+    }
+  }
+}

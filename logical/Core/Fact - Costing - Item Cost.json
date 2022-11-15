@@ -1,0 +1,472 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Costing - Item Cost",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Cost Management" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-------------------------- Flags Not Exposed--------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Cost Element Type",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_COST_ELEMENTS_D_ItemCostMetrics.COST_ELEMENT_TYPE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "-------------------------- Analytics Currency--------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Unit Cost",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF.GLOBAL_UNIT_COST" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Costing - Item Cost Lower Level Details",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Costing - Item Cost Details",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Material Cost",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'MATERIAL'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost", "logicalColumn:Core.Fact - Costing - Item Cost.Cost Element Type" ]
+        }
+      }
+    }, {
+      "name" : "Material Overhead Cost",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'MATERIAL_OVERHEAD'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost", "logicalColumn:Core.Fact - Costing - Item Cost.Cost Element Type" ]
+        }
+      }
+    }, {
+      "name" : "Resource Cost",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'RESOURCE'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost", "logicalColumn:Core.Fact - Costing - Item Cost.Cost Element Type" ]
+        }
+      }
+    }, {
+      "name" : "Overhead Cost",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'OVERHEAD'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost", "logicalColumn:Core.Fact - Costing - Item Cost.Cost Element Type" ]
+        }
+      }
+    }, {
+      "name" : "Profit in Inventory",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'PROFIT_IN_INVENTORY'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost", "logicalColumn:Core.Fact - Costing - Item Cost.Cost Element Type" ]
+        }
+      }
+    }, {
+      "name" : "Material Cost %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 * 100.0 / %2, 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Material Cost", "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost" ]
+        }
+      }
+    }, {
+      "name" : "Material Overhead Cost %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 * 100.0 / %2, 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Material Overhead Cost", "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost" ]
+        }
+      }
+    }, {
+      "name" : "Resource Cost %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 * 100.0 / %2, 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Resource Cost", "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost" ]
+        }
+      }
+    }, {
+      "name" : "Overhead Cost %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 * 100.0 / %2, 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Overhead Cost", "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost" ]
+        }
+      }
+    }, {
+      "name" : "Profit in Inventory %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 * 100.0 / %2, 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Profit in Inventory", "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost" ]
+        }
+      }
+    }, {
+      "name" : "-------------------------- Document (Transaction) Currency--------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Unit Cost in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF.UNIT_COST" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Costing - Item Cost Lower Level Details",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Costing - Item Cost Details",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Material Cost in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'MATERIAL'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost in Transaction Currency", "logicalColumn:Core.Fact - Costing - Item Cost.Cost Element Type" ]
+        }
+      }
+    }, {
+      "name" : "Material Overhead Cost in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'MATERIAL_OVERHEAD'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost in Transaction Currency", "logicalColumn:Core.Fact - Costing - Item Cost.Cost Element Type" ]
+        }
+      }
+    }, {
+      "name" : "Resource Cost in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'RESOURCE'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost in Transaction Currency", "logicalColumn:Core.Fact - Costing - Item Cost.Cost Element Type" ]
+        }
+      }
+    }, {
+      "name" : "Overhead Cost in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'OVERHEAD'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost in Transaction Currency", "logicalColumn:Core.Fact - Costing - Item Cost.Cost Element Type" ]
+        }
+      }
+    }, {
+      "name" : "Profit in Inventory in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'PROFIT_IN_INVENTORY'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost in Transaction Currency", "logicalColumn:Core.Fact - Costing - Item Cost.Cost Element Type" ]
+        }
+      }
+    }, {
+      "name" : "Material Cost % in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 * 100.0 / %2, 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Material Cost in Transaction Currency", "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost in Transaction Currency" ]
+        }
+      }
+    }, {
+      "name" : "Material Overhead Cost % in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 * 100.0 / %2, 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Material Overhead Cost in Transaction Currency", "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost in Transaction Currency" ]
+        }
+      }
+    }, {
+      "name" : "Resource Cost % in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 * 100.0 / %2, 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Resource Cost in Transaction Currency", "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost in Transaction Currency" ]
+        }
+      }
+    }, {
+      "name" : "Overhead Cost % in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 * 100.0 / %2, 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Overhead Cost in Transaction Currency", "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost in Transaction Currency" ]
+        }
+      }
+    }, {
+      "name" : "Profit in Inventory % in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 * 100.0 / %2, 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Profit in Inventory in Transaction Currency", "logicalColumn:Core.Fact - Costing - Item Cost.Unit Cost in Transaction Currency" ]
+        }
+      }
+    }, {
+      "name" : "-------------------------- Security Object --------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Security Context Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_ItemCost.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CST_ITEM_COST_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_ItemCost", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_COST_ELEMENTS_D_ItemCostMetrics" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_ItemCost",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_COST_ELEMENTS_D_ItemCostMetrics",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Costing - Item Cost Details.Dim - Costing - Item Cost Details Detail", "logicalLevel:Core.Dim - Cost Organization Book.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost As-of Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Effective Start Date.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Effective End Date.Detail", "logicalLevel:Core.Dim - Cost Valuation Unit.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Costing Item Catalog Category.Detail", "logicalLevel:Core.Dim - Cost Expense Pool.Detail", "logicalLevel:Core.Dim - Cost Scenario.Detail", "logicalLevel:Core.Dim - Cost Element.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar Cost As-of Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar CostEffectiveEndDate.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar CostEffectiveStartDate.Day", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Costing - Item Cost Lower Level Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_SCM_CST_COSTING_ORG_DATA",
+      "functionalGroup" : "SCM_CST",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_CST_COST_ORG_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Item Cost.Security Context Code" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Cost Element",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Expense Pool",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Organization Book",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Scenario",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Valuation Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Costing - Item Cost Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Costing - Item Cost Lower Level Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Costing Item Catalog Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Cost As-of Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Cost Effective End Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Cost Effective Start Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar Cost As-of Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar CostEffectiveEndDate",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar CostEffectiveStartDate",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Item Category Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

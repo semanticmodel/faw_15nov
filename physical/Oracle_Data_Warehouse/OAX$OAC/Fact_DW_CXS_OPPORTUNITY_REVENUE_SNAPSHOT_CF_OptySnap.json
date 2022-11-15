@@ -1,0 +1,51 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_CXS_OPPORTUNITY_REVENUE_SNAPSHOT_CF_OptySnap",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_CXS_OPPORTUNITY_REVENUE_SNAPSHOT_CF",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_SNAPSHOT_F",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 = %6 AND %7 = 'Y'",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_REVENUE_SNAPSHOT_CF_OptySnap.OPPORTUNITY_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_SNAPSHOT_F.OPPORTUNITY_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_REVENUE_SNAPSHOT_CF_OptySnap.REVENUE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_SNAPSHOT_F.SUMMARY_REVENUE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_REVENUE_SNAPSHOT_CF_OptySnap.SNAPSHOT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_SNAPSHOT_F.SNAPSHOT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_REVENUE_SNAPSHOT_CF_OptySnap.PRIMARY_FLAG"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DAY_D_Opportunity_Actual_Close_Date",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_REVENUE_SNAPSHOT_CF_OptySnap.ACTUAL_CLOSE_DATE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DAY_D_Opportunity_Actual_Close_Date.CALENDAR_DATE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_DATE_D_Opportunity_Actual_Close_Date",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_REVENUE_SNAPSHOT_CF_OptySnap.ACTUAL_CLOSE_DATE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_DATE_D_Opportunity_Actual_Close_Date.ENTERPRISE_DATE"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "OPPORTUNITY_ID",
+        "REVENUE_ID",
+        "SNAPSHOT_DATE"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,93 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Activity All Day",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Activity All Day Code" ],
+    "logicalColumns" : [ {
+      "name" : "Activity All Day Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXS_ALL_DAY_FLAG_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_ALL_DAY_FLAG_D_TL.CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXS_ALL_DAY_FLAG_D_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_ALL_DAY_FLAG_D_TL_PromptOnly.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Activity All Day",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Activity All Day Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXS_ALL_DAY_FLAG_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_ALL_DAY_FLAG_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_ALL_DAY_FLAG_D_TL.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXS_ALL_DAY_FLAG_D_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_ALL_DAY_FLAG_D_TL_PromptOnly.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_ALL_DAY_FLAG_D_TL_PromptOnly.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CXS_ALL_DAY_FLAG_D_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_ALL_DAY_FLAG_D_TL" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_CXS_ALL_DAY_FLAG_D_TL_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_ALL_DAY_FLAG_D_TL_PromptOnly" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Activity All Day Code" ],
+        "displayKey" : "Activity All Day Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Activity All Day",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

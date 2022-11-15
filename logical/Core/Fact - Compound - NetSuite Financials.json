@@ -1,0 +1,191 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Compound - NetSuite Financials",
+    "tags" : [ "Project:NetSuite Analytics Warehouse - NetSuite Financials" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "AR Balance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - NetSuite Customer Invoice.Unpaid Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Credit Memo.Unused Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "AP Balance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - NetSuite Vendor Bill.Unpaid Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Vendor Bill Credit.Unused Payment Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Total Forecasted Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - NetSuite Customer Invoice.Unpaid Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Vendor Bill.Unpaid Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "AR Balance Due This Month",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - NetSuite Customer Invoice.AR Balance Due this Month" ]
+        }
+      }
+    }, {
+      "name" : "AP Balance Due This Month",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - NetSuite Vendor Bill.AP Balance Due this Month" ]
+        }
+      }
+    }, {
+      "name" : "Revenue Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) +  IFNULL(%2, 0) +  IFNULL(%3, 0) +  IFNULL(%4, 0) +  IFNULL(%5, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - NetSuite Customer Invoice.Customer Invoice Revenue Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Credit Memo.Credit Memo Revenue Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Customer Refund.Customer Refund Revenue Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Cash Sale.Cash Sale Revenue Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Journal.Journal Revenue Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Deferred Revenue Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) +  IFNULL(%2, 0) +  IFNULL(%3, 0) +  IFNULL(%4, 0) +  IFNULL(%5, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - NetSuite Customer Invoice.Customer Invoice Deferred Revenue Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Credit Memo.Credit Memo Deferred Revenue Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Customer Refund.Customer Refund Deferred Revenue Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Cash Sale.Cash Sale Deferred Revenue Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Journal.Journal Deferred Revenue Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Expense Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) +  IFNULL(%2, 0) +  IFNULL(%3, 0) +  IFNULL(%4, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - NetSuite Commission.Commission Expense Amount", "logicalColumn:Core.Fact - NetSuite Expense Report.Expense Report Expense Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Journal.Journal Expense Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Paycheck.Paycheck Expense Amount" ]
+        }
+      }
+    }, {
+      "name" : "COGS and OPEX Expense Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) +  IFNULL(%2, 0) +  IFNULL(%3, 0) +  IFNULL(%4, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - NetSuite Vendor Bill.Vendor Bill Expense Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Expense Report.Expense Report Expense Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Journal.Journal Expense Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Credit Card Charge.Credit Card Charge Expense Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Customer Acquisition Cost",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) /  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Compound - NetSuite Financials.Expense Amount", "logicalColumn:Core.Fact - NetSuite Customers.Total Number of New Customers" ]
+        }
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date NetSuite Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Book Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Book",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Period",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Classification",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Created By User",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Department",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Exchange Rate Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Expense Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Modified By User",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Subsidiary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Vendor",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

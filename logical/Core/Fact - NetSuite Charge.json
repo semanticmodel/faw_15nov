@@ -1,0 +1,225 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - NetSuite Charge",
+    "tags" : [ "Project:NetSuite Analytics Warehouse - NetSuite Project and Support Management", "Project:NetSuite Analytics Warehouse - NetSuite Sales" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "<<<<<<<<<<<<<< TRANSACTION >>>>>>>>>>>>>>>",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Number of Charges",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CHARGE_F.ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Charge Details.Charge Header" ]
+      }
+    }, {
+      "name" : "Total Charge Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CHARGE_F.QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Charge Details.Charge Header" ]
+      }
+    }, {
+      "name" : "--------------------------------Transaction Currency Amounts--------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Charge Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CHARGE_F.AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Charge Details.Charge Header" ]
+      }
+    }, {
+      "name" : "Item Rate in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CHARGE_F.RATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Charge Details.Charge Header" ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_NS_CHARGE_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CHARGE_F" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Currency.Detail", "logicalLevel:Core.Dim - NetSuite Charge Type.Detail", "logicalLevel:Core.Dim - NetSuite Subsidiary.Detail", "logicalLevel:Core.Dim - NetSuite Location.Detail", "logicalLevel:Core.Dim - NetSuite Billing Account.Detail", "logicalLevel:Core.Dim - NetSuite Entity.Detail", "logicalLevel:Core.Dim - NetSuite Billing Schedule.Detail", "logicalLevel:Core.Dim - NetSuite Item.Detail", "logicalLevel:Core.Dim - NetSuite Classification.Detail", "logicalLevel:Core.Dim - NetSuite Department.Detail", "logicalLevel:Core.Dim - NetSuite Charge Details.Charge Header", "logicalLevel:Core.Dim - NetSuite Customer Credit Memo.Detail", "logicalLevel:Core.Dim - NetSuite Project Task.Detail", "logicalLevel:Core.Dim - NetSuite Charge Billing Mode Type.Detail", "logicalLevel:Core.Dim - NetSuite Charge Rule.Detail", "logicalLevel:Core.Dim - NetSuite Charge Stage Type.Detail", "logicalLevel:Core.Dim - NetSuite Charge Use.Detail", "logicalLevel:Core.Dim - NetSuite Employee.Detail", "logicalLevel:Core.Dim - NetSuite Customer Invoice Link.Customer Invoice Line", "logicalLevel:Core.Dim - NetSuite Sales Order Link.Sales Order Line", "logicalLevel:Core.Dim - NetSuite Customer.Detail", "logicalLevel:Core.Dim - NetSuite Job.Detail", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Merchandise Hierarchy Node", "logicalLevel:Core.Dim - Date NetSuite Gregorian Calendar.Day" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CHARGE_F.SUBSIDIARY", "variable:NetSuite - List of Subsidiaries.NETSUITE_SUBSIDIARY_LIST" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_CONTENT_REPORTING_CONFIG",
+      "functionalGroup" : "REPORT_CONFIG",
+      "status" : "DISABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - NetSuite Subsidiary.Subsidiary Identifier", "variable:NetSuite - List of Subsidiaries.NETSUITE_SUBSIDIARY_LIST" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date NetSuite Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Billing Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Billing Schedule",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Charge Billing Mode Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Charge Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Charge Rule",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Charge Stage Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Charge Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Charge Use",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Classification",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Customer Credit Memo",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Customer Invoice Link",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Customer",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Department",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Employee",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Job",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Merchandise Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Project Task",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Sales Order Link",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Subsidiary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

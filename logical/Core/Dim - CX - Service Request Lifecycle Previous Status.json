@@ -1,0 +1,99 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Service Request Lifecycle Previous Status",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "SR Lifecycle Previous Status Code" ],
+    "logicalColumns" : [ {
+      "name" : "SR Lifecycle Previous Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXSR_STATUS_CODE_D_TL_Lifecycle_Previous_Status",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_STATUS_CODE_D_TL_Lifecycle_Previous_Status.CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXSR_STATUS_CODE_D_TL_PromptOnly_Lifecycle_Previous_Status",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_STATUS_CODE_D_TL_PromptOnly_Lifecycle_Previous_Status.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "SR Lifecycle Previous Status",
+      "dataType" : "VARCHAR",
+      "sortBy" : "SR Lifecycle Previous Status Code",
+      "descriptorColumn" : "SR Lifecycle Previous Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXSR_STATUS_CODE_D_TL_Lifecycle_Previous_Status",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_STATUS_CODE_D_TL_Lifecycle_Previous_Status.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_STATUS_CODE_D_TL_Lifecycle_Previous_Status.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXSR_STATUS_CODE_D_TL_PromptOnly_Lifecycle_Previous_Status",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_STATUS_CODE_D_TL_PromptOnly_Lifecycle_Previous_Status.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_STATUS_CODE_D_TL_PromptOnly_Lifecycle_Previous_Status.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CXSR_STATUS_CODE_D_TL_Lifecycle_Previous_Status",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_STATUS_CODE_D_TL_Lifecycle_Previous_Status" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Service Request Lifecycle Previous Status.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_CXSR_STATUS_CODE_D_TL_PromptOnly_Lifecycle_Previous_Status",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_STATUS_CODE_D_TL_PromptOnly_Lifecycle_Previous_Status" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Service Request Lifecycle Previous Status.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_STATUS_CODE_D_TL_PromptOnly_Lifecycle_Previous_Status.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "SR Lifecycle Previous Status Code" ],
+        "displayKey" : "SR Lifecycle Previous Status Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Service Request Lifecycle Previous Status",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

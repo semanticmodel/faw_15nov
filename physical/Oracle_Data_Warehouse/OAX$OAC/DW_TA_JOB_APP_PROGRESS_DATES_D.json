@@ -1,0 +1,51 @@
+{
+  "physicalTable" : {
+    "name" : "DW_TA_JOB_APP_PROGRESS_DATES_D",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT\r\n    job_application_id,\r\n    submission_confirmed_date     AS submission_confirmed_date,\r\n    MAX(offer_extended_date)      AS offer_extended_date,\r\n    MAX(offer_accepted_date)      AS offer_accepted_date,\r\n    MAX(offer_rejected_date)      AS offer_rejected_date,\r\n    MAX(offer_withdrawn_date)     AS offer_withdrawn_date,\r\n    MAX(hire_date)                AS hire_date\r\nFROM\r\n    (\r\n        SELECT\r\n            a.job_application_id           AS job_application_id,\r\n            b.submission_confirmed_date    AS submission_confirmed_date,\r\n            (\r\n                CASE\r\n                    WHEN c.event_type_code = 'STATE_ACTIVATION'\r\n                         AND d.phase_code = 'OFFER'\r\n                         AND e.state_code = 'OFFER_EXTENDED' THEN\r\n                        a.job_app_event_date\r\n                END\r\n            ) AS offer_extended_date,\r\n            (\r\n                CASE\r\n                    WHEN c.event_type_code = 'STATE_ACTIVATION'\r\n                         AND d.phase_code = 'OFFER'\r\n                         AND e.state_code = 'OFFER_ACCEPTED' THEN\r\n                        a.job_app_event_date\r\n                END\r\n            ) AS offer_accepted_date,\r\n            (\r\n                CASE\r\n                    WHEN c.event_type_code = 'STATE_ACTIVATION'\r\n                         AND d.phase_code = 'OFFER'\r\n                         AND e.state_code = 'REJECTED_EMPLOYER' THEN\r\n                        a.job_app_event_date\r\n                END\r\n            ) AS offer_rejected_date,\r\n            (\r\n                CASE\r\n                    WHEN c.event_type_code = 'STATE_ACTIVATION'\r\n                         AND d.phase_code = 'OFFER'\r\n                         AND e.state_code = 'WITHDRAWN_BY_CANDIDATE' THEN\r\n                        a.job_app_event_date\r\n                END\r\n            ) AS offer_withdrawn_date,\r\n            (\r\n                CASE\r\n                    WHEN c.event_type_code = 'STATE_ACTIVATION'\r\n                         AND d.phase_code = 'HR'\r\n                         AND e.state_code = 'PROCESSED' THEN\r\n                        a.job_app_event_date\r\n                END\r\n            ) AS hire_date\r\n        FROM\r\n            dw_ta_job_app_event_f       a,\r\n            dw_ta_job_application_d     b,\r\n            dw_ta_history_event_type_d  c,\r\n            dw_ta_phase_d               d,\r\n            dw_ta_state_d               e\r\n        WHERE\r\n                1 = 1\r\n            AND a.job_application_id = b.job_application_id\r\n            AND a.job_app_event_type_id = c.event_type_id\r\n            AND a.job_app_phase_id = d.phase_id\r\n            AND a.job_app_state_id = e.state_id\r\n            AND c.event_type_code = 'STATE_ACTIVATION'\r\n            AND d.phase_code IN (\r\n                'OFFER',\r\n                'HR'\r\n            )\r\n            AND e.state_code IN (\r\n                'OFFER_EXTENDED',\r\n                'OFFER_ACCEPTED',\r\n                'REJECTED_EMPLOYER',\r\n                'WITHDRAWN_BY_CANDIDATE',\r\n                'PROCESSED'\r\n            )\r\n    )\r\nGROUP BY\r\n    job_application_id,\r\n    submission_confirmed_date"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "JOB_APPLICATION_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "OFFER_EXTENDED_DATE",
+      "dataType" : "DATETIME",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "OFFER_REJECTED_DATE",
+      "dataType" : "DATETIME",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "OFFER_WITHDRAWN_DATE",
+      "dataType" : "DATETIME",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "SUBMISSION_CONFIRMED_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "HIRE_DATE",
+      "dataType" : "DATETIME",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "OFFER_ACCEPTED_DATE",
+      "dataType" : "DATETIME",
+      "length" : 0,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "additionalKeys" : [ [ "JOB_APPLICATION_ID" ] ]
+  }
+}

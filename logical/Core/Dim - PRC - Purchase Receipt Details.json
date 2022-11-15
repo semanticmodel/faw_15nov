@@ -1,0 +1,144 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - Purchase Receipt Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Shipment Header Identifier", "Shipment Line Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Shipment Header Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.RECEIVING_SHIPMENT_RECEIPT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SHIPMENT_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Header"
+    }, {
+      "name" : "Receipt Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.RECEIVING_SHIPMENT_RECEIPT_NUM" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.RECEIPT_NUM" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Header"
+    }, {
+      "name" : "Shipment Line Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.RECEIVING_SHIPMENT_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SHIPMENT_LINE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Receipt Line Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.RECEIVING_SHIPMENT_LINE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SHIPMENT_LINE_NUM" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_INVOICE_SPEND_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Purchase Receipt Details.Receipt Line" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_RCV_SHIPMENTS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Receipt Header",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Shipment Header Identifier" ],
+        "displayKey" : "Receipt Number",
+        "additionalKeys" : [ [ "Receipt Number" ] ]
+      }, {
+        "name" : "Receipt Line",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Shipment Line Identifier" ],
+        "displayKey" : "Receipt Line Number",
+        "additionalKeys" : [ [ "Receipt Line Number" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - Purchase Receipt Details",
+        "levels" : [ "Total", "Receipt Header", "Receipt Line" ]
+      } ]
+    }
+  }
+}

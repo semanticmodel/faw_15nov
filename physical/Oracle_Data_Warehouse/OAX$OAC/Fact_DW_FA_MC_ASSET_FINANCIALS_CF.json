@@ -1,0 +1,239 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_FA_MC_ASSET_FINANCIALS_CF",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  TO_DATETIME('4712/12/31', 'YYYY/MM/DD') AND %4 = %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.BOOK_TYPE_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life.BOOK_TYPE_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life.PERIOD_CLOSE_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LEDGER_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life.LEDGER_ID"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_AnalyticsCurrency",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_CURRENCY_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_AnalyticsCurrency.CURRENCY_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_LedgerCurrency",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LEDGER_CURRENCY_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_LedgerCurrency.CURRENCY_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.ASSET_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D.ASSET_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D_GroupAsset",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GROUP_ASSET_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D_GroupAsset.ASSET_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_KEYWORDS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.ASSET_KEY_CCID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_KEYWORDS_D.ASSET_KEY_CCID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.ASSET_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.ASSET_ID"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.BOOK_TYPE_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.BOOK_TYPE_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.BO_TRANSACTION_HEADER_ID_IN",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.TRANSACTION_HEADER_ID_IN"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.CALENDAR_TYPE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D.CALENDAR_TYPE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.PERIOD_NAME",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D.PERIOD_NAME"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CATEGORIES_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.CATEGORY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CATEGORIES_D.CATEGORY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CONVENTION_TYPES_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.CONVENTION_TYPE_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CONVENTION_TYPES_D.CONVENTION_TYPE_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_DISTRIBUTION_HISTORY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.BOOK_TYPE_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_DISTRIBUTION_HISTORY_D.BOOK_TYPE_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.DISTRIBUTION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_DISTRIBUTION_HISTORY_D.DISTRIBUTION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_LOCATIONS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LOCATION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_LOCATIONS_D.LOCATION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_BOOK_CONTROLS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.BOOK_TYPE_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_BOOK_CONTROLS_D.BOOK_TYPE_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LEDGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_BOOK_CONTROLS_D.LEDGER_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyReservedPeriod",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.BOOK_TYPE_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyReservedPeriod.BOOK_TYPE_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LEDGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyReservedPeriod.LEDGER_ID"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.PERIOD_COUNTER_FULLY_RESERVED",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyReservedPeriod.PERIOD_COUNTER"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyRetiredPeriod",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.BOOK_TYPE_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyRetiredPeriod.BOOK_TYPE_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LEDGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyRetiredPeriod.LEDGER_ID"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.PERIOD_COUNTER_FULLY_RETIRED",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyRetiredPeriod.PERIOD_COUNTER"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_METHODS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.METHOD_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_METHODS_D.METHOD_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LEDGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D.LEDGER_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_ENTITY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LEGAL_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_ENTITY_D.LEGAL_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.BOOK_TYPE_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD.BOOK_TYPE_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.DISTRIBUTION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD.DISTRIBUTION_ID"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LEDGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD.LEDGER_ID"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.PERIOD_COUNTER",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD.PERIOD_COUNTER"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_FA_BOOK_FAAnalysisFact",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.BOOK_TYPE_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_FA_BOOK_FAAnalysisFact.SEC_OBJ_MEMBER_VAL"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "BOOK_TYPE_CODE",
+        "CALENDAR_TYPE",
+        "PERIOD_NAME",
+        "ASSET_ID",
+        "DISTRIBUTION_ID",
+        "FISCAL_YEAR",
+        "PERIOD_COUNTER",
+        "PERIOD_NUM",
+        "LEDGER_ID"
+      ]
+    ]
+  }
+}

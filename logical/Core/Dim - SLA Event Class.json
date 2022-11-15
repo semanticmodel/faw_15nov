@@ -1,0 +1,121 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - SLA Event Class",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Application Key", "Event Class Code" ],
+    "logicalColumns" : [ {
+      "name" : "Application Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_XLA_EVENT_CLASSES_LKP_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL_PromptOnly.APPLICATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_XLA_EVENT_CLASSES_LKP_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL.APPLICATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Event Class Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_XLA_EVENT_CLASSES_LKP_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL_PromptOnly.EVENT_CLASS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_XLA_EVENT_CLASSES_LKP_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL.EVENT_CLASS_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Event Class",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Event Class Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_XLA_EVENT_CLASSES_LKP_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %3, %2,  VALUEOF(NQ_SESSION.%4))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_XLA_EVENT_CLASSES_LKP_TL.EVENT_CLASS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL_PromptOnly.EVENT_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL_PromptOnly.APPLICATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_XLA_EVENT_CLASSES_LKP_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %3, %2,  VALUEOF(NQ_SESSION.%4))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_XLA_EVENT_CLASSES_LKP_TL.EVENT_CLASS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL.EVENT_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL.APPLICATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_XLA_EVENT_CLASSES_LKP_TL_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - SLA Event Class.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL_PromptOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_XLA_EVENT_CLASSES_LKP_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - SLA Event Class.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 100,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Application Key", "Event Class Code" ],
+        "displayKey" : "Event Class Code",
+        "additionalKeys" : [ [ "Event Class Code" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "SLA Event Class",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

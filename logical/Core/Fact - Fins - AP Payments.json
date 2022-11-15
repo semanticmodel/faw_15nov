@@ -1,0 +1,1534 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Fins - AP Payments",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Accounts Payable", "Project:Oracle Analytics for Fusion Financials" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-----Non-Monetary Metric-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Avg Supplier Payment Days",
+      "description" : "This metric computes the average days to pay to the suppliers",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.Total Payment Count", "logicalColumn:Core.Fact - Fins - AP Payments.Total Payment Days" ]
+        }
+      }
+    }, {
+      "name" : "On Time Payments Count",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> 'VOIDED' AND %2 = 'Y' AND %3 <= %4 THEN  CONCAT( CONCAT( CAST (%5 AS VARCHAR ( 38 )), '~'),  CAST (%6 AS VARCHAR ( 38 ))) ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.MAX_CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_NUMBER" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "On Time Payment Performance %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE  CAST (%2 AS DOUBLE PRECISION ) /  CAST (%1 AS DOUBLE PRECISION ) * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.Total Payment Count", "logicalColumn:Core.Fact - Fins - AP Payments.On Time Payments Count" ]
+        }
+      }
+    }, {
+      "name" : "Overdue Payments Count",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> 'VOIDED' AND  IFNULL(%2,  CURRENT_DATE ) > %3 THEN  CONCAT( CONCAT( CAST (%4 AS VARCHAR ( 38 )), '~'),  CAST (%5 AS VARCHAR ( 38 ))) ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.MAX_CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_NUMBER" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Payments Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> 'VOIDED' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Payment Count",
+      "description" : "This metric computes Overdue Payments Count + On Time Payments Count.",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 + %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.On Time Payments Count", "logicalColumn:Core.Fact - Fins - AP Payments.Overdue Payments Count" ]
+        }
+      }
+    }, {
+      "name" : "Total Payment Days",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 <> 'VOIDED' THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %3, %4) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICED_ON_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED', 'CREDIT', 'DEBIT') THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %3, %4) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICED_ON_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - SLA Distribution Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Schedule",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Ledger Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Avg Payment Amount",
+      "description" : "This metric shows average payment amount memo amount processed for a period (AP Total Payment Amount / AP Payment Count)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.Payments Count", "logicalColumn:Core.Fact - Fins - AP Payments.Payments Amount" ]
+        }
+      }
+    }, {
+      "name" : "Discount Taken Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DISCOUNT' AND %2 = 'LIABILITY' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.DISCOUNT_TAKEN_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Discount Taken Exchange Loss(Gain) Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DISCOUNT' AND %2 IN ('EXCHANGE_GAIN_LOSS', 'GAIN', 'LOSS') THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Electronic Payment Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EFT' AND %2 = 'CASH' AND %3 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %4 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_METHOD_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EFT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_METHOD_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.LEDGER_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Interest Penalties Paid",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'INTEREST' AND %2 = 'INTEREST_EXPENSE' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'INTEREST' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.LEDGER_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Internal - AP Total Cleared Transaction Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('Y', 'P') AND %2 = 'CASH' AND %3 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %4 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('Y', 'P') AND %2 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.LEDGER_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Internal - AP Total Payment Days times Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('Y', 'P') AND %2 = 'CASH' AND %3 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %4, %5) ELSE 0 END  * %6 * -(1)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICED_ON_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('Y', 'P') AND %2 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %3, %4) ELSE 0 END  * %5",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICED_ON_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.LEDGER_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Internal - Payments Liability Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CASH' AND %2 = 'LIABILITY' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AP Payment Details.Total" ]
+      }
+    }, {
+      "name" : "On Time Payments Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> 'VOIDED' AND %2 = 'Y' AND %3 <= %4 AND %5 = 'CASH' AND %6 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %7 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.MAX_CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 <= %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.LEDGER_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Overdue Payments Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> 'VOIDED' AND  IFNULL(%2,  CURRENT_DATE ) > %3 AND %4 = 'CASH' AND %5 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %6 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.MAX_CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > %2 THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.LEDGER_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Payments Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CASH' AND %2 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %3 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.LEDGER_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Payment Distribution Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Payment Exchange Loss(Gain) Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CASH' AND %2 IN ('EXCHANGE_GAIN_LOSS', 'GAIN', 'LOSS') THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.GAIN_LOSS_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Weighted Avg Supplier Payment Days",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.Internal - AP Total Cleared Transaction Amount", "logicalColumn:Core.Fact - Fins - AP Payments.Internal - AP Total Payment Days times Amount" ]
+        }
+      }
+    }, {
+      "name" : "% Interest Penalties Paid",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.Payments Amount", "logicalColumn:Core.Fact - Fins - AP Payments.Interest Penalties Paid" ]
+        }
+      }
+    }, {
+      "name" : "% Electronic Payment Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.Payments Amount", "logicalColumn:Core.Fact - Fins - AP Payments.Electronic Payment Amount" ]
+        }
+      }
+    }, {
+      "name" : "-----Analytics Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Avg Payment Amount in Analytics Currency",
+      "description" : "This metric shows average payment amount memo amount processed for a period (AP Total Payment Amount / AP Payment Count)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.Payments Count", "logicalColumn:Core.Fact - Fins - AP Payments.Payments Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Discount Taken Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DISCOUNT' AND %2 = 'LIABILITY' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.DISCOUNT_TAKEN_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Discount Taken Exchange Loss(Gain) Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DISCOUNT' AND %2 IN ('EXCHANGE_GAIN_LOSS', 'GAIN', 'LOSS') THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Electronic Payment Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EFT' AND %2 = 'CASH' AND %3 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %4 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_METHOD_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EFT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_METHOD_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.GLOBAL_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Interest Penalties Paid in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'INTEREST' AND %2 = 'INTEREST_EXPENSE' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'INTEREST' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.GLOBAL_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Internal - AP Total Cleared Transaction Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('Y', 'P') AND %2 = 'CASH' AND %3 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %4 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('Y', 'P') AND %2 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.GLOBAL_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Internal - AP Total Payment Days times Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('Y', 'P') AND %2 = 'CASH' AND %3 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %4, %5) ELSE 0 END  * %6 * -(1)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICED_ON_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('Y', 'P') AND %2 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %3, %4) ELSE 0 END  * %5",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICED_ON_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.GLOBAL_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Internal - Payments Liability Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CASH' AND %2 = 'LIABILITY' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AP Payment Details.Total" ]
+      }
+    }, {
+      "name" : "On Time Payments Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> 'VOIDED' AND %2 = 'Y' AND %3 <= %4 AND %5 = 'CASH' AND %6 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %7 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.MAX_CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 <= %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.GLOBAL_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Overdue Payments Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> 'VOIDED' AND  IFNULL(%2,  CURRENT_DATE ) > %3 AND %4 = 'CASH' AND %5 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %6 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.MAX_CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > %2 THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.GLOBAL_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Payments Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CASH' AND %2 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %3 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.GLOBAL_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Payment Distribution Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Payment Exchange Loss(Gain) Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CASH' AND %2 IN ('EXCHANGE_GAIN_LOSS', 'GAIN', 'LOSS') THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.GAIN_LOSS_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Weighted Avg Supplier Payment Days in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.Internal - AP Total Cleared Transaction Amount in Analytics Currency", "logicalColumn:Core.Fact - Fins - AP Payments.Internal - AP Total Payment Days times Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "% Interest Penalties Paid in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.Payments Amount in Analytics Currency", "logicalColumn:Core.Fact - Fins - AP Payments.Interest Penalties Paid in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "% Electronic Payment Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.Payments Amount in Analytics Currency", "logicalColumn:Core.Fact - Fins - AP Payments.Electronic Payment Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "-----Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Avg Payment Amount in Document Currency",
+      "description" : "This metric shows average payment amount memo amount processed for a period (AP Total Payment Amount / AP Payment Count)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.Payments Count", "logicalColumn:Core.Fact - Fins - AP Payments.Payments Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Discount Lost Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.DISCOUNT_LOST_PAYMENT_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.DISCOUNT_LOST_PAYMENT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - SLA Distribution Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Payment Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Discount Lost Amount in Invoice Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.DISCOUNT_LOST_INVOICE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - SLA Distribution Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Payment Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Discount Taken Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DISCOUNT' AND %2 = 'DISCOUNT' THEN %3 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.DISCOUNT_TAKEN_PAYMENT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Electronic Payment Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EFT' AND %2 = 'CASH' AND %3 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %4 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_METHOD_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EFT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_METHOD_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Interest Penalties Paid in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'INTEREST' AND %2 = 'INTEREST_EXPENSE' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'INTEREST' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Internal - AP Total Cleared Transaction Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('Y', 'P') AND %2 = 'CASH' AND %3 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %4 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('Y', 'P') AND %2 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Internal - AP Total Payment Days times Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('Y', 'P') AND %2 = 'CASH' AND %3 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %4, %5) ELSE 0 END  * %6 * -(1)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICED_ON_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('Y', 'P') AND %2 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %3, %4) ELSE 0 END  * %5",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICED_ON_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Internal - Discount Taken Liability Amount in Invoice Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DISCOUNT' AND %2 = 'LIABILITY' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.DISCOUNT_TAKEN_PAYMENT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - AP Payment Details.Total" ]
+      }
+    }, {
+      "name" : "Internal - Payments Liability Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CASH' AND %2 = 'LIABILITY' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AP Payment Details.Total" ]
+      }
+    }, {
+      "name" : "On Time Payments Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> 'VOIDED' AND %2 = 'Y' AND %3 <= %4 AND %5 = 'CASH' AND %6 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %7 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.MAX_CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 <= %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Overdue Payments Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> 'VOIDED' AND  IFNULL(%2,  CURRENT_DATE ) > %3 AND %4 = 'CASH' AND %5 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %6 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.MAX_CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > %2 THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.CHECK_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_SCHEDULE_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Weighted Avg Supplier Payment Days in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.Internal - AP Total Cleared Transaction Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AP Payments.Internal - AP Total Payment Days times Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Payments Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CASH' AND %2 IN ('CASH', 'CASH_CLEARING', 'FUTURE_DATED_PMT') THEN %3 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_CURRENCY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - AP Payment Details.Total", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - SLA Distribution Details.Total", "logicalLevel:Core.Dim - Liability Account.Total", "logicalLevel:Core.Dim - SLA Account Class.Total" ]
+      }
+    }, {
+      "name" : "Payment Distribution Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "% Interest Penalties Paid in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.Payments Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AP Payments.Interest Penalties Paid in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "% Electronic Payment Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Payments.Payments Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AP Payments.Electronic Payment Amount in Document Currency" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Invoice Accounting Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Natural Account Hierarchy.Detail", "logicalLevel:Core.Dim - AP Invoice Payment Details.Detail", "logicalLevel:Core.Dim - Payment Cleared Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Detail", "logicalLevel:Core.Dim - Discount Due Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Detail", "logicalLevel:Core.Dim - Supplier.Detail", "logicalLevel:Core.Dim - Supplier Sites.Detail", "logicalLevel:Core.Dim - GL Segment1.Detail", "logicalLevel:Core.Dim - Payables Invoicing Business Unit.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - GL Segment3.Detail", "logicalLevel:Core.Dim - Third Party Remit-to Supplier.Detail", "logicalLevel:Core.Dim - AP Transaction Details.Transaction Distribution", "logicalLevel:Core.Dim - GL Segment7.Detail", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment9.Detail", "logicalLevel:Core.Dim - Ledger Set.Detail", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Detail", "logicalLevel:Core.Dim - AP Invoice Details.Detail", "logicalLevel:Core.Dim - Invoice Creation Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - SLA Account Class.Detail", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Detail", "logicalLevel:Core.Dim - Default Account.Detail", "logicalLevel:Core.Dim - AP Payment Status.Detail", "logicalLevel:Core.Dim - Invoice Updated By.Detail", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Payables Payment Business Unit.Detail", "logicalLevel:Core.Dim - Distribution Accounting Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Payment Due Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - SLA Distribution Details.Detail", "logicalLevel:Core.Dim - GL Segment4.Detail", "logicalLevel:Core.Dim - Liability Account.Detail", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Detail", "logicalLevel:Core.Dim - Balancing Segment.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - AP Invoice Schedule.Detail", "logicalLevel:Core.Dim - GL Account.Detail", "logicalLevel:Core.Dim - Bank Account.Detail", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Detail", "logicalLevel:Core.Dim - AP Approval Status.Detail", "logicalLevel:Core.Dim - Payment Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - AP Source.Detail", "logicalLevel:Core.Dim - AP Payment Header Details.Detail", "logicalLevel:Core.Dim - AP Validation Status.Detail", "logicalLevel:Core.Dim - Payment Created By.Detail", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Detail", "logicalLevel:Core.Dim - AP Invoice Payment Status.Detail", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Detail", "logicalLevel:Core.Dim - Invoice Created By.Detail", "logicalLevel:Core.Dim - Cost Center Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment2.Detail", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Detail", "logicalLevel:Core.Dim - Cost Center.Detail", "logicalLevel:Core.Dim - GL Segment5.Detail", "logicalLevel:Core.Dim - Invoice Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Detail", "logicalLevel:Core.Dim - AP Terms.Detail", "logicalLevel:Core.Dim - GL Segment6.Detail", "logicalLevel:Core.Dim - AP Payment Details.Detail", "logicalLevel:Core.Dim - GL Segment10.Detail", "logicalLevel:Core.Dim - Created By.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - AP Payment Method.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - AP Transaction Type.Detail", "logicalLevel:Core.Dim - Default Account Type.Detail", "logicalLevel:Core.Dim - Natural Account.Detail", "logicalLevel:Core.Dim - AP Invoice Payment Method.Detail", "logicalLevel:Core.Dim - GL Segment8.Detail", "logicalLevel:Core.Dim - Payment Void Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Party.Detail", "logicalLevel:Core.Dim - PRC - Spend Header.Invoice Header" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_PAYMENTS_CF",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AP Terms.Detail", "logicalLevel:Core.Dim - Payment Due Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Detail", "logicalLevel:Core.Dim - Payment Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment10.Detail", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Account.Detail", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment4.Detail", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Detail", "logicalLevel:Core.Dim - Supplier Sites.Detail", "logicalLevel:Core.Dim - Supplier.Detail", "logicalLevel:Core.Dim - Payables Invoicing Business Unit.Detail", "logicalLevel:Core.Dim - Third Party Remit-to Supplier.Detail", "logicalLevel:Core.Dim - Discount Due Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Payables Payment Business Unit.Detail", "logicalLevel:Core.Dim - AP Invoice Payment Status.Detail", "logicalLevel:Core.Dim - Ledger Set.Detail", "logicalLevel:Core.Dim - GL Segment1.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - AP Payment Method.Detail", "logicalLevel:Core.Dim - AP Invoice Schedule.Detail", "logicalLevel:Core.Dim - Cost Center.Detail", "logicalLevel:Core.Dim - GL Segment8.Detail", "logicalLevel:Core.Dim - AP Invoice Details.Detail", "logicalLevel:Core.Dim - Cost Center Hierarchy.Detail", "logicalLevel:Core.Dim - Natural Account.Detail", "logicalLevel:Core.Dim - AP Transaction Details.Transaction Distribution", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Natural Account Hierarchy.Detail", "logicalLevel:Core.Dim - Payment Accounting Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Detail", "logicalLevel:Core.Dim - Payment Cleared Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment2.Detail", "logicalLevel:Core.Dim - GL Segment3.Detail", "logicalLevel:Core.Dim - Bank Account.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Balancing Segment.Detail", "logicalLevel:Core.Dim - Created By.Detail", "logicalLevel:Core.Dim - GL Segment5.Detail", "logicalLevel:Core.Dim - GL Segment6.Detail", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Detail", "logicalLevel:Core.Dim - AP Source.Detail", "logicalLevel:Core.Dim - AP Transaction Type.Detail", "logicalLevel:Core.Dim - AP Payment Status.Detail", "logicalLevel:Core.Dim - GL Segment7.Detail", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment9.Detail", "logicalLevel:Core.Dim - Invoice Date Fiscal Calendar.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'CASH'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_FIN_AP_PAYMENT_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "AP_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_AP_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - AP Payment Header Details.Security Context Code - AP Payment BU" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_FIN_AP_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "AP_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_AP_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - AP Payment Header Details.Security Context Code - AP Invoicing BU" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - AP Approval Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Invoice Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Invoice Payment Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Invoice Payment Method",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Invoice Payment Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Invoice Schedule",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Payment Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Payment Header Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Payment Method",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Payment Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Source",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Terms",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Transaction Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Transaction Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Validation Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Balancing Segment Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Balancing Segment",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Bank Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Center Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Center",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Created By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Default Account Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Default Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Discount Due Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Distribution Accounting Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment1 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment1",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment10 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment10",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment2 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment2",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment3 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment3",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment4 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment4",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment5 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment5",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment6 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment6",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment7 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment7",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment8 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment8",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment9 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment9",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Accounting Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Created By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Creation Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Updated By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger Set",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Liability Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Natural Account Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Natural Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Spend Header",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Party",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Payables Invoicing Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Payables Payment Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Payment Accounting Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Payment Cleared Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Payment Created By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Payment Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Payment Due Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Payment Void Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - SLA Account Class",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - SLA Distribution Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Supplier Sites",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Supplier",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Third Party Remit-to Supplier",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

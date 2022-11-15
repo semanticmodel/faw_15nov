@@ -1,0 +1,119 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Subscription Pricing Term Period",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Subscription Pricing Term Period Code" ],
+    "logicalColumns" : [ {
+      "name" : "Subscription Pricing Term Period Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod_PromptOnly.UOM_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod.UOM_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Subscription Pricing Term Period Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Subscription Pricing Term Period Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod_PromptOnly.UNIT_OF_MEASURE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod_PromptOnly.UOM_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod.UNIT_OF_MEASURE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod.UOM_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Subscription Pricing Term Period Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Subscription Pricing Term Period Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod_PromptOnly.UNIT_OF_MEASURE_DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod_PromptOnly.UOM_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod.UNIT_OF_MEASURE_DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod.UOM_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Subscription Pricing Term Period.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod_PromptOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionPricingTermPeriod" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Subscription Pricing Term Period.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Subscription Pricing Term Period Code" ],
+        "displayKey" : "Subscription Pricing Term Period Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Subscription Pricing Term Period",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

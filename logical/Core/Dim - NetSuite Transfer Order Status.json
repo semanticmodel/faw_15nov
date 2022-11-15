@@ -1,0 +1,105 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - NetSuite Transfer Order Status",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Transfer Order Status Key", "Transfer Order Status Code" ],
+    "logicalColumns" : [ {
+      "name" : "Transfer Order Status Key",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_TRANSFERORDERSTATUS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_TRANSFERORDERSTATUS_D.KEY" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Transfer Order Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_TRANSFERORDERSTATUS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_TRANSFERORDERSTATUS_D.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Transfer Order Transaction Type",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_TRANSFERORDERSTATUS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_TRANSFERORDERSTATUS_D.TRANSACTION" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transfer Order Status",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_TRANSFERORDERSTATUS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_TRANSFERORDERSTATUS_D.STATUS" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_NS_TRANSFERORDERSTATUS_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_TRANSFERORDERSTATUS_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Transfer Order Status.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'TrnfrOrd'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_TRANSFERORDERSTATUS_D.KEY" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transfer Order Status Key", "Transfer Order Status Code" ],
+        "displayKey" : "Transfer Order Status",
+        "additionalKeys" : [ [ "Transfer Order Status" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "NetSuite Transfer Order Status",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

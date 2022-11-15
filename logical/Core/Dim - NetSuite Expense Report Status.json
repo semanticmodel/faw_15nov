@@ -1,0 +1,105 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - NetSuite Expense Report Status",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Expense Report Status Code", "Expense Report Status Key" ],
+    "logicalColumns" : [ {
+      "name" : "Expense Report Status Key",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_EXPENSEREPORTSTATUS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXPENSEREPORTSTATUS_D.KEY" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Expense Report Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_EXPENSEREPORTSTATUS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXPENSEREPORTSTATUS_D.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Expense Report Status",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_EXPENSEREPORTSTATUS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXPENSEREPORTSTATUS_D.STATUS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Expense Report Transaction Type",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_EXPENSEREPORTSTATUS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXPENSEREPORTSTATUS_D.TRANSACTION" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_NS_EXPENSEREPORTSTATUS_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXPENSEREPORTSTATUS_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Expense Report Status.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'ExpRept'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXPENSEREPORTSTATUS_D.KEY" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Expense Report Status Key", "Expense Report Status Code" ],
+        "displayKey" : "Expense Report Status",
+        "additionalKeys" : [ [ "Expense Report Status" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "NetSuite Expense Report Status",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

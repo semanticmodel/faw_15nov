@@ -1,0 +1,100 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Expenditure Business Unit",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Expenditure Business Unit Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Expenditure Business Unit Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_ExpenditureBU_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureBU_PromptOnly.ORGANIZATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_ExpenditureBU",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureBU.ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Expenditure Business Unit",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Expenditure Business Unit Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_ExpenditureBU_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INTERNAL_ORG_D_TL.ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureBU_PromptOnly.ORGANIZATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_ExpenditureBU",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INTERNAL_ORG_D_TL.ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureBU.ORGANIZATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_INTERNAL_ORG_D_ExpenditureBU_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureBU_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Expenditure Business Unit.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'Y' OR %2 = -(99999)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureBU_PromptOnly.PROJECT_ACCOUNTING_BU_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureBU_PromptOnly.ORGANIZATION_ID" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_INTERNAL_ORG_D_ExpenditureBU",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureBU" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Expenditure Business Unit.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "All",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "All",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Expenditure Business Unit Identifier" ],
+        "displayKey" : "Expenditure Business Unit",
+        "additionalKeys" : [ [ "Expenditure Business Unit" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Expenditure Business Unit",
+        "levels" : [ "All", "Detail" ]
+      } ]
+    }
+  }
+}

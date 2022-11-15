@@ -1,0 +1,71 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Customer Ship To Contact",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Party ID" ],
+    "logicalColumns" : [ {
+      "name" : "Party ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PARTY_D_Customer_Ship_To_Contact",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_Customer_Ship_To_Contact.PARTY_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Ship-to Contact Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PARTY_D_Customer_Ship_To_Contact",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_Customer_Ship_To_Contact.PARTY_NAME" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_PARTY_D_Customer_Ship_To_Contact",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_Customer_Ship_To_Contact" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Customer Ship To Contact.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Party ID" ],
+        "displayKey" : "Party ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Customer Ship To Contact",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

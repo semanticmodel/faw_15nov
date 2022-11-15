@@ -1,0 +1,100 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Opportunity Line of Business",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Opportunity Line of Business Code" ],
+    "logicalColumns" : [ {
+      "name" : "Opportunity Line of Business Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL_PromptOnly.CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Opportunity Line of Business",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Opportunity Line of Business Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL_PromptOnly.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL_PromptOnly.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Opportunity Line of Business.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL_PromptOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL",
+      "disable" : false,
+      "priority" : 5,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LINE_OF_BUSINESS_CODE_D_TL" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Opportunity Line of Business.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Opportunity Line of Business Code" ],
+        "displayKey" : "Opportunity Line of Business Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Opportunity Line of Business",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

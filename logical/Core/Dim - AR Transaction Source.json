@@ -1,0 +1,85 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - AR Transaction Source",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Transaction Source ID" ],
+    "logicalColumns" : [ {
+      "name" : "Transaction Source ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_AR_TRX_BATCH_SOURCES_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_TRX_BATCH_SOURCES_D.BATCH_SOURCE_SEQ_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Transaction Source Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_AR_TRX_BATCH_SOURCES_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_TRX_BATCH_SOURCES_D.NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transaction Source Description",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_AR_TRX_BATCH_SOURCES_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_TRX_BATCH_SOURCES_D.DESCRIPTION" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_AR_TRX_BATCH_SOURCES_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_TRX_BATCH_SOURCES_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Transaction Source.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transaction Source ID" ],
+        "displayKey" : "Transaction Source ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "AR Transaction Source",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

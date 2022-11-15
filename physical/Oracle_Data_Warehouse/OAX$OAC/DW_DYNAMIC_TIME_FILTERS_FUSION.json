@@ -1,0 +1,40 @@
+{
+  "physicalTable" : {
+    "name" : "DW_DYNAMIC_TIME_FILTERS_FUSION",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT DISTINCT\r\n    'FSCM' AS pillar,\r\n    '01' AS Calendar_Type,\r\n    'Year' AS time_level,\r\n    SUM(1)OVER(\r\n        PARTITION BY b.fiscal_period_set_name\r\n        ORDER BY b.fiscal_year_number DESC\r\n    ) AS time_seq,\r\n    TO_CHAR(b.fiscal_year_number) AS time_value\r\nFROM dw_fiscal_year_d a, dw_fiscal_year_d b\r\nWHERE a.fiscal_period_set_name = b.fiscal_period_set_name \r\nAND a.fiscal_period_type = b.fiscal_period_type \r\nAND a.fiscal_period_set_name \r\n      = (select min(a1.fiscal_period_set_name) from dw_fiscal_year_d a1 \r\n         where a1.fiscal_year_number != -99999 and a1.current_fiscal_year_code = 'Current')\r\nAND a.current_fiscal_year_code = 'Current' \r\nAND b.fiscal_year_number BETWEEN a.fiscal_year_number - 19 AND a.fiscal_year_number\r\nUNION\r\nSELECT\r\n    'FSCM' AS pillar,\r\n     '01' AS Calendar_Type,\r\n    'Quarter' AS time_level,\r\n    SUM(1)OVER(\r\n        PARTITION BY b.fiscal_period_set_name\r\n        ORDER BY b.run_count DESC\r\n    ) AS time_seq,\r\n    b.fiscal_quarter AS time_value\r\nFROM\r\n    (\r\n        SELECT\r\n            fiscal_period_set_name,\r\n            fiscal_period_type,\r\n            current_fiscal_quarter_code,\r\n            fiscal_quarter_code   AS fiscal_quarter,\r\n            (COUNT(1)OVER(\r\n                PARTITION BY fiscal_period_set_name,fiscal_period_type\r\n                ORDER BY\r\n                    fiscal_period_set_name,fiscal_period_type,fiscal_year_number,fiscal_quarter_number\r\n            ))AS run_count\r\n        FROM dw_fiscal_quarter_d\r\n    ) a,\r\n    (\r\n        SELECT\r\n            fiscal_period_set_name,\r\n            fiscal_period_type,\r\n            current_fiscal_quarter_code,\r\n            fiscal_quarter_code   AS fiscal_quarter,\r\n            (COUNT(1)OVER(\r\n                PARTITION BY fiscal_period_set_name,fiscal_period_type\r\n                ORDER BY\r\n                    fiscal_period_set_name,fiscal_period_type,fiscal_year_number,fiscal_quarter_number\r\n            ))AS run_count\r\n        FROM dw_fiscal_quarter_d\r\n    ) b\r\nWHERE a.fiscal_period_set_name = b.fiscal_period_set_name \r\nAND a.fiscal_period_type = b.fiscal_period_type \r\nAND a.current_fiscal_quarter_code = 'Current' \r\nAND a.fiscal_period_set_name \r\n     = (select min(a1.fiscal_period_set_name) from dw_fiscal_year_d a1 \r\n        where a1.fiscal_year_number != -99999 and a1.current_fiscal_year_code = 'Current') \r\nAND b.run_count BETWEEN a.run_count - 19 AND a.run_count\r\nUNION\r\nSELECT\r\n    'FSCM' AS pillar,\r\n     '01' AS Calendar_Type,\r\n    'Month' AS time_level,\r\n    SUM(1)OVER(\r\n        PARTITION BY b.fiscal_period_set_name\r\n        ORDER BY b.run_count DESC\r\n    ) AS time_seq,\r\n    b.fiscal_period_name AS time_value\r\nFROM\r\n    (\r\n        SELECT\r\n            fiscal_period_set_name,\r\n            fiscal_period_type,\r\n            current_fiscal_period_code,\r\n            fiscal_period_name,\r\n            (COUNT(1)OVER(\r\n                PARTITION BY fiscal_period_set_name,fiscal_period_type\r\n                ORDER BY fiscal_period_set_name,fiscal_period_type,fiscal_year_number,fiscal_period_number\r\n            ))AS run_count\r\n        FROM dw_fiscal_period_d\r\n        WHERE adjustment_period_flag = 'N'\r\n    ) a,\r\n    (\r\n        SELECT\r\n            fiscal_period_set_name,\r\n            fiscal_period_type,\r\n            current_fiscal_period_code,\r\n            fiscal_period_name,\r\n            (COUNT(1)OVER(\r\n                PARTITION BY fiscal_period_set_name,fiscal_period_type\r\n                ORDER BY\r\n                    fiscal_period_set_name,fiscal_period_type,fiscal_year_number,fiscal_period_number\r\n            )) AS run_count\r\n        FROM dw_fiscal_period_d\r\n        WHERE adjustment_period_flag = 'N'\r\n    ) b\r\nWHERE a.fiscal_period_set_name = b.fiscal_period_set_name \r\nAND a.fiscal_period_type = b.fiscal_period_type \r\nAND a.current_fiscal_period_code = 'Current' \r\nAND a.fiscal_period_set_name \r\n     = (select min(a1.fiscal_period_set_name) from dw_fiscal_year_d a1 \r\n        where a1.fiscal_year_number != -99999 and a1.current_fiscal_year_code = 'Current') \r\nAND b.run_count BETWEEN a.run_count - 19 AND a.run_count\r\nUNION\r\nSELECT DISTINCT\r\n    'HCM' AS pillar,\r\n    '02' AS Calendar_Type,\r\n    'Year' AS time_level,\r\n     ROW_NUMBER() OVER(\r\n        ORDER BY b.cal_year_id DESC\r\n    ) AS time_seq,\r\n    TO_CHAR(b.cal_year_id)AS time_value\r\nFROM dw_year_d a, dw_year_d b\r\nWHERE a.current_cal_year_code = 'Current'\r\nAND b.cal_year_id BETWEEN a.cal_year_id - 19 AND a.cal_year_id\r\nUNION\r\nSELECT  \r\n    'HCM' AS pillar,\r\n    '02' AS Calendar_Type,\r\n    'Quarter' AS time_level,\r\n     ROW_NUMBER() OVER(\r\n        ORDER BY b.cal_quarter_code DESC\r\n    ) AS time_seq,\r\n    b.cal_quarter_code AS time_value\r\nFROM\r\n     (\r\n        SELECT\r\n            cal_quarter_code ,\r\n            current_cal_qtr_code,\r\n            (COUNT(1)OVER(\r\n                    ORDER BY\r\n                    cal_year_id,cal_quarter_code\r\n            )) AS run_count\r\n        FROM\r\n            dw_quarter_d\r\n    ) a,\r\n    (SELECT\r\n            cal_quarter_code ,\r\n            current_cal_qtr_code,\r\n            (COUNT(1)OVER(\r\n                    ORDER BY\r\n                    cal_year_id,cal_quarter_code\r\n            )) AS run_count\r\n        FROM\r\n            dw_quarter_d\r\n        \r\n    ) b \r\nWHERE a.current_cal_qtr_code = 'Current'\r\nAND b.run_count BETWEEN a.run_count - 19 AND a.run_count\r\nUNION\r\nSELECT  \r\n    'HCM' AS pillar,\r\n    '02' AS Calendar_Type,\r\n    'Month' AS time_level,\r\n     ROW_NUMBER() OVER(\r\n        ORDER BY b.cal_month_start_date DESC\r\n    ) AS time_seq,\r\n    b.cal_month_code AS time_value\r\nFROM\r\n     (\r\n        SELECT\r\n            cal_month_start_date ,\r\n            current_cal_month_code,\r\n             cal_month_code,\r\n            (COUNT(1)OVER(\r\n                    ORDER BY\r\n                    cal_year_id,cal_month_start_date\r\n            ))AS run_count\r\n        FROM dw_month_d\r\n    ) a,\r\n    (SELECT\r\n            cal_month_start_date ,\r\n            current_cal_month_code,\r\n            cal_month_code,\r\n            (COUNT(1)OVER(\r\n                    ORDER BY\r\n                    cal_year_id,cal_month_start_date\r\n            ))AS run_count\r\n        FROM dw_month_d\r\n        \r\n    ) b\r\nWHERE a.current_cal_month_code = 'Current'\r\nAND b.run_count BETWEEN a.run_count - 19 AND a.run_count"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "CALENDAR_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 2,
+      "nullable" : false
+    }, {
+      "name" : "PILLAR",
+      "dataType" : "VARCHAR",
+      "length" : 10,
+      "nullable" : false
+    }, {
+      "name" : "TIME_LEVEL",
+      "dataType" : "VARCHAR",
+      "length" : 10,
+      "nullable" : false
+    }, {
+      "name" : "TIME_SEQ",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "TIME_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 20,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    }
+  }
+}

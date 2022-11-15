@@ -1,0 +1,84 @@
+{
+  "physicalTable" : {
+    "name" : "Fact_W_DAY_D_BU",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT\r\nCOALESCE(PAYABLES_ORG.ORGANIZATION_ID,-99999) PAYABLES_ORG_ID,\r\nCOALESCE(RECEIVABLES_ORG.ORGANIZATION_ID,-99999) RECEIVABLES_ORG_ID,\r\nFISCAL_DAY.FISCAL_PERIOD_SET_NAME FISCAL_CALENDAR,\r\nFISCAL_DAY.FISCAL_PERIOD_TYPE FISCAL_PERIOD_TYPE,\r\nFISCAL_DAY.FISCAL_DAY_DATE FISCAL_DAY_DATE,\r\nFISCAL_DAY.FISCAL_DAY_OF_YEAR FISCAL_DAY_OF_YEAR,\r\nFISCAL_DAY.ADJUSTMENT_PERIOD_FLAG ADJUSTMENT_PERIOD_FLAG,\r\nCOALESCE(LEDGER.LEDGER_ID,-99999) LEDGER_ID\r\nFROM\r\nDW_FISCAL_DAY_D FISCAL_DAY\r\nINNER JOIN DW_FISCAL_CONTEXT_G FISCAL_CONTEXT ON FISCAL_DAY.FISCAL_PERIOD_SET_NAME = FISCAL_CONTEXT.FISCAL_PERIOD_SET_NAME\r\nAND FISCAL_DAY.FISCAL_PERIOD_TYPE = FISCAL_CONTEXT.FISCAL_PERIOD_TYPE\r\nLEFT OUTER JOIN DW_INTERNAL_ORG_D PAYABLES_ORG ON FISCAL_CONTEXT.ORGANIZATION_ID = TO_CHAR(PAYABLES_ORG.ORGANIZATION_ID) AND PAYABLES_ORG.PAYABLES_INVOICING_BU_FLAG = 'Y'\r\nLEFT OUTER JOIN DW_INTERNAL_ORG_D RECEIVABLES_ORG ON FISCAL_CONTEXT.ORGANIZATION_ID = TO_CHAR(RECEIVABLES_ORG.ORGANIZATION_ID) AND RECEIVABLES_ORG.BILLING_REVENUE_MNG_BU_FLAG = 'Y'\r\nLEFT OUTER JOIN DW_INTERNAL_ORG_D LEDGER_ORG ON FISCAL_CONTEXT.ORGANIZATION_ID = TO_CHAR(LEDGER_ORG.ORGANIZATION_ID)  \r\nLEFT OUTER JOIN DW_LEDGER_D LEDGER ON LEDGER_ORG.PRIMARY_LEDGER = LEDGER.LEDGER_NAME\r\nWHERE FISCAL_DAY.ADJUSTMENT_PERIOD_FLAG = 'N'"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "PAYABLES_ORG_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "RECEIVABLES_ORG_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "FISCAL_CALENDAR",
+      "dataType" : "VARCHAR",
+      "length" : 15,
+      "nullable" : false
+    }, {
+      "name" : "FISCAL_DAY_DATE",
+      "dataType" : "DATETIME",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "FISCAL_DAY_OF_YEAR",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "ADJUSTMENT_PERIOD_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 1,
+      "nullable" : false
+    }, {
+      "name" : "FISCAL_PERIOD_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 15,
+      "nullable" : false
+    }, {
+      "name" : "LEDGER_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "joins" : [ {
+      "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_Common",
+      "useJoinExpression" : false,
+      "joinConditions" : [ {
+        "leftColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_W_DAY_D_BU.PAYABLES_ORG_ID",
+        "rightColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_Common.BUSINESS_UNIT_ID"
+      } ]
+    }, {
+      "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Billing_Revenue_Mgmt_Org",
+      "useJoinExpression" : false,
+      "joinConditions" : [ {
+        "leftColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_W_DAY_D_BU.RECEIVABLES_ORG_ID",
+        "rightColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Billing_Revenue_Mgmt_Org.ORGANIZATION_ID"
+      } ]
+    }, {
+      "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_Payables_Org",
+      "useJoinExpression" : false,
+      "joinConditions" : [ {
+        "leftColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_W_DAY_D_BU.PAYABLES_ORG_ID",
+        "rightColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_Payables_Org.ORGANIZATION_ID"
+      } ]
+    }, {
+      "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D",
+      "useJoinExpression" : false,
+      "joinConditions" : [ {
+        "leftColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_W_DAY_D_BU.LEDGER_ID",
+        "rightColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D.LEDGER_ID"
+      } ]
+    } ]
+  }
+}

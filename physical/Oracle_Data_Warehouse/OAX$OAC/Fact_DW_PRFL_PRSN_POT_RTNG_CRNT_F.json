@@ -1,0 +1,41 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_PRFL_PRSN_POT_RTNG_CRNT_F",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PRFL_PRSN_POT_RTNG_CRNT_F",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_TL_Potential",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_TL_Potential.RATING_LEVEL_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_POT_RTNG_CRNT_F.POTENTIAL_LEVEL_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_TL_Potential.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_Potential",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_POT_RTNG_CRNT_F.POTENTIAL_LEVEL_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_Potential.RATING_LEVEL_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "ASSIGNMENT_ID",
+        "PROFILE_ITEM_ID",
+        "BUSINESS_GROUP_ID",
+        "CONTENT_TYPE_ID"
+      ]
+    ]
+  }
+}

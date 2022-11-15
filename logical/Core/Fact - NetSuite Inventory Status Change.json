@@ -1,0 +1,225 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - NetSuite Inventory Status Change",
+    "tags" : [ "Project:NetSuite Analytics Warehouse - NetSuite Inventory" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "<<<<<<<<<<<<<< TRANSACTION >>>>>>>>>>>>>>>",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Number of Inventory Status Changes",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_INVENTORY_STATUS_CHANGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORY_STATUS_CHANGE_F.ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Bin.Total", "logicalLevel:Core.Dim - NetSuite Inventory Number.Total", "logicalLevel:Core.Dim - NetSuite Inventory Previous Status.Total", "logicalLevel:Core.Dim - NetSuite Inventory Revised Status.Total", "logicalLevel:Core.Dim - NetSuite Inventory Status Change Details.Inventory Status Change Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "<<<<<<<<<<<<<< TRANSACTION LINES>>>>>>>>>>>>>>>",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Number of Inventory Status Change Lines",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_INVENTORY_STATUS_CHANGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORY_STATUS_CHANGE_LINES_F.TRANSACTION" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Inventory Status Change Details.Inventory Status Change Line" ]
+      }
+    }, {
+      "name" : "Item Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_INVENTORY_STATUS_CHANGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORY_STATUS_CHANGE_LINES_F.QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Inventory Status Change Details.Inventory Status Change Line" ]
+      }
+    }, {
+      "name" : "Total Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_INVENTORY_STATUS_CHANGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORY_STATUS_CHANGE_LINES_F.TOTAL_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Inventory Status Change Details.Inventory Status Change Line" ]
+      }
+    }, {
+      "name" : "Total Number of Inventory Status Change Inventory Assignments",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_INVENTORY_STATUS_CHANGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORY_STATUS_CHANGE_LINES_F.INVASSIGNMENT_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Inventory Status Change Details.Inventory Status Change Line" ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_NS_INVENTORY_STATUS_CHANGE_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORY_STATUS_CHANGE_F" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Date NetSuite Gregorian Calendar.Day", "logicalLevel:Core.Dim - NetSuite Currency.Detail", "logicalLevel:Core.Dim - NetSuite Subsidiary.Detail", "logicalLevel:Core.Dim - NetSuite Inventory Status Change Status.Detail", "logicalLevel:Core.Dim - NetSuite Modified By User.Detail", "logicalLevel:Core.Dim - NetSuite Accounting Period.Detail", "logicalLevel:Core.Dim - NetSuite Location.Detail", "logicalLevel:Core.Dim - NetSuite Created By User.Detail", "logicalLevel:Core.Dim - NetSuite Inventory Status Change Details.Inventory Status Change Header", "logicalLevel:Core.Dim - NetSuite Fiscal Calendar.Fiscal Date" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORY_STATUS_CHANGE_F.SUBSIDIARY", "variable:NetSuite - List of Subsidiaries.NETSUITE_SUBSIDIARY_LIST" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_NS_INVENTORY_STATUS_CHANGE_LINES_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORY_STATUS_CHANGE_LINES_F" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Committed Inventory.Detail", "logicalLevel:Core.Dim - NetSuite Inventory Revised Status.Detail", "logicalLevel:Core.Dim - NetSuite Currency.Detail", "logicalLevel:Core.Dim - NetSuite Inventory Status Change Status.Detail", "logicalLevel:Core.Dim - NetSuite Subsidiary.Detail", "logicalLevel:Core.Dim - NetSuite Bin.Detail", "logicalLevel:Core.Dim - NetSuite Modified By User.Detail", "logicalLevel:Core.Dim - NetSuite Accounting Period.Detail", "logicalLevel:Core.Dim - NetSuite Location.Detail", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Detail", "logicalLevel:Core.Dim - NetSuite Created By User.Detail", "logicalLevel:Core.Dim - NetSuite Item.Detail", "logicalLevel:Core.Dim - NetSuite Inventory Number.Detail", "logicalLevel:Core.Dim - NetSuite Fiscal Calendar.Fiscal Date", "logicalLevel:Core.Dim - NetSuite Inventory Status Change Details.Inventory Status Change Line", "logicalLevel:Core.Dim - NetSuite Inventory Previous Status.Detail", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Merchandise Hierarchy Node", "logicalLevel:Core.Dim - Date NetSuite Gregorian Calendar.Day" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORY_STATUS_CHANGE_LINES_F.SUBSIDIARY", "variable:NetSuite - List of Subsidiaries.NETSUITE_SUBSIDIARY_LIST" ]
+      },
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date NetSuite Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Period",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Bin",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Committed Inventory",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Created By User",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Inventory Number",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Inventory Previous Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Inventory Reporting Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Inventory Revised Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Inventory Status Change Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Inventory Status Change Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Merchandise Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Modified By User",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Subsidiary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

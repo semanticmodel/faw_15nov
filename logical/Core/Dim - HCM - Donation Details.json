@@ -1,0 +1,76 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Donation Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Donation Entry Detail Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Transaction Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF_Donations",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF_Donations.PROCD_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Donation Entry Detail Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF_Donations",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF_Donations.ACCRUAL_ENTRY_DTL_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF_Donations",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF_Donations" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Donation Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'ORA_ANC_DONATION' AND %2 <> -(99999)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF_Donations.TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF_Donations.RECIPIENT_PLAN_ENRT_ID" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Donation Entry Detail Identifier" ],
+        "displayKey" : "Donation Entry Detail Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Donation Details",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "physicalTable" : {
+    "name" : "SEC_SECURE_BY_SERVICE_REQUEST_ACCESS_GRP",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT DISTINCT SH.OBJECT_ID AS SERVICE_REQUEST_ID,\r\n\r\n'Y' AS SECURITY_ENABLE_FLG\r\n\r\nFROM DW_CXS_OBJECT_SHARE_D SH,\r\n\r\nDW_CXS_ACCESS_GROUP_MEMBERS_D GRP\r\n\r\nWHERE\r\n\r\nGRP.ACCESS_GROUP_ID = SH.ACCESS_GROUP_ID\r\n\r\nAND GRP.TYPE_CODE = SH.ACCESS_GROUP_TYPE_CODE\r\n\r\nAND SH.OBJECT_TYPE  IN ('ServiceRequest')\r\n\r\nAND GRP.ACTIVE_FLAG='Y'\r\n\r\nAND GRP.PARTY_ID = VALUEOF(NQ_SESSION.USER_PARTY_ID)  "
+    } ],
+    "physicalColumns" : [ {
+      "name" : "SECURITY_ENABLE_FLG",
+      "dataType" : "VARCHAR",
+      "length" : 3,
+      "nullable" : false
+    }, {
+      "name" : "SERVICE_REQUEST_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "additionalKeys" : [ [ "SERVICE_REQUEST_ID" ] ]
+  }
+}

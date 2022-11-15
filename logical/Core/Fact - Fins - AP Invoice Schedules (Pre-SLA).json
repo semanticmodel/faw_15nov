@@ -1,0 +1,608 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Fins - AP Invoice Schedules (Pre-SLA)",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Accounts Payable", "Project:Oracle Analytics for Fusion Financials" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-----Non Monetary Metric-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Credit Memos Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Debit Memos Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DEBIT' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoices Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "No of Unpaid Invoices",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('N', 'P') AND %2 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoices On Hold Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') AND %2 = 'YES' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoices On Hold Count to Entered %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CAST ( CASE  WHEN %1 = 0 THEN 0.0d ELSE  CAST (%2 AS DOUBLE PRECISION ) /  CAST (%1 AS DOUBLE PRECISION ) * 100.0d END  AS DOUBLE PRECISION )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Invoices Count", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Invoices On Hold Count" ]
+        }
+      }
+    }, {
+      "name" : "Invoices On Hold Count to Unpaid %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CAST ( CASE  WHEN %1 = 0 THEN 0.0d ELSE  CAST (%2 AS DOUBLE PRECISION ) /  CAST (%1 AS DOUBLE PRECISION ) * 100.0d END  AS DOUBLE PRECISION )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).No of Unpaid Invoices", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Invoices On Hold Count" ]
+        }
+      }
+    }, {
+      "name" : "-----Ledger Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Avg Credit Memos Amount",
+      "description" : "This metric shows average credit memo amount processed for a period.",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Credit Memos Count", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Credit Memos Amount" ]
+        }
+      }
+    }, {
+      "name" : "Avg Debit Memos Amount",
+      "description" : "This metric shows average debit memo amount processed for a period.",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Debit Memos Count", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Debit Memos Amount" ]
+        }
+      }
+    }, {
+      "name" : "Avg Invoices Amount",
+      "description" : "This metric shows the average invoice amount by : (AP Invoice Amount / AP Invoice Count)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Invoices Count", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Invoices Amount" ]
+        }
+      }
+    }, {
+      "name" : "Credit Memos Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Credit Memos To Invoices Amount %",
+      "description" : "This metric computes the percentage of CR Memo Amount to the total Invoice Amount for a period ",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Invoices Amount", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Credit Memos Amount" ]
+        }
+      }
+    }, {
+      "name" : "Debit Memos Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DEBIT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Discount Offered Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.FIRST_DISCOUNT_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoices Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoices On Hold Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') AND %2 = 'YES' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unpaid Invoices On Hold Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('N', 'P') AND %2 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') AND %3 = 'YES' THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.REMAINING_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Reporting Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Avg Credit Memos Amount in Reporting Currency",
+      "description" : "This metric shows average credit memo amount processed for a period.",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Credit Memos Count", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Credit Memos Amount in Reporting Currency" ]
+        }
+      }
+    }, {
+      "name" : "Avg Debit Memos Amount in Reporting Currency",
+      "description" : "This metric shows average debit memo amount processed for a period.",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Debit Memos Count", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Debit Memos Amount in Reporting Currency" ]
+        }
+      }
+    }, {
+      "name" : "Avg Invoices Amount in Reporting Currency",
+      "description" : "This metric shows the average invoice amount by : (AP Invoice Amount / AP Invoice Count)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Invoices Count", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Invoices Amount in Reporting Currency" ]
+        }
+      }
+    }, {
+      "name" : "Credit Memos Amount in Reporting Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Credit Memos To Invoices Amount % in Reporting Currency",
+      "description" : "This metric computes the percentage of CR Memo Amount to the total Invoice Amount for a period ",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Invoices Amount in Reporting Currency", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Credit Memos Amount in Reporting Currency" ]
+        }
+      }
+    }, {
+      "name" : "Debit Memos Amount in Reporting Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DEBIT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Discount Offered Amount in Reporting Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.FIRST_DISCOUNT_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoices Amount in Reporting Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoices On Hold Amount in Reporting Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') AND %2 = 'YES' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unpaid Invoices On Hold Amount in Reporting Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('N', 'P') AND %2 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') AND %3 = 'YES' THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Avg Credit Memos Amount in Document Currency",
+      "description" : "This metric shows average credit memo amount processed for a period.",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Credit Memos Count", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Credit Memos Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Avg Debit Memos Amount in Document Currency",
+      "description" : "This metric shows average debit memo amount processed for a period.",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Debit Memos Count", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Debit Memos Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Avg Invoices Amount in Document Currency",
+      "description" : "This metric shows the average invoice amount by : (AP Invoice Amount / AP Invoice Count)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Invoices Count", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Invoices Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Credit Memos Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Credit Memos To Invoices Amount % in Document Currency",
+      "description" : "This metric computes the percentage of CR Memo Amount to the total Invoice Amount for a period ",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Invoices Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules (Pre-SLA).Credit Memos Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Debit Memos Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DEBIT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Discount Offered Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.FIRST_DISCOUNT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoices Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('STANDARD', 'AWT', 'QUICKMATCH', 'QUICKDEFAULT', 'PREPAYMENT', 'PAYMENT REQUEST', 'EXPENSE REPORT', 'INTEREST', 'INVOICE REQUEST', 'MIXED') THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AP_INVOICE_SCHEDULES_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AP Invoice Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - AP Invoice Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

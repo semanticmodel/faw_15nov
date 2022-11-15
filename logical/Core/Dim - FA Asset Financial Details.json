@@ -1,0 +1,400 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - FA Asset Financial Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Book Type Code", "Asset ID", "Transaction Header ID" ],
+    "logicalColumns" : [ {
+      "name" : "Book Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly.BOOK_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.BOOK_TYPE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Asset ID",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly.ASSET_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.ASSET_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Transaction Header ID",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly.TRANSACTION_HEADER_ID_IN" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.TRANSACTION_HEADER_ID_IN" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "\"-------- Financial Details --------\"",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Depreciation Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly.DEPRECIATE_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.DEPRECIATE_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Depreciation Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Depreciation Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YESNO_LKP_TL_FixedAsset.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly.DEPRECIATE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YESNO_LKP_TL_FixedAsset.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.DEPRECIATE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Low Value Asset Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly.LOW_VALUE_ASSET_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.LOW_VALUE_ASSET_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Low Value Asset",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Low Value Asset Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL_FixedAssets.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly.LOW_VALUE_ASSET_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL_FixedAssets.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.LOW_VALUE_ASSET_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Cash Generating Unit",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly.CASH_GENERATING_UNIT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.CASH_GENERATING_UNIT_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Depreciation Ceiling",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly.CEILING_TYPE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.CEILING_TYPE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Group Asset ID",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly.GROUP_ASSET_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.GROUP_ASSET_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Group Asset Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D_GroupAsset.ASSET_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D_GroupAsset.ASSET_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Group Asset Description Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D_GroupAsset.DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D_GroupAsset.DESCRIPTION" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Group Asset Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Group Asset Description Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_FA_ASSET_DESCRIPTION_LKP_TL.DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D_GroupAsset.DESCRIPTION", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_FA_ASSET_DESCRIPTION_LKP_TL.DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D_GroupAsset.DESCRIPTION", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Asset Fully Reserved Period",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN '~NOVALUE~' ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly.PERIOD_COUNTER_FULLY_RESERVED", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyReservedPeriod.PERIOD_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN '~NOVALUE~' ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.PERIOD_COUNTER_FULLY_RESERVED", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyReservedPeriod.PERIOD_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Asset Fully Retired Period",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN '~NOVALUE~' ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly.PERIOD_COUNTER_FULLY_RETIRED", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyRetiredPeriod.PERIOD_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_BOOKS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN '~NOVALUE~' ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.PERIOD_COUNTER_FULLY_RETIRED", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyRetiredPeriod.PERIOD_NAME" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_FA_BOOKS_D_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D_GroupAsset", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyReservedPeriod", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyRetiredPeriod" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyRetiredPeriod",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyReservedPeriod",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D_PromptOnly",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D_GroupAsset",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - FA Asset Financial Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_FA_BOOKS_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D_GroupAsset", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyReservedPeriod", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyRetiredPeriod" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyReservedPeriod",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D_GroupAsset",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyRetiredPeriod",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - FA Asset Financial Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Book Type Code", "Asset ID", "Transaction Header ID" ],
+        "displayKey" : "Book Type Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "FA Asset Financial Details",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

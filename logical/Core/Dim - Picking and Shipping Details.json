@@ -1,0 +1,996 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Picking and Shipping Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Shipment Line" ],
+    "logicalColumns" : [ {
+      "name" : "Lot",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_LOT_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "------------Order Details---------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Sales Order",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SALES_ORDER_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Picking and Shipping Details Detail"
+    }, {
+      "name" : "Order Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Order Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ORDER_TYPE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SALES_ORDER_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Order Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SALES_ORDER_TYPE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Fulfilment Line Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.FULFILL_LINE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Display Fulfilment Line Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.FULFILL_DISPLAY_LINE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Customer PO",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.FULFILL_LINE_CUSTOMER_PO_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Order Header Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SALES_ORDER_HEADER_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Order Fulfillment Line Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.FULFILL_LINE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requested Date Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Requested Date Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ORA_WSH_REQ_DATE_TYPE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_REQUESTED_DATE_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requested Date Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_REQUESTED_DATE_TYPE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "------------------Pick Release Details------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Pick Order Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Pick Order Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ORA_WSH_ORDER_LINE_TYPE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_ORDER_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Pick Order Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_ORDER_TYPE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Pick Wave",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.PICK_WAVE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Pick Slip",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.MATERIAL_TXN_PICK_SLIP_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Pick Line Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.MATERIAL_TXN_PICK_SLIP_LINE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "-----------------------Confirm Pick Slips Details------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Movement Request Creation Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.MOVEMENT_REQUEST_CREATION_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Movement Request Line",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.MOVEMENT_REQUEST_LINE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Movement Request",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.MOVEMENT_REQUEST_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "---------------------Shipment Details-------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Shipment",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Picking and Shipping Details Detail"
+    }, {
+      "name" : "Shipment Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Shipment Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_WSH_DELIVERY_STATUS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipment Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Initial Ship Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_INITIAL_SHIP_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Planned Delivery Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_PLANNED_DELIVERY_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Bill Of Lading",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_BILL_OF_LADING_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Waybill",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_WAYBILL" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "---------------------Shipment Line Details-----------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Shipment Line",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Picking and Shipping Details Detail"
+    }, {
+      "name" : "Shipment Line Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Shipment Line Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_WSH_PICK_STATUS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipment Line Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Packing Slip Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_PACKING_SLIP_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Packing Slip Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Shipment Packing Slip Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ORA_WSH_PACK_STATUS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_PACKING_SLIP_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipment Packing Slip Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_PACKING_SLIP_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Tare Weight",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1 - %2",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_GROSS_WEIGHT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_NET_WEIGHT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Net Weight",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_NET_WEIGHT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Gross Weight",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_GROSS_WEIGHT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Volume",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_VOLUME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Weight UOM",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Shipment Line Weight Uom Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_UNIT_OF_MEASURE_D_TL.UNIT_OF_MEASURE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_WEIGHT_UOM_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipment Line Weight Uom Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_WEIGHT_UOM_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Volume UOM",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Shipment Line Volume Uom Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_UNIT_OF_MEASURE_D_TL.UNIT_OF_MEASURE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_VOLUME_UOM_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipment Line Volume Uom Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_VOLUME_UOM_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipping Priority",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Shipment Priority Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_WSH_SHIPPING_PRIORITY_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_SHIPMENT_PRIORITY_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipment Priority Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_SHIPMENT_PRIORITY_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Lines Assigned To Shipment",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_ASSIGNMENT_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipment Line Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requested Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_REQUESTED_QUANTITY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Staged Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_STAGED_QUANTITY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipped Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('C', 'I') THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_SHIPPED_QUANTITY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "---------------Carrier Details--------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Tracking Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_TRACKING_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Loading Sequence",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_LOADING_SEQUENCE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "FOB",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "FOB Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_FOB_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_FOB_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "FOB Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_FOB_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Freight Terms",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Freight Terms Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_WSH_FREIGHT_CHARGE_TERMS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_FREIGHT_TERMS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Freight Terms Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_FREIGHT_TERMS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipping Method",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Shipment Method Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_WSH_MODE_OF_TRANSPORT_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_MODE_OF_TRANSPORT_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipment Method Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_MODE_OF_TRANSPORT_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipment Set",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_SHIP_SET_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "----------------DFF Keys-------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "WSH_DELIVERY_DETAILS_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_WSH_DELIVERY_DETAILS_DFF_CF_DW_WSH_DELIVERY_DETAILS_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "----------------Security Object -------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Security Context Code - Inv Org",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_Picking_Shipping.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Inv BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_Picking_Shipping.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_WSH_DELIVERY_DETAILS_DFF_CF_DW_WSH_DELIVERY_DETAILS_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_Picking_Shipping", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_Picking_Shipping" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_WSH_DELIVERY_DETAILS_DFF_CF_DW_WSH_DELIVERY_DETAILS_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_Picking_Shipping",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_Picking_Shipping",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Picking and Shipping Details.Dim - Picking and Shipping Details Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - Picking and Shipping Details Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - Picking and Shipping Details Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - Picking and Shipping Details Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Shipment Line" ],
+        "displayKey" : "Shipment Line"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Picking and Shipping Details",
+        "levels" : [ "Dim - Picking and Shipping Details Total", "Dim - Picking and Shipping Details Detail" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_SCM_INV_INVENTORY_ORG_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_ORG_TRANSACTIONS_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Picking and Shipping Details.Security Context Code - Inv Org" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_SCM_INV_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Picking and Shipping Details.Security Context Code - Inv BU" ]
+      }
+    } ]
+  }
+}

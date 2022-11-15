@@ -1,0 +1,52 @@
+{
+  "logicalTable" : {
+    "name" : "Z - Container for Unexposed Procurement Physical Objects",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Procurement Management", "Project:Fusion Analytics Warehouse - Purchase Agreements", "Project:Fusion Analytics Warehouse - Purchase Orders", "Project:Fusion Analytics Warehouse - Purchase Receipts", "Project:Fusion Analytics Warehouse - Purchasing", "Project:Fusion Analytics Warehouse - Requisition" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "PK_ID",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.INVENTORY_ITEM_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.PO_DISTRIBUTION_ID" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_INVOICE_SPEND_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_PURCHASE_ORDER_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

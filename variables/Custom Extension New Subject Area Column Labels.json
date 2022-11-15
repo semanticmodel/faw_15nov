@@ -1,0 +1,16 @@
+{
+  "initBlock" : {
+    "name" : "Custom Extension New Subject Area Column Labels",
+    "tags" : [ "Project:NetSuite Analytics Warehouse - NetSuite Manufacturing", "Project:Oracle Analytics for Fusion Common" ],
+    "type" : "SESSION",
+    "connectionPool" : "connectionPool:Oracle_Data_Warehouse.Oracle_Data_Warehouse_Repository_Initblocks_Connection_Pool",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT replace(A.LOGICAL_TABLE,' ','_')||'_'||replace(A.LOGICAL_COLUMN,' ','_'),MAX(MSG_TEXT) FROM CONTENT_RPD_PRESENTATION_COLUMN_DETAILS A,MLS_RPD_MSG_VL B,CONTENT_RPD_LOGICAL_COL_MAP_DETAILS D, CONTENT_RPD_PHYSICAL_TABLE_DETAILS E,DW_DMD_EXT_TABLE_JOIN_INFO F\r\nWHERE REPLACE(REPLACE(A.CUSTOM_NAME,'VALUEOF(NQ_SESSION.',''),')','')=B.MSG_VAR_NAME\r\nAND A.LOGICAL_TABLE=D.LOGICAL_TABLE AND A.LOGICAL_COLUMN=D.LOGICAL_COLUMN\r\nAND D.PHYSICAL_TABLE=E.PHYSICAL_TABLE\r\nAND UPPER(E.PARENT_TABLE)=UPPER(F.LEFT_TABLE)\r\nAND B.LANGUAGE_CODE='VALUEOF(NQ_SESSION.USER_LANG_CODE)'\r\nGROUP BY replace(A.LOGICAL_TABLE,' ','_')||'_'||replace(A.LOGICAL_COLUMN,' ','_')\r\nUNION\r\nSELECT replace(A.LOGICAL_TABLE,' ','_')||'_'||replace(A.LOGICAL_COLUMN,' ','_'),MAX(MSG_TEXT) FROM CONTENT_RPD_PRESENTATION_COLUMN_DETAILS A,MLS_RPD_MSG_VL B,CONTENT_RPD_LOGICAL_COL_MAP_DETAILS D, CONTENT_RPD_PHYSICAL_TABLE_DETAILS E,DW_DMD_EXT_TABLE_JOIN_INFO F\r\nWHERE REPLACE(REPLACE(A.CUSTOM_NAME,'VALUEOF(NQ_SESSION.',''),')','')=B.MSG_VAR_NAME\r\nAND A.LOGICAL_TABLE=D.LOGICAL_TABLE AND A.LOGICAL_COLUMN=D.LOGICAL_COLUMN\r\nAND D.PHYSICAL_TABLE=E.PHYSICAL_TABLE\r\nAND UPPER(E.PARENT_TABLE)=UPPER(F.RIGHT_TABLE)\r\nAND B.LANGUAGE_CODE='VALUEOF(NQ_SESSION.USER_LANG_CODE)'\r\nGROUP BY replace(A.LOGICAL_TABLE,' ','_')||'_'||replace(A.LOGICAL_COLUMN,' ','_')"
+    } ],
+    "disable" : false,
+    "queryReturnsVariableNamesAndValues" : true,
+    "allowDeferredExecution" : false,
+    "cacheQueryResult" : true
+  }
+}

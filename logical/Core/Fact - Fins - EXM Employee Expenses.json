@@ -1,0 +1,885 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Fins - EXM Employee Expenses",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Expense Management", "Project:Oracle Analytics for Fusion Financials" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-----Internal Calculation Metric---------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Approval Days",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.REPORT_SUBMIT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.FINAL_APPROVAL_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - EXM Employee Expenses Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - EXM Employee Expenses Line",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - EXM Employee Expenses Report",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Filing Days",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.CREATION_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.REPORT_SUBMIT_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - EXM Employee Expenses Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - EXM Employee Expenses Line",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - EXM Employee Expenses Report",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Cash Expense Days",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('PAID', 'PARTIAL_PAID') AND %2 = 'CASH' THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %3, %4) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_SOURCE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.REPORT_SUBMIT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.CASH_EXPENSE_PAID_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - EXM Employee Expenses Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - EXM Employee Expenses Line",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - EXM Employee Expenses Report",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Manual Audit Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> 'AUTO_APPROVED' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.AUDIT_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_REPORT_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Auto Audit Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AUTO_APPROVED' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.AUDIT_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_REPORT_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Days Late",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.TRANSACTION_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.REPORT_SUBMIT_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - EXM Employee Expenses Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - EXM Employee Expenses Line",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - EXM Employee Expenses Report",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Cash Expense Lines Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CASH' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_SOURCE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Non-Monetary Metric---------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Expense Reports Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_REPORT_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Expense Lines Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Expense Distribution Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_DIST_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Expense Approval Cycle Time (Days)",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Expense Reports Count", "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Total Approval Days" ]
+        }
+      }
+    }, {
+      "name" : "Expense Filing Cycle Time (Days)",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Expense Reports Count", "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Total Filing Days" ]
+        }
+      }
+    }, {
+      "name" : "Cash Expense Reimbursement Cycle Time (Days)",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Cash Expense Lines Count", "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Total Cash Expense Days" ]
+        }
+      }
+    }, {
+      "name" : "Manual Audit Percentage",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100.0 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Expense Reports Count", "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Manual Audit Count" ]
+        }
+      }
+    }, {
+      "name" : "Auto Audit Percentage",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100.0 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Expense Reports Count", "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Auto Audit Count" ]
+        }
+      }
+    }, {
+      "name" : "Average Days Late",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Expense Reports Count", "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Days Late" ]
+        }
+      }
+    }, {
+      "name" : "-----Ledger Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Expense Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.LEDGER_EXPENSE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Credit Card Expense Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT_CARD' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_SOURCE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.LEDGER_EXPENSE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Cash Expense Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CASH' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_SOURCE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.LEDGER_EXPENSE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Expense Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Expense Reports Count", "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Total Expense Amount" ]
+        }
+      }
+    }, {
+      "name" : "-----Analytics Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Expense Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.GLOBAL_EXPENSE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Credit Card Expense Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT_CARD' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_SOURCE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.GLOBAL_EXPENSE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Cash Expense Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CASH' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_SOURCE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.GLOBAL_EXPENSE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Expense Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Expense Reports Count", "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Total Expense Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "-----Reimbursement Currency-------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Expense Amount in Reimbursement Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Credit Card Expense Amount in Reimbursement Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT_CARD' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_SOURCE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Cash Expense Amount in Reimbursement Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CASH' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_SOURCE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Expense Amount in Reimbursement Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Expense Reports Count", "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Total Expense Amount in Reimbursement Currency" ]
+        }
+      }
+    }, {
+      "name" : "Audit Adjustment Amount in Reimbursement Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1 - %2",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.ORIG_REIMBURSABLE_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Expense Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.RECEIPT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Credit Card Expense Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT_CARD' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_SOURCE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.RECEIPT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Cash Expense Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CASH' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_SOURCE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.RECEIPT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Expense Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Expense Reports Count", "logicalColumn:Core.Fact - Fins - EXM Employee Expenses.Total Expense Amount in Document Currency" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - GL Segment7.Detail", "logicalLevel:Core.Dim - GL Segment3.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Cost Center.Detail", "logicalLevel:Core.Dim - GL Segment5.Detail", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment9.Detail", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment4.Detail", "logicalLevel:Core.Dim - GL Segment6.Detail", "logicalLevel:Core.Dim - Manager.Details", "logicalLevel:Core.Dim - GL Segment1.Detail", "logicalLevel:Core.Dim - Natural Account Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Detail", "logicalLevel:Core.Dim - Assignment Details.Details", "logicalLevel:Core.Dim - Legal Employer.Detail", "logicalLevel:Core.Dim - GL Segment10.Detail", "logicalLevel:Core.Dim - Department.Detail", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Detail", "logicalLevel:Core.Dim - Job.Details", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment8.Detail", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Detail", "logicalLevel:Core.Dim - EXM Employee Expenses Details.Detail", "logicalLevel:Core.Dim - Cost Center Hierarchy.Detail", "logicalLevel:Core.Dim - GL Account.Detail", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Detail", "logicalLevel:Core.Dim - Ledger Set.Detail", "logicalLevel:Core.Dim - Report Creation Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Report Approval Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Manager Hierarchy.Detail", "logicalLevel:Core.Dim - Report Submit Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Worker.Details", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Report Expense Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Detail", "logicalLevel:Core.Dim - EXM Employee Expenses Line.Detail", "logicalLevel:Core.Dim - GL Segment2.Detail", "logicalLevel:Core.Dim - Balancing Segment.Detail", "logicalLevel:Core.Dim - Payables Invoicing Business Unit.Detail", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Detail", "logicalLevel:Core.Dim - EXM Employee Expenses Report.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Detail", "logicalLevel:Core.Dim - Natural Account.Detail", "logicalLevel:Core.Dim - EXM Employee Expense Types.Detail", "logicalLevel:Core.Dim - EXM Employee Expense Templates.Detail", "logicalLevel:Core.Dim - Report Transaction Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Expenditure Organization.Expenditure Organization Detail", "logicalLevel:Core.Dim - Task.Task Detail", "logicalLevel:Core.Dim - Project Costing Details.Detail", "logicalLevel:Core.Dim - Project.Project Detail", "logicalLevel:Core.Dim - Expenditure Type.Expenditure Type Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_FIN_AP_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "AP_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_AP_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Payables Invoicing Business Unit.Security Context Code - AP Invoicing BU" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Assignment Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Balancing Segment Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Balancing Segment",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Center Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Center",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Department",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - EXM Employee Expense Templates",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - EXM Employee Expense Types",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - EXM Employee Expenses Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - EXM Employee Expenses Line",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - EXM Employee Expenses Report",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Expenditure Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Expenditure Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment1 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment1",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment10 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment10",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment2 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment2",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment3 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment3",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment4 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment4",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment5 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment5",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment6 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment6",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment7 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment7",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment8 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment8",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment9 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment9",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger Set",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Employer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Manager Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Manager",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Natural Account Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Natural Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Payables Invoicing Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Costing Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Report Approval Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Report Creation Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Report Expense Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Report Submit Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Report Transaction Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Task",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Worker",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

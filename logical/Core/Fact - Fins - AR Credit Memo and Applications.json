@@ -1,0 +1,534 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Fins - AR Credit Memo and Applications",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Accounts Receivable", "Project:Oracle Analytics for Fusion Financials" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-----Non-Monetary Metric-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Credit Memo Applications Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_CREDITMEMO_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT MEMO REVERSAL' AND %2 IN ('APP') OR %1 = 'CREDIT MEMO REVERSAL' AND %2 IN ('ACTIVITY') THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.TRANSACTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.CREDITMEMO_APPL_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.RECEIVABLE_APPLICATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_CREDITMEMO_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT MEMO' AND %2 IN ('APP') OR %1 = 'CREDIT MEMO REVERSAL' AND %2 IN ('ACTIVITY') THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.TRANSACTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.CREDITMEMO_APPL_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.RECEIVABLE_APPLICATION_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - AR Transaction Class.Total", "logicalLevel:Core.Dim - AR Credit Memo Application Account.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - AR Creation Date Fiscal Calendar.Total" ]
+      }
+    }, {
+      "name" : "-----Ledger Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Application Distribution Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_CREDITMEMO_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Credit Memo Applications Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_CREDITMEMO_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT MEMO REVERSAL' AND %2 IN ('APP') OR %1 = 'CREDIT MEMO REVERSAL' AND %2 IN ('ACTIVITY') THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.TRANSACTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.CREDITMEMO_APPL_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_CREDITMEMO_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT MEMO' AND %2 IN ('APP') OR %1 = 'CREDIT MEMO REVERSAL' AND %2 IN ('ACTIVITY') THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.TRANSACTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.CREDITMEMO_APPL_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - AR Transaction Class.Total", "logicalLevel:Core.Dim - AR Credit Memo Application Account.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - AR Creation Date Fiscal Calendar.Total" ]
+      }
+    }, {
+      "name" : "Credit Memo Amount to Invoices %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Invoice Amount", "logicalColumn:Core.Fact - Fins - AR Credit Memo and Applications.Credit Memo Applications Amount" ]
+        }
+      }
+    }, {
+      "name" : "-----Analytics Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Application Distribution Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_CREDITMEMO_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Credit Memo Applications Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_CREDITMEMO_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT MEMO REVERSAL' AND %2 IN ('APP') OR %1 = 'CREDIT MEMO REVERSAL' AND %2 IN ('ACTIVITY') THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.TRANSACTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.CREDITMEMO_APPL_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_CREDITMEMO_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT MEMO' AND %2 IN ('APP') OR %1 = 'CREDIT MEMO REVERSAL' AND %2 IN ('ACTIVITY') THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.TRANSACTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.CREDITMEMO_APPL_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - AR Transaction Class.Total", "logicalLevel:Core.Dim - AR Credit Memo Application Account.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - AR Creation Date Fiscal Calendar.Total" ]
+      }
+    }, {
+      "name" : "Credit Memo Amount to Invoices % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Invoice Amount in Analytics Currency", "logicalColumn:Core.Fact - Fins - AR Credit Memo and Applications.Credit Memo Applications Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "-----Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Application Distribution Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_CREDITMEMO_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Credit Memo Applications Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_CREDITMEMO_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT MEMO REVERSAL' AND %2 IN ('APP') OR %1 = 'CREDIT MEMO REVERSAL' AND %2 IN ('ACTIVITY') THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.TRANSACTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.CREDITMEMO_APPL_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_CREDITMEMO_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CREDIT MEMO' AND %2 IN ('APP') OR %1 = 'CREDIT MEMO REVERSAL' AND %2 IN ('ACTIVITY') THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.TRANSACTION_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.CREDITMEMO_APPL_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - AR Transaction Class.Total", "logicalLevel:Core.Dim - AR Credit Memo Application Account.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - AR Creation Date Fiscal Calendar.Total" ]
+      }
+    }, {
+      "name" : "Credit Memo Amount to Invoices % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Invoice Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AR Credit Memo and Applications.Credit Memo Applications Amount in Document Currency" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AR_SLA_CREDITMEMO_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Natural Account Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Detail", "logicalLevel:Core.Dim - Customer Ship To Contact.Detail", "logicalLevel:Core.Dim - Customer Account.Detail", "logicalLevel:Core.Dim - AR Payment Terms.Detail", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Detail", "logicalLevel:Core.Dim - Ledger Set.Detail", "logicalLevel:Core.Dim - Party.Detail", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Detail", "logicalLevel:Core.Dim - Customer Sold To Location.Detail", "logicalLevel:Core.Dim - GL Segment1.Detail", "logicalLevel:Core.Dim - Customer Ship To Location.Detail", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment3.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - GL Segment9.Detail", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Credit Memo Application Created By.Detail", "logicalLevel:Core.Dim - GL Segment4.Detail", "logicalLevel:Core.Dim - SLA Distribution Details.Detail", "logicalLevel:Core.Dim - AR Credit Memo Application Accounting Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - AR Transaction Due Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Balancing Segment.Detail", "logicalLevel:Core.Dim - AR Transaction Type.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Customer Ship To.Dim - Customer Ship To Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Customer Bill To Contact.Detail", "logicalLevel:Core.Dim - AR Transaction Created By.Detail", "logicalLevel:Core.Dim - GL Account.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - AR Transaction Details.Detail", "logicalLevel:Core.Dim - AR Transaction Source.Detail", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Credit Memo Application Account.Detail", "logicalLevel:Core.Dim - Salesperson.Detail", "logicalLevel:Core.Dim - GL Segment6.Detail", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Transaction Type Applied.Detail", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Billing Business Unit.Detail", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Credit Memo Application Details.Detail", "logicalLevel:Core.Dim - Created By.Detail", "logicalLevel:Core.Dim - Customer.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - AR Credit Memo Applications Status.Detail", "logicalLevel:Core.Dim - Customer Bill To Location.Detail", "logicalLevel:Core.Dim - Cost Center Hierarchy.Detail", "logicalLevel:Core.Dim - AR Paying Customer Account.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - GL Segment2.Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail", "logicalLevel:Core.Dim - GL Segment5.Detail", "logicalLevel:Core.Dim - Cost Center.Detail", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - AR Transaction Source Applied.Detail", "logicalLevel:Core.Dim - GL Segment7.Detail", "logicalLevel:Core.Dim - GL Segment10.Detail", "logicalLevel:Core.Dim - Natural Account.Detail", "logicalLevel:Core.Dim - GL Segment8.Detail", "logicalLevel:Core.Dim - AR Paying Customer.Detail", "logicalLevel:Core.Dim - AR Paying Customer Location.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 <> 'EXCHANGE_GAIN_LOSS'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF.ACCOUNTING_CLASS_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AR_CREDITMEMO_CF",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_CREDITMEMO_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment3.Detail", "logicalLevel:Core.Dim - AR Credit Memo Application Accounting Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Customer Ship To Contact.Detail", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - GL Segment8.Detail", "logicalLevel:Core.Dim - Cost Center.Detail", "logicalLevel:Core.Dim - GL Segment5.Detail", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Detail", "logicalLevel:Core.Dim - Cost Center Hierarchy.Detail", "logicalLevel:Core.Dim - Natural Account Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Detail", "logicalLevel:Core.Dim - Customer Bill To Contact.Detail", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Detail", "logicalLevel:Core.Dim - Natural Account.Detail", "logicalLevel:Core.Dim - GL Segment6.Detail", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment7.Detail", "logicalLevel:Core.Dim - AR Transaction Due Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Transaction Type.Detail", "logicalLevel:Core.Dim - GL Segment9.Detail", "logicalLevel:Core.Dim - Invoice Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment1.Detail", "logicalLevel:Core.Dim - GL Segment4.Detail", "logicalLevel:Core.Dim - Created By.Detail", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment10.Detail", "logicalLevel:Core.Dim - AR Billing Business Unit.Detail", "logicalLevel:Core.Dim - AR Payment Terms.Detail", "logicalLevel:Core.Dim - AR Credit Memo Application Details.Detail", "logicalLevel:Core.Dim - AR Credit Memo Applications Status.Detail", "logicalLevel:Core.Dim - Customer.Detail", "logicalLevel:Core.Dim - Customer Bill To Location.Detail", "logicalLevel:Core.Dim - GL Account.Detail", "logicalLevel:Core.Dim - Customer Account.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Customer Ship To Location.Detail", "logicalLevel:Core.Dim - Customer Sold To Location.Detail", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Detail", "logicalLevel:Core.Dim - Balancing Segment.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment2.Detail", "logicalLevel:Core.Dim - Ledger Set.Detail", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Detail", "logicalLevel:Core.Dim - Currency.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_FIN_AR_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "AR_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_AR_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - AR Credit Memo Application Details.Security Context Code - AR Billing BU" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - AR Application Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Billing Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Credit Memo Application Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Credit Memo Application Accounting Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Credit Memo Application Created By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Credit Memo Application Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Credit Memo Applications Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Paying Customer Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Paying Customer Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Paying Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Payment Terms",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Created By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Due Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Source Applied",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Source",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Type Applied",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Balancing Segment Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Balancing Segment",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Center Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Center",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Created By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Account Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Ship To Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Ship To Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Ship To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment1 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment1",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment10 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment10",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment2 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment2",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment3 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment3",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment4 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment4",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment5 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment5",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment6 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment6",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment7 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment7",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment8 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment8",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment9 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment9",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger Set",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Natural Account Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Natural Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Party",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - SLA Distribution Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Salesperson",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

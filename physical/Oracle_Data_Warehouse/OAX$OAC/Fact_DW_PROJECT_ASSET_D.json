@@ -1,0 +1,91 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_PROJECT_ASSET_D",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PROJECT_ASSET_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_FactProjAssetAssignedTo",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND  CURRENT_DATE  > %3 AND  CURRENT_DATE  < %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_FactProjAssetAssignedTo.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_ASSET_D.ASSIGNED_TO_PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_FactProjAssetAssignedTo.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_FactProjAssetAssignedTo.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ASSET_ASSIGNMENT_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ASSET_ASSIGNMENT_D.PROJECT_ASSET_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_ASSET_D.PROJECT_ASSET_ID"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ASSET_D_FactProjParentAsset",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_ASSET_D.PARENT_ASSET_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ASSET_D_FactProjParentAsset.PROJECT_ASSET_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ASSET_GRP_LEVEL_TYPE_PrjAsset",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_ASSET_D.PROJECT_ASSET_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ASSET_GRP_LEVEL_TYPE_PrjAsset.PROJECT_ASSET_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_CAPITAL_EVENT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_ASSET_D.CAPITAL_EVENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_CAPITAL_EVENT_D.CAPITAL_EVENT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_ASSET_D.PROJECT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_D.PROJECT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_D_PrjAsset",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_ASSET_D.PROJECT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_D_PrjAsset.PROJECT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_PROJECT_MANAGER_PrjAssetFact",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_ASSET_D.PROJECT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_PROJECT_MANAGER_PrjAssetFact.PROJECT_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "PROJECT_ASSET_ID"
+      ]
+    ]
+  }
+}

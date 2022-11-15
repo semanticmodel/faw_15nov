@@ -1,0 +1,2185 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - CX - Subscription Historical Trend",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Customer Experience Subscription Historical Trend" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-----Period Start-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "# of Active Subscriptions - Period Start",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart.STATUS_CODE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Active Customers - Period Start",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart.PRIMARY_PARTY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "countDistinctOverrides" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart",
+          "rule" : "COUNT_DISTINCT"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Period Start Analytics Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "Active MRR - Period Start in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Product Net Price (TCV) - Period Start in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate.GLOBAL_CURRENCY_PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart.GLOBAL_CURRENCY_PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart.GLOBAL_CURRENCY_PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart.GLOBAL_CURRENCY_PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart.GLOBAL_CURRENCY_PRODUCT_NET_PRICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Revenue per Customer - Period Start in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.# of Active Customers - Period Start", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period Start in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "-----Period Start Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "Active MRR - Period Start in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart.MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Product Net Price (TCV) - Period Start in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate.PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart.PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart.PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart.PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart.PRODUCT_NET_PRICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Revenue per Customer - Period Start in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.# of Active Customers - Period Start", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period Start in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "-----Period End-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "# of Active Subscriptions - Period End",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Active Customers - Period End",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.PRIMARY_PARTY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "countDistinctOverrides" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "rule" : "COUNT_DISTINCT"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Period End Analytics Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "Active MRR - Period End in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Product Net Price (TCV) - Period End in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.GLOBAL_CURRENCY_PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.GLOBAL_CURRENCY_PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.GLOBAL_CURRENCY_PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.GLOBAL_CURRENCY_PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.GLOBAL_CURRENCY_PRODUCT_NET_PRICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Revenue per Customer - Period End in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.# of Active Customers - Period End", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period End in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "-----Period End Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "Active MRR - Period End in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Product Net Price (TCV) - Period End in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.PRODUCT_NET_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_ACTIVE' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.PRODUCT_NET_PRICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Revenue per Customer - Period End in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.# of Active Customers - Period End", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period End in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "-----Variance-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "Change in # of Active Subscriptions",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.# of Active Subscriptions - Period End", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.# of Active Subscriptions - Period Start" ]
+        }
+      }
+    }, {
+      "name" : "Change in # of Active Customers",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.# of Active Customers - Period End", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.# of Active Customers - Period Start" ]
+        }
+      }
+    }, {
+      "name" : "Change in # of Active Customers %",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE (%2 - %1) / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.# of Active Customers - Period Start", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.# of Active Customers - Period End" ]
+        }
+      }
+    }, {
+      "name" : "-----Variance Analytics Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "Change in Product Net Price in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Product Net Price (TCV) - Period End in Analytics Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Product Net Price (TCV) - Period Start in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Change in Active MRR in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period End in Analytics Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period Start in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Change in Average Revenue per Customer in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Average Revenue per Customer - Period End in Analytics Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Average Revenue per Customer - Period Start in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Change in Active MRR % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE (%2 - %1) / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period Start in Analytics Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period End in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Change in Product Net Price % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE (%2 - %1) / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Product Net Price (TCV) - Period Start in Analytics Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Product Net Price (TCV) - Period End in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Change in Average Revenue per Customer % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE (%2 - %1) / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Average Revenue per Customer - Period Start in Analytics Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Average Revenue per Customer - Period End in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "-----Variance Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "Change in Product Net Price in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Product Net Price (TCV) - Period End in Document Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Product Net Price (TCV) - Period Start in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Change in Active MRR in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period End in Document Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period Start in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Change in Average Revenue per Customer in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Average Revenue per Customer - Period End in Document Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Average Revenue per Customer - Period Start in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Change in Active MRR % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE (%2 - %1) / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period Start in Document Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period End in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Change in Product Net Price % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE (%2 - %1) / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Product Net Price (TCV) - Period Start in Document Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Product Net Price (TCV) - Period End in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Change in Average Revenue per Customer % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE (%2 - %1) / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Average Revenue per Customer - Period Start in Document Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Average Revenue per Customer - Period End in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "-----Parent Folder-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "# of New Active Subscriptions",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) AND %2 = %3 AND  NOT %4 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) AND %2 = %3 AND  NOT %4 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) AND %2 BETWEEN %3 AND %4 AND  NOT %5 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) AND %2 BETWEEN %3 AND %4 AND  NOT %5 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) AND %2 BETWEEN %3 AND %4 AND  NOT %5 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Renewed Active Subscriptions",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = %3 AND %4 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = %3 AND %4 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 BETWEEN %3 AND %4 AND %5 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 BETWEEN %3 AND %4 AND %5 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 BETWEEN %3 AND %4 AND %5 = 'ORA_ACTIVE' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Terminated Subscriptions",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.TERMINATED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.TERMINATED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.TERMINATED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.TERMINATED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.TERMINATED_FLAG" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of New Customers",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = %2 THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.CUSTOMER_FIRST_SUBSCRIPTION_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = %2 THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.CUSTOMER_FIRST_SUBSCRIPTION_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.CUSTOMER_FIRST_SUBSCRIPTION_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.CUSTOMER_FIRST_SUBSCRIPTION_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.CUSTOMER_FIRST_SUBSCRIPTION_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.PRIMARY_PARTY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "countDistinctOverrides" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "rule" : "COUNT_DISTINCT"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Churned Customers",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.# of Existing Customers - Internal", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.# of Retained Customers - Internal" ]
+        }
+      }
+    }, {
+      "name" : "Customers Churn Rate %",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.# of Active Customers - Period Start", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.# of Churned Customers" ]
+        }
+      }
+    }, {
+      "name" : "-----Parent Folder Analytics Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "MRR Due for Renewal in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 = %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.DUE_RENEWAL_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 = %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.DUE_RENEWAL_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 BETWEEN %3 AND %4 THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.DUE_RENEWAL_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 BETWEEN %3 AND %4 THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.DUE_RENEWAL_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 BETWEEN %3 AND %4 THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.DUE_RENEWAL_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "New Active MRR In Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = %2 AND %3 = -(99999) AND  NOT %4 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = %2 AND %3 = -(99999) AND  NOT %4 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 AND %4 = -(99999) AND  NOT %5 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 AND %4 = -(99999) AND  NOT %5 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 AND %4 = -(99999) AND  NOT %5 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Expansion MRR in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 > %4 AND %5 = %6 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.GLOBAL_CURRENCY_SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 > %4 AND %5 = %6 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.GLOBAL_CURRENCY_SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 > %4 AND %5 BETWEEN %6 AND %7 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.GLOBAL_CURRENCY_SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 > %4 AND %5 BETWEEN %6 AND %7 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.GLOBAL_CURRENCY_SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 > %4 AND %5 BETWEEN %6 AND %7 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.GLOBAL_CURRENCY_SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Contraction MRR in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 < %4 AND %5 = %6 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.GLOBAL_CURRENCY_SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 < %4 AND %5 = %6 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.GLOBAL_CURRENCY_SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 < %4 AND %5 BETWEEN %6 AND %7 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.GLOBAL_CURRENCY_SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 < %4 AND %5 BETWEEN %6 AND %7 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.GLOBAL_CURRENCY_SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 < %4 AND %5 BETWEEN %6 AND %7 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.GLOBAL_CURRENCY_SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Activated Renewal MRR in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = %3 AND %4 = 'ORA_ACTIVE' THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = %3 AND %4 = 'ORA_ACTIVE' THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 BETWEEN %3 AND %4 AND %5 = 'ORA_ACTIVE' THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 BETWEEN %3 AND %4 AND %5 = 'ORA_ACTIVE' THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 BETWEEN %3 AND %4 AND %5 = 'ORA_ACTIVE' THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Churned Renewal MRR in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = 'ORA_CANCELED' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = 'ORA_CANCELED' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = 'ORA_CANCELED' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = 'ORA_CANCELED' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = 'ORA_CANCELED' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Lapsed Renewal MRR in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_EXPIRED' AND %2 = %3 AND %4 = 'Y' THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_EXPIRED' AND %2 = %3 AND %4 = 'Y' THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_EXPIRED' AND %2 BETWEEN %3 AND %4 AND %5 = 'Y' THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_EXPIRED' AND %2 BETWEEN %3 AND %4 AND %5 = 'Y' THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_EXPIRED' AND %2 BETWEEN %3 AND %4 AND %5 = 'Y' THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Termination MRR in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.GLOBAL_CURRNCY_MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Absolute MRR Churn in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 + %2 + %3",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Lapsed Renewal MRR in Analytics Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Termination MRR in Analytics Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Churned Renewal MRR in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "MRR Churn Rate % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE (%2 + %3 + %4) / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period Start in Analytics Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Lapsed Renewal MRR in Analytics Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Termination MRR in Analytics Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Churned Renewal MRR in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Net Revenue Retention Rate % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period Start in Analytics Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period End in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "MRR Renewal Rate % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.MRR Due for Renewal in Analytics Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Activated Renewal MRR in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "MRR Lapsed Renewal % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period Start in Analytics Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Lapsed Renewal MRR in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "-----Parent Folder Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "MRR Due for Renewal In Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 = %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.DUE_RENEWAL_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 = %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.DUE_RENEWAL_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 BETWEEN %3 AND %4 THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.DUE_RENEWAL_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 BETWEEN %3 AND %4 THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.DUE_RENEWAL_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 BETWEEN %3 AND %4 THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.DUE_RENEWAL_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "New Active MRR In Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = %2 AND %3 = -(99999) AND  NOT %4 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = %2 AND %3 = -(99999) AND  NOT %4 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 AND %4 = -(99999) AND  NOT %5 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 AND %4 = -(99999) AND  NOT %5 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 AND %4 = -(99999) AND  NOT %5 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.SOURCE_SUBSCRIPTION_PRODUCT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Expansion MRR in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 > %4 AND %5 = %6 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 > %4 AND %5 = %6 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 > %4 AND %5 BETWEEN %6 AND %7 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 > %4 AND %5 BETWEEN %6 AND %7 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 > %4 AND %5 BETWEEN %6 AND %7 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Contraction MRR in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 < %4 AND %5 = %6 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 < %4 AND %5 = %6 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 < %4 AND %5 BETWEEN %6 AND %7 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 < %4 AND %5 BETWEEN %6 AND %7 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'AMEND' AND %2 <> 'ORA_DRAFT' AND %3 < %4 AND %5 BETWEEN %6 AND %7 THEN %3 - %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.MONTHLY_RECURRING_REVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.SOURCE_SUBSCRIPTION_MRR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Activated Renewal MRR in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = %3 AND %4 = 'ORA_ACTIVE' THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = %3 AND %4 = 'ORA_ACTIVE' THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 BETWEEN %3 AND %4 AND %5 = 'ORA_ACTIVE' THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 BETWEEN %3 AND %4 AND %5 = 'ORA_ACTIVE' THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 BETWEEN %3 AND %4 AND %5 = 'ORA_ACTIVE' THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Churned Renewal MRR in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = 'ORA_CANCELED' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = 'ORA_CANCELED' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = 'ORA_CANCELED' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = 'ORA_CANCELED' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RENEW' AND %2 = 'ORA_CANCELED' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.CREATION_OPERATION_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Lapsed Renewal MRR in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_EXPIRED' AND %2 = %3 AND %4 = 'Y' THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_EXPIRED' AND %2 = %3 AND %4 = 'Y' THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_EXPIRED' AND %2 BETWEEN %3 AND %4 AND %5 = 'Y' THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_EXPIRED' AND %2 BETWEEN %3 AND %4 AND %5 = 'Y' THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_EXPIRED' AND %2 BETWEEN %3 AND %4 AND %5 = 'Y' THEN %6 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd.PERIOD_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Termination MRR in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Absolute MRR Churn in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 + %2 + %3",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Lapsed Renewal MRR in Document Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Termination MRR in Document Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Churned Renewal MRR in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "MRR Churn Rate % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE (%2 + %3 + %4) / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period Start in Document Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Lapsed Renewal MRR in Document Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Termination MRR in Document Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Churned Renewal MRR in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Net Revenue Retention Rate % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period Start in Document Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period End in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "MRR Renewal Rate % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.MRR Due for Renewal In Document Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Activated Renewal MRR in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "MRR Lapsed Renewal % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Active MRR - Period Start in Document Currency", "logicalColumn:Core.Fact - CX - Subscription Historical Trend.Lapsed Renewal MRR in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "-----Internal-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "# of Existing Customers - Internal",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('ORA_DRAFT', 'ORA_CANCELED') THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.PRIMARY_PARTY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "countDistinctOverrides" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "rule" : "COUNT_DISTINCT"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Retained Customers - Internal",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('ORA_DRAFT', 'ORA_CANCELED') AND %2 = 'N' AND %3 = 'N' THEN %4 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('ORA_DRAFT', 'ORA_CANCELED') AND %2 = 'N' AND %3 = 'N' THEN %4 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('ORA_DRAFT', 'ORA_CANCELED') AND %2 = 'N' AND %3 = 'N' THEN %4 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('ORA_DRAFT', 'ORA_CANCELED') AND %2 = 'N' AND %3 = 'N' THEN %4 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd.PRIMARY_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('ORA_DRAFT', 'ORA_CANCELED') AND %2 = 'N' AND %3 = 'N' THEN %4 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.TERMINATED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.RENEW_CHURN_LAPSE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd.PRIMARY_PARTY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "countDistinctOverrides" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "rule" : "COUNT_DISTINCT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "rule" : "COUNT_DISTINCT"
+        } ],
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_Subscription_Aggregate_Period_Day_LatestDate", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_Subscription_Aggregate_Period_Day_LatestDate",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayAgoLatestDate",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Subscription Sales Product Type.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_Subscription_Aggregate_Period_Day_LatestDate.CURRENT_PERIOD_FLAG" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_Subscription_Aggregate_Period_Day_LatestDate", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_Subscription_Aggregate_Period_Day_LatestDate",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_LatestDate",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Subscription Sales Product Type.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_Subscription_Aggregate_Period_Day_LatestDate.CURRENT_PERIOD_FLAG" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart",
+      "disable" : false,
+      "priority" : 5,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_Subscription_Aggregate_Period_Day_DayStart" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_Subscription_Aggregate_Period_Day_DayStart",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Date - Subscription Aggregate Date Gregorian Calendar.Date", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Subscription Sales Product Type.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = %2",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_Subscription_Aggregate_Period_Day_DayStart.SNAPSHOT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayStart.SNAPSHOT_DATE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd",
+      "disable" : false,
+      "priority" : 5,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_DAILY_SNAPSHOT_F_DayEnd" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Date - Subscription Aggregate Date Gregorian Calendar.Date", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Subscription Sales Product Type.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart",
+      "disable" : false,
+      "priority" : 5,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthStart" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Subscription Sales Product Type.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Aggregate Date Gregorian Calendar.Month" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+      "disable" : false,
+      "priority" : 5,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_MONTHLY_SNAPSHOT_F_MonthEnd",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_MonthEnd",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Subscription Sales Product Type.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Aggregate Date Gregorian Calendar.Month" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart",
+      "disable" : false,
+      "priority" : 5,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterStart" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Subscription Sales Product Type.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Aggregate Date Gregorian Calendar.Quarter" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+      "disable" : false,
+      "priority" : 5,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_QUARTERLY_SNAPSHOT_F_QuarterEnd",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_QuarterEnd",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Subscription Sales Product Type.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Aggregate Date Gregorian Calendar.Quarter" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart",
+      "disable" : false,
+      "priority" : 5,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearStart" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Subscription Sales Product Type.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Aggregate Date Gregorian Calendar.Year" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+      "disable" : false,
+      "priority" : 5,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_YEARLY_SNAPSHOT_F_YearEnd",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_SNAPSHOT_D_YearEnd",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Subscription Sales Product Type.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Aggregate Date Gregorian Calendar.Year" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription Aggregate Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Sales Product Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Account Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

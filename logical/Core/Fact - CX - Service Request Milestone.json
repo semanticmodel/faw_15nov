@@ -1,0 +1,511 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - CX - Service Request Milestone",
+    "tags" : [ "Project:Fusion Analytics Warehouse - B2B Service Analytics" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "# of Raw Milestones",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_MILESTONES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F.SERVICE_REQUEST_MILESTONE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Raw SRs (Milestone)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_MILESTONES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F.SERVICE_REQUEST_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Raw SRs (Milestone)", "logicalColumn:Core.Fact - CX - Service Request Milestone.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Milestones",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Raw Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Active Milestones",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> 'ORA_SVC_CANCELED' AND %3 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Raw Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.Milestone Status Code", "logicalColumn:Core.Fact - CX - Service Request Milestone.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Cancelled Milestones",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_CANCELED' AND %3 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Raw Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.Milestone Status Code", "logicalColumn:Core.Fact - CX - Service Request Milestone.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Completed Milestones",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_COMPLETE' AND %3 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Raw Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.Milestone Status Code", "logicalColumn:Core.Fact - CX - Service Request Milestone.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Compliant Milestones",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> 'ORA_SVC_CANCELED' AND %3 <> 'N' AND %4 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Raw Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.Milestone Status Code", "logicalColumn:Core.Fact - CX - Service Request Milestone.Compliance Flag", "logicalColumn:Core.Fact - CX - Service Request Milestone.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Expired Milestones",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> 'ORA_SVC_CANCELED' AND %3 = 'N' AND %4 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Raw Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.Milestone Status Code", "logicalColumn:Core.Fact - CX - Service Request Milestone.Compliance Flag", "logicalColumn:Core.Fact - CX - Service Request Milestone.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Completed Expired Milestones",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_COMPLETE' AND %3 = 'N' AND %4 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Raw Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.Milestone Status Code", "logicalColumn:Core.Fact - CX - Service Request Milestone.Compliance Flag", "logicalColumn:Core.Fact - CX - Service Request Milestone.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Completed Compliant Milestones",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_COMPLETE' AND %3 = 'Y' AND %4 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Raw Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.Milestone Status Code", "logicalColumn:Core.Fact - CX - Service Request Milestone.Compliance Flag", "logicalColumn:Core.Fact - CX - Service Request Milestone.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Overdue Time Milestones",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Raw Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.Compliance Flag", "logicalColumn:Core.Fact - CX - Service Request Milestone.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "% Completed Compliant Milestones",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE 100.0d *  CAST (%2 AS DOUBLE PRECISION ) / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Completed Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Completed Compliant Milestones" ]
+        }
+      }
+    }, {
+      "name" : "% Completed Expired Milestones",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE 100.0d *  CAST (%2 AS DOUBLE PRECISION ) / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Completed Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Completed Expired Milestones" ]
+        }
+      }
+    }, {
+      "name" : "% Completed Milestones",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE 100.0d *  CAST (%2 AS DOUBLE PRECISION ) / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Active Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Completed Milestones" ]
+        }
+      }
+    }, {
+      "name" : "% Compliant Milestones",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE 100.0d *  CAST (%2 AS DOUBLE PRECISION ) / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Active Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Compliant Milestones" ]
+        }
+      }
+    }, {
+      "name" : "% Expired Milestones",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE 100.0d *  CAST (%2 AS DOUBLE PRECISION ) / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Active Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Expired Milestones" ]
+        }
+      }
+    }, {
+      "name" : "Overdue Time (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_MILESTONES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' AND %2 = 'N' THEN  CASE  WHEN %3 = 'ORA_SVC_COMPLETE' AND %4 > %5 THEN 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %5, %4) WHEN %3 <> 'ORA_SVC_COMPLETE' AND  CURRENT_TIMESTAMP(0) > %5 THEN 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %5,  CURRENT_TIMESTAMP(0)) END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F.COMPLIANCE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F.SERVICE_REQUEST_DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F.MILESTONE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F.COMPLETION_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F.OVERRIDDEN_DUE_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average of Overdue Time (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Milestone.# of Overdue Time Milestones", "logicalColumn:Core.Fact - CX - Service Request Milestone.Overdue Time (Minutes)" ]
+        }
+      }
+    }, {
+      "name" : "-------- Filter --------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Milestone Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_MILESTONES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F.MILESTONE_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Compliance Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_MILESTONES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F.COMPLIANCE_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Service Request Deleted Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_MILESTONES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F.SERVICE_REQUEST_DELETED_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Active Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_MILESTONES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F.ACTIVE_FLAG" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CXSR_MILESTONES_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_SERVICE_REQUESTS_F" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_SERVICE_REQUESTS_F",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Primary Contact.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Service Category.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Milestone Warning Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - CX - Resource - Service Request Assignee.Detail", "logicalLevel:Core.Dim - CX - Service Product.Detail", "logicalLevel:Core.Dim - CX - Sales Product.Detail", "logicalLevel:Core.Dim - CX - Security - Account.Detail", "logicalLevel:Core.Dim - CX - Security - Service Request Access Group.Detail", "logicalLevel:Core.Dim - CX - Service Request Milestone Status.Detail", "logicalLevel:Core.Dim - CX - Service Channel.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Milestone Completion Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Service Queue.Detail", "logicalLevel:Core.Dim - CX - Service Request.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Close Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Last Transfer Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Close Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Service Request Last Reopen Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Last Reopen Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Service Request Last Transfer Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Service Request Milestone.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Milestone Completion Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Service Request Milestone Due Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Milestone Due Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Service Request Milestone Warning Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Service Request Open Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Open Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Service Request Resolution Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Resolution Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Service Request Problem.Detail", "logicalLevel:Core.Dim - CX - Service Request Resolution.Detail", "logicalLevel:Core.Dim - CX - Service Request Channel Type.Detail", "logicalLevel:Core.Dim - CX - Service Stripe.Detail", "logicalLevel:Core.Dim - CX - Service Request Owner Type.Detail", "logicalLevel:Core.Dim - CX - Service Request Priority.Detail", "logicalLevel:Core.Dim - CX - Service Request Resolution Outcome.Detail", "logicalLevel:Core.Dim - CX - Service Request Severity.Detail", "logicalLevel:Core.Dim - CX - Service Request Source.Detail", "logicalLevel:Core.Dim - CX - Service Request Status.Detail", "logicalLevel:Core.Dim - CX - Service Request Status Type.Detail", "logicalLevel:Core.Dim - CX - Service Request Transfer Reason.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'ORA_SVC_CRM'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F.SERVICE_REQUEST_STRIPE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_CX_SALES_ACCNT_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Account.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SERVICE_REQUEST_ALL_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "1 = 1"
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SERVICE_REQUEST_CUSTOM_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Service Request Access Group.Security Enabled Flag" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Close Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Close Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Last Reopen Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Last Reopen Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Last Transfer Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Last Transfer Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Milestone Completion Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Milestone Completion Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Milestone Due Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Milestone Due Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Milestone Warning Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Milestone Warning Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Open Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Open Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Resolution Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Resolution Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Service Request Assignee",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Product",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Account",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Service Request Access Group",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Channel",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Product",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Queue",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Channel Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Milestone Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Milestone",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Owner Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Priority",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Problem",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Resolution Outcome",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Resolution",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Severity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Source",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Status Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

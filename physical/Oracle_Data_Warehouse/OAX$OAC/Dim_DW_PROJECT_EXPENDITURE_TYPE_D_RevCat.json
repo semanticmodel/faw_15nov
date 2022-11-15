@@ -1,0 +1,36 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_PROJECT_EXPENDITURE_TYPE_D_RevCat",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PROJECT_EXPENDITURE_TYPE_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_REVENUE_CATEGORY_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_REVENUE_CATEGORY_D.REVENUE_CATEGORY_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXPENDITURE_TYPE_D_RevCat.REVENUE_CATEGORY_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXP_CATEGORY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXPENDITURE_TYPE_D_RevCat.EXPENDITURE_CATEGORY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXP_CATEGORY_D.EXPENDITURE_CATEGORY_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "EXPENDITURE_TYPE_ID"
+      ]
+    ]
+  }
+}

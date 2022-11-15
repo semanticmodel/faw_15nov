@@ -1,0 +1,72 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - PO Submitted By",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Submitted By User Id" ],
+    "logicalColumns" : [ {
+      "name" : "Submitted By User Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PERSON_NAME_CURRENT_D_PRC_PO_SubmittedBy",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_PRC_PO_SubmittedBy.PERSON_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Submitted By Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PERSON_NAME_CURRENT_D_PRC_PO_SubmittedBy",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_PRC_PO_SubmittedBy.FULL_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_PERSON_NAME_CURRENT_D_PRC_PO_SubmittedBy",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_PRC_PO_SubmittedBy" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Submitted By User Id" ],
+        "displayKey" : "Submitted By Name",
+        "additionalKeys" : [ [ "Submitted By Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - PO Submitted By",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

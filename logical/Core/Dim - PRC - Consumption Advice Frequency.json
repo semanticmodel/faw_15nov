@@ -1,0 +1,96 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - Consumption Advice Frequency",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Consumption Advice Frequency Code" ],
+    "logicalColumns" : [ {
+      "name" : "Consumption Advice Frequency Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_CONSMPTN_ADVICE_FREQ_D_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_CONSMPTN_ADVICE_FREQ_D_TL_PromptOnly.CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_CONSMPTN_ADVICE_FREQ_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_CONSMPTN_ADVICE_FREQ_D_TL.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Consumption Advice Frequency",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Consumption Advice Frequency Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_CONSMPTN_ADVICE_FREQ_D_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONSMPTN_ADVICE_FREQ_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_CONSMPTN_ADVICE_FREQ_D_TL_PromptOnly.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_CONSMPTN_ADVICE_FREQ_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONSMPTN_ADVICE_FREQ_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_CONSMPTN_ADVICE_FREQ_D_TL.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_PRC_LKP_DW_CONSMPTN_ADVICE_FREQ_D_TL_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_CONSMPTN_ADVICE_FREQ_D_TL_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Consumption Advice Frequency.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_PRC_LKP_DW_CONSMPTN_ADVICE_FREQ_D_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_CONSMPTN_ADVICE_FREQ_D_TL" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Consumption Advice Frequency.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Consumption Advice Frequency Code" ],
+        "displayKey" : "Consumption Advice Frequency",
+        "additionalKeys" : [ [ "Consumption Advice Frequency" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - Consumption Advice Frequency",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

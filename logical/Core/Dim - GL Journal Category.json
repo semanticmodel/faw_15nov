@@ -1,0 +1,100 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - GL Journal Category",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Journal Category Code" ],
+    "logicalColumns" : [ {
+      "name" : "Journal Category Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_JOURNAL_CATEGORY_LKP_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOURNAL_CATEGORY_LKP_TL_PromptOnly.JOURNAL_CATEGORY_LKP_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_JOURNAL_CATEGORY_LKP_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOURNAL_CATEGORY_LKP_TL.JOURNAL_CATEGORY_LKP_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Journal Category Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Journal Category Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_JOURNAL_CATEGORY_LKP_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_JOURNAL_CATEGORY_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOURNAL_CATEGORY_LKP_TL_PromptOnly.JOURNAL_CATEGORY_LKP_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_JOURNAL_CATEGORY_LKP_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_JOURNAL_CATEGORY_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOURNAL_CATEGORY_LKP_TL.JOURNAL_CATEGORY_LKP_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_JOURNAL_CATEGORY_LKP_TL_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOURNAL_CATEGORY_LKP_TL_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - GL Journal Category.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOURNAL_CATEGORY_LKP_TL_PromptOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_JOURNAL_CATEGORY_LKP_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOURNAL_CATEGORY_LKP_TL" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - GL Journal Category.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Journal Category Code" ],
+        "displayKey" : "Journal Category Name",
+        "additionalKeys" : [ [ "Journal Category Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "GL Journal Category",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

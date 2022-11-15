@@ -1,0 +1,46 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Security Assignment",
+    "tags" : [ "Project:Oracle Analytics for Fusion Common" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Count of Security Assignments",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "SEC_SECURE_BY_OBJ_MEMBER_USER_SECURITY_AUDIT",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_SECURITY_AUDIT.ROW_WID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "SEC_SECURE_BY_OBJ_MEMBER_USER_SECURITY_AUDIT",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_SECURITY_AUDIT" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Security Context.Dim - Security Context Detail", "logicalLevel:Core.Dim - Security Context Member.Dim - Security Context Member Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Security Context Member",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Security Context",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

@@ -1,0 +1,58 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_PRFL_PRSN_LANGUAGES_CRNT_F_DimOnly",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PRFL_PRSN_LANGUAGES_CRNT_F",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_ITEM_D_TL_PerLangNameDimOnly",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 =  VALUEOF(NQ_SESSION.%6)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_ITEM_D_TL_PerLangNameDimOnly.BUSINESS_GROUP_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_LANGUAGES_CRNT_F_DimOnly.BUSINESS_GROUP_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_ITEM_D_TL_PerLangNameDimOnly.CONTENT_ITEM_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_LANGUAGES_CRNT_F_DimOnly.CONTENT_ITEM_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_ITEM_D_TL_PerLangNameDimOnly.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_PerLangReadLvlDimOnly",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_LANGUAGES_CRNT_F_DimOnly.READING_LEVEL_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_PerLangReadLvlDimOnly.RATING_LEVEL_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_PerLangSpeakLvlDimOnly",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_LANGUAGES_CRNT_F_DimOnly.SPEAKING_LEVEL_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_PerLangSpeakLvlDimOnly.RATING_LEVEL_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_PerLangWriteLvlDimOnly",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_LANGUAGES_CRNT_F_DimOnly.WRITING_LEVEL_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_PerLangWriteLvlDimOnly.RATING_LEVEL_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "ASSIGNMENT_ID",
+        "BUSINESS_GROUP_ID",
+        "PROFILE_ITEM_ID"
+      ]
+    ]
+  }
+}

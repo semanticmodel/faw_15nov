@@ -1,0 +1,74 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Age (Diversity Analysis)",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Age Code" ],
+    "logicalColumns" : [ {
+      "name" : "Age Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ADVIMP_AGE_CODE_VL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ADVIMP_AGE_CODE_VL.AGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_ADVIMP_HIRING_AGE_CODE_VL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ADVIMP_HIRING_AGE_CODE_VL.AGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_ADVIMP_AGE_CODE_VL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ADVIMP_AGE_CODE_VL" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Age (Diversity Analysis).Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_ADVIMP_HIRING_AGE_CODE_VL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ADVIMP_HIRING_AGE_CODE_VL" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Age (Diversity Analysis).Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Age Code" ],
+        "displayKey" : "Age Code",
+        "additionalKeys" : [ [ "Age Code" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Age (Diversity Analysis)",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

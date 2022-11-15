@@ -1,0 +1,60 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - AR Cash Receipt Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Cash Receipt ID" ],
+    "logicalColumns" : [ {
+      "name" : "Cash Receipt ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.CASH_RECEIPT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AR_SLA_APPLICATIONS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'UNAPP' OR %2 <> 'RCT_UNID_BALANCE'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.ACCOUNTING_LINE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Cash Receipt ID" ],
+        "displayKey" : "Cash Receipt ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "AR Cash Receipt Details",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

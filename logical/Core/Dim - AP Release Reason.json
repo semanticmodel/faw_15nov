@@ -1,0 +1,139 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - AP Release Reason",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Release Reason Code" ],
+    "logicalColumns" : [ {
+      "name" : "Release Reason Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason.HOLD_OR_RELEASE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Release Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Release Reason Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AP_HOLD_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason.HOLD_OR_RELEASE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Release Reason",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Release Reason Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AP_HOLD_LKP_TL.DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason.HOLD_OR_RELEASE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Release Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason.HOLD_OR_RELEASE_TYPE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Release Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Release Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AP_HOLD_TYPE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason.HOLD_OR_RELEASE_TYPE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Manual Release Allowed Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason.USER_RELEASEABLE_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AP Release Reason.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 IN ('R', '~NOVALUE~')",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AP_HOLD_RELEASE_REASON_D_ReleaseReason.TYPE_FLAG" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Release Reason Code" ],
+        "displayKey" : "Release Reason Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "AP Release Reason",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

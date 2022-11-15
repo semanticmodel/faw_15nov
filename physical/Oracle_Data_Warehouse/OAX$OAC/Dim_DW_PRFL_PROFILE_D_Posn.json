@@ -1,0 +1,53 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_PRFL_PROFILE_D_Posn",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PRFL_PROFILE_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PROFILE_D_TL_Posn",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 =  VALUEOF(NQ_SESSION.%6)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PROFILE_D_TL_Posn.PROFILE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PROFILE_D_Posn.PROFILE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PROFILE_D_TL_Posn.BUSINESS_GROUP_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PROFILE_D_Posn.BUSINESS_GROUP_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PROFILE_D_TL_Posn.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Posn",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PROFILE_D_Posn.OWNER_PERSON_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Posn.PERSON_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_TYPES_D_Posn",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PROFILE_D_Posn.BUSINESS_GROUP_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_TYPES_D_Posn.BUSINESS_GROUP_ID"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PROFILE_D_Posn.PROFILE_TYPE_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_TYPES_D_Posn.PROFILE_TYPE_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "BUSINESS_GROUP_ID",
+        "PROFILE_ID"
+      ]
+    ]
+  }
+}

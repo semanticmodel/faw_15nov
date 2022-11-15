@@ -1,0 +1,260 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - NetSuite Work Breakdown Structure",
+    "tags" : [ "Project:NetSuite Analytics Warehouse - NetSuite Project and Support Management" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "<<<<<<<<<<<<<< TRANSACTION >>>>>>>>>>>>>>>",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Number of Work Breakdown Structures",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_WBS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WBS_F.ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Vendor.Total", "logicalLevel:Core.Dim - NetSuite Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Currency.Total", "logicalLevel:Core.Dim - NetSuite Exchange Rate Type.Total", "logicalLevel:Core.Dim - NetSuite Project Task.Total", "logicalLevel:Core.Dim - NetSuite Billing Classification.Total", "logicalLevel:Core.Dim - NetSuite Revenue Expense Category.Total", "logicalLevel:Core.Dim - NetSuite Cost Expense Category.Total", "logicalLevel:Core.Dim - NetSuite Cost Item.Total", "logicalLevel:Core.Dim - NetSuite Resource Item.Total", "logicalLevel:Core.Dim - NetSuite Revenue Item.Total", "logicalLevel:Core.Dim - NetSuite Work Breakdown Structure Details.Work Breakdown Structure Header", "logicalLevel:Core.Dim - NetSuite Billing Rate Card.Total" ]
+      }
+    }, {
+      "name" : "Margin Target",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_WBS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1 * 100",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WBS_F.MARGINTARGET" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Vendor.Total", "logicalLevel:Core.Dim - NetSuite Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Currency.Total", "logicalLevel:Core.Dim - NetSuite Exchange Rate Type.Total", "logicalLevel:Core.Dim - NetSuite Project Task.Total", "logicalLevel:Core.Dim - NetSuite Billing Classification.Total", "logicalLevel:Core.Dim - NetSuite Revenue Expense Category.Total", "logicalLevel:Core.Dim - NetSuite Cost Expense Category.Total", "logicalLevel:Core.Dim - NetSuite Cost Item.Total", "logicalLevel:Core.Dim - NetSuite Resource Item.Total", "logicalLevel:Core.Dim - NetSuite Revenue Item.Total", "logicalLevel:Core.Dim - NetSuite Work Breakdown Structure Details.Work Breakdown Structure Header", "logicalLevel:Core.Dim - NetSuite Billing Rate Card.Total" ]
+      }
+    }, {
+      "name" : "<<<<<<<<<<<<<< TRANSACTION LINES>>>>>>>>>>>>>>>",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Number of Work Breakdown Structure Lines",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_WBS_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WBS_LINES_F.AMOUNT_KEY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Work Breakdown Structure Details.Work Breakdown Structure Line" ]
+      }
+    }, {
+      "name" : "Revenue Markup Value",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_WBS_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WBS_LINES_F.REVENUEMARKUPVALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Work Breakdown Structure Details.Work Breakdown Structure Line" ]
+      }
+    }, {
+      "name" : "---------------------- Transaction Currency Amounts -----------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Estimate at Completion Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_WBS_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WBS_LINES_F.AMT_EST_AT_COMPLETION" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Work Breakdown Structure Details.Work Breakdown Structure Line" ]
+      }
+    }, {
+      "name" : "---------------------- Base Currency Amounts --------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Estimate at Completion Amount in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_WBS_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WBS_LINES_F.BASE_AMT_EST_AT_COMPLETION" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Work Breakdown Structure Details.Work Breakdown Structure Line" ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_NS_WBS_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WBS_F" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Created By User.Detail", "logicalLevel:Core.Dim - NetSuite Work Breakdown Structure Details.Work Breakdown Structure Header", "logicalLevel:Core.Dim - NetSuite Job.Detail", "logicalLevel:Core.Dim - NetSuite Modified By User.Detail", "logicalLevel:Core.Dim - Date NetSuite Gregorian Calendar.Day" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_NS_WBS_LINES_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WBS_LINES_F" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Currency.Detail", "logicalLevel:Core.Dim - NetSuite Exchange Rate Type.Detail", "logicalLevel:Core.Dim - NetSuite Entity.Detail", "logicalLevel:Core.Dim - NetSuite Cost Item.Detail", "logicalLevel:Core.Dim - NetSuite Billing Classification.Detail", "logicalLevel:Core.Dim - NetSuite Job.Detail", "logicalLevel:Core.Dim - NetSuite Cost Expense Category.Detail", "logicalLevel:Core.Dim - NetSuite Created By User.Detail", "logicalLevel:Core.Dim - NetSuite Modified By User.Detail", "logicalLevel:Core.Dim - NetSuite Work Breakdown Structure Details.Work Breakdown Structure Line", "logicalLevel:Core.Dim - NetSuite Revenue Item.Detail", "logicalLevel:Core.Dim - NetSuite Project Task.Detail", "logicalLevel:Core.Dim - NetSuite Resource Item.Detail", "logicalLevel:Core.Dim - NetSuite Revenue Expense Category.Detail", "logicalLevel:Core.Dim - NetSuite Subsidiary.Detail", "logicalLevel:Core.Dim - NetSuite Vendor.Detail", "logicalLevel:Core.Dim - NetSuite Billing Rate Card.Detail", "logicalLevel:Core.Dim - Date NetSuite Gregorian Calendar.Day" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WBS_LINES_F.SUBSIDIARY", "variable:NetSuite - List of Subsidiaries.NETSUITE_SUBSIDIARY_LIST" ]
+      },
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date NetSuite Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Billing Classification",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Billing Rate Card",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Cost Expense Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Cost Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Created By User",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Exchange Rate Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Job",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Modified By User",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Project Task",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Resource Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Revenue Expense Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Revenue Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Subsidiary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Vendor",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Work Breakdown Structure Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

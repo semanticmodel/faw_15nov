@@ -1,0 +1,207 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Action Reason",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Action Reason Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Action Reason Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ACTION_REASON_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D.ACTION_REASON_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Details"
+    }, {
+      "name" : "Action Reason Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ACTION_REASON_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D.ACTION_REASON_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_ACTION_REASON_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D_TL.ACTION_REASON_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Details"
+    }, {
+      "name" : "Language",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ACTION_REASON_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D_TL.LANGUAGE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Action Reason",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ACTION_REASON_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D_TL.ACTION_REASON_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Details"
+    }, {
+      "name" : "Re-organization Flag Code",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTENT_PARAM_CONFIG_D_ReOrgReason",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = %2 THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D.ACTION_REASON_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_PARAM_CONFIG_D_ReOrgReason.PARAMETER_VALUE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Details"
+    }, {
+      "name" : "Re-organization Flag",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Re-organization Flag Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTENT_PARAM_CONFIG_D_ReOrgReason",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CASE  WHEN %2 = %3 THEN 1 ELSE 0 END ,  CASE  WHEN %2 = %3 THEN 1 ELSE 0 END ,  VALUEOF(NQ_SESSION.%4))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_IND_YES_NO_TL.YES_NO_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D.ACTION_REASON_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_PARAM_CONFIG_D_ReOrgReason.PARAMETER_VALUE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Details"
+    }, {
+      "name" : "-----DFF Keys-----------------------------------------------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "PER_ACT_REASONS_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ACTION_REASON_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_ACTION_REASON_D_DW_PER_ACT_REASONS_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CONTENT_PARAM_CONFIG_D_ReOrgReason",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_ACTION_REASON_D_DW_PER_ACT_REASONS_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_ACTION_REASON_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_ACTION_REASON_D_DW_PER_ACT_REASONS_DFF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_ACTION_REASON_D_DW_PER_ACT_REASONS_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_ACTION_REASON_D_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D_TL" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Action Reason.Details" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D_TL.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_CONTENT_PARAM_CONFIG_D_ReOrgReason",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_PARAM_CONFIG_D_ReOrgReason", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_ACTION_REASON_D_DW_PER_ACT_REASONS_DFF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_PARAM_CONFIG_D_ReOrgReason",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_ACTION_REASON_D_DW_PER_ACT_REASONS_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "All",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "All",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Details",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Action Reason Identifier" ],
+        "displayKey" : "Action Reason Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Action Reason",
+        "levels" : [ "All", "Details" ]
+      } ]
+    }
+  }
+}

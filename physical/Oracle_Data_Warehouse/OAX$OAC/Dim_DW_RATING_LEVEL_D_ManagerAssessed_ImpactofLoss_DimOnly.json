@@ -1,0 +1,37 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_RATING_LEVEL_D_ManagerAssessed_ImpactofLoss_DimOnly",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_RATING_LEVEL_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_ManagerAssessed_ImpactofLossBand_DimOnly",
+        "joinExpression": {
+          "expressionTemplate": " IFNULL(%1, -(99999)) >= %2 AND  IFNULL(%1, -(99999)) <= %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_ManagerAssessed_ImpactofLoss_DimOnly.NUMERIC_RATING",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_ManagerAssessed_ImpactofLossBand_DimOnly.MIN_RANGE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_ManagerAssessed_ImpactofLossBand_DimOnly.MAX_RANGE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_TL_ManagerAssessed_ImpactofLoss_DimOnly",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_ManagerAssessed_ImpactofLoss_DimOnly.RATING_LEVEL_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_TL_ManagerAssessed_ImpactofLoss_DimOnly.RATING_LEVEL_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "RATING_LEVEL_ID"
+      ]
+    ]
+  }
+}

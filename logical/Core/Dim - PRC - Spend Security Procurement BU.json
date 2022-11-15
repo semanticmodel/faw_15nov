@@ -1,0 +1,77 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - Spend Security Procurement BU",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Spend Procurement Business Unit Key" ],
+    "logicalColumns" : [ {
+      "name" : "Spend Procurement Business Unit Key",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_Spend_Procurement",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_Spend_Procurement.ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - PRC Spend Security Procurement BU Detail"
+    }, {
+      "name" : "Security Context Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_Spend_Procurement",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_PRC_BU_SpendFact.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_INTERNAL_ORG_D_Spend_Procurement",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_Spend_Procurement", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_PRC_BU_SpendFact" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_Spend_Procurement",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_PRC_BU_SpendFact",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Spend Security Procurement BU.Dim - PRC Spend Security Procurement BU Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - PRC Spend Security Procurement BU Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - PRC Spend Security Procurement BU Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - PRC Spend Security Procurement BU Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Spend Procurement Business Unit Key" ],
+        "displayKey" : "Spend Procurement Business Unit Key"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - Spend Security Procurement BU",
+        "levels" : [ "Dim - PRC Spend Security Procurement BU Total", "Dim - PRC Spend Security Procurement BU Detail" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,928 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Costing - Cost Accounting Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Cost Distribution Identifier", "Transaction Identifier", "Transaction Identifier Layers" ],
+    "logicalColumns" : [ {
+      "name" : "------------------------Transaction Details----------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Transaction Source Table",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.TRANSACTION_SOURCE_TABLE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Reference Transaction Number Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.TXN_SOURCE_DOC_TYPE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Reference Transaction Number Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Reference Transaction Number Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ORA_CST_DOC_FLOW_TYPES_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.TXN_SOURCE_DOC_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Transaction Source Document Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.TXN_SOURCE_DOC_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Cost COGS Revenue Lines Invoice Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.CST_COGS_REVENUE_LINES_INVOICE_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Cost COGS Recognization Percentage",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CAST (%1 AS VARCHAR ( 5 ))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.CST_COGS_RECOGNITION_PERCENTAGE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Costing Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.COST_STATUS_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Costing Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Costing Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CST_COST_STATUS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.COST_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Accounting Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.ACCOUNTING_STATUS_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Accounting Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Accounting Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CST_ACCOUNTING_STATUS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.ACCOUNTING_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Inventory Transaction Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.CST_INV_TXN_EXTERNAL_SYSTEM_REF_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Reference Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.TXN_SOURCE_REF_DOC_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Transaction Reference Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.TXN_SOURCE_REF_DOC_TYPE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Transaction Reference Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Transaction Reference Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ORA_CST_DOC_FLOW_TYPES_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.TXN_SOURCE_REF_DOC_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Reference Transaction Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 'CST_TRANSACTIONS' AND (%2 IS NULL  OR %3 IS NULL ) THEN %2 || %3 WHEN %1 = 'CST_TRANSACTIONS' THEN %2 || '-' || %3 WHEN %1 = 'CST_COGS_TRANSACTIONS' AND (%4 IS NULL  OR %5 IS NULL ) THEN %4 || %5 || '\\%' WHEN %1 = 'CST_COGS_TRANSACTIONS' THEN %4 || ' - ' || %5 || '\\%' WHEN %1 IN ('CST_OPERATION_TRANSACTIONS', 'CST_WO_UPDATE_EVENT_TXNS', 'CST_RESOURCE_TRANSACTIONS') THEN %3 WHEN %1 = 'CST_ACCTG_ONLY_TXNS' THEN  CAST (%6 AS CHARACTER ( 30 )) END ",
+          "expressionObjects" : [ "logicalColumn:Core.Dim - Costing - Cost Accounting Details.Transaction Source Table", "logicalColumn:Core.Dim - Costing - Cost Accounting Details.Reference Transaction Number Type", "logicalColumn:Core.Dim - Costing - Cost Accounting Details.Transaction Source Document Number", "logicalColumn:Core.Dim - Costing - Cost Accounting Details.Cost COGS Revenue Lines Invoice Number", "logicalColumn:Core.Dim - Costing - Cost Accounting Details.Cost COGS Recognization Percentage", "logicalColumn:Core.Dim - Costing - Cost Accounting Details.Transaction Identifier" ]
+        }
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Transaction Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.TRANSACTION_QTY" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Cost Profile Code",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.COST_PROFILE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Cost Profile",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Cost Profile Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CST_COST_PROFILES_D.COST_PROFILE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.COST_PROFILE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Cost Method Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.COST_METHOD_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Cost Method",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Cost Method Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CST_COST_METHODS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.COST_METHOD_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "Expenditure Item Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.PJC_EXPENDITURE_ITEM_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "------------------Cost Distribution Details--------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Accounting Line Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_ACC_LINE_TYPE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_ACC_LINE_TYPE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution Details"
+    }, {
+      "name" : "Accounting Line Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Accounting Line Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2, 'S', 707, %3, %4,  VALUEOF(NQ_SESSION.%5))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_XLA_ACCNT_LINE_TYPES_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_ACC_LINE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_ENTITY_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_EVENT_CLASS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2, 'S', 707, %3, %4,  VALUEOF(NQ_SESSION.%5))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_XLA_ACCNT_LINE_TYPES_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_ACC_LINE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_ENTITY_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_EVENT_CLASS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution Details"
+    }, {
+      "name" : "Distribution Accounting Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_ACCOUNTING_STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_ACCOUNTING_STATUS_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution Details"
+    }, {
+      "name" : "Distribution Accounting Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Distribution Accounting Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CST_ACCOUNTED_FLAG_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_ACCOUNTING_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CST_ACCOUNTED_FLAG_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_ACCOUNTING_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution Details"
+    }, {
+      "name" : "Interfaced to Projects Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_INTERFACED_TO_PROJECTS_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_INTERFACED_TO_PROJECTS_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution Details"
+    }, {
+      "name" : "Interfaced to Projects",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Interfaced to Projects Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ORA_CST_PJC_TXN_STATUS_CODE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_INTERFACED_TO_PROJECTS_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ORA_CST_PJC_TXN_STATUS_CODE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_INTERFACED_TO_PROJECTS_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution Details"
+    }, {
+      "name" : "Cost Distribution Creation Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_CREATION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_CREATION_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution Details"
+    }, {
+      "name" : "Cost Distribution Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution Details"
+    }, {
+      "name" : "Cost Distribution Line Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution Details"
+    }, {
+      "name" : "Transaction Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.TRANSACTION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transaction Details"
+    }, {
+      "name" : "------------------------Cost Layer Details----------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Costed Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_COSTED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTION_LAYERS_CF.QUANTITY" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Layer Details"
+    }, {
+      "name" : "Transaction Identifier Layers",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.TRANSACTION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTION_LAYERS_CF.TRANSACTION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Layer Details"
+    }, {
+      "name" : "Cost Document Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_TRANSACTIONS_CF_Layers.TXN_SOURCE_DOC_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Layer Details"
+    }, {
+      "name" : "Cost Reference Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_TRANSACTIONS_CF_Layers.TXN_SOURCE_REF_DOC_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Layer Details"
+    }, {
+      "name" : "Cost Reference Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Cost Reference Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ORA_CST_DOC_FLOW_TYPES_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_TRANSACTIONS_CF_Layers.TXN_SOURCE_REF_DOC_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Layer Details"
+    }, {
+      "name" : "Cost Reference Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_TRANSACTIONS_CF_Layers.TXN_SOURCE_REF_DOC_TYPE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Layer Details"
+    }, {
+      "name" : "Cost Source",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_TRANSACTION_TYPES_D_TL_CostSource.BASE_TXN_TYPE_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Layer Details"
+    }, {
+      "name" : "Receipt Transaction Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTION_LAYERS_CF.REC_TRXN_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Layer Details"
+    }, {
+      "name" : "Deplete Transaction Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTION_LAYERS_CF.DEP_TRXN_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Layer Details"
+    }, {
+      "name" : "-------------------------------- Security Object -------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Security Context Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_DISTRIBUTIONS.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_TRANSACTIONS.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transaction Debit Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DR' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_DR_CR_SIGN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DR' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_DR_CR_SIGN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution Details"
+    }, {
+      "name" : "Transaction Credit Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CR' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_DR_CR_SIGN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CR' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_DR_CR_SIGN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution Details"
+    }, {
+      "name" : "Accounted Debit Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DR' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_DR_CR_SIGN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DR' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_DR_CR_SIGN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution Details"
+    }, {
+      "name" : "Accounted Credit Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CR' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_DR_CR_SIGN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CR' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_DR_CR_SIGN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution Details"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_DISTRIBUTIONS", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_DISTRIBUTIONS",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Costing - Cost Accounting Details.Distribution Details" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : " NOT %1 IS NULL ",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.TRANSACTION_ID" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CST_TRANSACTIONS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTION_LAYERS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_TRANSACTIONS", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_TRANSACTION_TYPES_D_TL_CostSource", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_TRANSACTIONS_CF_Layers", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTION_LAYERS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_TRANSACTIONS_CF_Layers",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTION_LAYERS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_TRANSACTIONS",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_TRANSACTION_TYPES_D_TL_CostSource",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_TRANSACTIONS_CF_Layers",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Costing - Cost Accounting Details.Distribution Details" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Transaction Details",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transaction Identifier" ],
+        "displayKey" : "Transaction Identifier"
+      }, {
+        "name" : "Layer Details",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transaction Identifier Layers", "Receipt Transaction Identifier", "Deplete Transaction Identifier" ],
+        "displayKey" : "Transaction Identifier Layers",
+        "additionalKeys" : [ [ "Transaction Identifier Layers" ] ]
+      }, {
+        "name" : "Distribution Details",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Cost Distribution Line Identifier" ],
+        "displayKey" : "Cost Distribution Line Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Costing - Cost Accounting Details",
+        "levels" : [ "Total", "Transaction Details", "Layer Details", "Distribution Details" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_SCM_CST_COSTING_ORG_DATA",
+      "functionalGroup" : "SCM_CA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_CST_COST_ORG_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Costing - Cost Accounting Details.Security Context Code" ]
+      }
+    } ]
+  }
+}

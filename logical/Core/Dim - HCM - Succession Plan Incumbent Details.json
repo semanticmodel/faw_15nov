@@ -1,0 +1,106 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Succession Plan Incumbent Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Plan Incumbent Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Incumbent Headcount",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.HEADCOUNT" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Incumbent FTE",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.FTE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Incumbent Added Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.CREATION_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Plan Incumbent Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_INCUMBENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Succession Plan Incumbent Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PRIMARY_FLAG" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Plan Incumbent Identifier" ],
+        "displayKey" : "Plan Incumbent Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Succession Plan Incumbent Details",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

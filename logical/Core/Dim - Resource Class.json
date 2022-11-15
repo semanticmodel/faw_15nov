@@ -1,0 +1,105 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Resource Class",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Resource Class Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Resource Class Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_RESOURCE_CLASS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RESOURCE_CLASS_D.RESOURCE_CLASS_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Resource Class Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_RESOURCE_CLASS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RESOURCE_CLASS_D.RESOURCE_CLASS_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Resource Class Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Resource Class Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_RESOURCE_CLASS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %4)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_RESOURCE_CLASS_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RESOURCE_CLASS_D.RESOURCE_CLASS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RESOURCE_CLASS_D.RESOURCE_CLASS_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Resource Class Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Resource Class Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_RESOURCE_CLASS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %4)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_RESOURCE_CLASS_D_TL.DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RESOURCE_CLASS_D.RESOURCE_CLASS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RESOURCE_CLASS_D.RESOURCE_CLASS_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_RESOURCE_CLASS_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RESOURCE_CLASS_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Resource Class.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "All",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "All",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Resource Class Identifier" ],
+        "displayKey" : "Resource Class Name",
+        "additionalKeys" : [ [ "Resource Class Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Resource Class",
+        "levels" : [ "All", "Detail" ]
+      } ]
+    }
+  }
+}

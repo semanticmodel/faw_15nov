@@ -1,0 +1,116 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Locator",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Inventory Locator Key" ],
+    "logicalColumns" : [ {
+      "name" : "Locator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INV_LOCATOR_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_LOCATOR_D_DimOnly.LOCATOR_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INV_LOCATOR_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_LOCATOR_D.LOCATOR_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Locator Detail"
+    }, {
+      "name" : "Locator Description",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INV_LOCATOR_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_LOCATOR_D_DimOnly.DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INV_LOCATOR_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_LOCATOR_D.DESCRIPTION" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Locator Detail"
+    }, {
+      "name" : "Inventory Locator Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INV_LOCATOR_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_LOCATOR_D_DimOnly.INVENTORY_LOCATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INV_LOCATOR_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_LOCATOR_D.INVENTORY_LOCATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Locator Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_INV_LOCATOR_D_DimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_LOCATOR_D_DimOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Locator.Locator Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_INV_LOCATOR_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_LOCATOR_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Locator.Locator Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Locator Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Locator Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Locator Detail",
+        "numberOfElements" : 1000,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Inventory Locator Key" ],
+        "displayKey" : "Locator Description",
+        "additionalKeys" : [ [ "Locator Description" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Locator",
+        "levels" : [ "Locator Total", "Locator Detail" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,31 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_NS_INBOUND_SHIPMENT_F",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_NS_INBOUND_SHIPMENT_F",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar",
+        "joinExpression": {
+          "expressionTemplate": "%1 =  CAST (%2 AS DATE )",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_F.SHIPMENTCREATEDDATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_SHIPMENT_CURRENCY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_F.SHIPMENTBASECURRENCY",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_SHIPMENT_CURRENCY_D.ID"
+          }
+        ]
+      }
+    ]
+  }
+}

@@ -1,0 +1,40 @@
+{
+  "physicalTable" : {
+    "name" : "DW_NATURAL_ACCOUNT_D_FIN_CAT",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "select n.account_type, n.financial_category,n.natural_account_segment, n.natural_account_segment_id, n.ntrl_acnt_sgmnt_valueset_code \r\nfrom dw_natural_account_d n \r\nwhere  VALUEOF(NQ_SESSION.FIN_CAT_UPLOAD_ENABLED) = 0\r\nUNION ALL \r\nselect n.account_type, c.financial_category, n.natural_account_segment, n.ntrl_acnt_sgmnt_valueset_code||'~'||n.natural_account_segment,n.ntrl_acnt_sgmnt_valueset_code \r\nfrom dw_natural_account_d n left outer join content_upload_fin_cat_assign_config c \r\n  on n.ntrl_acnt_sgmnt_valueset_code = c.ntrl_acnt_sgmnt_valueset_code \r\n    and  n.natural_account_segment = c.natural_account_segment  \r\nwhere VALUEOF(NQ_SESSION.FIN_CAT_UPLOAD_ENABLED) = 1\r\n\r\n"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "ACCOUNT_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : false
+    }, {
+      "name" : "FINANCIAL_CATEGORY",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : false
+    }, {
+      "name" : "NATURAL_ACCOUNT_SEGMENT",
+      "dataType" : "VARCHAR",
+      "length" : 128,
+      "nullable" : false
+    }, {
+      "name" : "NATURAL_ACCOUNT_SEGMENT_ID",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    }, {
+      "name" : "NTRL_ACNT_SGMNT_VALUESET_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 128,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    }
+  }
+}

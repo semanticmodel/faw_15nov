@@ -1,0 +1,208 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - Requisition Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Requisition Header Identifier", "Requisition Line Identifier", "Requisition Distribution Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Requisition Header Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.REQUISITION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REQUISITION_CF.REQUISITION_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Requisition Header"
+    }, {
+      "name" : "Requisition Line Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.REQUISITION_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REQUISITION_CF.REQUISITION_LINE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Requisition Line"
+    }, {
+      "name" : "Requisition Distribution Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.REQUISITION_DISTRIBUTION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_DISTRIBUTION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REQUISITION_CF.REQUISITION_DISTRIBUTION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Requisition Distribution"
+    }, {
+      "name" : "Import Source",
+      "description" : "This attribute refers to Requisition Import Source.",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.REQUISITION_SOURCE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.INTERFACE_SOURCE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REQUISITION_CF.INTERFACE_SOURCE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requisition Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.REQUISITION_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.REQUISITION_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REQUISITION_CF.REQUISITION_NUMBER" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_INVOICE_SPEND_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Requisition Details.Requisition Distribution" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_REQUISITION_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_REQUISITION_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REQUISITION_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Requisition Header",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Requisition Header Identifier" ],
+        "displayKey" : "Requisition Header Identifier"
+      }, {
+        "name" : "Requisition Line",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Requisition Line Identifier" ],
+        "displayKey" : "Requisition Line Identifier"
+      }, {
+        "name" : "Requisition Distribution",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Requisition Distribution Identifier" ],
+        "displayKey" : "Requisition Distribution Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - Requisition Details",
+        "levels" : [ "Total", "Requisition Header", "Requisition Line", "Requisition Distribution" ]
+      } ]
+    }
+  }
+}

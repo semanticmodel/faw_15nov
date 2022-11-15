@@ -1,0 +1,114 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - NetSuite Compound Spend",
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Total Spend",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) +  IFNULL(%2, 0) +  IFNULL(%3, 0) +  IFNULL(%4, 0) -  IFNULL(%5, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - NetSuite Expense Report.Line Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Vendor Bill.Line Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Credit Card Charge.Line Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Journal.Line Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Vendor Bill Credit.Line Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Supplier Spend",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) +  IFNULL(%2, 0) -  IFNULL(%3, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - NetSuite Vendor Bill.Line Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Credit Card Charge.Line Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Vendor Bill Credit.Line Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Transaction Spend Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 'VendBill' THEN %2 WHEN %1 = 'VendCred' THEN %3 WHEN %1 = 'Journal' THEN %4 WHEN %1 = 'ExpRept' THEN %5 WHEN %1 = 'CardChrg' THEN %6 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Dim - NetSuite Transaction Details.Transaction Type", "logicalColumn:Core.Fact - NetSuite Vendor Bill.Line Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Vendor Bill Credit.Line Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Journal.Line Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Expense Report.Line Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Credit Card Charge.Line Amount in Analytics Currency" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Transaction Details.Detail" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date NetSuite Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Book Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Book",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Period",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Classification",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Created By User",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Department",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Exchange Rate Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Expense Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Modified By User",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Subsidiary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Transaction Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Vendor",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

@@ -1,0 +1,130 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Country",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Country Code" ],
+    "logicalColumns" : [ {
+      "name" : "Country Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_COUNTRY_D_TL_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_DimOnly.COUNTRY" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_COUNTRY_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL.COUNTRY" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Country Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_COUNTRY_D_TL_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_DimOnly.COUNTRY_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_COUNTRY_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL.COUNTRY_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Security Context Code - HCM Country List",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_COUNTRY_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_CTR_Fact.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_COUNTRY_D_TL_DimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_DimOnly", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_CTR_Dim" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_DimOnly",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_CTR_Dim",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Country.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2) AND  INDEXCOL( VALUEOF(NQ_SESSION.%3), '-1', %4) =  INDEXCOL( VALUEOF(NQ_SESSION.%3), '-1', %5)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_DimOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "variable:Check Country Context Defined.HCM_CONT_SEC_DEFINED", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_DimOnly.COUNTRY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_CTR_Dim.SEC_OBJ_MEMBER_VAL" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_COUNTRY_D_TL",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_CTR_Fact" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_CTR_Fact",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Country.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Country Code" ],
+        "displayKey" : "Country Name",
+        "additionalKeys" : [ [ "Country Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Country",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

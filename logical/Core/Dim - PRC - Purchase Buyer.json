@@ -1,0 +1,127 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - Purchase Buyer",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Buyer Id" ],
+    "logicalColumns" : [ {
+      "name" : "Buyer Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PO_AGENT_ASSIGNMENTS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PO_AGENT_ASSIGNMENTS_D_PromptOnly.AGENT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PERSON_NAME_CURRENT_D_Buyer",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Buyer.PERSON_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PO_AGENT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PO_AGENT_ASSIGNMENTS_D.AGENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Buyer",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PO_AGENT_ASSIGNMENTS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> '-99999' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PO_AGENT_ASSIGNMENTS_D_PromptOnly.AGENT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Buyer_PromptOnly.FULL_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PERSON_NAME_CURRENT_D_Buyer",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Buyer.FULL_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PO_AGENT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Buyer.FULL_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_PO_AGENT_ASSIGNMENTS_D_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PO_AGENT_ASSIGNMENTS_D_PromptOnly", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Buyer_PromptOnly" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PO_AGENT_ASSIGNMENTS_D_PromptOnly",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Buyer_PromptOnly",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_PERSON_NAME_CURRENT_D_Buyer",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Buyer" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Purchase Buyer.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_PO_AGENT_ASSIGNMENTS_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Buyer", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PO_AGENT_ASSIGNMENTS_D" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Buyer",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PO_AGENT_ASSIGNMENTS_D",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Buyer Id" ],
+        "displayKey" : "Buyer",
+        "additionalKeys" : [ [ "Buyer" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - Purchase Buyer",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

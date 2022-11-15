@@ -1,0 +1,88 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Ship Pick From Sub Inventory",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Subinventory Organization Key", "Pick-from Subinventory" ],
+    "logicalColumns" : [ {
+      "name" : "Pick-from Subinventory",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INV_SUBINVENTORY_D_PickfromSubinventory",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_PickfromSubinventory.SECONDARY_INVENTORY_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Pick From Sub Inventory Detail"
+    }, {
+      "name" : "Pick-from Subinventory Description",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INV_SUBINVENTORY_D_PickfromSubinventory",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_PickfromSubinventory.DESCRIPTION" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Pick From Sub Inventory Detail"
+    }, {
+      "name" : "Subinventory Organization Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INV_SUBINVENTORY_D_PickfromSubinventory",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_PickfromSubinventory.ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Pick From Sub Inventory Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_INV_SUBINVENTORY_D_PickfromSubinventory",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_PickfromSubinventory" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Ship Pick From Sub Inventory.Dim - Ship Pick From Sub Inventory Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - Ship Pick From Sub Inventory Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - Ship Pick From Sub Inventory Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - Ship Pick From Sub Inventory Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Subinventory Organization Key", "Pick-from Subinventory" ],
+        "displayKey" : "Pick-from Subinventory Description",
+        "additionalKeys" : [ [ "Pick-from Subinventory Description" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Ship Pick From Sub Inventory",
+        "levels" : [ "Dim - Ship Pick From Sub Inventory Total", "Dim - Ship Pick From Sub Inventory Detail" ]
+      } ]
+    }
+  }
+}

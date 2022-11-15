@@ -1,0 +1,73 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_CST_DISTRIBUTION_LINES_CF",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_CostDistributionAccountingDate",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 = %6 AND %7 IN ('N', '~NOVALUE~')",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_CostDistributionAccountingDate.FISCAL_DAY_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_GL_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_CostDistributionAccountingDate.FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_CostDistributionAccountingDate.FISCAL_PERIOD_TYPE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.FISCAL_PERIOD_TYPE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_CostDistributionAccountingDate.ADJUSTMENT_PERIOD_FLAG"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_COST_ELEMENTS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_COST_ELEMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_COST_ELEMENTS_D.COST_ELEMENT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_DocumentCurrency",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_TRANSACTION_CURRENCY_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_DocumentCurrency.CURRENCY_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_LedgerCurrency",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LEDGER_CURRENCY_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_LedgerCurrency.CURRENCY_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D_CA_Source",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_SOURCE_CODE_COMBINATION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D_CA_Source.CODE_COMBINATION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_CA_Created_By",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_CREATED_BY",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_CA_Created_By.USERNAME"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "TRANSACTION_ID"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,269 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Transfer to GL Date Fiscal Calendar",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Transfer to GL Date", "Transfer to GL Fiscal Period", "Transfer to GL Fiscal Calendar Name" ],
+    "logicalColumns" : [ {
+      "name" : "Transfer to GL Day Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN (-(99999), 47121231) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_DAY_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transfer to GL Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN (-(99999), 47121231) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_DAY_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Transfer to GL Day Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Transfer to GL Day Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN (-(99999), 47121231) THEN  NULL  ELSE  LOOKUP( SPARSE %2, %3, %3,  VALUEOF(NQ_SESSION.%4)) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_DAYS_OF_WEEK_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_DAY_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transfer to GL Fiscal Period",
+      "dataType" : "VARCHAR",
+      "sortBy" : "Transfer to GL Fiscal Period Sort Key",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN (-(99999), 47121231) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_PERIOD_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Period"
+    }, {
+      "name" : "Transfer to GL Fiscal Calendar Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_PERIOD_SET_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Calendar"
+    }, {
+      "name" : "Transfer to GL Fiscal Period Sort Key",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_PERIOD_SORT_KEY" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Period"
+    }, {
+      "name" : "Transfer to GL Fiscal Quarter",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN (-(99999), 47121231) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_QUARTER_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Quarter"
+    }, {
+      "name" : "Transfer to GL Fiscal Quarter Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN (-(99999), 47121231) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_QUARTER_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Quarter"
+    }, {
+      "name" : "Transfer to GL Fiscal Year",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN (-(99999), 47121231) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_YEAR_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Year"
+    }, {
+      "name" : "Transfer to GL Fiscal Period Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_PERIOD_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Period"
+    }, {
+      "name" : "Transfer to GL Date Trailing Period Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_TRAILING_PERIOD_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transfer to GL Date Trailing Quarter Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_TRAILING_QUARTER_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transfer to GL Date Trailing Year Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_TRAILING_YEAR_NUMBER" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Transfer to GL Date Fiscal Calendar.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "TIME",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Fiscal Calendar",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transfer to GL Fiscal Calendar Name" ],
+        "displayKey" : "Transfer to GL Fiscal Calendar Name",
+        "chronologicalKey" : [ "Transfer to GL Fiscal Calendar Name" ]
+      }, {
+        "name" : "Fiscal Year",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transfer to GL Fiscal Calendar Name", "Transfer to GL Fiscal Year" ],
+        "displayKey" : "Transfer to GL Fiscal Year",
+        "additionalKeys" : [ [ "Transfer to GL Fiscal Year" ] ],
+        "chronologicalKey" : [ "Transfer to GL Fiscal Calendar Name", "Transfer to GL Fiscal Year" ]
+      }, {
+        "name" : "Fiscal Quarter",
+        "numberOfElements" : 40,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transfer to GL Fiscal Calendar Name", "Transfer to GL Fiscal Quarter" ],
+        "displayKey" : "Transfer to GL Fiscal Quarter",
+        "additionalKeys" : [ [ "Transfer to GL Fiscal Quarter" ] ],
+        "chronologicalKey" : [ "Transfer to GL Fiscal Calendar Name", "Transfer to GL Fiscal Quarter" ]
+      }, {
+        "name" : "Fiscal Period",
+        "numberOfElements" : 120,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transfer to GL Fiscal Calendar Name", "Transfer to GL Fiscal Period Sort Key" ],
+        "displayKey" : "Transfer to GL Fiscal Period",
+        "additionalKeys" : [ [ "Transfer to GL Fiscal Period" ] ],
+        "chronologicalKey" : [ "Transfer to GL Fiscal Calendar Name", "Transfer to GL Fiscal Period Sort Key" ]
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 3600,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transfer to GL Date", "Transfer to GL Fiscal Calendar Name", "Transfer to GL Fiscal Period Sort Key" ],
+        "displayKey" : "Transfer to GL Date",
+        "additionalKeys" : [ [ "Transfer to GL Date" ] ],
+        "chronologicalKey" : [ "Transfer to GL Date", "Transfer to GL Fiscal Calendar Name", "Transfer to GL Fiscal Period Sort Key" ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Transfer to GL Date Fiscal Calendar",
+        "levels" : [ "Total", "Fiscal Calendar", "Fiscal Year", "Fiscal Quarter", "Fiscal Period", "Detail" ]
+      } ]
+    }
+  }
+}

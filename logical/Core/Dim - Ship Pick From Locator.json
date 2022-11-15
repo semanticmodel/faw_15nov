@@ -1,0 +1,88 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Ship Pick From Locator",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Inventory Locator Key" ],
+    "logicalColumns" : [ {
+      "name" : "Pick-from Locator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INV_LOCATOR_D_Pickfromlocator",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_LOCATOR_D_Pickfromlocator.LOCATOR_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Pick From Locator Detail"
+    }, {
+      "name" : "Pick-from Locator Description",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INV_LOCATOR_D_Pickfromlocator",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_LOCATOR_D_Pickfromlocator.DESCRIPTION" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Pick From Locator Detail"
+    }, {
+      "name" : "Inventory Locator Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INV_LOCATOR_D_Pickfromlocator",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_LOCATOR_D_Pickfromlocator.INVENTORY_LOCATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Pick From Locator Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_INV_LOCATOR_D_Pickfromlocator",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_LOCATOR_D_Pickfromlocator" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Ship Pick From Locator.Dim - Ship Pick From Locator Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - Ship Pick From Locator Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - Ship Pick From Locator Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - Ship Pick From Locator Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Inventory Locator Key" ],
+        "displayKey" : "Pick-from Locator Description",
+        "additionalKeys" : [ [ "Pick-from Locator Description" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Ship Pick From Locator",
+        "levels" : [ "Dim - Ship Pick From Locator Total", "Dim - Ship Pick From Locator Detail" ]
+      } ]
+    }
+  }
+}

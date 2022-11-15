@@ -1,0 +1,284 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Invoice Released Date Fiscal Calendar",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Invoice Released Date", "Invoice Released Fiscal Period", "Invoice Released Fiscal Calendar Name", "Invoice Released Adjustment Period Flag" ],
+    "logicalColumns" : [ {
+      "name" : "Invoice Released Fiscal Period Sort Key",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_PERIOD_SORT_KEY" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Released Fiscal Period"
+    }, {
+      "name" : "Invoice Released Adjustment Period Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.ADJUSTMENT_PERIOD_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Released Fiscal Period"
+    }, {
+      "name" : "Invoice Released Day Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_DAY_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Invoice Released Day Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Invoice Released Day Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CASE  WHEN %2 = -(99999) THEN  NULL  ELSE %3 END ,  CASE  WHEN %2 = -(99999) THEN  NULL  ELSE %3 END ,  VALUEOF(NQ_SESSION.%4))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_DAYS_OF_WEEK_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_DAY_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Invoice Released Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_DAY_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Released Day Detail"
+    }, {
+      "name" : "Invoice Released Fiscal Period",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_PERIOD_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Released Fiscal Period"
+    }, {
+      "name" : "Invoice Released Fiscal Period Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_PERIOD_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Released Fiscal Period"
+    }, {
+      "name" : "Invoice Released Fiscal Calendar Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_PERIOD_SET_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Released Fiscal Calendar"
+    }, {
+      "name" : "Invoice Released Fiscal Quarter",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_QUARTER_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Released Fiscal Quarter"
+    }, {
+      "name" : "Invoice Released Date Trailing Period Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_QUARTER_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Released Fiscal Period"
+    }, {
+      "name" : "Invoice Released Date Trailing Quarter Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_TRAILING_QUARTER_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Released Fiscal Quarter"
+    }, {
+      "name" : "Invoice Released Date Trailing Year Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_TRAILING_YEAR_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Released Fiscal Year"
+    }, {
+      "name" : "Invoice Released Fiscal Year",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_YEAR_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Released Fiscal Year"
+    }, {
+      "name" : "Invoice Released Fiscal Quarter Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar.FISCAL_QUARTER_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Released Fiscal Quarter"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceReleasedDate_Fiscal_Calendar" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "TIME",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Invoice Released Fiscal Calendar",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Invoice Released Fiscal Calendar Name" ],
+        "displayKey" : "Invoice Released Fiscal Calendar Name",
+        "chronologicalKey" : [ "Invoice Released Fiscal Calendar Name" ]
+      }, {
+        "name" : "Invoice Released Fiscal Year",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Invoice Released Fiscal Calendar Name", "Invoice Released Fiscal Year" ],
+        "displayKey" : "Invoice Released Fiscal Year",
+        "additionalKeys" : [ [ "Invoice Released Fiscal Year" ] ],
+        "chronologicalKey" : [ "Invoice Released Fiscal Calendar Name", "Invoice Released Fiscal Year" ]
+      }, {
+        "name" : "Invoice Released Fiscal Quarter",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Invoice Released Fiscal Calendar Name", "Invoice Released Fiscal Quarter" ],
+        "displayKey" : "Invoice Released Fiscal Quarter",
+        "additionalKeys" : [ [ "Invoice Released Fiscal Quarter" ] ],
+        "chronologicalKey" : [ "Invoice Released Fiscal Calendar Name", "Invoice Released Fiscal Quarter" ]
+      }, {
+        "name" : "Invoice Released Fiscal Period",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Invoice Released Adjustment Period Flag", "Invoice Released Fiscal Period", "Invoice Released Fiscal Calendar Name" ],
+        "displayKey" : "Invoice Released Fiscal Period",
+        "additionalKeys" : [ [ "Invoice Released Fiscal Period" ] ],
+        "chronologicalKey" : [ "Invoice Released Adjustment Period Flag", "Invoice Released Fiscal Period", "Invoice Released Fiscal Calendar Name" ]
+      }, {
+        "name" : "Invoice Released Day Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Invoice Released Date" ],
+        "displayKey" : "Invoice Released Date",
+        "chronologicalKey" : [ "Invoice Released Date" ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Invoice Released Date Fiscal Calendar",
+        "levels" : [ "Total", "Invoice Released Fiscal Calendar", "Invoice Released Fiscal Year", "Invoice Released Fiscal Quarter", "Invoice Released Fiscal Period", "Invoice Released Day Detail" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,1102 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Picking and Shipping",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Inventory" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "--------------Flags and Dates---------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Actual Ship Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_ACTUAL_SHIP_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Scheduled Ship Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_SCHEDULED_SHIP_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipment Line Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Sales Order Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SALES_ORDER_NUMBER" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Shipment Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipment Line Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "--------------Picking---------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Requested Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_REQUESTED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Picked Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_STAGED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Pick Duration",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 < %2 THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %2, %3) ELSE  TIMESTAMPDIFF( SQL_TSI_DAY , %1, %3) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_SCHEDULED_SHIP_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.MOVEMENT_REQUEST_CREATION_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.MATERIAL_TXN_PICKED_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "On Time Picked Lines",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING  NOT %2 IN ('R', 'S', 'B', 'D') AND %3 < 1), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Id", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code", "logicalColumn:Core.Fact - Picking and Shipping.Pick Duration" ]
+        }
+      }
+    }, {
+      "name" : "Late Picked Lines",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING  NOT %2 IN ('R', 'S', 'B', 'D') AND %3 >= 1), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Id", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code", "logicalColumn:Core.Fact - Picking and Shipping.Pick Duration" ]
+        }
+      }
+    }, {
+      "name" : "---------Picking Primary Quantity--------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "PUOM Requested Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_PUOM_REQUESTED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "PUOM Picked Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_PUOM_STAGED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "--------------Picking Secondary Quantity-------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Secondary Requested Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMNT_LINE_SECONDARY_REQUESTED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Secondary Picked Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_SECONDARY_STAGED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "----------Shipments-------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Shipment Line Staged Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_STAGED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Shipment Line Shipped Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_SHIPPED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Staged Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Y'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Staged Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Shipped Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 IN ('C', 'I')), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Shipped Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Shipped Early Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 < %3), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipped Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Actual Ship Date", "logicalColumn:Core.Fact - Picking and Shipping.Scheduled Ship Date" ]
+        }
+      }
+    }, {
+      "name" : "Shipped Late Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 > %3), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipped Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Actual Ship Date", "logicalColumn:Core.Fact - Picking and Shipping.Scheduled Ship Date" ]
+        }
+      }
+    }, {
+      "name" : "Back Ordered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'B'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Requested Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Cancelled Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_CANCELLED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Release to Ship Cycle Time",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.MOVEMENT_REQUEST_CREATION_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_ACTUAL_SHIP_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Release to Ship Cycle Days",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 IN ('C', 'P', 'I')), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Release to Ship Cycle Time", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Orders Picked Not Shipped",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Y'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Sales Order Number", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Shipment Lines Picked Not Shipped",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Y'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Id", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Volume",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_VOLUME" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Gross Weight",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_GROSS_WEIGHT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Net Weight",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_NET_WEIGHT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Closed Shipments",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 IN ('I', 'C')), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Id", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Open Shipments",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING  NOT %2 IN ('I', 'C')), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Id", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Lines Assigned to Shipment",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_ASSIGNMENT_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Material txn Picked Time",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.MATERIAL_TXN_PICKED_TIMESTAMP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Movement Request Creation Time",
+      "dataType" : "TIMESTAMP",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.MOVEMENT_REQUEST_CREATION_TIMESTAMP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Scheduled ShipTime",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_SCHEDULED_SHIP_TIMESTAMP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Actual Ship Time",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_ACTUAL_SHIP_TIMESTAMP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Number of Shipments Ready-to-Ship",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Y' AND  NOT %3 IS NULL ), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Id", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Number" ]
+        }
+      }
+    }, {
+      "name" : "On Time Shipments",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 IN ('I', 'C') AND %3 <= %4), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Id", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code", "logicalColumn:Core.Fact - Picking and Shipping.Actual Ship Date", "logicalColumn:Core.Fact - Picking and Shipping.Scheduled Ship Date" ]
+        }
+      }
+    }, {
+      "name" : "Late Shipments",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 IN ('I', 'C') AND %3 > %4), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Id", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code", "logicalColumn:Core.Fact - Picking and Shipping.Actual Ship Date", "logicalColumn:Core.Fact - Picking and Shipping.Scheduled Ship Date" ]
+        }
+      }
+    }, {
+      "name" : "Shipments Past Due",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Y' AND %3 <  CURRENT_DATE ), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Id", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code", "logicalColumn:Core.Fact - Picking and Shipping.Scheduled Ship Date" ]
+        }
+      }
+    }, {
+      "name" : "Shipment Due Today and Next Day",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Y' AND %3 =  CURRENT_DATE  OR %2 = 'Y' AND %3 =  CURRENT_DATE  + 1), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Id", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code", "logicalColumn:Core.Fact - Picking and Shipping.Scheduled Ship Date" ]
+        }
+      }
+    }, {
+      "name" : "---------Shipping Primary Quantity--------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "PUOM Staged Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Y'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line PUOM Staged Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "PUOM Shipped Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 IN ('C', 'I')), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line PUOM Shipped Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "PUOM Shipped Early Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 < %3), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.PUOM Shipped Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Actual Ship Date", "logicalColumn:Core.Fact - Picking and Shipping.Scheduled Ship Date" ]
+        }
+      }
+    }, {
+      "name" : "PUOM Shipped Late Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 > %3), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.PUOM Shipped Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Actual Ship Date", "logicalColumn:Core.Fact - Picking and Shipping.Scheduled Ship Date" ]
+        }
+      }
+    }, {
+      "name" : "PUOM Back Ordered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'B'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.PUOM Requested Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "PUOM Cancelled Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_PUOM_CANCELLED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Shipment Line PUOM Shipped Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_PUOM_SHIPPED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Shipment Line PUOM Staged Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_PUOM_STAGED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "--------------Shipping Secondary Quantity------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Secondary Staged Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Y'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Secondary Staged Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Secondary Shipped Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 IN ('C', 'I')), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Secondary Shipped Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Secondary Shipped Early Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 < %3), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Secondary Shipped Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Actual Ship Date", "logicalColumn:Core.Fact - Picking and Shipping.Scheduled Ship Date" ]
+        }
+      }
+    }, {
+      "name" : "Secondary Shipped Late Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 > %3), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Secondary Shipped Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Actual Ship Date", "logicalColumn:Core.Fact - Picking and Shipping.Scheduled Ship Date" ]
+        }
+      }
+    }, {
+      "name" : "Secondary Back Ordered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'B'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Picking and Shipping.Secondary Requested Quantity", "logicalColumn:Core.Fact - Picking and Shipping.Shipment Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Secondary Cancelled Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_SECONDARY_CANCELLED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Shipment Line Secondary Shipped Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_SECONDARY_SHIPPED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Shipment Line Secondary Staged Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF.SHIPMENT_LINE_SECONDARY_STAGED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_WSH_PICK_AND_SHIP_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WSH_PICK_AND_SHIP_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Project.Project Detail", "logicalLevel:Core.Dim - Customer.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Ship Actual ShipDate.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Customer Account.Detail", "logicalLevel:Core.Dim - Ship Staging Sub Inventory Location.Dim - Ship Staging Sub Inventory Location Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Ship Picked Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Customer Ship To.Dim - Customer Ship To Detail", "logicalLevel:Core.Dim - OM Sales Business Unit.Dim - OM Sales Business Unit Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Ship Pick Wave Creation Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Ship Requested Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Ship Schedule Ship Date.Detail", "logicalLevel:Core.Dim - Unit of Measure Transaction.Detail", "logicalLevel:Core.Dim - Picking and Shipping Details.Dim - Picking and Shipping Details Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Ship Shipment Creation Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Ship Shipment Line Creation Date.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar Ship Actual Ship Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar Ship Pick Wave Creation Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar Ship Picked Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar Ship Requested Date.Day", "logicalLevel:Core.Dim - Unit of Measure Secondary.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar Ship Schedule Ship Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar Ship Shipment Creation Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar Ship Shipment Line Creation Date.Day", "logicalLevel:Core.Dim - Ship Stagging Sub Inventory.Dim - Ship Stagging Sub Inventory Detail", "logicalLevel:Core.Dim - Ship Pick From Locator.Dim - Ship Pick From Locator Detail", "logicalLevel:Core.Dim - Ship Pick From Sub Inventory.Dim - Ship Pick From Sub Inventory Detail", "logicalLevel:Core.Dim - Ship Pick from Sub Inventory Location.Dim - Ship Pick from Sub Inventory Location Detail", "logicalLevel:Core.Dim - Ship Serial Number.Dim - Ship Serial Number Detail", "logicalLevel:Core.Dim - Ship Stagging Locator.Dim - Ship Stagging Locator Detail", "logicalLevel:Core.Dim - Ship Pick wave Created By.Dim - Ship Pick wave Created By Detail", "logicalLevel:Core.Dim - Task.Task Detail", "logicalLevel:Core.Dim - OM Status Orders.Dim - OM Status Orders Detail", "logicalLevel:Core.Dim - Carrier.Dim - Carrier Detail", "logicalLevel:Core.Dim - Profit Center Business Unit.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_SCM_INV_INVENTORY_ORG_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_ORG_TRANSACTIONS_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Picking and Shipping Details.Security Context Code - Inv Org" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_SCM_INV_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Picking and Shipping Details.Security Context Code - Inv BU" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Carrier",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Account Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Ship To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Ship Actual ShipDate",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Ship Pick Wave Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Ship Picked Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Ship Requested Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Ship Schedule Ship Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Ship Shipment Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Ship Shipment Line Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar Ship Actual Ship Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar Ship Pick Wave Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar Ship Picked Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar Ship Requested Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar Ship Schedule Ship Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar Ship Shipment Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar Ship Shipment Line Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inv Item Catalog Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Item Category Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Sales Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Status Orders",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Picking and Shipping Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Profit Center Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ship Pick From Locator",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ship Pick From Sub Inventory",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ship Pick from Sub Inventory Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ship Pick wave Created By",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ship Serial Number",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ship Stagging Locator",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ship Stagging Sub Inventory",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ship Staging Sub Inventory Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Task",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure Secondary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure Transaction",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

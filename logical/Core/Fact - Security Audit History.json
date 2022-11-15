@@ -1,0 +1,42 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Security Audit History",
+    "tags" : [ "Project:Oracle Analytics for Fusion Common" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Count of Audit Records",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "CUSTOMZN_SECURITY_AUDIT_DETAIL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.CUSTOMZN_SECURITY_AUDIT_DETAIL.ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "CUSTOMZN_SECURITY_AUDIT_DETAIL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.CUSTOMZN_SECURITY_AUDIT_DETAIL" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Security Audit History.Dim - Security Audit History Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Security Audit History",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

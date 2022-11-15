@@ -1,0 +1,248 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - NetSuite Work Order",
+    "tags" : [ "Project:NetSuite Analytics Warehouse - NetSuite Manufacturing" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "<<<<<<<<<<<<<< TRANSACTION >>>>>>>>>>>>>>>",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Number of Work Orders",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_WORK_ORDER_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WORK_ORDER_F.ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Bill of Materials Revision.Total", "logicalLevel:Core.Dim - NetSuite Work Order Details.NetSuite Work Order Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "<<<<<<<<<<<<<< TRANSACTION LINES>>>>>>>>>>>>>>>",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Number of Work Order Lines",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_WORK_ORDER_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WORK_ORDER_LINES_F.TRANSACTION" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Work Order Details.NetSuite Work Order Line" ]
+      }
+    }, {
+      "name" : "Item Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_WORK_ORDER_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WORK_ORDER_LINES_F.QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Work Order Details.NetSuite Work Order Line" ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_NS_WORK_ORDER_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WORK_ORDER_F" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Exchange Rate Type.Detail", "logicalLevel:Core.Dim - Date NetSuite Gregorian Calendar.Day", "logicalLevel:Core.Dim - NetSuite Bill of Materials Revision.Detail", "logicalLevel:Core.Dim - Netsuite Manufacturing Routing.Detail", "logicalLevel:Core.Dim - NetSuite Currency.Detail", "logicalLevel:Core.Dim - NetSuite Subsidiary.Detail", "logicalLevel:Core.Dim - NetSuite Customer.Detail", "logicalLevel:Core.Dim - NetSuite Department.Detail", "logicalLevel:Core.Dim - NetSuite Classification.Detail", "logicalLevel:Core.Dim - NetSuite Modified By User.Detail", "logicalLevel:Core.Dim - NetSuite Location.Detail", "logicalLevel:Core.Dim - NetSuite Created By User.Detail", "logicalLevel:Core.Dim - NetSuite Accounting Period.Detail", "logicalLevel:Core.Dim - NetSuite Work Order Details.NetSuite Work Order Header", "logicalLevel:Core.Dim - NetSuite Bill of Materials.Detail", "logicalLevel:Core.Dim - NetSuite Work Order Status.Detail", "logicalLevel:Core.Dim - NetSuite Outsourcing Charge Item.Detail", "logicalLevel:Core.Dim - NetSuite Fiscal Calendar.Fiscal Date", "logicalLevel:Core.Dim - NetSuite Item.Detail", "logicalLevel:Core.Dim - NetSuite Manufacturing Details.Detail", "logicalLevel:Core.Dim - Netsuite Work Order Link.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WORK_ORDER_F.SUBSIDIARY", "variable:NetSuite - List of Subsidiaries.NETSUITE_SUBSIDIARY_LIST" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_NS_WORK_ORDER_LINES_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WORK_ORDER_LINES_F" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Item.Detail", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Detail", "logicalLevel:Core.Dim - NetSuite Inventory Location.Detail", "logicalLevel:Core.Dim - NetSuite Entity.Detail", "logicalLevel:Core.Dim - NetSuite Fiscal Calendar.Fiscal Date", "logicalLevel:Core.Dim - NetSuite Department.Detail", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Detail", "logicalLevel:Core.Dim - NetSuite Classification.Detail", "logicalLevel:Core.Dim - Date NetSuite Gregorian Calendar.Day", "logicalLevel:Core.Dim - NetSuite Bill of Materials Revision.Detail", "logicalLevel:Core.Dim - Netsuite Manufacturing Routing.Detail", "logicalLevel:Core.Dim - NetSuite Currency.Detail", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Detail", "logicalLevel:Core.Dim - NetSuite Account.Detail", "logicalLevel:Core.Dim - NetSuite Bill of Materials.Detail", "logicalLevel:Core.Dim - NetSuite Subsidiary.Detail", "logicalLevel:Core.Dim - NetSuite Customer.Detail", "logicalLevel:Core.Dim - NetSuite Accounting Period.Detail", "logicalLevel:Core.Dim - NetSuite Modified By User.Detail", "logicalLevel:Core.Dim - NetSuite Accounting Book.Detail", "logicalLevel:Core.Dim - NetSuite Location.Detail", "logicalLevel:Core.Dim - NetSuite Created By User.Detail", "logicalLevel:Core.Dim - NetSuite Exchange Rate Type.Detail", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Detail", "logicalLevel:Core.Dim - NetSuite Expense Account.Detail", "logicalLevel:Core.Dim - NetSuite Outsourcing Charge Item.Detail", "logicalLevel:Core.Dim - NetSuite Work Order Details.NetSuite Work Order Line", "logicalLevel:Core.Dim - NetSuite Work Order Status.Detail", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Merchandise Hierarchy Node", "logicalLevel:Core.Dim - NetSuite Manufacturing Details.Detail", "logicalLevel:Core.Dim - Netsuite Work Order Link.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_WORK_ORDER_LINES_F.SUBSIDIARY", "variable:NetSuite - List of Subsidiaries.NETSUITE_SUBSIDIARY_LIST" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_CONTENT_REPORTING_CONFIG",
+      "functionalGroup" : "REPORT_CONFIG",
+      "status" : "DISABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - NetSuite Subsidiary.Subsidiary Identifier", "variable:NetSuite - List of Subsidiaries.NETSUITE_SUBSIDIARY_LIST" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date NetSuite Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Book Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Book",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Period",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Bill of Materials Revision",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Bill of Materials",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Classification",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Committed Inventory",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Created By User",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Department",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Exchange Rate Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Expense Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Inventory Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Inventory Reporting Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Inventory Subsidiary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Manufacturing Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Merchandise Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Modified By User",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Outsourcing Charge Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Subsidiary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Work Order Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Work Order Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Netsuite Manufacturing Routing",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Netsuite Work Order Link",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

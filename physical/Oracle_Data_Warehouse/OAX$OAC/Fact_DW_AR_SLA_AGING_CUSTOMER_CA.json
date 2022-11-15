@@ -1,0 +1,506 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_AR_SLA_AGING_CUSTOMER_CA",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_AR_AGING_INV_RCPT_CUSTOMER_CA",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 = %6 AND %7 IN ('N', '~NOVALUE~')",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.FISCAL_DAY_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.SNAPSHOT_CAPTURED_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.FISCAL_PERIOD_TYPE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.FISCAL_PERIOD_TYPE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.ADJUSTMENT_PERIOD_FLAG"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Aging_Date_Fiscal_Calendar",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 = %6 AND %7 IN ('N', '~NOVALUE~')",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Aging_Date_Fiscal_Calendar.FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Aging_Date_Fiscal_Calendar.FISCAL_PERIOD_TYPE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.FISCAL_PERIOD_TYPE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Aging_Date_Fiscal_Calendar.FISCAL_DAY_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.SNAPSHOT_CAPTURED_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Aging_Date_Fiscal_Calendar.ADJUSTMENT_PERIOD_FLAG"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_BALANCING_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D.GL_BALANCING_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_BLNC_SGMNT_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D.GL_BLNC_SGMNT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_BALANCING_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base.GL_BALANCING_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_BLNC_SGMNT_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base.GL_BLNC_SGMNT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_Common",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.COMMON_BU_ORG_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_Common.BUSINESS_UNIT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.COST_CENTER_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D.COST_CENTER_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.COST_CENTER_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D.COST_CENTER_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.COST_CENTER_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base.COST_CENTER_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.COST_CENTER_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base.COST_CENTER_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_AnalyticsCurrency",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GLOBAL_CURRENCY_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_AnalyticsCurrency.CURRENCY_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_DocumentCurrency",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.TRANSACTION_CURRENCY_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_DocumentCurrency.CURRENCY_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_LedgerCurrency",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.LEDGER_CURRENCY_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_LedgerCurrency.CURRENCY_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CUSTOMER_ACCOUNT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.CUSTOMER_ACCOUNT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CUSTOMER_ACCOUNT_D.CUSTOMER_ACCOUNT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CUSTOMER_ACCOUNT_D_Bill_To",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.BILL_TO_CUSTOMER_ACCOUNT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CUSTOMER_ACCOUNT_D_Bill_To.CUSTOMER_ACCOUNT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_CODE_COMBINATION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D.CODE_COMBINATION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT1",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT1_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT10",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT10_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT10",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT10_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT1",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT1_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT2",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT2_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT2",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT2_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT3",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT3_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT3",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT3_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT4",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT4_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT4",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT4_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT5",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT5_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT5",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT5_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT6",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT6_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT6",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT6_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT7",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT7_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT7",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT7_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT8",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT8_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT8",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT8_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT9",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT9_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT9",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GL_SEGMENT9_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Billing_Revenue_Mgmt_Org",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.RECEIVABLES_BU_ORG_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Billing_Revenue_Mgmt_Org.ORGANIZATION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.RECEIPT_BU_ORG_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org.ORGANIZATION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.LEDGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D.LEDGER_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_ENTITY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.LEGAL_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_ENTITY_D.LEGAL_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.NATURAL_ACCOUNT_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D.NATURAL_ACCOUNT_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.NTRL_ACNT_SGMNT_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D.NTRL_ACNT_SGMNT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.NATURAL_ACCOUNT_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D_Base.NATURAL_ACCOUNT_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.NTRL_ACNT_SGMNT_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D_Base.NTRL_ACNT_SGMNT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.CUSTOMER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D.PARTY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_Customer",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.CUSTOMER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_Customer.PARTY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_Customer_Bill_To",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.BILL_TO_CUSTOMER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_Customer_Bill_To.PARTY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_AR_BU_ARAgingICustomerFact",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.RECEIVABLES_BU_ORG_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_AR_BU_ARAgingICustomerFact.SEC_OBJ_MEMBER_VAL"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_AR_BU_ARAgingICustomerFactReceiptBU",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.RECEIPT_BU_ORG_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_AR_BU_ARAgingICustomerFactReceiptBU.SEC_OBJ_MEMBER_VAL"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "CUSTOMER_ACCOUNT_ID",
+        "CUSTOMER_ID",
+        "CUSTOMER_SITE_USE_ID",
+        "FISCAL_PERIOD_SET_NAME",
+        "FISCAL_PERIOD_TYPE",
+        "LEDGER_ID",
+        "LEGAL_ENTITY_ID",
+        "RECEIVABLES_BU_ORG_ID",
+        "RECEIVABLES_CODE_COMB_ID",
+        "SNAPSHOT_CAPTURED_DATE",
+        "SNAPSHOT_PERIOD_END_DATE_ID",
+        "TRANSACTION_CURRENCY_CODE",
+        "GL_CODE_COMBINATION_ID",
+        "PAYMENT_SCHEDULE_STATUS_CODE",
+        "POST_SLA_CCID_FLAG",
+        "RECEIPT_BU_ORG_ID"
+      ]
+    ]
+  }
+}

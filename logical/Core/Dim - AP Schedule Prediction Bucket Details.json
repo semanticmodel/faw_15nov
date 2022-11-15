@@ -1,0 +1,87 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - AP Schedule Prediction Bucket Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Classifier Score Bucket" ],
+    "logicalColumns" : [ {
+      "name" : "Classifier Score Bucket",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_PREDICTION_BUCKETS_P",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_PREDICTION_BUCKETS_P.BUCKET" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Classifier Score Decile",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_PREDICTION_BUCKETS_P",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_PREDICTION_BUCKETS_P.DECILE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Run Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_PREDICTION_BUCKETS_P",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_PREDICTION_BUCKETS_P.PREDICTION_RUN_DATETIME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AP_PREDICTION_BUCKETS_P",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_PREDICTION_BUCKETS_P" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AP Schedule Prediction Bucket Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Classifier Score Bucket" ],
+        "displayKey" : "Classifier Score Bucket"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "AP Schedule Prediction Bucket Details",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

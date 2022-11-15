@@ -1,0 +1,72 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Security - Opportunity Quote Access Group",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Quote ID" ],
+    "logicalColumns" : [ {
+      "name" : "Quote ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Security_SEC_SECURE_BY_OPPORTUNITY_QUOTE_ACCESS_GRP_CX_SALES",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OPPORTUNITY_QUOTE_ACCESS_GRP_CX_SALES.QUOTE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Security Enabled Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Security_SEC_SECURE_BY_OPPORTUNITY_QUOTE_ACCESS_GRP_CX_SALES",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OPPORTUNITY_QUOTE_ACCESS_GRP_CX_SALES.SECURITY_ENABLE_FLG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Security_SEC_SECURE_BY_OPPORTUNITY_QUOTE_ACCESS_GRP_CX_SALES",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OPPORTUNITY_QUOTE_ACCESS_GRP_CX_SALES" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Security - Opportunity Quote Access Group.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Quote ID" ],
+        "displayKey" : "Quote ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Security - Opportunity Quote Access Group",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

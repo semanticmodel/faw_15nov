@@ -1,0 +1,104 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Ship Pick wave Created By",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Login Name" ],
+    "logicalColumns" : [ {
+      "name" : "Department Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_USER_D_Ship_Pickwave_Created_By",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_Ship_Pickwave_Created_By.DEPARTMENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Pick wave Created By Detail"
+    }, {
+      "name" : "User Full Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_USER_D_Ship_Pickwave_Created_By",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_Ship_Pickwave_Created_By.FULL_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Pick wave Created By Detail"
+    }, {
+      "name" : "Login Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_USER_D_Ship_Pickwave_Created_By",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_Ship_Pickwave_Created_By.USERNAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Pick wave Created By Detail"
+    }, {
+      "name" : "Department Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Department Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_USER_D_Ship_Pickwave_Created_By",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_ORGANIZATION_D_TL.INV_ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_Ship_Pickwave_Created_By.DEPARTMENT_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Pick wave Created By Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_USER_D_Ship_Pickwave_Created_By",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_Ship_Pickwave_Created_By" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Ship Pick wave Created By.Dim - Ship Pick wave Created By Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - Ship Pick wave Created By Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - Ship Pick wave Created By Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - Ship Pick wave Created By Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Login Name" ],
+        "displayKey" : "User Full Name",
+        "additionalKeys" : [ [ "User Full Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Ship Pick wave Created By",
+        "levels" : [ "Dim - Ship Pick wave Created By Total", "Dim - Ship Pick wave Created By Detail" ]
+      } ]
+    }
+  }
+}

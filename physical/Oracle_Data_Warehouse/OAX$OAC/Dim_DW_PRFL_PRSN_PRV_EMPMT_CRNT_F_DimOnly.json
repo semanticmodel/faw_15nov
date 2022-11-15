@@ -1,0 +1,48 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_PRFL_PRSN_PRV_EMPMT_CRNT_F_DimOnly",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PRFL_PRSN_PRV_EMPMT_CRNT_F",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_FUNCTION_D_TL_PerPrvEmpJobFunctionDimOnly",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_FUNCTION_D_TL_PerPrvEmpJobFunctionDimOnly.JOB_FUNCTION_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_PRV_EMPMT_CRNT_F_DimOnly.JOB_FUNCTION",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_FUNCTION_D_TL_PerPrvEmpJobFunctionDimOnly.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_GEOGRAPHY_D_PerPrevEmpCtrDimOnly",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_GEOGRAPHY_D_PerPrevEmpCtrDimOnly.GEOGRAPHY_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_PRV_EMPMT_CRNT_F_DimOnly.COUNTRY_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_GEOGRAPHY_D_PerPrevEmpCtrDimOnly.START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_PRV_EMPMT_CRNT_F_DimOnly.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_GEOGRAPHY_D_PerPrevEmpCtrDimOnly.END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      }
+    ],
+    "additionalKeys": [
+      [
+        "ASSIGNMENT_ID",
+        "BUSINESS_GROUP_ID",
+        "PROFILE_ITEM_ID"
+      ]
+    ]
+  }
+}

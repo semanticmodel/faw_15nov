@@ -1,0 +1,96 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Fins - AP Expense Distributions (Pre-SLA)",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Accounts Payable", "Project:Oracle Analytics for Fusion Financials" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Expense Distribution Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_EXPENSE_DISTRIBUTN_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('AWT') THEN 0 ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_EXPENSE_DIST_CF.PREPAY_DIST_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_EXPENSE_DIST_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Expense Distribution Count",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_EXPENSE_DISTRIBUTN_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' THEN -(1) WHEN %1 = 'NO' THEN 1 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_EXPENSE_DIST_CF.DISTRIBUTION_CANCELLED_FLAG" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Expense Distribution Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_EXPENSE_DISTRIBUTN_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('AWT') THEN 0 ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_EXPENSE_DIST_CF.PREPAY_DIST_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_EXPENSE_DIST_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Expense Distribution Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_EXPENSE_DISTRIBUTN_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('AWT') THEN 0 ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_EXPENSE_DIST_CF.PREPAY_DIST_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_EXPENSE_DIST_CF.TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AP_EXPENSE_DISTRIBUTN_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_EXPENSE_DIST_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AP Expense Distribution Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - AP Expense Distribution Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

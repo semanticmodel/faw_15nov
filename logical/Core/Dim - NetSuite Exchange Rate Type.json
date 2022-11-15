@@ -1,0 +1,93 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - NetSuite Exchange Rate Type",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Rate Type Code" ],
+    "logicalColumns" : [ {
+      "name" : "Rate Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_EXCHANGERATETYPE_G",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G.CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_NS_EXCHANGERATETYPE_G_Header",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G_Header.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Rate Type",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_EXCHANGERATETYPE_G",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G.DISPLAYNAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_NS_EXCHANGERATETYPE_G_Header",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G_Header.DISPLAYNAME" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_NS_EXCHANGERATETYPE_G",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Exchange Rate Type.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_NS_EXCHANGERATETYPE_G_Header",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G_Header" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Exchange Rate Type.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Rate Type Code" ],
+        "displayKey" : "Rate Type Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "NetSuite Exchange Rate Type",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

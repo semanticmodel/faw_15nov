@@ -1,0 +1,51 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_DOC_STYLE_LINES_TL",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_DOC_STYLE_LINES_TL",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4) AND %5 = %6",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DOC_STYLE_LINES_TL.STYLE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.DOCUMENT_STYLE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DOC_STYLE_LINES_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_TYPE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DOC_STYLE_LINES_TL.DOCUMENT_SUBTYPE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4) AND %5 = %6",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DOC_STYLE_LINES_TL.STYLE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SOURCE_AGREEMENT_DOC_STYLE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DOC_STYLE_LINES_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SOURCE_AGREEMENT_DOC_TYPE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DOC_STYLE_LINES_TL.DOCUMENT_SUBTYPE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      }
+    ],
+    "additionalKeys": [
+      [
+        "STYLE_ID",
+        "DOCUMENT_SUBTYPE",
+        "LANGUAGE"
+      ]
+    ]
+  }
+}

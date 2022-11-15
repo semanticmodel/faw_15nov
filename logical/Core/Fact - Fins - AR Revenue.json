@@ -1,0 +1,1376 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Fins - AR Revenue",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Accounts Receivable", "Project:Oracle Analytics for Fusion Financials" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-----Non-Monetary Metric-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Quantity Billed",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('ROUNDING') THEN %2 + %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNTING_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.QUANTITY_CREDITED", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.QUANTITY_INVOICED" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1 + %2",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.QUANTITY_CREDITED", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.QUANTITY_INVOICED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - SLA Distribution Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AR Revenue Line Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Ledger Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Transaction Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_TRX_TOTAL_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.LEDGER_TOTAL_INV_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - SLA Distribution Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AR Revenue Header Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Line Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_TRXLN_TOTAL_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.LEDGER_LINE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - SLA Distribution Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AR Revenue Line Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Distribution Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.LEDGER_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Revenue Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'REV' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'REV' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.LEDGER_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unearned Revenue Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNEARN' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNEARN' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.LEDGER_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Freight Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'FREIGHT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'FREIGHT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.LEDGER_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Tax Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'TAX' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'TAX' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.LEDGER_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Long Term Deferred Revenue",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Revenue.Unearned Revenue Amount", "logicalColumn:Core.Fact - Fins - AR Revenue.Short Term Deferred Revenue" ]
+        }
+      }
+    }, {
+      "name" : "Short Term Deferred Revenue",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNEARN' THEN  CASE  WHEN %2 IS NULL  OR %2 <=  CURRENT_DATE  THEN %3 ELSE  CASE  WHEN %2 <  CURRENT_DATE  + 365 THEN %3 ELSE %3 * 365 / (%2 -  CURRENT_DATE ) END  END  ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SCH_RULE_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNEARN' THEN  CASE  WHEN %2 IS NULL  OR %2 <=  CURRENT_DATE  THEN %3 ELSE  CASE  WHEN %2 <  CURRENT_DATE  + 365 THEN %3 ELSE %3 * 365 / (%2 -  CURRENT_DATE ) END  END  ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SCH_RULE_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.LEDGER_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unbilled Receivable Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNBILL' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNBILL' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.LEDGER_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Analytics Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Transaction Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_TRX_TOTAL_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.GLOBAL_TOTAL_INV_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - SLA Distribution Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AR Revenue Header Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Line Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_TRXLN_TOTAL_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.GLOBAL_LINE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - SLA Distribution Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AR Revenue Line Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Distribution Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.GLOBAL_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Revenue Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'REV' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'REV' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.GLOBAL_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unearned Revenue Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNEARN' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNEARN' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.GLOBAL_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Freight Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'FREIGHT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'FREIGHT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.GLOBAL_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Tax Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'TAX' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'TAX' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.GLOBAL_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Long Term Deferred Revenue in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Revenue.Unearned Revenue Amount in Analytics Currency", "logicalColumn:Core.Fact - Fins - AR Revenue.Short Term Deferred Revenue in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Short Term Deferred Revenue in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNEARN' THEN  CASE  WHEN %2 IS NULL  OR %2 <=  CURRENT_DATE  THEN %3 ELSE  CASE  WHEN %2 <  CURRENT_DATE  + 365 THEN %3 ELSE %3 * 365 / (%2 -  CURRENT_DATE ) END  END  ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SCH_RULE_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNEARN' THEN  CASE  WHEN %2 IS NULL  OR %2 <=  CURRENT_DATE  THEN %3 ELSE  CASE  WHEN %2 <  CURRENT_DATE  + 365 THEN %3 ELSE %3 * 365 / (%2 -  CURRENT_DATE ) END  END  ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SCH_RULE_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.GLOBAL_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unbilled Receivable Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNBILL' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNBILL' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.GLOBAL_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Transaction Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_TRX_TOTAL_TRX_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TRANSACTION_TOTAL_INV_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - SLA Distribution Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AR Revenue Header Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Line Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_TRXLN_TOTAL_TRX_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TRANSACTION_LINE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - SLA Distribution Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AR Revenue Line Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Distribution Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TRX_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Revenue Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'REV' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'REV' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TRX_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unearned Revenue Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNEARN' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNEARN' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TRX_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Freight Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'FREIGHT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'FREIGHT' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TRX_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Tax Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'TAX' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'TAX' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TRX_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Long Term Deferred Revenue in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Revenue.Unearned Revenue Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AR Revenue.Short Term Deferred Revenue in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Short Term Deferred Revenue in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNEARN' THEN  CASE  WHEN %2 IS NULL  OR %2 <=  CURRENT_DATE  THEN %3 ELSE  CASE  WHEN %2 <  CURRENT_DATE  + 365 THEN %3 ELSE %3 * 365 / (%2 -  CURRENT_DATE ) END  END  ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SCH_RULE_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNEARN' THEN  CASE  WHEN %2 IS NULL  OR %2 <=  CURRENT_DATE  THEN %3 ELSE  CASE  WHEN %2 <  CURRENT_DATE  + 365 THEN %3 ELSE %3 * 365 / (%2 -  CURRENT_DATE ) END  END  ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SCH_RULE_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TRX_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unbilled Receivable Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNBILL' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.XLA_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'UNBILL' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TRX_DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Internal Calculation Metric-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Date Diff between Rule End Date and System Date",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1 -  CURRENT_DATE ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SCH_RULE_END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1 -  CURRENT_DATE ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SCH_RULE_END_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Date Diff between Rule End Date and System Date 2",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CURRENT_DATE  - %1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SCH_RULE_END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CURRENT_DATE  - %1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SCH_RULE_END_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Current Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CURRENT_DATE "
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CURRENT_DATE "
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AR_REVENUE_AGG_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_FULFILLMENT_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_FULFILLMENT_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Natural Account Hierarchy.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Party.Detail", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Detail", "logicalLevel:Core.Dim - Ledger Set.Detail", "logicalLevel:Core.Dim - GL Segment1.Detail", "logicalLevel:Core.Dim - AR Distributions Account.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - GL Segment3.Detail", "logicalLevel:Core.Dim - AR Invoicing Rule.Detail", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment9.Detail", "logicalLevel:Core.Dim - AR Revenue Transaction Details.Detail", "logicalLevel:Core.Dim - AR Revenue Header Details.Detail", "logicalLevel:Core.Dim - Invoice Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Project.Project Detail", "logicalLevel:Core.Dim - AR Scheduling Rule.Detail", "logicalLevel:Core.Dim - Customer.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar OM Fulfilled Date.Detail", "logicalLevel:Core.Dim - Created By.Detail", "logicalLevel:Core.Dim - OM Original Inventory Item.Dim - OM Original Inventory Item Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar OM Actual Ship Date.Day", "logicalLevel:Core.Dim - AR Revenue Line Details.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Payment Terms.Detail", "logicalLevel:Core.Dim - Customer Ship To Location.Detail", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Detail", "logicalLevel:Core.Dim - Customer Account.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar OM RMA Receipt Date.Detail", "logicalLevel:Core.Dim - Customer Ship To Contact.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar OM Order Submit Date.Day", "logicalLevel:Core.Dim - SLA Distribution Details.Detail", "logicalLevel:Core.Dim - GL Segment4.Detail", "logicalLevel:Core.Dim - AR Transaction Class.Detail", "logicalLevel:Core.Dim - AR Transaction Details.Detail", "logicalLevel:Core.Dim - AR Transaction Source.Detail", "logicalLevel:Core.Dim - Balancing Segment.Detail", "logicalLevel:Core.Dim - AR Transaction Type.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - AR Transaction Created By.Detail", "logicalLevel:Core.Dim - Customer Bill To Contact.Detail", "logicalLevel:Core.Dim - GL Account.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Detail", "logicalLevel:Core.Dim - Cost Center.Detail", "logicalLevel:Core.Dim - GL Segment5.Detail", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Detail", "logicalLevel:Core.Dim - Salesperson.Detail", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Billing Business Unit.Detail", "logicalLevel:Core.Dim - AR Distribution Created By.Detail", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Detail", "logicalLevel:Core.Dim - Customer Bill To Location.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - AR Interface Header Attributes.Detail", "logicalLevel:Core.Dim - Cost Center Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment2.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - GL Segment6.Detail", "logicalLevel:Core.Dim - GL Segment7.Detail", "logicalLevel:Core.Dim - GL Segment10.Detail", "logicalLevel:Core.Dim - Natural Account.Detail", "logicalLevel:Core.Dim - AR Transaction Accounting Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment8.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar OM Promised Arrival Date.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - OM Item Catalog Category.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar OM Requested Ship Date.Detail", "logicalLevel:Core.Dim - Customer Ship To.Dim - Customer Ship To Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar OM Actual Ship Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar OM Order Submit Date.Detail", "logicalLevel:Core.Dim - OM Configured Inventory Item.Dim - OM Configured Inventory Item Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar OM Requested Ship Date.Day", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - OM Sales Business Unit.Dim - OM Sales Business Unit Detail", "logicalLevel:Core.Dim - OM Sales Orders Details.Fulfillment Detail", "logicalLevel:Core.Dim - OM Status Fulfillment Lines.Dim - OM Status Fulfillment Lines Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar OM Scheduled Ship Date.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar OM Order Date.Day", "logicalLevel:Core.Dim - Date Fiscal Calendar OM Order Date.Detail", "logicalLevel:Core.Dim - OM Order Totals Component.Dim - OM Order Totals Component Detail", "logicalLevel:Core.Dim - AR Paying Customer.Detail", "logicalLevel:Core.Dim - AR Paying Customer Account.Detail", "logicalLevel:Core.Dim - AR Paying Customer Location.Detail", "logicalLevel:Core.Dim - OM Status Orders.Dim - OM Status Orders Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar OM Creation Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar OM Promised Ship Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar OM Scheduled Arrival Date.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar OM Creation Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar OM Fulfilled Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar OM Promised Arrival Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar OM Promised Ship Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar OM RMA Receipt Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar OM Scheduled Arrival Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar OM Scheduled Ship Date.Day", "logicalLevel:Core.Dim - OM Submitted By.Detail", "logicalLevel:Core.Dim - Expenditure Organization.Expenditure Organization Detail", "logicalLevel:Core.Dim - Expenditure Type.Expenditure Type Detail", "logicalLevel:Core.Dim - Profit Center Business Unit.Detail", "logicalLevel:Core.Dim - Sales Profit Center Business Unit.Detail", "logicalLevel:Core.Dim - Task.Task Detail", "logicalLevel:Core.Dim - AR Interface Line Attributes.Detail", "logicalLevel:Core.Dim - OM Shipment Status.Dim - OM Shipment Status Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 <> 'EXCHANGE_GAIN_LOSS'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNTING_CLASS_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AR_REVENUE_CF",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment3.Detail", "logicalLevel:Core.Dim - Customer Ship To Contact.Detail", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - GL Segment8.Detail", "logicalLevel:Core.Dim - Cost Center.Detail", "logicalLevel:Core.Dim - GL Segment5.Detail", "logicalLevel:Core.Dim - AR Invoicing Rule.Detail", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Scheduling Rule.Detail", "logicalLevel:Core.Dim - Cost Center Hierarchy.Detail", "logicalLevel:Core.Dim - Natural Account Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Transaction Class.Detail", "logicalLevel:Core.Dim - Customer Bill To Contact.Detail", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Detail", "logicalLevel:Core.Dim - Natural Account.Detail", "logicalLevel:Core.Dim - GL Segment6.Detail", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment7.Detail", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment9.Detail", "logicalLevel:Core.Dim - Invoice Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - AR Revenue Transaction Details.Distribution", "logicalLevel:Core.Dim - GL Segment1.Detail", "logicalLevel:Core.Dim - AR Revenue Header Details.Detail", "logicalLevel:Core.Dim - GL Segment4.Detail", "logicalLevel:Core.Dim - AR Revenue Line Details.Detail", "logicalLevel:Core.Dim - GL Segment10.Detail", "logicalLevel:Core.Dim - Created By.Detail", "logicalLevel:Core.Dim - AR Billing Business Unit.Detail", "logicalLevel:Core.Dim - AR Payment Terms.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Customer.Detail", "logicalLevel:Core.Dim - Customer Bill To Location.Detail", "logicalLevel:Core.Dim - AR Transaction Accounting Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Customer Account.Detail", "logicalLevel:Core.Dim - GL Account.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Customer Ship To Location.Detail", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Detail", "logicalLevel:Core.Dim - Balancing Segment.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment2.Detail", "logicalLevel:Core.Dim - Ledger Set.Detail", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Detail", "logicalLevel:Core.Dim - Currency.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_FIN_AR_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "AR_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_AR_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - AR Revenue Header Details.Security Context Code - AR Billing BU" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - AR Billing Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Distribution Created By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Distributions Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Interface Header Attributes",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Interface Line Attributes",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Invoicing Rule",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Paying Customer Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Paying Customer Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Paying Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Payment Terms",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Revenue Header Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Revenue Line Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Revenue Transaction Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Scheduling Rule",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Accounting Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Class",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Created By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Source",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Balancing Segment Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Balancing Segment",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Center Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Center",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Created By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Account Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Ship To Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Ship To Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Ship To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar OM Actual Ship Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar OM Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar OM Fulfilled Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar OM Order Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar OM Order Submit Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar OM Promised Arrival Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar OM Promised Ship Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar OM RMA Receipt Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar OM Requested Ship Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar OM Scheduled Arrival Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar OM Scheduled Ship Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar OM Actual Ship Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar OM Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar OM Fulfilled Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar OM Order Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar OM Order Submit Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar OM Promised Arrival Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar OM Promised Ship Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar OM RMA Receipt Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar OM Requested Ship Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar OM Scheduled Arrival Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar OM Scheduled Ship Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Expenditure Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Expenditure Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment1 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment1",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment10 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment10",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment2 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment2",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment3 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment3",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment4 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment4",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment5 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment5",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment6 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment6",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment7 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment7",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment8 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment8",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment9 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment9",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Item Category Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger Set",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Natural Account Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Natural Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Configured Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Item Catalog Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Order Totals Component",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Original Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Sales Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Sales Orders Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Shipment Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Status Fulfillment Lines",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Status Orders",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Submitted By",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Party",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Profit Center Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - SLA Distribution Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Sales Profit Center Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Salesperson",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Task",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

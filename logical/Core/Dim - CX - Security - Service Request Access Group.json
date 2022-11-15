@@ -1,0 +1,72 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Security - Service Request Access Group",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Service Request Id" ],
+    "logicalColumns" : [ {
+      "name" : "Security Enabled Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Security_SEC_SECURE_BY_SERVICE_REQUEST_ACCESS_GRP",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_SERVICE_REQUEST_ACCESS_GRP.SECURITY_ENABLE_FLG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Service Request Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Security_SEC_SECURE_BY_SERVICE_REQUEST_ACCESS_GRP",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_SERVICE_REQUEST_ACCESS_GRP.SERVICE_REQUEST_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Security_SEC_SECURE_BY_SERVICE_REQUEST_ACCESS_GRP",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_SERVICE_REQUEST_ACCESS_GRP" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Security - Service Request Access Group.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Service Request Id" ],
+        "displayKey" : "Service Request Id"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Security - Service Request Access Group",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

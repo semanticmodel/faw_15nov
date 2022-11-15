@@ -1,0 +1,143 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Warehouse Refresh Reject Record Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Job ID" ],
+    "logicalColumns" : [ {
+      "name" : "Job ID",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ERR_RECORDS",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ERR_RECORDS.JOB_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Details"
+    }, {
+      "name" : "Table Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ERR_RECORDS",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ERR_RECORDS.TABLE_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Key Values",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ERR_RECORDS",
+          "physicalExpression" : {
+            "expressionTemplate" : " CAST ( REPLACE(%1,  CHAR(31), ' || ') AS VARCHAR ( 4000 ))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ERR_RECORDS.ERROR_RECORD_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Primary Key Columns",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Table Name",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ERR_RECORDS",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ERR_RECORD_STRUCTURE_View.PRIMARY_KEY_COLUMNS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ERR_RECORDS.TABLE_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Reject Record Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ERR_RECORDS",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ERR_RECORDS.ERROR_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Reject Record Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Reject Record Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ERR_RECORDS",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ERR_CODE_TL.ERROR_MESSAGE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ERR_RECORDS.ERROR_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Reject Record Details",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ERR_RECORDS",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ERR_RECORDS.RESERVED1" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_ERR_RECORDS",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ERR_RECORDS" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Warehouse Refresh Reject Record Details.Details" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "All",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "All",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Details",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Job ID" ],
+        "displayKey" : "Job ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Warehouse Refresh Error Details",
+        "levels" : [ "All", "Details" ]
+      } ]
+    }
+  }
+}

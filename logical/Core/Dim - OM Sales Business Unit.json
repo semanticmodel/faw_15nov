@@ -1,0 +1,73 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - OM Sales Business Unit",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Business Unit Key" ],
+    "logicalColumns" : [ {
+      "name" : "Business Unit Key",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_BUSINESS_UNIT_D_SalesBusinessUnit",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_SalesBusinessUnit.BUSINESS_UNIT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - OM Sales Business Unit Detail"
+    }, {
+      "name" : "Sales Business Unit",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Business Unit Key",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_BUSINESS_UNIT_D_SalesBusinessUnit",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_BUSINESS_UNIT_D_TL_SalesBusinessUnit.BUSINESS_UNIT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_SalesBusinessUnit.BUSINESS_UNIT_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - OM Sales Business Unit Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_BUSINESS_UNIT_D_SalesBusinessUnit",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_SalesBusinessUnit" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - OM Sales Business Unit.Dim - OM Sales Business Unit Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - OM Sales Business Unit Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - OM Sales Business Unit Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - OM Sales Business Unit Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Business Unit Key" ],
+        "displayKey" : "Business Unit Key"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "OM Sales Business Unit",
+        "levels" : [ "Dim - OM Sales Business Unit Total", "Dim - OM Sales Business Unit Detail" ]
+      } ]
+    }
+  }
+}

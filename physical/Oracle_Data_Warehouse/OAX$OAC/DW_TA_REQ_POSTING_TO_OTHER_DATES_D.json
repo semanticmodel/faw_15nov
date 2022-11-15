@@ -1,0 +1,46 @@
+{
+  "physicalTable" : {
+    "name" : "DW_TA_REQ_POSTING_TO_OTHER_DATES_D",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT\r\n\tREQUISITION_ID,\r\n\tMin(req_draft_date) AS REQ_DRAFT_DATE,\r\n\tMin(req_approved_dt) AS REQ_APPROVED_DT,\r\n\tMin(req_jobformatting_date) AS REQ_JOBFORMATTING_DATE,\r\n\tMin(req_job_posting_date) AS REQ_JOB_POSTING_DATE,\r\n\tMax(req_open_date) AS REQ_OPEN_DATE\r\nFROM\r\n\t(\r\n\t\tSELECT\r\n\t\t\ta.requisition_id,\r\n\t\t\tDecode(c.phase_code, 'REQUISITION_DRAFT', a.req_event_date) AS REQ_DRAFT_DATE,\r\n\t\t\tDecode(c.phase_code, 'REQUISITION_APPROVAL', a.req_event_date) AS REQ_APPROVED_DT,\r\n\t\t\tDecode(c.phase_code, 'REQUISITION_JOB_FORMATTING', a.req_event_date) AS REQ_JOBFORMATTING_DATE,\r\n\t\t\tDecode(c.phase_code, 'REQUISITION_POSTING', a.req_event_date) AS REQ_JOB_POSTING_DATE,\r\n\t\t\tDecode(c.phase_code, 'REQUISITION_OPEN', a.req_event_date) AS REQ_OPEN_DATE\r\n\t\tFROM\r\n\t\t\tdw_ta_job_req_event_f        a,\r\n\t\t\tdw_ta_phase_d                c,\r\n\t\t\tdw_ta_history_event_type_d   d\r\n\t\tWHERE\r\n\t\t\ta.req_phase_id = c.phase_id AND a.req_event_type_id = d.event_type_id AND(d.event_type_code = 'PHASE_ACTIVATION')AND c.phase_code IN(\r\n\t\t\t\t'REQUISITION_DRAFT',\r\n\t\t\t\t'REQUISITION_APPROVAL',\r\n\t\t\t\t'REQUISITION_JOB_FORMATTING',\r\n\t\t\t\t'REQUISITION_POSTING',\r\n\t\t\t\t'REQUISITION_OPEN'\r\n\t\t\t)\r\n\t)\r\nGROUP BY\r\n\trequisition_id\r\n"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "REQ_DRAFT_DATE",
+      "dataType" : "TIMESTAMP",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "REQ_APPROVED_DT",
+      "dataType" : "TIMESTAMP",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "REQUISITION_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "REQ_OPEN_DATE",
+      "dataType" : "TIMESTAMP",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "REQ_JOBFORMATTING_DATE",
+      "dataType" : "TIMESTAMP",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "REQ_JOB_POSTING_DATE",
+      "dataType" : "TIMESTAMP",
+      "length" : 0,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "additionalKeys" : [ [ "REQUISITION_ID" ] ]
+  }
+}

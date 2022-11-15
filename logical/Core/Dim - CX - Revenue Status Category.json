@@ -1,0 +1,98 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Revenue Status Category",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Revenue Status Category Code" ],
+    "logicalColumns" : [ {
+      "name" : "Revenue Status Category Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory_PromptOnly.CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Revenue Status Category",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Revenue Status Category Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory_PromptOnly.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory_PromptOnly.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Revenue Status Category.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory_PromptOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_RevenueStatusCategory" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Revenue Status Category.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Revenue Status Category Code" ],
+        "displayKey" : "Revenue Status Category Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Revenue Status Category",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

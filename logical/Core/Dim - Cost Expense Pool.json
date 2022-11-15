@@ -1,0 +1,73 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Cost Expense Pool",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Expense Pool ID" ],
+    "logicalColumns" : [ {
+      "name" : "Expense Pool ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_EXPENSE_POOLS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_EXPENSE_POOLS_D.EXPENSE_POOL_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Expense Pool Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Expense Pool ID",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_EXPENSE_POOLS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CST_EXPENSE_POOLS_D_TL.EXPENSE_POOL_DESC", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_EXPENSE_POOLS_D.EXPENSE_POOL_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CST_EXPENSE_POOLS_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_EXPENSE_POOLS_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Cost Expense Pool.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Expense Pool ID" ],
+        "displayKey" : "Expense Pool ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Cost Expense Pool",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

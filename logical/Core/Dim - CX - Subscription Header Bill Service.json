@@ -1,0 +1,119 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Subscription Header Bill Service",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Subscription Header Bill Service Code" ],
+    "logicalColumns" : [ {
+      "name" : "Subscription Header Bill Service Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader_PromptOnly.CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Subscription Header Bill Service Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Subscription Header Bill Service Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader_PromptOnly.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader_PromptOnly.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Subscription Header Bill Service Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Subscription Header Bill Service Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader_PromptOnly.DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader_PromptOnly.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader.DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Subscription Header Bill Service.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader_PromptOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_BILL_SERVICE_D_TL_SubscriptionHeader" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Subscription Header Bill Service.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Subscription Header Bill Service Code" ],
+        "displayKey" : "Subscription Header Bill Service Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Subscription Header Bill Service",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

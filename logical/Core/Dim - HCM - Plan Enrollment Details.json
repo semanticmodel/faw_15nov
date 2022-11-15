@@ -1,0 +1,159 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Plan Enrollment Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Plan Enrollment Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Enrollment Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_PLAN_ENROLLMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_PLAN_ENROLLMENT_D.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_ABS_PLAN_ENROLLMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_PLAN_ENROLLMENT_D.STATUS_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Enrollment Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Enrollment Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_PLAN_ENROLLMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ABS_PLAN_ENROLL_STATUS_D_TL.ENROLL_STATUS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_PLAN_ENROLLMENT_D.STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_ABS_PLAN_ENROLLMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ABS_PLAN_ENROLL_STATUS_D_TL.ENROLL_STATUS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_PLAN_ENROLLMENT_D.STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Enrollment Start Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_PLAN_ENROLLMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_PLAN_ENROLLMENT_D.ENRT_ST_DT" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_ABS_PLAN_ENROLLMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_PLAN_ENROLLMENT_D.ENRT_ST_DT" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Enrollment End Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_PLAN_ENROLLMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_PLAN_ENROLLMENT_D.ENRT_END_DT" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_ABS_PLAN_ENROLLMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_PLAN_ENROLLMENT_D.ENRT_END_DT" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Plan Enrollment Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_PLAN_ENROLLMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_PLAN_ENROLLMENT_D.PLAN_ENRT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_ABS_PLAN_ENROLLMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_PLAN_ENROLLMENT_D.PLAN_ENRT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_ABS_PLAN_ENROLLMENT_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_PLAN_ENROLLMENT_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Plan Enrollment Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_ABS_PLAN_ENROLLMENT_D",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_PLAN_ENROLLMENT_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Plan Enrollment Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Plan Enrollment Identifier" ],
+        "displayKey" : "Plan Enrollment Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Plan Enrollment Details",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

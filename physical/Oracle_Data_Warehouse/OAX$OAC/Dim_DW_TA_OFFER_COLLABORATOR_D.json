@@ -1,0 +1,55 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_TA_OFFER_COLLABORATOR_D",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_TA_OFFER_COLLABORATOR_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_JobOfferCollaborator",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) >= %4 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_JobOfferCollaborator.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_OFFER_COLLABORATOR_D.COLLABORATOR_ASSIGNMENT_ID",
+            "variable:Gregorian Calendar - Current Gregorian Day.CURRENT_GREGORIAN_DAY",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_JobOfferCollaborator.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_JobOfferCollaborator.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobOfferCollaborator",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_OFFER_COLLABORATOR_D.COLLABORATOR_PERSON_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobOfferCollaborator.PERSON_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_JobOfferCollaborator",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_OFFER_COLLABORATOR_D.COLLABORATOR_PERSON_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_JobOfferCollaborator.PERSON_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_OFFER_D_JobOfferCollaborator",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_OFFER_COLLABORATOR_D.OFFER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_OFFER_D_JobOfferCollaborator.OFFER_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "OFFER_ID"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,83 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_MANAGER_DN_DH_List",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_MANAGER_DN_DH",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_DAILY_EVENT_F",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_List.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_DAILY_EVENT_F.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_DAILY_EVENT_F.MGR_HIER_ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_List.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_List.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "UNKNOWN",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_List.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_List.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_List.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "UNKNOWN",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_List_Mgr",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_List.MANAGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_List_Mgr.PERSON_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_List_Person",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_List.PERSON_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_List_Person.PERSON_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_List_Mgr",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_List.MANAGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_List_Mgr.PERSON_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_List_Person",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_List.PERSON_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_List_Person.PERSON_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "ASSIGNMENT_ID",
+        "EFFECTIVE_END_DATE",
+        "EFFECTIVE_START_DATE",
+        "MANAGER_ASSIGNMENT_ID",
+        "MANAGER_TYPE"
+      ]
+    ]
+  }
+}

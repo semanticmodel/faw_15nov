@@ -1,0 +1,84 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - NetSuite Customers",
+    "tags" : [ "Project:NetSuite Analytics Warehouse - NetSuite Sales" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_CUSTOMER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D.ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Total Number of New Customers",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_CUSTOMER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 13 AND %2 >= %3 THEN %4 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D.ENTITYSTATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D.FIRSTORDERDATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar.CALENDAR_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D.ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Number of Lost Customers",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_CUSTOMER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 16 AND %2 >= %3 THEN %4 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D.ENTITYSTATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D.LASTMODIFIEDDATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar.CALENDAR_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D.ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_NS_CUSTOMER_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Customer.Detail", "logicalLevel:Core.Dim - Date NetSuite Gregorian Calendar.Day" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date NetSuite Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

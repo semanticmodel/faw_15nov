@@ -1,0 +1,96 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Revenue Product Unit of Measure",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Revenue Product Unit of Measure Code" ],
+    "logicalColumns" : [ {
+      "name" : "Revenue Product Unit of Measure",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Revenue Product Unit of Measure Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct_PromptOnly.UNIT_OF_MEASURE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct_PromptOnly.UOM_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct.UNIT_OF_MEASURE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct.UOM_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Revenue Product Unit of Measure Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct_PromptOnly.UOM_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct.UOM_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct_PromptOnly" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct_PromptOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_CX_RevenueProduct" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Revenue Product Unit of Measure Code" ],
+        "displayKey" : "Revenue Product Unit of Measure Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Revenue Product Unit of Measure",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

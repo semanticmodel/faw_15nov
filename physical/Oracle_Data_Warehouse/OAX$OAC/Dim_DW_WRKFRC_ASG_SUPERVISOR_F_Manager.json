@@ -1,0 +1,60 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_WRKFRC_ASG_SUPERVISOR_F",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Manager",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) >= %4 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Manager.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager.MANAGER_ASSIGNMENT_ID",
+            "variable:Gregorian Calendar - Current Gregorian Day.CURRENT_GREGORIAN_DAY",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Manager.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Manager.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_Manager",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager.MANAGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_Manager.PERSON_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Manager",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager.MANAGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Manager.PERSON_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_PERSON_D_Manager",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager.MANAGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_PERSON_D_Manager.PERSON_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "EFFECTIVE_END_DATE",
+        "EFFECTIVE_START_DATE",
+        "PERSON_ID"
+      ],
+      [
+        "MANAGER_ASSIGNMENT_ID"
+      ]
+    ]
+  }
+}

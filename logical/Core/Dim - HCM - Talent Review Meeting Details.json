@@ -1,0 +1,371 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Talent Review Meeting Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Meeting Reviewee Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Meeting Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D.MEETING_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Talent Review Meeting Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D.MEETING_TITLE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Meeting Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D.MEETING_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Meeting Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D.MEETING_STATUS_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Meeting Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Meeting Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_TLNTRVW_MEET_STATUS_D_TL.MEETING_STATUS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D.MEETING_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Business Leader",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_MeetingLeader.FULL_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Data Submission Deadline",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D.DATA_SUBMIT_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Meeting Submission Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D.MEETING_SUBMISSION_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Meeting Submit Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D.MEETING_SUBMIT_STATUS_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Meeting Submit Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Meeting Submit Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_TLNTRVW_MEET_SUB_STATUS_D_TL.MEETING_SUB_STATUS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D.MEETING_SUBMIT_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Meeting Organization",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_TL_Meetings.ORGANIZATION_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Meeting Purpose",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D.MEETING_PURPOSE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Business Leader Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D.MEETING_LEADER_PERSON_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Meeting Organization Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D.MEETING_ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Termination Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SERVICE_PERIOD_D_Meetings.ACTUAL_TERMINATION_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Anchor Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TLNTRVW_MEETING_SUMMARY_EF.ANCHOR_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Meeting Reviewee Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TLNTRVW_MEETING_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TLNTRVW_MEETING_SUMMARY_EF.MEETING_REVIEWEE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_TLNTRVW_MEETING_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TLNTRVW_MEETING_SUMMARY_EF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_MeetingLeader", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SERVICE_PERIOD_D_Meetings", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_TL_Meetings", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TLNTRVW_MEETING_SUMMARY_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TLNTRVW_MEETING_SUMMARY_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SERVICE_PERIOD_D_Meetings",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_MeetingLeader",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_TL_Meetings",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : " INDEXCOL( VALUEOF(NQ_SESSION.%1), %2, '-1') <>  INDEXCOL( VALUEOF(NQ_SESSION.%1),  VALUEOF(NQ_SESSION.%3), '-2')",
+        "expressionObjects" : [ "variable:Show Self Record.SEE_SELF_RCD", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TLNTRVW_MEETING_SUMMARY_EF.PERSON_ID", "variable:Logged In HCM Person ID.HCM_PERSON_ID" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Meeting Reviewee Identifier" ],
+        "displayKey" : "Meeting Reviewee Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Talent Review Meeting Details",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_HCM_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "HCM_FACT_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_BUSINESSUNIT_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - HCM - HR Business Unit.Security Context Code - HCM Business Unit", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_DEPARTMENT_DATA",
+      "functionalGroup" : "HCM_FACT_DEPT",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_DEPARTMENT_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Department.Security Context Code - HCM Department", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_LEGAL_EMPLOYER_DATA",
+      "functionalGroup" : "HCM_FACT_LE",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_LEGAL_EMPLOYER_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Legal Employer.Security Context Code - HCM Legal Employer", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_LINE_MANAGER_DATA",
+      "functionalGroup" : "HCM_FACT_LM",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2) OR %3 =  VALUEOF(NQ_SESSION.%4)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Manager Security.Manager Identifier", "variable:Logged In HCM Person ID.HCM_PERSON_ID", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_VIEW_ALL_DATA",
+      "functionalGroup" : "HCM_FACT_ALL",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "1 = 1"
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_COUNTRY_DATA",
+      "functionalGroup" : "HCM_FACT_CTR",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_COUNTRY_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Country.Security Context Code - HCM Country List", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    } ]
+  }
+}

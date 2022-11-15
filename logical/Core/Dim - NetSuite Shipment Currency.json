@@ -1,0 +1,87 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - NetSuite Shipment Currency",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Shipment Currency Key" ],
+    "logicalColumns" : [ {
+      "name" : "Shipment Currency Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_SHIPMENT_CURRENCY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CAST (%1 AS DOUBLE PRECISION )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_SHIPMENT_CURRENCY_D.ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Shipment Currency Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_SHIPMENT_CURRENCY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_SHIPMENT_CURRENCY_D.NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Shipment Currency Symbol",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_SHIPMENT_CURRENCY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_SHIPMENT_CURRENCY_D.SYMBOL" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_NS_SHIPMENT_CURRENCY_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_SHIPMENT_CURRENCY_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Shipment Currency.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Shipment Currency Key" ],
+        "displayKey" : "Shipment Currency Key"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "NetSuite Shipment Currency",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

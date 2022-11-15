@@ -1,0 +1,124 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Job Requisition Collaborator",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Collaborator Person Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Collaborator Person Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_REQ_COLLABORATOR_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQ_COLLABORATOR_D_DimOnly.COLLABORATOR_PERSON_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_REQ_COLLABORATOR_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQ_COLLABORATOR_D.COLLABORATOR_PERSON_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Details"
+    }, {
+      "name" : "Collaborator Person Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_REQ_COLLABORATOR_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobReqCollaborator.PERSON_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Collaborator Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_REQ_COLLABORATOR_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_JobReqCollaborator.FULL_NAME" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_TA_JOB_REQ_COLLABORATOR_D_DimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQ_COLLABORATOR_D_DimOnly", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobReqCollaborator_DimOnly", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_JobReqCollaborator_DimOnly" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQ_COLLABORATOR_D_DimOnly",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobReqCollaborator_DimOnly",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobReqCollaborator_DimOnly",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_JobReqCollaborator_DimOnly",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Job Requisition Collaborator.Details" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_TA_JOB_REQ_COLLABORATOR_D",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQ_COLLABORATOR_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobReqCollaborator", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_JobReqCollaborator" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQ_COLLABORATOR_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobReqCollaborator",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobReqCollaborator",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_JobReqCollaborator",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Job Requisition Collaborator.Details" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Details",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Collaborator Person Identifier" ],
+        "displayKey" : "Collaborator Person Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Job Requisition Collaborator",
+        "levels" : [ "Total", "Details" ]
+      } ]
+    }
+  }
+}

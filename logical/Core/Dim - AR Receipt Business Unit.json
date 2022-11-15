@@ -1,0 +1,141 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - AR Receipt Business Unit",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "AR Receipt Business Unit Key" ],
+    "logicalColumns" : [ {
+      "name" : "AR Receipt Business Unit Key",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org_PromptOnly.ORGANIZATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org.ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "AR Receipt Business Unit Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "AR Receipt Business Unit Key",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INTERNAL_ORG_D_TL.ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org_PromptOnly.ORGANIZATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INTERNAL_ORG_D_TL.ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org.ORGANIZATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "AR Receipt Business Unit Number",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org_PromptOnly.ORGANIZATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org.ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Security Context Code - AR Receipt BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_AR_BU_ARReceiptBU.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'Y' OR %2 = -(99999)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org_PromptOnly.CUSTOMER_PAYMENTS_BU_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org_PromptOnly.ORGANIZATION_ID" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_AR_BU_ARReceiptBU" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_AR_Receivables_Receipt_Org",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_AR_BU_ARReceiptBU",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "AR Receipt Business Unit Key" ],
+        "displayKey" : "AR Receipt Business Unit Name",
+        "additionalKeys" : [ [ "AR Receipt Business Unit Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "AR Receipt Business Unit",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

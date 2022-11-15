@@ -1,0 +1,70 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Fins - AP Schedule Prediction Buckets",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Accounts Payable" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Actual Defaults",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_PREDICTION_BUCKETS_P",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_PREDICTION_BUCKETS_P.POPULATION" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Classifier Predicted Defaults",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_PREDICTION_BUCKETS_P",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_PREDICTION_BUCKETS_P.DEFAULTED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Classifier Accuracy Percentage",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN  CAST (%2 AS DOUBLE PRECISION ) /  CAST (%1 AS DOUBLE PRECISION ) * 100 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Schedule Prediction Buckets.Actual Defaults", "logicalColumn:Core.Fact - Fins - AP Schedule Prediction Buckets.Classifier Predicted Defaults" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AP_PREDICTION_BUCKETS_P",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_PREDICTION_BUCKETS_P" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - AP Schedule Prediction Bucket Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    } ]
+  }
+}

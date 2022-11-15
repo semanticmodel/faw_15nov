@@ -1,0 +1,33 @@
+{
+  "physicalTable": {
+    "name": "Dim_PRC_LKP_DW_PO_MATCH_OPTION_D_TL",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PO_MATCH_OPTION_D_TL",
+    "caching": {
+      "enable": true,
+      "expiryTime": 1,
+      "expiryUnit": "DAYS"
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_PO_MATCH_OPTION_D_TL.CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.MATCH_OPTION",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_PO_MATCH_OPTION_D_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      }
+    ],
+    "additionalKeys": [
+      [
+        "CODE",
+        "LANGUAGE"
+      ]
+    ]
+  }
+}

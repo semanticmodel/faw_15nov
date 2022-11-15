@@ -1,0 +1,119 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Nonlabor Resource",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "NonLabor Resource Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Nonlabor Resource Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "NonLabor Resource Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_NON_LABOR_RES_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PROJECT_NON_LABOR_RES_TL.DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_NON_LABOR_RES_D.NON_LABOR_RESOURCE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Nonlabor Resource",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "NonLabor Resource Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_NON_LABOR_RES_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PROJECT_NON_LABOR_RES_TL.NLR_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_NON_LABOR_RES_D.NON_LABOR_RESOURCE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Nonlabor Resource"
+    }, {
+      "name" : "NonLabor Resource Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_NON_LABOR_RES_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_NON_LABOR_RES_D.NON_LABOR_RESOURCE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Nonlabor Resource"
+    }, {
+      "name" : "----------DFF Keys----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "PJF_NON_LABOR_RES_B_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_NON_LABOR_RES_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_PROJECT_NON_LABOR_RES_D_DW_PJF_NON_LABOR_RES_B_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_PROJECT_NON_LABOR_RES_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_NON_LABOR_RES_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_PROJECT_NON_LABOR_RES_D_DW_PJF_NON_LABOR_RES_B_DFF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_NON_LABOR_RES_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_PROJECT_NON_LABOR_RES_D_DW_PJF_NON_LABOR_RES_B_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Nonlabor Resource.Nonlabor Resource" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "All",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "All",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Nonlabor Resource",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "NonLabor Resource Identifier" ],
+        "displayKey" : "Nonlabor Resource",
+        "additionalKeys" : [ [ "Nonlabor Resource" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Nonlabor Resource",
+        "levels" : [ "All", "Nonlabor Resource" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "physicalTable" : {
+    "name" : "SEC_SECURE_BY_OPPORTUNITY_ACCESS_GRP_CX_SALES",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT DISTINCT\r\nsh.OBJECT_ID AS OPPORTUNITY_ID,\r\n'Y' AS SECURITY_ENABLE_FLG\r\nFROM\r\n   DW_CXS_OBJECT_SHARE_D sh,\r\n   DW_CXS_ACCESS_GROUP_MEMBERS_D grp\r\nWHERE\r\ngrp.ACCESS_GROUP_ID = sh.ACCESS_GROUP_ID\r\nAND   grp.TYPE_CODE = sh.ACCESS_GROUP_TYPE_CODE\r\nAND   sh.OBJECT_TYPE = 'Opportunity'\r\nAND   grp.PARTY_ID = VALUEOF(NQ_SESSION.USER_PARTY_ID)\r\n\r\n/*SELECT DISTINCT\r\nsh.OBJECT_ID AS OPPORTUNITY_ID,\r\n'Y' AS SECURITY_ENABLE_FLG\r\nFROM\r\n    (select OBJECT_ID, OBJECT_TYPE,\r\n    'CUSTOM' as ACCESS_GROUP_TYPE_CODE ,\r\n    ACCESS_GROUP_ID from\r\n    DW_CXS_OBJECT_SHARE_D )sh,\r\n    (SELECT GROUP_MEMBERS.PARTY_ID AS PARTY_ID,\r\n    'CUSTOM' AS TYPE_CODE,\r\n    GROUP_MEMBERS.ACCESS_GROUP_ID AS ACCESS_GROUP_ID\r\n    FROM DW_CXS_ACCESS_GROUP_MEMBERS_D GROUP_MEMBERS\r\n    WHERE GROUP_MEMBERS.ACTIVE_FLAG='Y') grp\r\nWHERE\r\ngrp.ACCESS_GROUP_ID = sh.ACCESS_GROUP_ID\r\nAND   grp.TYPE_CODE = sh.ACCESS_GROUP_TYPE_CODE\r\nAND   sh.OBJECT_TYPE = 'Opportunity'\r\nAND   grp.PARTY_ID = VALUEOF(NQ_SESSION.USER_PARTY_ID)*/"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "OPPORTUNITY_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "SECURITY_ENABLE_FLG",
+      "dataType" : "VARCHAR",
+      "length" : 3,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "additionalKeys" : [ [ "OPPORTUNITY_ID" ] ]
+  }
+}

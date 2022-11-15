@@ -1,0 +1,605 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - INV - Inventory Balances",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Inventory Balance" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Onhand Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_BALANCE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_BALANCE_CF.PRIMARY_ONHAND_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Secondary Onhand Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_BALANCE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_BALANCE_CF.SECONDARY_ONHAND_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Security Context Code - InvBal Org",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_BALANCE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_INVBAL.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_BALANCE_CF_Historic",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_INVBAL_Historic.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_INBOUND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_Inbound.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_RCV_SUPPLY_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_RcvSupply.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_OnhandDetails.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_OnhandSerialNumbers.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - InvBal BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_BALANCE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_INVBAL.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_BALANCE_CF_Historic",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_INVBAL_Historic.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_INBOUND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_Inbound.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_RCV_SUPPLY_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_RcvSupply.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_OnhandDetails.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_OnhandSerialNumbers.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Inbound Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_INBOUND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_INBOUND_DETAILS_CF.TO_ORG_PRIMARY_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - INV - Inbound Details.INV - Inbound Details" ]
+      }
+    }, {
+      "name" : "Receiving Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_RCV_SUPPLY_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RCV_SUPPLY_DETAILS_CF.TO_ORG_PRIMARY_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - INV - Rcv Supply Details.INV - Rcv Supply Details" ]
+      }
+    }, {
+      "name" : "Secondary Receiving Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_RCV_SUPPLY_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RCV_SUPPLY_DETAILS_CF.SECONDARY_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - INV - Rcv Supply Details.INV - Rcv Supply Details" ]
+      }
+    }, {
+      "name" : "In-Transit Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('In-transit shipment', 'Transfer Order'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV - Inventory Balances.Inbound Quantity", "logicalColumn:Core.Fact - INV - Inventory Balances.Document Type" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - INV - Inbound Details.INV - Inbound Details" ]
+      }
+    }, {
+      "name" : "Current Onhand Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.PRIMARY_TRANSACTION_QUANTITY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IS NULL  THEN %2 ELSE %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF.SERIAL_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF.DETAILED_PRIMARY_QUANTITY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.PRIMARY_TRANSACTION_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Consigned Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV - Inventory Balances.Current Onhand Quantity", "logicalColumn:Core.Fact - INV - Inventory Balances.Owning Type" ]
+        }
+      }
+    }, {
+      "name" : "Current Secondary Onhand Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.SECONDARY_TRANSACTION_QUANTITY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IS NULL  THEN %2 ELSE %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF.SERIAL_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF.SECONDARY_ONHAND_QUANTITY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.SECONDARY_TRANSACTION_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - INV - Onhand Details.INV - Onhand Serial Numbers" ]
+      }
+    }, {
+      "name" : "Secondary Consigned Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV - Inventory Balances.Current Secondary Onhand Quantity", "logicalColumn:Core.Fact - INV - Inventory Balances.Owning Type" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - INV - Onhand Details.INV - Onhand Serial Numbers" ]
+      }
+    }, {
+      "name" : "Document Type",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_INBOUND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_INBOUND_DETAILS_CF.DOCUMENT_TYPE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Owning Type",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.OWNING_TYPE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.OWNING_TYPE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Historic Onhand Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_BALANCE_CF_Historic",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_BALANCE_CF_Historic.PRIMARY_ONHAND_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Historic Secondary Onhand Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_BALANCE_CF_Historic",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_BALANCE_CF_Historic.SECONDARY_ONHAND_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_INV_ONHAND_BALANCE_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_INVBAL", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_INVBAL", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_BALANCE_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_INVBAL",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_BALANCE_CF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_INVBAL",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_BALANCE_CF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Locator.Locator Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Sub Inventory.Dim - Sub Inventory Detail", "logicalLevel:Core.Dim - Unit of Measure Secondary.Detail", "logicalLevel:Core.Dim - Sub Inventory Location.Sub Inventory Location Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Profit Center Business Unit.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_INV_ONHAND_BALANCE_CF_Historic",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_BALANCE_CF_Historic", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_INVBAL_Historic", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_INVBAL_Historic" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_BALANCE_CF_Historic",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_INVBAL_Historic",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_BALANCE_CF_Historic",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_INVBAL_Historic",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Locator.Locator Detail", "logicalLevel:Core.Dim - Profit Center Business Unit.Detail", "logicalLevel:Core.Dim - Sub Inventory.Dim - Sub Inventory Detail", "logicalLevel:Core.Dim - Sub Inventory Location.Sub Inventory Location Detail", "logicalLevel:Core.Dim - Unit of Measure Secondary.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 <  CURRENT_DATE ",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_BALANCE_CF_Historic.SNAPSHOT_PERIOD_END_DATE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_INV_INBOUND_DETAILS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_INBOUND_DETAILS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_Inbound", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_Inbound" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_INBOUND_DETAILS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_Inbound",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_INBOUND_DETAILS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_Inbound",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - INV - Inbound Details.INV - Inbound Details", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Profit Center Business Unit.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_INV_RCV_SUPPLY_DETAILS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RCV_SUPPLY_DETAILS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_RcvSupply", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_RcvSupply" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RCV_SUPPLY_DETAILS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_RcvSupply",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RCV_SUPPLY_DETAILS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_RcvSupply",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail", "logicalLevel:Core.Dim - INV - Rcv Supply Details.INV - Rcv Supply Details", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Locator.Locator Detail", "logicalLevel:Core.Dim - Project.Project Detail", "logicalLevel:Core.Dim - Task.Task Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Profit Center Business Unit.Detail", "logicalLevel:Core.Dim - Sub Inventory.Dim - Sub Inventory Detail", "logicalLevel:Core.Dim - Unit of Measure Secondary.Detail", "logicalLevel:Core.Dim - Sub Inventory Location.Sub Inventory Location Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_OnhandDetails", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_OnhandDetails" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_OnhandDetails",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_OnhandDetails",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - INV - Onhand Details.INV - Onhand Details", "logicalLevel:Core.Dim - Locator.Locator Detail", "logicalLevel:Core.Dim - Project.Project Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Task.Task Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Profit Center Business Unit.Detail", "logicalLevel:Core.Dim - Sub Inventory.Dim - Sub Inventory Detail", "logicalLevel:Core.Dim - Unit of Measure Secondary.Detail", "logicalLevel:Core.Dim - Sub Inventory Location.Sub Inventory Location Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_OnhandSerialNumbers", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_OnhandSerialNumbers" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_OnhandSerialNumbers",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_OnhandSerialNumbers",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - INV - Onhand Details.INV - Onhand Serial Numbers", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Locator.Locator Detail", "logicalLevel:Core.Dim - Project.Project Detail", "logicalLevel:Core.Dim - Profit Center Business Unit.Detail", "logicalLevel:Core.Dim - Sub Inventory.Dim - Sub Inventory Detail", "logicalLevel:Core.Dim - Task.Task Detail", "logicalLevel:Core.Dim - Unit of Measure Secondary.Detail", "logicalLevel:Core.Dim - Sub Inventory Location.Sub Inventory Location Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_SCM_INV_INVENTORY_ORG_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_ORG_TRANSACTIONS_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Fact - INV - Inventory Balances.Security Context Code - InvBal Org" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_SCM_INV_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Fact - INV - Inventory Balances.Security Context Code - InvBal BU" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - INV - Inbound Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - INV - Onhand Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - INV - Rcv Supply Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inv Item Catalog Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Item Category Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Locator",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Profit Center Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Sub Inventory Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Sub Inventory",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Task",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure Secondary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    } ]
+  }
+}

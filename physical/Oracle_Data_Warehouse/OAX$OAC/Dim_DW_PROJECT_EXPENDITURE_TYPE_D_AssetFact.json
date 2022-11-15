@@ -1,0 +1,52 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_PROJECT_EXPENDITURE_TYPE_D_AssetFact",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PROJECT_EXPENDITURE_TYPE_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_REVENUE_CATEGORY_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_REVENUE_CATEGORY_D.REVENUE_CATEGORY_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXPENDITURE_TYPE_D_AssetFact.REVENUE_CATEGORY_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ZERO_OR_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_PROJECT_EXPENDITURE_TYPE_D_DW_PJF_EXP_CATEGORIES_B_DFF",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXPENDITURE_TYPE_D_AssetFact.EXPENDITURE_CATEGORY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_PROJECT_EXPENDITURE_TYPE_D_DW_PJF_EXP_CATEGORIES_B_DFF.S_K_5000"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_PROJECT_EXPENDITURE_TYPE_D_DW_PJF_EXP_TYPES_B_DFF",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXPENDITURE_TYPE_D_AssetFact.EXPENDITURE_TYPE_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_PROJECT_EXPENDITURE_TYPE_D_DW_PJF_EXP_TYPES_B_DFF.S_K_5000"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXP_CATEGORY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXPENDITURE_TYPE_D_AssetFact.EXPENDITURE_CATEGORY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXP_CATEGORY_D.EXPENDITURE_CATEGORY_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "EXPENDITURE_TYPE_ID"
+      ]
+    ]
+  }
+}

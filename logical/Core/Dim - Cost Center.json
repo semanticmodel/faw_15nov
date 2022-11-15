@@ -1,0 +1,120 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Cost Center",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Cost Center Code", "Cost Center Value Set Code" ],
+    "logicalColumns" : [ {
+      "name" : "Cost Center Value Set Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_COST_CENTER_D_Base",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base.COST_CENTER_VALUESET_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Cost Center Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_COST_CENTER_D_Base",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base.COST_CENTER_SEGMENT" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Cost Center Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Cost Center Key",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_COST_CENTER_D_Base",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2, %3,  VALUEOF(NQ_SESSION.%4))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GL_SEGMENT_D_TL.GL_SEGMENT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base.COST_CENTER_SEGMENT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base.COST_CENTER_VALUESET_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Cost Center Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Cost Center Key",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_COST_CENTER_D_Base",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2, %3,  VALUEOF(NQ_SESSION.%4))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GL_SEGMENT_D_TL.GL_SEGMENT_DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base.COST_CENTER_SEGMENT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base.COST_CENTER_VALUESET_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Cost Center Key",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_COST_CENTER_D_Base",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base.COST_CENTER_SEGMENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_COST_CENTER_D_Base",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Cost Center.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Cost Center Value Set Code", "Cost Center Code" ],
+        "displayKey" : "Cost Center Code",
+        "additionalKeys" : [ [ "Cost Center Code" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Cost Center",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

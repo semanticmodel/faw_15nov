@@ -1,0 +1,573 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - CX - Campaign Members",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Marketing Campaign Closed Loop Analytics" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-------- Derived --------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "# of Campaign Members",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_MEMBER_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Contacts",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Campaign Members.Raw # of Contacts", "logicalColumn:Core.Fact - CX - Campaign Members.Contact Identifier" ]
+        }
+      }
+    }, {
+      "name" : "# of Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Campaign Members.Raw # of Leads", "logicalColumn:Core.Fact - CX - Campaign Members.Lead Identifier" ]
+        }
+      }
+    }, {
+      "name" : "# of Responses",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_RESPONDED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Campaign Members.Raw # of Responses", "logicalColumn:Core.Fact - CX - Campaign Members.Member Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Active Campaigns",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Campaign Members.Raw # of Campaigns", "logicalColumn:Core.Fact - CX - Campaign Members.Campaign Active Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Campaigns",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Campaign Members.Raw # of Campaigns", "logicalColumn:Core.Fact - CX - Campaign Members.Campaign Identifier" ]
+        }
+      }
+    }, {
+      "name" : "# of Campaign Owners",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Campaign Members.Raw # of Campaign Owners", "logicalColumn:Core.Fact - CX - Campaign Members.Campaign Owner Resource Party Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Actual Cost in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_ACTUAL_COST" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Campaign Members",
+          "rule" : "FIRST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Campaign",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Budgeted Cost in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_BUDGETED_COST" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Campaign Members",
+          "rule" : "FIRST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Campaign",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Actual Cost in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.GLOBAL_CURRENCY_CAMPAIGN_ACTUAL_COST" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Campaign Members",
+          "rule" : "FIRST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Campaign",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Budgeted Cost in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.GLOBAL_CURRENCY_CAMPAIGN_BUDGETED_COST" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Campaign Members",
+          "rule" : "FIRST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Campaign",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-------- Internal --------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Raw # of Contacts",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CONTACT_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw # of Leads",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.LEAD_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw # of Responses",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_MEMBER_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw # of Active Campaigns",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw # of Campaigns",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw # of Campaign Owners",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_OWNER_RESOURCE_PARTY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-------- Filter --------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Contact Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CONTACT_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Lead Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.LEAD_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Member Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.MEMBER_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Campaign Active Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_ACTIVE_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Campaign Owner Resource Party Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_OWNER_RESOURCE_PARTY_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Campaign Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_ID" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXM_CAMPAIGN_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LEAD_CF_Camp_Member_Secure" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXM_CAMPAIGN_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LEAD_CF_Camp_Member_Secure",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Lead Channel Type.Detail", "logicalLevel:Core.Dim - CX - Campaign.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - CX - Lead Channel.Detail", "logicalLevel:Core.Dim - CX - Date - Campaign Created Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Campaign Created Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Campaign End Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Campaign End Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Campaign Start Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Resource - Campaign Owner.Detail", "logicalLevel:Core.Dim - CX - Campaign Members.Detail", "logicalLevel:Core.Dim - CX - Date - Campaign Start Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Lead.Detail", "logicalLevel:Core.Dim - CX - Primary Contact.Detail", "logicalLevel:Core.Dim - CX - Campaign Status.Detail", "logicalLevel:Core.Dim - CX - Campaign Members Status.Detail", "logicalLevel:Core.Dim - CX - Campaign Type.Detail", "logicalLevel:Core.Dim - CX - Lead Assignment Status.Detail", "logicalLevel:Core.Dim - CX - Lead Budget Status.Detail", "logicalLevel:Core.Dim - CX - Lead Retire Reason.Detail", "logicalLevel:Core.Dim - CX - Lead Reassign Reason.Detail", "logicalLevel:Core.Dim - CX - Lead Timeframe.Detail", "logicalLevel:Core.Dim - CX - Lead Rank.Detail", "logicalLevel:Core.Dim - CX - Lead Partner Type.Detail", "logicalLevel:Core.Dim - CX - Lead Organization Size.Detail", "logicalLevel:Core.Dim - CX - Lead Reject Reason.Detail", "logicalLevel:Core.Dim - CX - Lead Status.Detail", "logicalLevel:Core.Dim - CX - Lead Industry Classification.Detail", "logicalLevel:Core.Dim - CX - Lead Customer Type.Detail", "logicalLevel:Core.Dim - CX - Lead Organization Type.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - CX - Campaign Members Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Campaign Members",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Campaign Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Campaign Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Campaign",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Campaign Created Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Campaign Created Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Campaign End Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Campaign End Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Campaign Start Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Campaign Start Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Assignment Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Budget Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Channel Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Channel",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Customer Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Industry Classification",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Organization Size",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Organization Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Partner Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Rank",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Reassign Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Reject Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Retire Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Timeframe",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Campaign Owner",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

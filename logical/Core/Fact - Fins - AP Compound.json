@@ -1,0 +1,393 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Fins - AP Compound",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Accounts Payable", "Project:Oracle Analytics for Fusion Financials" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-----Ledger Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "AP Turnover from Aging",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE 1 / %1 * 365 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Compound.Days Payables Outstanding from Aging" ]
+        }
+      }
+    }, {
+      "name" : "Days Payables Outstanding from Aging",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  IFNULL(%1, 0) = 0 OR  IFNULL(%2, 0) +  IFNULL(%3, 0) +  IFNULL(%4, 0) = 0 THEN 0 ELSE %5 / (( IFNULL(%2, 0) +  IFNULL(%3, 0) +  IFNULL(%4, 0)) / %1) END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - Period Days Count for AP BU.# of Elapsed Days", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Invoices Amount", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Credit Memos Amount", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Debit Memos Amount", "logicalColumn:Core.Fact - Fins - AP Aging.Closing Amount" ]
+        }
+      }
+    }, {
+      "name" : "Discount Offered %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Total Transaction Amount", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Discount Offered Amount" ]
+        }
+      }
+    }, {
+      "name" : "Discount Taken %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Total Transaction Amount", "logicalColumn:Core.Fact - Fins - AP Payments.Discount Taken Amount" ]
+        }
+      }
+    }, {
+      "name" : "Payments to Invoice Amount %",
+      "description" : "This metric computes the percentage of AP Payment Amount to the total Invoice Amount for a period ",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Total Transaction Amount", "logicalColumn:Core.Fact - Fins - AP Payments.Internal - Payments Liability Amount" ]
+        }
+      }
+    }, {
+      "name" : "-----Reporting Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "AP Turnover in Reporting Currency from Aging",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE 1 / %1 * 365 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Compound.Days Payables Outstanding in Reporting Currency from Aging" ]
+        }
+      }
+    }, {
+      "name" : "Days Payables Outstanding in Reporting Currency from Aging",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  IFNULL(%1, 0) = 0 OR  IFNULL(%2, 0) +  IFNULL(%3, 0) +  IFNULL(%4, 0) = 0 THEN 0 ELSE %5 / (( IFNULL(%2, 0) +  IFNULL(%3, 0) +  IFNULL(%4, 0)) / %1) END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - Period Days Count for AP BU.# of Elapsed Days", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Invoices Amount in Reporting Currency", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Credit Memos Amount in Reporting Currency", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Debit Memos Amount in Reporting Currency", "logicalColumn:Core.Fact - Fins - AP Aging.Closing Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Discount Offered % in Reporting Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Total Transaction Amount in Reporting Currency", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Discount Offered Amount in Reporting Currency" ]
+        }
+      }
+    }, {
+      "name" : "Discount Taken % in Reporting Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Total Transaction Amount in Reporting Currency", "logicalColumn:Core.Fact - Fins - AP Payments.Discount Taken Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Payments to Invoice Amount % in Reporting Currency",
+      "description" : "This metric computes the percentage of AP Payment Amount to the total Invoice Amount for a period ",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Total Transaction Amount in Reporting Currency", "logicalColumn:Core.Fact - Fins - AP Payments.Internal - Payments Liability Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "-----Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "AP Turnover in Document Currency from Aging",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE 1 / %1 * 365 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Compound.Days Payables Outstanding in Document Currency from Aging" ]
+        }
+      }
+    }, {
+      "name" : "Days Payables Outstanding in Document Currency from Aging",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  IFNULL(%1, 0) = 0 OR  IFNULL(%2, 0) +  IFNULL(%3, 0) +  IFNULL(%4, 0) = 0 THEN 0 ELSE %5 / (( IFNULL(%2, 0) +  IFNULL(%3, 0) +  IFNULL(%4, 0)) / %1) END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - Period Days Count for AP BU.# of Elapsed Days", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Invoices Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Credit Memos Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Debit Memos Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AP Aging.Closing Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Discount Lost % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Total Transaction Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AP Payments.Discount Lost Amount in Invoice Currency" ]
+        }
+      }
+    }, {
+      "name" : "Discount Offered % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Total Transaction Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Discount Offered Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Discount Remaining Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  NOT %1 IS NULL  THEN %1 -  IFNULL(%2, 0) -  IFNULL(%3, 0) ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Discount Offered Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AP Payments.Internal - Discount Taken Liability Amount in Invoice Currency", "logicalColumn:Core.Fact - Fins - AP Payments.Discount Lost Amount in Invoice Currency" ]
+        }
+      }
+    }, {
+      "name" : "Discount Taken % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Total Transaction Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AP Payments.Internal - Discount Taken Liability Amount in Invoice Currency" ]
+        }
+      }
+    }, {
+      "name" : "Payments to Invoice Amount % in Document Currency",
+      "description" : "This metric computes the percentage of AP Payment Amount to the total Invoice Amount for a period ",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Invoice Schedules.Total Transaction Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AP Payments.Internal - Payments Liability Amount in Document Currency" ]
+        }
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Balancing Segment Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Balancing Segment",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Center Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Center",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Default Account Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Default Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment1 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment1",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment10 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment10",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment2 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment2",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment3 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment3",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment4 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment4",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment5 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment5",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment6 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment6",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment7 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment7",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment8 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment8",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment9 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment9",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger Set",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Natural Account Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Natural Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Spend Header",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Party",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Payables Invoicing Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Supplier Sites",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Supplier",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Third Party Remit-to Supplier",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

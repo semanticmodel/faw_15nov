@@ -1,0 +1,84 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_WRKFRC_ASG_F_DimOnly_Roleplaying",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_WRKFRC_ASG_F",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Source_Asg_DimOnly_Roleplaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) >= %4 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) <= %5 AND %6 = 'Y'",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Source_Asg_DimOnly_Roleplaying.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_DimOnly_Roleplaying.SOURCE_ASSIGNMENT_ID",
+            "variable:Gregorian Calendar - Current Gregorian Day.CURRENT_GREGORIAN_DAY",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Source_Asg_DimOnly_Roleplaying.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Source_Asg_DimOnly_Roleplaying.EFFECTIVE_END_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Source_Asg_DimOnly_Roleplaying.EFFECTIVE_LATEST_CHANGE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Sec_Dim_DW_MANAGER_DN_DH_Worker_Roleplaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Sec_Dim_DW_MANAGER_DN_DH_Worker_Roleplaying.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_DimOnly_Roleplaying.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_DimOnly_Roleplaying.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Sec_Dim_DW_MANAGER_DN_DH_Worker_Roleplaying.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Sec_Dim_DW_MANAGER_DN_DH_Worker_Roleplaying.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SERVICE_PERIOD_D_DimOnly_Roleplaying",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_DimOnly_Roleplaying.PERIOD_OF_SERVICE_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SERVICE_PERIOD_D_DimOnly_Roleplaying.PERIOD_OF_SERVICE_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_BU_Dim_Roleplaying",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_DimOnly_Roleplaying.BUSINESS_UNIT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_BU_Dim_Roleplaying.SEC_OBJ_MEMBER_VAL"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_DEPT_Dim_Roleplaying",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_DimOnly_Roleplaying.DEPARTMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_DEPT_Dim_Roleplaying.SEC_OBJ_MEMBER_VAL"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_LE_Dim_Roleplaying",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_DimOnly_Roleplaying.LEGAL_EMPLOYER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_LE_Dim_Roleplaying.SEC_OBJ_MEMBER_VAL"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "ASSIGNMENT_ID",
+        "EFFECTIVE_END_DATE",
+        "EFFECTIVE_LATEST_CHANGE",
+        "EFFECTIVE_SEQUENCE",
+        "EFFECTIVE_START_DATE"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,26 @@
+{
+  "physicalTable" : {
+    "name" : "SEC_SECURE_BY_OPPORTUNITY_CX_SALES",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT DISTINCT\r\nOV.OPPORTUNITY_ID AS OPPORTUNITY_ID,\r\n'Y' AS SECURITY_ENABLE_FLG\r\nFROM\r\nDW_CXS_OPPORTUNITY_ACCESS_D OV ,\r\n(SELECT ACR.RESOURCE_ID AS RESOURCE_ID, ACR.TYPE_CODE AS TYPE_CODE, ACH.GROUP_ID AS GROUP_ID\r\nFROM\r\nDW_CXS_GROUP_RESOURCES_D ACR,\r\nDW_CXS_ACCESS_GROUP_RF_DN_DH ACH\r\nWHERE ACR.GROUP_ID = ACH.PARENT_GROUP_ID AND ACR.TYPE_CODE=ACH.TYPE_CODE) ORR\r\nWHERE\r\nORR.GROUP_ID = OV.GROUP_ID\r\nAND ORR.TYPE_CODE =OV.TYPE_CODE\r\nAND NVL(OV.access_level_code, '300') IN ('100','200', '300')\r\nAND ORR.RESOURCE_ID = VALUEOF(NQ_SESSION.USER_PARTY_ID)"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "OPPORTUNITY_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "SECURITY_ENABLE_FLG",
+      "dataType" : "VARCHAR",
+      "length" : 3,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "additionalKeys" : [ [ "OPPORTUNITY_ID" ] ]
+  }
+}

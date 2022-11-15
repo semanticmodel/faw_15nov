@@ -1,0 +1,101 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Legislative Job Category",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "EEO-1 Category Code (Job category)" ],
+    "logicalColumns" : [ {
+      "name" : "EEO-1 Category Code (Job category)",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_EEO1_JOB_CATEGORY_D_TL_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_EEO1_JOB_CATEGORY_D_TL_DimOnly.EEO1_JOB_CATEGORY_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_EEO1_JOB_CATEGORY_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_EEO1_JOB_CATEGORY_D_TL.EEO1_JOB_CATEGORY_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "EEO-1 Category (Job category)",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "EEO-1 Category Code (Job category)",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_EEO1_JOB_CATEGORY_D_TL_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_EEO1_JOB_CATEGORY_D_TL_DimOnly.EEO1_JOB_CATEGORY_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_EEO1_JOB_CATEGORY_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_EEO1_JOB_CATEGORY_D_TL.EEO1_JOB_CATEGORY_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_EEO1_JOB_CATEGORY_D_TL_DimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_EEO1_JOB_CATEGORY_D_TL_DimOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Legislative Job Category.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_EEO1_JOB_CATEGORY_D_TL_DimOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_EEO1_JOB_CATEGORY_D_TL",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_EEO1_JOB_CATEGORY_D_TL" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Legislative Job Category.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "EEO-1 Category Code (Job category)" ],
+        "displayKey" : "EEO-1 Category (Job category)",
+        "additionalKeys" : [ [ "EEO-1 Category (Job category)" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Legislative Job Category",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

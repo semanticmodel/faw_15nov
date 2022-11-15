@@ -1,0 +1,138 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - NetSuite Payment Method",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Payment Method Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Payment Method Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_PAYMENTMETHOD_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PAYMENTMETHOD_D.NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Payment Method Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Payment Method Type Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_PAYMENTMETHOD_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_NS_PAYMENTINSTRUMENTTYPE_D.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PAYMENTMETHOD_D.METHODTYPE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Payment Method - Is Inactive",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_PAYMENTMETHOD_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PAYMENTMETHOD_D.ISINACTIVE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "<<<<<<< COLUMNS NOT EXPOSED >>>>>>>",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Payment Method Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_PAYMENTMETHOD_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PAYMENTMETHOD_D.ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Payment Method Account",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_PAYMENTMETHOD_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PAYMENTMETHOD_D.ACCOUNT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Payment Method Type Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_PAYMENTMETHOD_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PAYMENTMETHOD_D.METHODTYPE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_NS_PAYMENTMETHOD_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PAYMENTMETHOD_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Payment Method.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Payment Method Identifier" ],
+        "displayKey" : "Payment Method Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "NetSuite Payment Method",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

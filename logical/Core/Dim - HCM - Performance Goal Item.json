@@ -1,0 +1,266 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Performance Goal Item",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Goal Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Goal Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem_DimOnly.GOAL_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem.GOAL_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Category Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem_DimOnly.GOAL_CATEGORY_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem.GOAL_CATEGORY_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Category",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Goal Category Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DEVELOPMENT' THEN  LOOKUP( SPARSE %2, %3, %3,  VALUEOF(NQ_SESSION.%4)) WHEN %1 = 'PERFORMANCE' THEN  LOOKUP( SPARSE %5, %3, %3,  VALUEOF(NQ_SESSION.%4)) ELSE %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem_DimOnly.GOAL_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GOAL_DEV_CATEGORY_D_TL.GOAL_CATEGORY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem_DimOnly.GOAL_CATEGORY_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GOAL_PERF_CATEGORY_D_TL.GOAL_CATEGORY_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DEVELOPMENT' THEN  LOOKUP( SPARSE %2, %3, %3,  VALUEOF(NQ_SESSION.%4)) WHEN %1 = 'PERFORMANCE' THEN  LOOKUP( SPARSE %5, %3, %3,  VALUEOF(NQ_SESSION.%4)) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem.GOAL_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GOAL_DEV_CATEGORY_D_TL.GOAL_CATEGORY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem.GOAL_CATEGORY_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GOAL_PERF_CATEGORY_D_TL.GOAL_CATEGORY_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem_DimOnly.GOAL_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem.GOAL_TYPE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Goal Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GOAL_TYPE_D_TL.GOAL_TYPE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem_DimOnly.GOAL_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GOAL_TYPE_D_TL.GOAL_TYPE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem.GOAL_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem_DimOnly.GOAL_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem.GOAL_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem_DimOnly.GOAL_STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem.GOAL_STATUS_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Goal Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GOAL_STATUS_D_TL.GOAL_STATUS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem_DimOnly.GOAL_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GOAL_STATUS_D_TL.GOAL_STATUS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem.GOAL_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Target Completion Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem_DimOnly.TARGET_COMPLETION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem.TARGET_COMPLETION_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Actual Completion Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem_DimOnly.ACTUAL_COMPLETION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_F_GoalItem",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem.ACTUAL_COMPLETION_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_GOAL_F_GoalItem_DimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem_DimOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Performance Goal Item.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_GOAL_F_GoalItem",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_F_GoalItem" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Performance Goal Item.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Goal Identifier" ],
+        "displayKey" : "Goal Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Performance Goal Item",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

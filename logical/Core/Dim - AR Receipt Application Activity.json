@@ -1,0 +1,105 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - AR Receipt Application Activity",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Line ID" ],
+    "logicalColumns" : [ {
+      "name" : "Line ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LINE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Applied to Transaction Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.TRANSACTION_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transaction Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.APPLIED_CUSTOMER_TRX_ID" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AR_APPLICATIONS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'UNAPP' OR %2 <> 'RCT_UNID_BALANCE'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.ACCOUNTING_LINE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Line ID" ],
+        "displayKey" : "Line ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "AR Receipt Application Activity",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_FIN_AR_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "AR_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_AR_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - AR Receipt Header Details.Security Context Code - AR Billing BU" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_FIN_AR_RECEIPT_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "AR_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_AR_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - AR Receipt Header Details.Security Context Code - AR Receipt BU" ]
+      }
+    } ]
+  }
+}

@@ -1,0 +1,92 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - AR Receipt Header Application Status",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Receipt Header Application Status Code" ],
+    "logicalColumns" : [ {
+      "name" : "Receipt Header Application Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receipt Header Application Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_AR_RECEIPT_STATUS_LKP_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AR_RECEIPT_STATUS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_RECEIPT_STATUS_LKP_TL_PromptOnly.RECEIPT_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AR_RECEIPT_STATUS_LKP_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AR_RECEIPT_STATUS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_RECEIPT_STATUS_LKP_TL.RECEIPT_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receipt Header Application Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_AR_RECEIPT_STATUS_LKP_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_RECEIPT_STATUS_LKP_TL_PromptOnly.RECEIPT_STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AR_RECEIPT_STATUS_LKP_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_RECEIPT_STATUS_LKP_TL.RECEIPT_STATUS_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_AR_RECEIPT_STATUS_LKP_TL_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_RECEIPT_STATUS_LKP_TL_PromptOnly" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_AR_RECEIPT_STATUS_LKP_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_RECEIPT_STATUS_LKP_TL" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Receipt Header Application Status Code" ],
+        "displayKey" : "Receipt Header Application Status Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "AR Receipt Header Application Status",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Ship Serial Number",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Delivery detail key", "From Serial Number" ],
+    "logicalColumns" : [ {
+      "name" : "Delivery detail key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_WSH_SERIAL_NUMBERS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WSH_SERIAL_NUMBERS_D.DELIVERY_DETAIL_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Serial Number Detail"
+    }, {
+      "name" : "From Serial Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_WSH_SERIAL_NUMBERS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WSH_SERIAL_NUMBERS_D.FM_SERIAL_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Serial Number Detail"
+    }, {
+      "name" : "To Serial Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_WSH_SERIAL_NUMBERS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WSH_SERIAL_NUMBERS_D.TO_SERIAL_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Serial Number Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_WSH_SERIAL_NUMBERS_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WSH_SERIAL_NUMBERS_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Ship Serial Number.Dim - Ship Serial Number Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - Ship Serial Number Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - Ship Serial Number Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - Ship Serial Number Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Delivery detail key" ],
+        "displayKey" : "Delivery detail key"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Ship Serial Number",
+        "levels" : [ "Dim - Ship Serial Number Total", "Dim - Ship Serial Number Detail" ]
+      } ]
+    }
+  }
+}

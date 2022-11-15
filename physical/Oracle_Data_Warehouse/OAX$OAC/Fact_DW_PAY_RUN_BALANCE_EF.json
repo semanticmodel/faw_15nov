@@ -1,0 +1,519 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_PAY_RUN_BALANCE_EF",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PAY_RUN_BALANCE_EF",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_AgeBand",
+        "joinExpression": {
+          "expressionTemplate": " IFNULL(%1, -(99999)) >= %2 AND  IFNULL(%1, -(99999)) <= %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.AGE_IN_YEARS",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_AgeBand.MIN_RANGE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_AgeBand.MAX_RANGE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_TenureBand",
+        "joinExpression": {
+          "expressionTemplate": " IFNULL(%1, -(99999)) >= %2 AND  IFNULL(%1, -(99999)) <= %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.AGE_IN_YEARS",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_TenureBand.MIN_RANGE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_TenureBand.MAX_RANGE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BARGAINING_UNIT_D_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BARGAINING_UNIT_D_TL.BARGAINING_UNIT_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BARGAINING_UNIT_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BARGAINING_UNIT_D_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_CF_DH_Dept_Hierarchy",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_CF_DH_Dept_Hierarchy.DEPARTMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.DEPARTMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_CF_DH_Dept_Hierarchy.TREE_VERSION_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_CF_DH_Dept_Hierarchy.TREE_VERSION_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D.JOB_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.JOB_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL.JOB_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.JOB_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MONTH_D_GregorianCalendar",
+        "joinExpression": {
+          "expressionTemplate": "%1 <= %2 AND %3 >= %2",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MONTH_D_GregorianCalendar.CAL_MONTH_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MONTH_D_GregorianCalendar.CAL_MONTH_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ORGANIZATION_CF_DH_Org_Hierarchy",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ORGANIZATION_CF_DH_Org_Hierarchy.ORGANIZATION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.DEPARTMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ORGANIZATION_CF_DH_Org_Hierarchy.TREE_VERSION_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ORGANIZATION_CF_DH_Org_Hierarchy.TREE_VERSION_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D.GRADE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.GRADE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_TL.GRADE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.GRADE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_TL.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_TL.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_PAYROLL_D_Payroll",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_PAYROLL_D_Payroll.PAYROLL_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.PAYROLL_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_PAYROLL_D_Payroll.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_PAYROLL_D_Payroll.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 <= %6 AND %7 >= %6",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.LEGISLATION_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.LEGISLATION_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.DATE_FROM",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.DATE_TO"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D.POSITION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.POSITION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_TL.POSITION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.POSITION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_TL.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_TL.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_QUARTER_D_GregorianCalendar",
+        "joinExpression": {
+          "expressionTemplate": "%1 <= %2 AND %3 >= %2",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_QUARTER_D_GregorianCalendar.CAL_QUARTER_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_QUARTER_D_GregorianCalendar.CAL_QUARTER_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5 AND %6 = 'Y'",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.HR_ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F.EFFECTIVE_END_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F.EFFECTIVE_LATEST_CHANGE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.HR_ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_YEAR_D_GregorianCalendar",
+        "joinExpression": {
+          "expressionTemplate": "%1 <= %2 AND %3 >= %2",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_YEAR_D_GregorianCalendar.CAL_YEAR_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_YEAR_D_GregorianCalendar.CAL_YEAR_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.PAY_LEGISLATION_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.PAY_LEGISLATION_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BUSINESS_UNIT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D.BUSINESS_UNIT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BUSINESS_UNIT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_TL.BUSINESS_UNIT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.LEGISLATION_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL.COUNTRY"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_PayrollCurrency",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.CURRENCY_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_PayrollCurrency.CURRENCY_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DAY_D_GregorianCalendar",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.ANCHOR_DATE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DAY_D_GregorianCalendar.CALENDAR_DATE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_Dept",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.DEPARTMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_Dept.DEPARTMENT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_TL_Dept",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.DEPARTMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_TL_Dept.DEPARTMENT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_EMPLOYER_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.LEGAL_EMPLOYER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_EMPLOYER_D.LEGAL_EMPLOYER_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_EMPLOYER_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.LEGAL_EMPLOYER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_EMPLOYER_D_TL.LEGAL_EMPLOYER_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATION_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.PAY_LEGISLATION_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATION_D_TL.LEGISLATION_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATIVE_DATA_GROUP_D_PayrollLDG",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.LEGISLATIVE_DATA_GROUP_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATIVE_DATA_GROUP_D_PayrollLDG.LEGISLATIVE_DATA_GROUP_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYROLL_STATUTORY_UNIT_D_PSU",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.PAYROLL_STAT_UNIT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYROLL_STATUTORY_UNIT_D_PSU.PAYROLL_STATUTORY_UNIT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_ACTION_D_PayrollAction",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.PAYROLL_ACTION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_ACTION_D_PayrollAction.PAYROLL_ACTION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_PayrollBalanceCategory",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_CATEGORY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_PayrollBalanceCategory.BALANCE_CATEGORY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_DIMENSION_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_DIMENSION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_DIMENSION_D.BALANCE_DIMENSION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_TYPE_D_PayrollBalanceType",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_TYPE_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_TYPE_D_PayrollBalanceType.BALANCE_TYPE_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_PERIOD_D_PayrollPeriod",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.EARN_TIME_PERIOD_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_PERIOD_D_PayrollPeriod.TIME_PERIOD_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_RELATIONSHIP_D_PayrollRelationship",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.PAYROLL_RELATIONSHIP_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_RELATIONSHIP_D_PayrollRelationship.PAY_RELATIONSHIP_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_UNIT_D_TL_PayrollBalanceUOM",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_UOM",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_UNIT_D_TL_PayrollBalanceUOM.PAY_UNIT_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REPORTING_EST_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.REPORTING_ESTABLISHMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REPORTING_EST_D.REPORTING_EST_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REPORTING_EST_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.REPORTING_ESTABLISHMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REPORTING_EST_D_TL.REPORTING_EST_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SEX_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.SEX",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SEX_D_TL.SEX"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TAX_REPORTING_UNIT_D_TaxReportingUnit",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.TAX_UNIT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TAX_REPORTING_UNIT_D_TaxReportingUnit.TAX_REPORTING_UNIT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WORKER_LOCATION_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.LOCATION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WORKER_LOCATION_D.LOCATION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WORKER_LOCATION_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.LOCATION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WORKER_LOCATION_D_TL.LOCATION_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "RUN_BALANCE_ID"
+      ]
+    ]
+  }
+}

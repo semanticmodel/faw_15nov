@@ -1,0 +1,37 @@
+{
+  "logicalTable" : {
+    "name" : "Z - Container for Unexposed Inventory Physical Objects",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Inventory", "Project:Fusion Analytics Warehouse - Inventory Balance" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "PK_ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_MATERIAL_TXNS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MATERIAL_TXNS_CF.TRANSACTION_ID" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_INV_MATERIAL_TXNS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MATERIAL_TXNS_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    } ]
+  }
+}

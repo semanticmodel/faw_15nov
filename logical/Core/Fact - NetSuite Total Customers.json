@@ -1,0 +1,56 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - NetSuite Total Customers",
+    "tags" : [ "Project:NetSuite Analytics Warehouse - NetSuite Sales" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_CUSTOMER_D_Total",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D_Total.ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Total Number of Customers",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_CUSTOMER_D_Total",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 13 THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D_Total.ENTITYSTATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D_Total.ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_NS_CUSTOMER_D_Total",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D_Total" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Customer.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

@@ -1,0 +1,730 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - Agreement Header Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Agreement Id" ],
+    "logicalColumns" : [ {
+      "name" : "Agreement Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.AGREEMENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Agreement Header Detail"
+    }, {
+      "name" : "Agreement Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.AGREEMENT_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Agreement Header Detail"
+    }, {
+      "name" : "Description",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.DESCRIPTION" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Revision Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_REVISION_NUM" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.AGREEMENT_REVISION_NUM" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Expired Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <  CURRENT_DATE  THEN 'Y' ELSE 'N' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <  CURRENT_DATE  THEN 'Y' ELSE 'N' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.AGREEMENT_END_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Expired Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Expired Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CASE  WHEN %2 <  CURRENT_DATE  THEN 'Y' ELSE 'N' END ,  CASE  WHEN %2 <  CURRENT_DATE  THEN 'Y' ELSE 'N' END ,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_END_DATE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CASE  WHEN %2 <  CURRENT_DATE  THEN 'Y' ELSE 'N' END ,  CASE  WHEN %2 <  CURRENT_DATE  THEN 'Y' ELSE 'N' END ,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.AGREEMENT_END_DATE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Agreement Amount Null Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IS NULL  THEN 'YES' ELSE 'NO' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.GLOBAL_AGREEMENT_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IS NULL  THEN 'YES' ELSE 'NO' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.GLOBAL_AGREEMENT_AMOUNT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Agreement Amount Null Indicator Doc Currency",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IS NULL  THEN 'YES' ELSE 'NO' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IS NULL  THEN 'YES' ELSE 'NO' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.AGREEMENT_AMOUNT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Automatically Generate Orders Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AUTO_GENERATE_ORDERS_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.AUTO_GENERATE_ORDERS_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Automatically Generate Orders Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Automatically Generate Orders Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AUTO_GENERATE_ORDERS_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.AUTO_GENERATE_ORDERS_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Enable Retroactive Pricing Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'BLANKET' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.ENABLE_RETROACTIVE_PRICE_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'BLANKET' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.AGREEMENT_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.ENABLE_RETROACTIVE_PRICE_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Enable Retroactive Pricing Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Enable Retroactive Pricing Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CASE  WHEN %2 = 'BLANKET' THEN %3 END ,  CASE  WHEN %2 = 'BLANKET' THEN %3 END ,  VALUEOF(NQ_SESSION.%4))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.ENABLE_RETROACTIVE_PRICE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CASE  WHEN %2 = 'BLANKET' THEN %3 END ,  CASE  WHEN %2 = 'BLANKET' THEN %3 END ,  VALUEOF(NQ_SESSION.%4))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.AGREEMENT_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.ENABLE_RETROACTIVE_PRICE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Require Acknowledgement Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.REQUIRED_ACKNOWLEDGMENT_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.REQUIRED_ACKNOWLEDGMENT_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Require Acknowledgement",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Require Acknowledgement Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ACCEPTANCE_REQUIRED_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.REQUIRED_ACKNOWLEDGMENT_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ACCEPTANCE_REQUIRED_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.REQUIRED_ACKNOWLEDGMENT_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requires Signature Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.REQUIRES_SIGNATURE_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.REQUIRES_SIGNATURE_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requires Signature Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Requires Signature Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.REQUIRES_SIGNATURE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.REQUIRES_SIGNATURE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Buyer Managed Transport Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.BUYER_MANAGED_TRANSPORT_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.BUYER_MANAGED_TRANSPORT_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Buyer Managed Transport Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Buyer Managed Transport Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.BUYER_MANAGED_TRANSPORT_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.BUYER_MANAGED_TRANSPORT_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Pay on Receipt Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.PAY_ON_RECEIPT_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.PAY_ON_RECEIPT_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Pay on Receipt Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Pay on Receipt Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.PAY_ON_RECEIPT_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.PAY_ON_RECEIPT_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Conforming Order Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.CONFIRMING_ORDER_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.CONFIRMING_ORDER_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Confirming Order Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Conforming Order Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CASE  WHEN %2 = '~NOVALUE~' THEN  NULL  ELSE %2 END ,  CASE  WHEN %2 = '~NOVALUE~' THEN  NULL  ELSE %2 END ,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.CONFIRMING_ORDER_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CASE  WHEN %2 = '~NOVALUE~' THEN  NULL  ELSE %2 END ,  CASE  WHEN %2 = '~NOVALUE~' THEN  NULL  ELSE %2 END ,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.CONFIRMING_ORDER_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Note to Supplier",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.NOTE_TO_VENDOR" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.NOTE_TO_VENDOR" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Note to Receiver",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.NOTE_TO_RECEIVER" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.NOTE_TO_RECEIVER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Aging Onset Point Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGING_ONSET_POINT" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.AGING_ONSET_POINT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Aging Onset Point",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Aging Onset Point Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGING_ONSET_POINT", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.AGING_ONSET_POINT", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Aging Period days",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGING_PERIOD_DAYS" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.AGING_PERIOD_DAYS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Pay on Use Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.PAY_ON_USE_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.PAY_ON_USE_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Pay on Use Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Pay on Use Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.PAY_ON_USE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.PAY_ON_USE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Required Acknowledgement",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Require Acknowledgement Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ACCEPTANCE_REQUIRED_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.REQUIRED_ACKNOWLEDGMENT_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ACCEPTANCE_REQUIRED_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line.REQUIRED_ACKNOWLEDGMENT_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "-----DFF Keys-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "PO_AGRMNT_HEADERS_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_AGREEMENT_CF_DW_PO_AGRMNT_HEADERS_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_AGREEMENT_CF_Dim_DW_PO_AGRMNT_HEADERS_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AGREEMENT_CF_Line",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_AGREEMENT_CF_DW_PO_AGRMNT_HEADERS_DFF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_AGREEMENT_CF_DW_PO_AGRMNT_HEADERS_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Agreement Header Details.Agreement Header Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.UNIQUE_AGREEMENT_LINE_INDICATOR" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_AGREEMENT_CF_Line",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_AGREEMENT_CF_Dim_DW_PO_AGRMNT_HEADERS_DFF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AGREEMENT_CF_Line",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_AGREEMENT_CF_Dim_DW_PO_AGRMNT_HEADERS_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Agreement Header Details.Agreement Header Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Agreement Header Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Agreement Id" ],
+        "displayKey" : "Agreement Number",
+        "additionalKeys" : [ [ "Agreement Number" ] ],
+        "preferredDrillPath" : [ "logicalLevel:Core.Dim - PRC - Agreement Line Details.Agreement Line Detail" ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - Agreement Header Details",
+        "levels" : [ "Total", "Agreement Header Detail" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_PROC_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PRCSPEND",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PROC_SPEND_PRC_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Agreement Line Details.Security Context Code - Procurement Business Unit" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_PROC_REQ_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PRCSPEND",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PROC_REQ_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Agreement Line Details.Security Context Code - Requisition BU" ]
+      }
+    } ]
+  }
+}

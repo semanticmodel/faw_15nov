@@ -1,0 +1,30 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_CXSR_CHANNELS_D_TL",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_CXSR_CHANNELS_D_TL",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_CHANNELS_D_TL.CHANNEL_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F.SERVICE_REQUEST_CHANNEL_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_CHANNELS_D_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      }
+    ],
+    "additionalKeys": [
+      [
+        "CHANNEL_ID"
+      ]
+    ]
+  }
+}

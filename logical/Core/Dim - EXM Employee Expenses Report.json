@@ -1,0 +1,56 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - EXM Employee Expenses Report",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Expense Report Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Expense Report Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF.EXPENSE_REPORT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_EMPLOYEE_EXPENSE_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_EMPLOYEE_EXPENSE_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Expense Report Identifier" ],
+        "displayKey" : "Expense Report Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "EXM Employee Expenses Report",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

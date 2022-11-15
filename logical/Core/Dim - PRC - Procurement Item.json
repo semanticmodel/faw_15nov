@@ -1,0 +1,719 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - Procurement Item",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Procurement Item Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Inventory Item Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.INV_ITEM_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.INV_ITEM_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.INVENTORY_ITEM_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.INVENTORY_ITEM_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SPEND_ITEM_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SPEND_ITEM_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ITEM_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ITEM_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.ITEM_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.ITEM_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Purchasing Category Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> '-99999' THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.PURCHASING_CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> '-99999' THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.PURCHASING_CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.PURCHASING_CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.PURCHASING_CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 < 0 THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SPEND_PURCHASING_CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 < 0 THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SPEND_PURCHASING_CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> '-99999' THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> '-99999' THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.CATEGORY_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Procurement Category"
+    }, {
+      "name" : "Description",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.INV_ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.INV_ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.INVENTORY_ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.INVENTORY_ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.ITEM_DESCRIPTION" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Supplier Item",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.SUPPLIER_ITEM_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.SUPPLIER_ITEM_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.SUPPLIER_ITEM_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.SUPPLIER_ITEM_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SUPPLIER_ITEM_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SUPPLIER_ITEM_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> '~NOVALUE~' THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SUPPLIER_ITEM_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> '~NOVALUE~' THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SUPPLIER_ITEM_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.SUGGESTED_SUPPLIER_ITEM_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.SUGGESTED_SUPPLIER_ITEM_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Purchase Item Type",
+      "description" : "This is a derived attribute with values like 'Description based Item', 'Supplier Items', 'Inventory Items' and is derived based on following logic. If Item and Supplier Item attributes are not available then 'Description based Item', if only Supplier Item attribute is  available then 'Supplier Items' otherwise 'Inventory Items'.",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 'Inventory Item' WHEN %2 > 0 AND %3 <> '~NOVALUE~' THEN 'Supplier Item' WHEN %4 > 0 THEN 'Description Based Item' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.INV_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.SUPPLIER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.PURCHASING_CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 'Inventory Item' WHEN %2 > 0 AND %3 <> '~NOVALUE~' THEN 'Supplier Item' WHEN %4 > 0 THEN 'Description Based Item' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.INV_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.SUPPLIER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.PURCHASING_CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN 'Inventory Item' WHEN %2 <> -(99999) AND %3 <> '~NOVALUE~' THEN 'Supplier Item' WHEN %4 <> -(99999) THEN 'Description Based Item' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.INVENTORY_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.VENDOR_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.PURCHASING_CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN 'Inventory Item' WHEN %2 <> -(99999) AND %3 <> '~NOVALUE~' THEN 'Supplier Item' WHEN %4 <> -(99999) THEN 'Description Based Item' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.INVENTORY_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.VENDOR_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.PURCHASING_CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 'Inventory Item' WHEN %2 > 0 AND %3 <> '~NOVALUE~' THEN 'Supplier Item' WHEN %4 > 0 THEN 'Description Based Item' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SPEND_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SUPPLIER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SPEND_PURCHASING_CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 'Inventory Item' WHEN %2 > 0 AND %3 <> '~NOVALUE~' THEN 'Supplier Item' WHEN %4 > 0 THEN 'Description Based Item' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SPEND_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SUPPLIER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SPEND_PURCHASING_CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN 'Inventory Item' WHEN %2 <> -(99999) AND %3 <> '~NOVALUE~' THEN 'Supplier Item' WHEN %4 <> -(99999) THEN 'Description Based Item' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SUPPLIER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN 'Inventory Item' WHEN %2 <> -(99999) AND %3 <> '~NOVALUE~' THEN 'Supplier Item' WHEN %4 <> -(99999) THEN 'Description Based Item' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SUPPLIER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 'Inventory Item' WHEN %2 > 0 AND %3 <> '~NOVALUE~' THEN 'Supplier Item' WHEN %4 > 0 THEN 'Description Based Item' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.VENDOR_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.SUGGESTED_SUPPLIER_ITEM_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 'Inventory Item' WHEN %2 > 0 AND %3 <> '~NOVALUE~' THEN 'Supplier Item' WHEN %4 > 0 THEN 'Description Based Item' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.VENDOR_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.SUGGESTED_SUPPLIER_ITEM_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.CATEGORY_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Procurement Item Identifier",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN  CAST (%1 AS VARCHAR ( 4000 )) WHEN %2 > 0 AND %3 <> '~NOVALUE~' THEN  CAST (%2 AS VARCHAR ( 4000 )) || '(' || %3 || ')' WHEN %4 <> '-99999' THEN  CAST (%4 AS VARCHAR ( 4000 )) || '~' || %5 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.INV_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.SUPPLIER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.PURCHASING_CATEGORY_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.INV_ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN  CAST (%1 AS VARCHAR ( 4000 )) WHEN %2 <> -(99999) AND %3 <> '~NOVALUE~' THEN  CAST (%2 AS VARCHAR ( 4000 )) || '(' || %3 || ')' WHEN %4 <> -(99999) THEN  CAST (%4 AS VARCHAR ( 4000 )) || '~' || %5 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.INVENTORY_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.VENDOR_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.PURCHASING_CATEGORY_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.INVENTORY_ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN  CAST (%1 AS VARCHAR ( 4000 )) WHEN %2 > 0 AND %3 <> '~NOVALUE~' THEN  CAST (%2 AS VARCHAR ( 4000 )) || '(' || %3 || ')' WHEN  NOT %4 IS NULL  THEN  CAST (%4 AS VARCHAR ( 4000 )) || '~' || %5 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SPEND_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SUPPLIER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SPEND_PURCHASING_CATEGORY_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN  CAST (%1 AS VARCHAR ( 4000 )) WHEN %2 <> -(99999) AND %3 <> '~NOVALUE~' THEN  CAST (%2 AS VARCHAR ( 4000 )) || '(' || %3 || ')' WHEN  NOT %4 IS NULL  THEN  CAST (%4 AS VARCHAR ( 4000 )) || '~' || %5 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SUPPLIER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.CATEGORY_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN  CAST (%1 AS VARCHAR ( 4000 )) WHEN %2 > 0 AND %3 <> '~NOVALUE~' THEN  CAST (%2 AS VARCHAR ( 4000 )) || '(' || %3 || ')' WHEN %4 <> '-99999' THEN  CAST (%4 AS VARCHAR ( 4000 )) || '~' || %5 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.VENDOR_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.SUGGESTED_SUPPLIER_ITEM_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.CATEGORY_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.ITEM_DESCRIPTION" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Procurement Item"
+    }, {
+      "name" : "Procurement Item",
+      "description" : "This is a derived attribute and is derived based on following logic, If Item and Supplier Item not available then Category Code concatenated with Description, if only Supplier Item available then Supplier Name concatenated with Supplier Part Number, otherwise Inventory Item Name.",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 WHEN %3 > 0 AND %4 <> '~NOVALUE~' THEN %5 || '(' || %4 || ')' WHEN %6 <> '-99999' THEN %7 || '~' || %8 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.INV_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_PO.ITEM_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.SUPPLIER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_PO.PARTY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.PURCHASING_CATEGORY_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_PO.CATEGORY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.INV_ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 WHEN %3 > 0 AND %4 <> '~NOVALUE~' THEN %5 || '(' || %4 || ')' WHEN %6 <> '-99999' THEN %7 || '~' || %8 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.INVENTORY_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_Agreement.ITEM_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.VENDOR_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_Agreement.PARTY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.PURCHASING_CATEGORY_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Agreement.CATEGORY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.INVENTORY_ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 WHEN %3 > 0 AND %4 <> '~NOVALUE~' THEN %5 || '(' || %4 || ')' WHEN %6 > 0 THEN %7 || '~' || %8 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SPEND_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_Spend.ITEM_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SUPPLIER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_Spend.PARTY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.SPEND_PURCHASING_CATEGORY_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Spend.CATEGORY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %2 WHEN %3 <> -(99999) AND %4 <> '~NOVALUE~' THEN %5 || '(' || %4 || ')' WHEN %6 > 0 THEN %7 || '~' || %8 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_Receipt.ITEM_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SUPPLIER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_Receipt.PARTY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.CATEGORY_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Receipt.CATEGORY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 WHEN %3 > 0 AND %4 <> '~NOVALUE~' THEN %5 || '(' || %4 || ')' WHEN %6 <> '-99999' THEN %7 || '~' || %8 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_Req.ITEM_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.VENDOR_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.SUGGESTED_SUPPLIER_ITEM_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_Req.PARTY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.CATEGORY_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Req.CATEGORY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.ITEM_DESCRIPTION" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Line Description",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.INV_ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PURCHASE_ORDER_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF.INV_ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.INVENTORY_ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.INVENTORY_ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.ITEM_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.ITEM_DESCRIPTION" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_PURCHASE_ORDER_CF",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_PURCHASE_ORDER_CF_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_PO", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_PO", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_PO" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_PO",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_PO",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PURCHASE_ORDER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_PO",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_PO.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AGREEMENT_CF",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AGREEMENT_CF_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_Agreement", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_Agreement", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Agreement" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_Agreement",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_Agreement",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Agreement",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Agreement.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_INVOICE_SPEND_CF",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Procurement Item.Procurement Item" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_INVOICE_SPEND_CF_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_Spend", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_Spend", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Spend" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_Spend",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_Spend",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Spend",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Procurement Item.Procurement Item" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Spend.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_RCV_SHIPMENTS_CF",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_RCV_SHIPMENTS_CF_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_Receipt", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_Receipt", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Receipt" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_Receipt",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_Receipt",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Receipt",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Receipt.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_REQUISITION_CF",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_REQUISITION_CF_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_Req", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_Req", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Req" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_Req",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_SUPPLIER_Req",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Req",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORIES_D_TL_Req.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Procurement Category",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Purchasing Category Identifier" ],
+        "displayKey" : "Purchasing Category Identifier"
+      }, {
+        "name" : "Procurement Item",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Procurement Item Identifier" ],
+        "displayKey" : "Procurement Item Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - Procurement Item",
+        "levels" : [ "Total", "Procurement Category", "Procurement Item" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,178 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - Receipt Transaction Lot Serial Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Transaction Identifier", "Lot", "Serial Number" ],
+    "logicalColumns" : [ {
+      "name" : "Transaction Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TXN_LOT_SERIALNUMBER_CF.TRANSACTION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Transaction Lot Serial"
+    }, {
+      "name" : "Lot",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TXN_LOT_SERIALNUMBER_CF.LOT_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Transaction Lot Serial"
+    }, {
+      "name" : "Expiration Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM  CAST (%1 AS DATE )) = '1901' AND  EXTRACT( MONTH  FROM  CAST (%1 AS DATE )) = '01' AND  DAYOFMONTH( CAST (%1 AS DATE )) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_LOT_NUMBERS_G.EXPIRATION_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Transaction Lot Serial"
+    }, {
+      "name" : "Lot Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TXN_LOT_SERIALNUMBER_CF.LOT_PRIMARY_QUANTITY" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Transaction Lot Serial"
+    }, {
+      "name" : "Serial Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TXN_LOT_SERIALNUMBER_CF.SERIAL_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Transaction Lot Serial"
+    }, {
+      "name" : "Serial Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TXN_LOT_SERIALNUMBER_CF.SERIAL_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TXN_LOT_SERIALNUMBER_CF.DETAILED_PRIMARY_QTY" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Transaction Lot Serial"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_RCV_SHIPMENTS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TRANSACTIONS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TXN_LOT_SERIALNUMBER_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_LOT_NUMBERS_G" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TRANSACTIONS_CF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TRANSACTIONS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TXN_LOT_SERIALNUMBER_CF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TXN_LOT_SERIALNUMBER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_LOT_NUMBERS_G",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Receipt Transaction Lot Serial Details.Receipt Transaction Lot Serial" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'PO' AND %2 = 'Y' AND %3 = 'N'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SOURCE_DOCUMENT_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SHIPMENT_RECEIVED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.UNORDERED_RECEIPT_FLAG" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Receipt Transaction Lot Serial",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transaction Identifier", "Lot", "Serial Number" ],
+        "displayKey" : "Lot",
+        "additionalKeys" : [ [ "Lot", "Serial Number" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - Receipt Transaction Lot Serial Details",
+        "levels" : [ "Total", "Receipt Transaction Lot Serial" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_PROC_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PRCSPEND",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PROC_SPEND_PRC_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Receipt Line Details.Security Context Code - Procurment BU" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_PROC_REQ_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PRCSPEND",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PROC_REQ_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Receipt Line Details.Security Context Code - Requisition BU" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_SCM_INV_INVENTORY_ORG_DATA",
+      "functionalGroup" : "PRCSPEND",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_ORG_TRANSACTIONS_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Receipt Line Details.Security Context Code - Inventory Org" ]
+      }
+    } ]
+  }
+}

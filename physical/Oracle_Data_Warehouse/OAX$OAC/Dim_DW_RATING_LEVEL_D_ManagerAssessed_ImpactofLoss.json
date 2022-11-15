@@ -1,0 +1,45 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_RATING_LEVEL_D_ManagerAssessed_ImpactofLoss",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_RATING_LEVEL_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_ManagerAssessed_ImpactofLossBand",
+        "joinExpression": {
+          "expressionTemplate": " IFNULL(%1, -(99999)) >= %2 AND  IFNULL(%1, -(99999)) <= %3 AND %4 = 'Impact Of Loss Band'",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_ManagerAssessed_ImpactofLoss.NUMERIC_RATING",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_ManagerAssessed_ImpactofLossBand.MIN_RANGE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_ManagerAssessed_ImpactofLossBand.MAX_RANGE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_ManagerAssessed_ImpactofLossBand.BAND_NAME"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_TL_ManagerAssessed_ImpactofLoss",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_TL_ManagerAssessed_ImpactofLoss.RATING_LEVEL_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_ManagerAssessed_ImpactofLoss.RATING_LEVEL_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_TL_ManagerAssessed_ImpactofLoss.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      }
+    ],
+    "additionalKeys": [
+      [
+        "RATING_LEVEL_ID"
+      ]
+    ]
+  }
+}

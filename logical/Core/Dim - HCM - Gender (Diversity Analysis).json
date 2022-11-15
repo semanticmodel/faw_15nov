@@ -1,0 +1,101 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Gender (Diversity Analysis)",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Gender Code" ],
+    "logicalColumns" : [ {
+      "name" : "Gender Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_SEX_D_TL_DiversityAnalysis_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SEX_D_TL_DiversityAnalysis_DimOnly.SEX" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_SEX_D_TL_DiversityAnalysis",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SEX_D_TL_DiversityAnalysis.SEX" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Gender",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Gender Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_SEX_D_TL_DiversityAnalysis_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SEX_D_TL_DiversityAnalysis_DimOnly.SEX_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_SEX_D_TL_DiversityAnalysis",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SEX_D_TL_DiversityAnalysis.SEX_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_SEX_D_TL_DiversityAnalysis_DimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SEX_D_TL_DiversityAnalysis_DimOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Gender (Diversity Analysis).Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SEX_D_TL_DiversityAnalysis_DimOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_SEX_D_TL_DiversityAnalysis",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SEX_D_TL_DiversityAnalysis" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Gender (Diversity Analysis).Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Gender Code" ],
+        "displayKey" : "Gender",
+        "additionalKeys" : [ [ "Gender" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Gender (Diversity Analysis)",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

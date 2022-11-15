@@ -1,0 +1,72 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - GL Journal Batch Approved By",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Approved By Login Name" ],
+    "logicalColumns" : [ {
+      "name" : "Approved By Login Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_USER_D_Approved_By_GL_Journal_Batch",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_Approved_By_GL_Journal_Batch.USERNAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Approved By",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Approved By Login Name",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_USER_D_Approved_By_GL_Journal_Batch",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_Approved_By_GL_Journal_Batch.FULL_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_USER_D_Approved_By_GL_Journal_Batch",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_Approved_By_GL_Journal_Batch" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Approved By Login Name" ],
+        "displayKey" : "Approved By Login Name"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "GL Journal Batch Approved By",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

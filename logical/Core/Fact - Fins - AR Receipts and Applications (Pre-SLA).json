@@ -1,0 +1,821 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Fins - AR Receipts and Applications (Pre-SLA)",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Accounts Receivable", "Project:Oracle Analytics for Fusion Financials" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-----Non-Monetary Metric-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Receipts Transactions Count",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.RECEIPT_NUMBER" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Receipts Count Before Due",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'APP' AND %2 >= %3 THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.RECEIPT_APPLN_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.PAYMENT_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.APPLICATION_APPLY_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Receipts Count After Due",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'APP' AND %2 < %3 THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.RECEIPT_APPLN_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.PAYMENT_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.APPLICATION_APPLY_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Ledger Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Receipts Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "(%1 + %2 + %3 + %4) * -(1)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_EARNED_DISCOUNT_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_UNEARNED_DISC_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_GAIN_LOSS_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Avg Receipts Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Transactions Count", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Amount" ]
+        }
+      }
+    }, {
+      "name" : "Unapplied Receipts Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('UNAPP') THEN %2 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Receipts Applications Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('REC') THEN (%2 + %3 + %4 + %5) * -(1) ELSE (%3 + %4 + %5) * -(1) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_EARNED_DISCOUNT_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_UNEARNED_DISC_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_GAIN_LOSS_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unidentified Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('UNID') THEN %2 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Onaccount Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('ACC') THEN %2 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Other Receipt Application Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('OTHER ACC') THEN %2 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Applications Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 + %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Applications Amount", "logicalColumn:Core.Fact - Fins - AR Credit Memo and Applications.Credit Memo Applications Amount" ]
+        }
+      }
+    }, {
+      "name" : "Receipts Amount to Invoices %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Invoice Amount", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Amount" ]
+        }
+      }
+    }, {
+      "name" : "Discounts Taken Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 + %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Earned Discounts Amount", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Unearned Discounts Amount" ]
+        }
+      }
+    }, {
+      "name" : "Discounts Taken of Applied Receipts %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Applications Amount", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Discounts Taken Amount" ]
+        }
+      }
+    }, {
+      "name" : "Earned Discounts Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_EARNED_DISCOUNT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Earned Discounts of Total Discount %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Discounts Taken Amount", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Earned Discounts Amount" ]
+        }
+      }
+    }, {
+      "name" : "Unearned Discounts Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_UNEARNED_DISC_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unearned Discounts of Total Discount %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Discounts Taken Amount", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Unearned Discounts Amount" ]
+        }
+      }
+    }, {
+      "name" : "Exchange Gain or Loss Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1 * -(1)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.LEDGER_GAIN_LOSS_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Analytics Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Receipts Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "(%1 + %2 + %3 + %4) * -(1)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_EARNED_DISCOUNT_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_UNEARNED_DISC_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_GAIN_LOSS_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Avg Receipts Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Transactions Count", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Unapplied Receipts Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('UNAPP') THEN %2 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Receipts Applications Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('REC') THEN (%2 + %3 + %4 + %5) * -(1) ELSE (%3 + %4 + %5) * -(1) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_EARNED_DISCOUNT_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_UNEARNED_DISC_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_GAIN_LOSS_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unidentified Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('UNID') THEN %2 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Onaccount Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('ACC') THEN %2 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Other Receipt Application Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('OTHER ACC') THEN %2 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Applications Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 + %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Applications Amount in Analytics Currency", "logicalColumn:Core.Fact - Fins - AR Credit Memo and Applications.Credit Memo Applications Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Receipts Amount to Invoices % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Invoice Amount in Analytics Currency", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Discounts Taken Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 + %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Earned Discounts Amount in Analytics Currency", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Unearned Discounts Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Discounts Taken of Applied Receipts % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Applications Amount in Analytics Currency", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Discounts Taken Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Earned Discounts Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_EARNED_DISCOUNT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Earned Discounts of Total Discount % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Discounts Taken Amount in Analytics Currency", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Earned Discounts Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Unearned Discounts Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_UNEARNED_DISC_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unearned Discount of Total Discounts % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Discounts Taken Amount in Analytics Currency", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Unearned Discounts Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Exchange Gain or Loss Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1 * -(1)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.GLOBAL_GAIN_LOSS_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Receipts Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "(%1 + %2 + %3) * -(1)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.TRANSACTION_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.EARNED_DISCOUNT_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.UNEARNED_DISCOUNT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Avg Receipts Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Transactions Count", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Unapplied Receipts Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('UNAPP') THEN %2 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Receipts Applications Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('REC') THEN (%2 + %3 + %4) * -(1) ELSE (%3 + %4) * -(1) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.TRANSACTION_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.EARNED_DISCOUNT_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.UNEARNED_DISCOUNT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unidentified Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('UNID') THEN %2 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Onaccount Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('ACC') THEN %2 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Other Receipt Application Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('OTHER ACC') THEN %2 * -(1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.SOURCE_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Applications Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 + %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Applications Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AR Credit Memo and Applications.Credit Memo Applications Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Receipts Amount to Invoices % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Invoice Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Discounts Taken Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 + %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Earned Discounts Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Unearned Discounts Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Discounts Taken of Applied Receipts % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Receipts Applications Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Discounts Taken Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Earned Discounts Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.EARNED_DISCOUNT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Earned Discounts of Total Discount % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Discounts Taken Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Earned Discounts Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Unearned Discounts of Total Discount % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Discounts Taken Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AR Receipts and Applications (Pre-SLA).Unearned Discounts Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Unearned Discounts Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_APPLICATIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF.UNEARNED_DISCOUNT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AR_APPLICATIONS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_APPLICATIONS_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Receipt Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - AR Receipt Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Receipt Header Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

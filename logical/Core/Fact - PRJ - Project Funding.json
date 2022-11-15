@@ -1,0 +1,238 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - PRJ - Project Funding",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Project Billing" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Funding Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_FUNDING_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_FUNDING_CF.GLOBAL_FUNDING_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Funding Amount in Contract Currency",
+      "description" : "Funding Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_FUNDING_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_FUNDING_CF.FUNDING_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Backlog Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Funding.Funding Amount", "logicalColumn:Core.Fact - PRJ - Project Revenue.Revenue Amount" ]
+        }
+      }
+    }, {
+      "name" : "Backlog Amount in Contract Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Funding.Funding Amount in Contract Currency", "logicalColumn:Core.Fact - PRJ - Project Revenue.Revenue Amount in Contract Currency" ]
+        }
+      }
+    }, {
+      "name" : "Unallocated Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Contract.Contract Amount", "logicalColumn:Core.Fact - PRJ - Project Funding.Funding Amount" ]
+        }
+      }
+    }, {
+      "name" : "Unallocated Amount in Contract Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Contract.Contract Amount in Contract Currency", "logicalColumn:Core.Fact - PRJ - Project Funding.Funding Amount in Contract Currency" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_PROJECT_FUNDING_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_FUNDING_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Project Business Unit.Detail", "logicalLevel:Core.Dim - Created By.Detail", "logicalLevel:Core.Dim - Project.Project Detail", "logicalLevel:Core.Dim - Customer Bill To Location.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Contract Business Unit.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Project Legal Entity.Legal Entity Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Project Ledger.Ledger Detail", "logicalLevel:Core.Dim - Task.Task Detail", "logicalLevel:Core.Dim - Project Organization.Project Organization Detail", "logicalLevel:Core.Dim - Project Unit.Project Unit Detail", "logicalLevel:Core.Dim - Project Organization Hierarchy.Base Level", "logicalLevel:Core.Dim - Task Hierarchy.Base task ID", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Project Contract.Contract Line", "logicalLevel:Core.Dim - Project Funding Details.Project Funding Detail", "logicalLevel:Core.Dim - Revenue Plan.Dim - Revenue Plan Detail", "logicalLevel:Core.Dim - Contract Customer.Dim - Contract Customer Detail", "logicalLevel:Core.Dim - Contract Customer Account.Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail", "logicalLevel:Core.Dim - Customer Bill To Contact.Detail", "logicalLevel:Core.Dim - Bill Plan.Dim - Bill Plan Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_PPM_PROJECTS_CONTRACTS_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PROJ_SECURITY",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PPM_CONTRACT_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Project Funding Details.Security Context Code - Contract BU" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_PPM_PROJECT_MANAGER_DATA",
+      "functionalGroup" : "PROJ_SECURITY",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PPM_PROJECT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Project Funding Details.Security Context Code - Project List" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_PPM_PROJECT_ORGANIZATION_DATA",
+      "functionalGroup" : "PROJ_SECURITY",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PPM_PROJECT_ORGANIZATION_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Project Funding Details.Security Context Code - Project Organization" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_PPM_PROJECT_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PROJ_SECURITY",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PPM_PROJECT_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Project Funding Details.Security Context Code - Project BU" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Bill Plan",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Contract Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Contract Customer Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Contract Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Created By",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Account Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Contract",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Funding Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Organization Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Revenue Plan",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Task Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Task",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

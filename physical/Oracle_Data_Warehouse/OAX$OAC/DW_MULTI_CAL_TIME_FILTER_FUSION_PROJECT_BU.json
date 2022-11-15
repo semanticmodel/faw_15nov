@@ -1,0 +1,55 @@
+{
+  "physicalTable" : {
+    "name" : "DW_MULTI_CAL_TIME_FILTER_FUSION_PROJECT_BU",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "\r\n/* Dim Based - PROJECT BU - Year - Begin */\r\n\r\nSELECT \r\n       '01'                              AS calendar_type,\r\n       'PROJECT BU'                           AS driving_dim_code, \r\n       tl.organization_name              AS dimension_value,    \r\n      TO_CHAR(o.organization_id)        AS dimension_value_code,\r\n       'Year'                            AS time_level,\r\n       time_seq                          AS time_seq,\r\n       time_value                        AS time_value,\r\n       time_seq + 1                      AS yago_time_seq\r\n  FROM\r\n      (SELECT DISTINCT\r\n               '01'                              AS calendar_type,\r\n               'LEDGER'                          AS driving_dim_code,\r\n               l.ledger_name                     AS ledger_name, \r\n               'Year' AS time_level,    \r\n               a.fiscal_trailing_year_number     AS time_seq,\r\n               TO_CHAR(a.fiscal_year_number)     AS time_value\r\n         FROM\r\n              dw_fiscal_year_d a,\r\n              dw_ledger_d l\r\n        WHERE\r\n              a.fiscal_trailing_year_number BETWEEN 0 and 19\r\n          AND a.fiscal_period_set_name = l.ledger_calender_name\r\n      ) x,\r\n       dw_internal_org_d o,\r\n       dw_internal_org_d_tl tl\r\n WHERE\r\n     o.project_accounting_bu_flag='Y'\r\n   AND o.organization_id = tl.organization_id\r\n   AND tl.language ='VALUEOF(NQ_SESSION.USER_LANGUAGE_CODE)'\r\n   AND o.primary_ledger = x.ledger_name \r\n\r\n/* Dim Based - PROJECT BU - Year - End */   \r\n\r\nUNION ALL\r\n\r\n/* Dim Based - PROJECT BU - Quarter - Begin  */\r\n\r\nSELECT \r\n       '01'                              AS calendar_type,\r\n       'PROJECT BU'                           AS driving_dim_code, \r\n       tl.organization_name              AS dimension_value,   \r\n    TO_CHAR(o.organization_id)        AS dimension_value_code,\r\n       'Quarter'                         AS time_level,\r\n       time_seq                          AS time_seq,\r\n       time_value                        AS time_value,\r\n       time_seq + 4                      AS yago_time_seq\r\n  FROM\r\n      (SELECT DISTINCT\r\n              l.ledger_name, \r\n              fiscal_trailing_quarter_number    AS time_seq,\r\n              a.fiscal_quarter_code             AS time_value\r\n         FROM\r\n             (\r\n              SELECT\r\n                     fiscal_period_set_name,\r\n                     fiscal_period_type,\r\n                     current_fiscal_quarter_code,\r\n                     fiscal_quarter_code,\r\n                     fiscal_quarter_number,\r\n                     fiscal_trailing_quarter_number \r\n                FROM\r\n                     dw_fiscal_quarter_d\r\n              ) a,\r\n              dw_ledger_d l\r\n        WHERE\r\n              a.fiscal_trailing_quarter_number BETWEEN 0 AND 19\r\n       AND a.fiscal_period_set_name = l.ledger_calender_name\r\n     ) x,\r\n      dw_internal_org_d o,\r\n      dw_internal_org_d_tl tl\r\nWHERE\r\n      o.project_accounting_bu_flag='Y'\r\n      AND o.organization_id = tl.organization_id\r\n      AND tl.language = 'VALUEOF(NQ_SESSION.USER_LANGUAGE_CODE)'\r\n      AND o.primary_ledger = x.ledger_name \r\n\r\n\r\n/* Dim Based - PROJECT BU - Quarter - End */\r\n\r\n\r\nUNION ALL\r\n\r\n/* Dim Based - PROJECT BU - Month  */\r\n\r\nSELECT \r\n       '01'                              AS calendar_type,\r\n       'PROJECT BU'                           AS driving_dim_code, \r\n       tl.organization_name              AS dimension_value,  \r\n    TO_CHAR(o.organization_id)        AS dimension_value_code,\r\n       'Month'                           AS time_level,\r\n       time_seq                          AS time_seq,\r\n       time_value                        AS time_value,\r\n       time_seq + no_of_periods          AS yago_time_seq\r\n  FROM\r\n            (\r\n      SELECT DISTINCT \r\n              l.ledger_name                    , \r\n              a.fiscal_trailing_period_number     AS time_seq,\r\n              a.fiscal_period_name                AS time_value,\r\n              a.fiscal_period_set_name            AS fiscal_period_set_name\r\n          FROM\r\n              dw_fiscal_period_d a,\r\n              dw_ledger_d   l\r\n        WHERE\r\n              (a.fiscal_trailing_period_number BETWEEN 0 and 19 OR a.fiscal_trailing_period_number IN (52,53))\r\n          AND a.fiscal_period_set_name = l.ledger_calender_name\r\n          AND a.adjustment_period_flag = 'N'\r\n      ) x,\r\n      dw_internal_org_d o,\r\n      dw_internal_org_d_tl tl,\r\n      (\r\n        select fiscal_period_set_name,max(no_of_periods) as no_of_periods\r\n           from (\r\n            select fiscal_period_set_name,fiscal_year_number,count(distinct fiscal_period_name) as no_of_periods\r\n              from dw_fiscal_period_d\r\n             where adjustment_period_flag = 'N'\r\n             group by fiscal_period_set_name,fiscal_year_number\r\n             order by fiscal_period_set_name,fiscal_year_number\r\n           )\r\n           group by fiscal_period_set_name\r\n      ) m2      \r\nWHERE\r\n    o.project_accounting_bu_flag='Y'\r\n  AND o.organization_id = tl.organization_id\r\n  AND tl.language = 'VALUEOF(NQ_SESSION.USER_LANGUAGE_CODE)'\r\n  AND o.primary_ledger = x.ledger_name    \r\n  AND x.fiscal_period_set_name = m2.fiscal_period_set_name\r\n\r\n/* Dim Based - PROJECT BU - Month End */\r\n\r\n\r\n"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "DIMENSION_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    }, {
+      "name" : "DRIVING_DIM_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 255,
+      "nullable" : false
+    }, {
+      "name" : "CALENDAR_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "TIME_LEVEL",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "TIME_SEQ",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "TIME_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "YAGO_TIME_SEQ",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "DIMENSION_VALUE_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    }
+  }
+}

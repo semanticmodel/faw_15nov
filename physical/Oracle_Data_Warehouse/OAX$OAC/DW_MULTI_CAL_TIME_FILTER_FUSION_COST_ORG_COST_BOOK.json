@@ -1,0 +1,55 @@
+{
+  "physicalTable" : {
+    "name" : "DW_MULTI_CAL_TIME_FILTER_FUSION_COST_ORG_COST_BOOK",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "    \r\n/*  Dim Based - COST ORG COST BOOK - Year - Begin */\r\n\r\n SELECT\r\n    '01'                                                        AS calendar_type,\r\n    'COST ORG COST BOOK'                                        AS driving_dim_code,\r\n    orgtl.organization_name || ' | ' || book.cost_book_code     AS dimension_value,\r\n    TO_CHAR(organization_id) || ' | '|| book.cost_book_code     AS dimension_value_code,\r\n    'Year'                                                      AS time_level,\r\n    time_seq                                                    AS time_seq,\r\n    time_value                                                  AS time_value,\r\n    time_seq + 1                      \t\t\t                AS yago_time_seq\r\nFROM\r\n    (SELECT DISTINCT\r\n              a.fiscal_trailing_year_number         AS time_seq,\r\n               TO_CHAR(a.fiscal_year_number)        AS time_value,\r\n               fiscal_period_set_name\r\n         FROM\r\n              dw_fiscal_year_d a\r\n        WHERE\r\n              a.fiscal_trailing_year_number BETWEEN 0 and 19\r\n    ) x,\r\n    dw_internal_org_d_tl      orgtl,\r\n    dw_cst_cost_org_books_d   book\r\nWHERE\r\n    book.cost_org_id = orgtl.organization_id\r\n    AND orgtl.language = 'VALUEOF(NQ_SESSION.USER_LANGUAGE_CODE)'\r\n    AND book.fiscal_period_set_name = x.fiscal_period_set_name\r\n\r\n/* Dim Based - COST ORG COST BOOK - Year - End */\r\n\r\nUNION ALL\r\n\r\n /*  Dim Based - COST ORG COST BOOK - Quarter - Begin */\r\n\r\n    SELECT\r\n    '01'                                                    AS calendar_type,\r\n    'COST ORG COST BOOK'                                    AS driving_dim_code,\r\n    orgtl.organization_name || ' | ' || book.cost_book_code AS dimension_value,\r\n    TO_CHAR(organization_id) || ' | '|| book.cost_book_code  AS dimension_value_code,\r\n    'Quarter'                                               AS time_level,\r\n    time_seq                                                AS time_seq,\r\n    time_value                                              AS time_value,\r\n    time_seq + 4                                            AS yago_time_seq\r\nFROM\r\n    ( SELECT DISTINCT\r\n                     fiscal_period_set_name,\r\n                     fiscal_period_type,\r\n                     current_fiscal_quarter_code,\r\n                     fiscal_quarter_code                AS time_value,\r\n                     fiscal_trailing_quarter_number     AS time_seq\r\n                FROM\r\n                     dw_fiscal_quarter_d\r\n                WHERE\r\n                    fiscal_trailing_quarter_number BETWEEN 0 AND 19\r\n           ) x,\r\n    dw_internal_org_d_tl      orgtl,\r\n    dw_cst_cost_org_books_d   book\r\nWHERE\r\n    book.cost_org_id = orgtl.organization_id\r\n    AND orgtl.language = 'VALUEOF(NQ_SESSION.USER_LANGUAGE_CODE)'\r\n    AND book.fiscal_period_set_name = x.fiscal_period_set_name\r\n    \r\n/* Dim Based - COST ORG COST BOOK - Quarter - End */\t\r\n\r\nUNION ALL\r\n\r\n/*  Dim Based - COST ORG COST BOOK - Month - Begin */\r\n\r\n    SELECT\r\n    '01'                                                    AS calendar_type,\r\n    'COST ORG COST BOOK'                                    AS driving_dim_code,\r\n    orgtl.organization_name || ' | ' || book.cost_book_code AS dimension_value,\r\n    TO_CHAR(organization_id) || ' | '|| book.cost_book_code  AS dimension_value_code,\r\n    'Month'                                                 AS time_level,\r\n    time_seq                                                AS time_seq,\r\n    time_value                                              AS time_value,\r\n    time_seq + no_of_periods                                AS yago_time_seq\r\nFROM\r\n    (\r\n      SELECT DISTINCT \r\n              a.fiscal_trailing_period_number     AS time_seq,\r\n              a.fiscal_period_name                AS time_value,\r\n              a.fiscal_period_set_name            AS fiscal_period_set_name\r\n          FROM\r\n              dw_fiscal_period_d a\r\n        WHERE\r\n              (a.fiscal_trailing_period_number BETWEEN 0 and 19 OR a.fiscal_trailing_period_number IN (52,53))\r\n          AND a.adjustment_period_flag = 'N'\r\n    ) x,\r\n    dw_internal_org_d_tl      orgtl,\r\n    dw_cst_cost_org_books_d   book,\r\n      (\r\n        select fiscal_period_set_name,max(no_of_periods) as no_of_periods\r\n           from (\r\n            select fiscal_period_set_name,fiscal_year_number,count(distinct fiscal_period_name) as no_of_periods\r\n              from dw_fiscal_period_d\r\n             where adjustment_period_flag = 'N'\r\n             group by fiscal_period_set_name,fiscal_year_number\r\n           )\r\n           group by fiscal_period_set_name\r\n      ) m2\r\nWHERE\r\n    book.cost_org_id = orgtl.organization_id\r\n    AND orgtl.language = 'VALUEOF(NQ_SESSION.USER_LANGUAGE_CODE)'\r\n    AND book.fiscal_period_set_name = x.fiscal_period_set_name\r\n    AND x.fiscal_period_set_name = m2.fiscal_period_set_name\r\n    \r\n\r\n/* Dim Based - COST ORG COST BOOK - Month - End */\r\n\r\n"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "DIMENSION_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    }, {
+      "name" : "DRIVING_DIM_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 255,
+      "nullable" : false
+    }, {
+      "name" : "CALENDAR_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "TIME_LEVEL",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "TIME_SEQ",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "TIME_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "YAGO_TIME_SEQ",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "DIMENSION_VALUE_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    }
+  }
+}

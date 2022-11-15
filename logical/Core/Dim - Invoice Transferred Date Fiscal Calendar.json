@@ -1,0 +1,284 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Invoice Transferred Date Fiscal Calendar",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Invoice Transferred Adjustment Period Flag", "Invoice Transferred Date", "Invoice Transferred Fiscal Period", "Invoice Transferred Fiscal Calendar Name" ],
+    "logicalColumns" : [ {
+      "name" : "Invoice Transferred Fiscal Period Sort Key",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_PERIOD_SORT_KEY" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Transferred Fiscal Period"
+    }, {
+      "name" : "Invoice Transferred Adjustment Period Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.ADJUSTMENT_PERIOD_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Transferred Fiscal Period"
+    }, {
+      "name" : "Invoice Transferred Day Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_DAY_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Invoice Transferred Day Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Invoice Transferred Day Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CASE  WHEN %2 = -(99999) THEN  NULL  ELSE %3 END ,  CASE  WHEN %2 = -(99999) THEN  NULL  ELSE %3 END ,  VALUEOF(NQ_SESSION.%4))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_DAYS_OF_WEEK_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_DAY_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Invoice Transferred Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_DAY_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Transferred Day Detail"
+    }, {
+      "name" : "Invoice Transferred Fiscal Period",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_PERIOD_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Transferred Fiscal Period"
+    }, {
+      "name" : "Invoice Transferred Fiscal Period Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_PERIOD_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Transferred Fiscal Period"
+    }, {
+      "name" : "Invoice Transferred Fiscal Calendar Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_PERIOD_SET_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Transferred Fiscal Calendar"
+    }, {
+      "name" : "Invoice Transferred Fiscal Quarter",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_QUARTER_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Transferred Fiscal Quarter"
+    }, {
+      "name" : "Invoice Transferred Fiscal Quarter Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_QUARTER_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Transferred Fiscal Quarter"
+    }, {
+      "name" : "Invoice Transferred Date Trailing Period Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_TRAILING_PERIOD_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Transferred Fiscal Period"
+    }, {
+      "name" : "Invoice Transferred Date Trailing Quarter Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_TRAILING_QUARTER_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Transferred Fiscal Quarter"
+    }, {
+      "name" : "Invoice Transferred Date Trailing Year Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_TRAILING_YEAR_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Transferred Fiscal Year"
+    }, {
+      "name" : "Invoice Transferred Fiscal Year",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar.FISCAL_YEAR_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Transferred Fiscal Year"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceTransferredDate_Fiscal_Calendar" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "TIME",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Invoice Transferred Fiscal Calendar",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Invoice Transferred Fiscal Calendar Name" ],
+        "displayKey" : "Invoice Transferred Fiscal Calendar Name",
+        "chronologicalKey" : [ "Invoice Transferred Fiscal Calendar Name" ]
+      }, {
+        "name" : "Invoice Transferred Fiscal Year",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Invoice Transferred Fiscal Calendar Name", "Invoice Transferred Fiscal Year" ],
+        "displayKey" : "Invoice Transferred Fiscal Year",
+        "additionalKeys" : [ [ "Invoice Transferred Fiscal Year" ] ],
+        "chronologicalKey" : [ "Invoice Transferred Fiscal Calendar Name", "Invoice Transferred Fiscal Year" ]
+      }, {
+        "name" : "Invoice Transferred Fiscal Quarter",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Invoice Transferred Fiscal Calendar Name", "Invoice Transferred Fiscal Quarter" ],
+        "displayKey" : "Invoice Transferred Fiscal Quarter",
+        "additionalKeys" : [ [ "Invoice Transferred Fiscal Quarter" ] ],
+        "chronologicalKey" : [ "Invoice Transferred Fiscal Calendar Name", "Invoice Transferred Fiscal Quarter" ]
+      }, {
+        "name" : "Invoice Transferred Fiscal Period",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Invoice Transferred Adjustment Period Flag", "Invoice Transferred Fiscal Period", "Invoice Transferred Fiscal Calendar Name" ],
+        "displayKey" : "Invoice Transferred Fiscal Period",
+        "additionalKeys" : [ [ "Invoice Transferred Fiscal Period" ] ],
+        "chronologicalKey" : [ "Invoice Transferred Adjustment Period Flag", "Invoice Transferred Fiscal Period", "Invoice Transferred Fiscal Calendar Name" ]
+      }, {
+        "name" : "Invoice Transferred Day Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Invoice Transferred Date" ],
+        "displayKey" : "Invoice Transferred Date",
+        "chronologicalKey" : [ "Invoice Transferred Date" ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Invoice Transferred Date Fiscal Calendar",
+        "levels" : [ "Total", "Invoice Transferred Fiscal Calendar", "Invoice Transferred Fiscal Year", "Invoice Transferred Fiscal Quarter", "Invoice Transferred Fiscal Period", "Invoice Transferred Day Detail" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,470 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - INV - Onhand Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Lot", "Onhand Quantities Id", "Serial Number", "Inventory Item Id", "Locator Id", "Organization Id", "Revision", "Subinventory Code" ],
+    "logicalColumns" : [ {
+      "name" : "Lot",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.LOT_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.LOT_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "INV - Onhand Details"
+    }, {
+      "name" : "Expiration Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.LOT_EXPIRATION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.LOT_EXPIRATION_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Owning Party",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 1 THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.OWNING_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_OnhandOwningParty.PARTY_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 1 THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.OWNING_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_OnhandSerialOwningParty.PARTY_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Owning Party Site",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 1 THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.OWNING_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUPPLIER_SITE_D_OnhandOwningPartySite.SUPPLIER_SITE_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 1 THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.OWNING_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUPPLIER_SITE_D_OnhandSerialOwningPartySite.SUPPLIER_SITE_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Consigned Receipt Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 1 THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.OWNING_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.DATE_RECEIVED" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 1 THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.OWNING_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.DATE_RECEIVED" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Consigned Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 1 THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.OWNING_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.PRIMARY_TRANSACTION_QUANTITY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 1 THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.OWNING_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.PRIMARY_TRANSACTION_QUANTITY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Current Onhand Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.PRIMARY_TRANSACTION_QUANTITY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IS NULL  THEN %2 ELSE %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF.SERIAL_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF.DETAILED_PRIMARY_QUANTITY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.PRIMARY_TRANSACTION_QUANTITY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Onhand - Last Refresh Date",
+      "dataType" : "TIMESTAMP",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.EXTRACT_TIMESTAMP" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.EXTRACT_TIMESTAMP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Staus Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF.STATUS_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "INV - Onhand Serial Numbers"
+    }, {
+      "name" : "Serial Number Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Staus Id",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_MATERIAL_STATUSES_TL.STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF.STATUS_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "INV - Onhand Serial Numbers"
+    }, {
+      "name" : "Onhand Quantities Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.ONHAND_QUANTITIES_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.ONHAND_QUANTITIES_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "INV - Onhand Details"
+    }, {
+      "name" : "Serial Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF.SERIAL_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "INV - Onhand Serial Numbers"
+    }, {
+      "name" : "Owning Type",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF.OWNING_TYPE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial.OWNING_TYPE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Inventory Item Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF.INVENTORY_ITEM_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "INV - Onhand Serial Numbers"
+    }, {
+      "name" : "Locator Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF.LOCATOR_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "INV - Onhand Serial Numbers"
+    }, {
+      "name" : "Organization Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF.ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "INV - Onhand Serial Numbers"
+    }, {
+      "name" : "Revision",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF.REVISION" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "INV - Onhand Serial Numbers"
+    }, {
+      "name" : "Subinventory Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF.SUBINVENTORY_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "INV - Onhand Serial Numbers"
+    }, {
+      "name" : "Security Context Code - InvBal Org",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_OnhandDetails.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_OnhandSerialNumbers.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - InvBal BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_OnhandDetails.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_OnhandSerialNumbers.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_INV_ONHAND_DETAILS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUPPLIER_SITE_D_OnhandOwningPartySite", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_OnhandOwningParty", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_OnhandDetails", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_OnhandDetails" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUPPLIER_SITE_D_OnhandOwningPartySite",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_OnhandOwningParty",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_OnhandDetails",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_OnhandDetails",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - INV - Onhand Details.INV - Onhand Details" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUPPLIER_SITE_D_OnhandSerialOwningPartySite", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_OnhandSerialOwningParty", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_OnhandSerialNumbers", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_OnhandSerialNumbers" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_SERIAL_NUMBERS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUPPLIER_SITE_D_OnhandSerialOwningPartySite",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_OnhandSerialOwningParty",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_OnhandSerialNumbers",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_ONHAND_DETAILS_CF_Serial",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_OnhandSerialNumbers",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - INV - Onhand Details.INV - Onhand Serial Numbers" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "INV - Onhand Details Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "INV - Onhand Details Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "INV - Onhand Details",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Onhand Quantities Id" ],
+        "displayKey" : "Onhand Quantities Id"
+      }, {
+        "name" : "INV - Onhand Serial Numbers",
+        "numberOfElements" : 100,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Serial Number" ],
+        "displayKey" : "Serial Number",
+        "additionalKeys" : [ [ "Lot", "Serial Number", "Inventory Item Id", "Locator Id", "Organization Id", "Revision", "Subinventory Code" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "INV - Onhand Details",
+        "levels" : [ "INV - Onhand Details Total", "INV - Onhand Details", "INV - Onhand Serial Numbers" ]
+      } ]
+    }
+  }
+}

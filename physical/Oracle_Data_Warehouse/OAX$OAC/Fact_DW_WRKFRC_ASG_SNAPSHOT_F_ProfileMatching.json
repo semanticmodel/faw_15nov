@@ -1,0 +1,423 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_WRKFRC_ASG_SNAPSHOT_F",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ASG_MANAGER_STATUS_D_Manager",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ASG_MANAGER_STATUS_D_Manager.MANAGER_ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.MANAGER_ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ASG_MANAGER_STATUS_D_Manager.DATE_FROM",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ASG_MANAGER_STATUS_D_Manager.DATE_TO"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_AgeBand",
+        "joinExpression": {
+          "expressionTemplate": " IFNULL(%1, -(99999)) >= %2 AND  IFNULL(%1, -(99999)) <= %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.AGE_IN_YEARS",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_AgeBand.MIN_RANGE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_AgeBand.MAX_RANGE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_TenureBand",
+        "joinExpression": {
+          "expressionTemplate": " IFNULL(%1, -(99999)) >= %2 AND  IFNULL(%1, -(99999)) <= %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.TENURE_IN_YEARS",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_TenureBand.MIN_RANGE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_TenureBand.MAX_RANGE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BARGAINING_UNIT_D_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BARGAINING_UNIT_D_TL.BARGAINING_UNIT_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.BARGAINING_UNIT_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BARGAINING_UNIT_D_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D.JOB_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.JOB_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL.JOB_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.JOB_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_List",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_List.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_List.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_List.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_Security",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 >= %6 AND %5 <= %7",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_Security.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_Security.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_Security.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_DN_DH_Security.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_REPORTEES_CF_DN_DH_Mgr_Hierarchy",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_REPORTEES_CF_DN_DH_Mgr_Hierarchy.LEVEL15_REPORTEE_ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_REPORTEES_CF_DN_DH_Mgr_Hierarchy.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MANAGER_REPORTEES_CF_DN_DH_Mgr_Hierarchy.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D.GRADE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.GRADE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_TL.GRADE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.GRADE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_TL.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_TL.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 >= %6 AND %5 <= %7",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.LEGISLATION_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.LEGISLATION_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.DATE_FROM",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.DATE_TO"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D.POSITION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.POSITION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_TL.POSITION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.POSITION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_TL.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_TL.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_TL_Potential",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_TL_Potential.RATING_LEVEL_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.POTENTIAL_RATING_LEVEL_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_TL_Potential.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5 AND %6 = 'Y'",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F.EFFECTIVE_END_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F.EFFECTIVE_LATEST_CHANGE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.BUSINESS_UNIT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D.BUSINESS_UNIT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.BUSINESS_UNIT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_TL.BUSINESS_UNIT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.LEGISLATION_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL.COUNTRY"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_Dept",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.DEPARTMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_Dept.DEPARTMENT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_TL_Dept",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.DEPARTMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_TL_Dept.DEPARTMENT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_EMPLOYER_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.LEGAL_EMPLOYER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_EMPLOYER_D.LEGAL_EMPLOYER_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_EMPLOYER_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.LEGAL_EMPLOYER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_EMPLOYER_D_TL.LEGAL_EMPLOYER_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_Performance",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.PERFORMANCE_RATING_LEVEL_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_Performance.RATING_LEVEL_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_Potential",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.POTENTIAL_RATING_LEVEL_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_Potential.RATING_LEVEL_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_TL_Performance",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.PERFORMANCE_RATING_LEVEL_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_TL_Performance.RATING_LEVEL_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REPORTING_EST_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.REPORTING_ESTABLISHMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REPORTING_EST_D.REPORTING_EST_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REPORTING_EST_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.REPORTING_ESTABLISHMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REPORTING_EST_D_TL.REPORTING_EST_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SEX_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.SEX",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SEX_D_TL.SEX"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WORKER_LOCATION_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.LOCATION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WORKER_LOCATION_D.LOCATION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WORKER_LOCATION_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WRKFRC_ASG_SNAPSHOT_F_ProfileMatching.LOCATION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WORKER_LOCATION_D_TL.LOCATION_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "ASSIGNMENT_ID",
+        "CALENDAR_DATE"
+      ]
+    ]
+  }
+}

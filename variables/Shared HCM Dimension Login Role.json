@@ -1,0 +1,22 @@
+{
+  "initBlock" : {
+    "name" : "Shared HCM Dimension Login Role",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Goals and Career Development", "Project:Fusion Analytics Warehouse - Performance Management and Check-ins", "Project:Fusion Analytics Warehouse - Talent Acquisition" ],
+    "type" : "SESSION",
+    "connectionPool" : "connectionPool:Oracle_Data_Warehouse.Oracle_Data_Warehouse_Repository_Initblocks_Connection_Pool",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT\r\n  CASE\r\n    WHEN (Instr('VALUEOF(NQ_SESSION.ROLES)', 'OA4F_HCM_VIEW_ALL_DATA') > 0 OR Instr('VALUEOF(NQ_SESSION.ROLES)', 'OA4F_HCM_VIEW_ALL_DATA') > 0) \r\n    THEN 3\r\n    ELSE\r\n      CASE\r\n        WHEN Instr('VALUEOF(NQ_SESSION.ROLES)', 'OA4F_HCM_LINE_MANAGER_DATA') > 0\r\n        THEN 2\r\n        ELSE\r\n          CASE\r\n            WHEN (VALUEOF(NQ_SESSION.HCM_CONTEXT_SEC_DEFINED) = 1\r\n            AND ('VALUEOF(NQ_SESSION.ROLES)' LIKE '%OA4F_HCM_BUSINESS_UNIT_DATA%'\r\n            OR 'VALUEOF(NQ_SESSION.ROLES)' LIKE '%OA4F_HCM_DEPARTMENT_DATA%'\r\n            OR 'VALUEOF(NQ_SESSION.ROLES)' LIKE '%OA4F_HCM_LEGAL_EMPLOYER_DATA%'))\r\n            THEN 1              \r\n            ELSE \r\n\t      CASE \r\n\t      WHEN (Instr('VALUEOF(NQ_SESSION.ROLES)', 'OA4F_HCM_REC_ALL_REQ_DATA') > 0 OR Instr('VALUEOF(NQ_SESSION.ROLES)', 'OA4F_HCM_REC_REQ_DATA') > 0) \r\n\t      THEN 4\r\n\t      else 0\r\n\t      END\r\n          END\r\n      END\r\n  END\r\nFROM dual "
+    } ],
+    "variables" : [ {
+      "name" : "HCM_SHARED_DIM_LOGIN_ROLE",
+      "value" : "4",
+      "enableUsersToSetValue" : false,
+      "securitySensitive" : false
+    } ],
+    "disable" : false,
+    "queryReturnsVariableNamesAndValues" : false,
+    "allowDeferredExecution" : true,
+    "cacheQueryResult" : true
+  }
+}

@@ -1,0 +1,1522 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - CX - Opportunity Header",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Sales Pipeline" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-------- Derived --------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "# of Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.Raw # of Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "# of Open Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'OPEN')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Won Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WON')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Lost Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'LOST')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of No Sale Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'NO_SALE')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Competitive Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Primary Compititor Identifier" ]
+        }
+      }
+    }, {
+      "name" : "# of Competitive Won Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WON')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Competitive Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Competitive Lost Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'LOST')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Competitive Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Competitive Open Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'OPEN')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Competitive Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Competitive No Sale Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'NO_SALE')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Competitive Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Sales Accounts with Won Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> -(99999) AND %3 = 'WON')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Sales Account", "logicalColumn:Core.Fact - CX - Opportunity Header.Customer Party Identifier", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Expired Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  CURRENT_DATE  > %2 AND %3 = 'OPEN')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Expected Closed Date", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Win Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 100 * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won/Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Conversion Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 100 * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Competitor Win Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 100 * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Competitive Won/Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Competitive Won Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Competitor Conversion Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 100 * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Competitive Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Competitive Won Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Loss Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 100 * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won/Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Lost Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Competitive Loss Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 100 * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Competitive Won/Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Competitive Lost Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Average # of Days to Close",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Open Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Total # of Days to Close to Open Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Average # of Days to Open",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Open Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Total # of Days to Open to Open Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Average Opportunity Win Probability",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.SUM Win Probability", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Average Age of Closed Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Closed Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Total Age of Closed Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Average Age of Won Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Total Age of Won Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Average Age of Lost Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Total Age of Lost Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Average Age of No Sale Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of No Sale Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Total Age of No Sale Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "# of Quoted Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Quoted" ]
+        }
+      }
+    }, {
+      "name" : "# of Converted Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'FUSION_MKL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Created By Module" ]
+        }
+      }
+    }, {
+      "name" : "# of Converted Open Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'FUSION_MKL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Open Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Created By Module" ]
+        }
+      }
+    }, {
+      "name" : "# of Converted Won Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'FUSION_MKL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Created By Module" ]
+        }
+      }
+    }, {
+      "name" : "# of Converted Lost Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'FUSION_MKL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Created By Module" ]
+        }
+      }
+    }, {
+      "name" : "# of Unconverted Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> 'FUSION_MKL' OR %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Created By Module" ]
+        }
+      }
+    }, {
+      "name" : "# of Unconverted Closed Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> 'FUSION_MKL' OR %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Closed Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Created By Module" ]
+        }
+      }
+    }, {
+      "name" : "# of Unconverted Won Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> 'FUSION_MKL' OR %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Created By Module" ]
+        }
+      }
+    }, {
+      "name" : "Average Age of Converted Closed Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'FUSION_MKL') /  FILTER(%3 USING %2 = 'FUSION_MKL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.Total Age of Closed Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Created By Module", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Closed Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Average Age of Converted Won Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'FUSION_MKL') /  FILTER(%3 USING %2 = 'FUSION_MKL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.Total Age of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Created By Module", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Average Age of Unconverted Closed Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> 'FUSION_MKL' OR %2 IS NULL ) /  FILTER(%3 USING %2 <> 'FUSION_MKL' OR %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.Total Age of Closed Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Created By Module", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Closed Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Average Age of Unconverted Won Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> 'FUSION_MKL' OR %2 IS NULL ) /  FILTER(%3 USING %2 <> 'FUSION_MKL' OR %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.Total Age of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Created By Module", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Ratio of # of lost Opportunities (unconverted) to Converted Lost Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN (%2 - %1) / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Converted Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Lost Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Converted Lead Contribution to Opportunities %",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Converted Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Converted Lead Contribution to Won Opportunities %",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Converted Won Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Converted Lead Contribution to Closed Opportunities %",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Closed Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Converted Closed Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Converted Lead Contribution to Lost Opportunities %",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Converted Lost Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "# of Renewal Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'RENEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Expansion Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'EXPANSION')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of New Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'NEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Open Renewal Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'RENEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Open Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Open Expansion Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'EXPANSION')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Open Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Open New Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'NEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Open Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Lost Renewal Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'RENEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Lost Expansion Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'EXPANSION')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Lost New Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'NEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Won Renewal Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'RENEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Won Expansion Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'EXPANSION')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Won New Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'NEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of No Sale Renewal Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'RENEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of No Sale Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of No Sale Expansion Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'EXPANSION')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of No Sale Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of No Sale New Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'NEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of No Sale Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Opportunity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "Renewal Opportunities Win Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 + %2 > 0 THEN 100 * %1 / (%1 + %2) END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Renewal Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Lost Renewal Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Renewal Opportunities Loss Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 + %2 > 0 THEN 100 * %2 / (%2 + %1) END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Renewal Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Lost Renewal Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Renewal Opportunities Conversion Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 100 * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Renewal Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Renewal Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Expansion Opportunities Win Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 + %2 > 0 THEN 100 * %1 / (%1 + %2) END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Expansion Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Lost Expansion Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Expansion Opportunities Loss Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 + %2 > 0 THEN 100 * %2 / (%1 + %2) END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Expansion Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Lost Expansion Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Expansion Opportunities Conversion Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 100 * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Expansion Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won Expansion Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "New Opportunities Win Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 + %2 > 0 THEN 100 * %1 / (%1 + %2) END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won New Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Lost New Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "New Opportunities Loss Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 + %2 > 0 THEN 100 * %2 / (%1 + %2) END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won New Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Lost New Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "New Opportunities Conversion Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 100 * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of New Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.# of Won New Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "-------- Internal --------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "# of Competitive Won/Lost Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('WON', 'LOST'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Competitive Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Won/Lost Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('WON', 'LOST'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Closed Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('WON', 'LOST', 'NO_SALE'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Age of Won Opportunities",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('WON'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.Total Closed Days", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Age of Lost Opportunities",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('LOST'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.Total Closed Days", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Age of No Sale Opportunities",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('NO_SALE'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.Total Closed Days", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Age of Closed Opportunities",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('WON', 'LOST', 'NO_SALE'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.Total Closed Days", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "SUM Win Probability",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.WIN_PROBABILITY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.WIN_PROBABILITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Lead",
+          "rule" : "FIRST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Opportunity",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Closed Days",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.OPPORTUNITY_CREATION_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.ACTUAL_CLOSE_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.OPPORTUNITY_CREATION_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.ACTUAL_CLOSE_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Lead",
+          "rule" : "FIRST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Opportunity",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Sales Account",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.SALES_ACCOUNT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.SALES_ACCOUNT_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw # of Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.OPPORTUNITY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.OPPORTUNITY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "countDistinctOverrides" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "rule" : "COUNT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "rule" : "COUNT_DISTINCT"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total # of Days to Open to Open Opportunities",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'OPEN')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.Total # of Days to Open", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total # of Days to Open",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1,  CURRENT_DATE )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.OPPORTUNITY_CREATION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1,  CURRENT_DATE )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.OPPORTUNITY_CREATION_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Lead",
+          "rule" : "FIRST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Opportunity",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total # of Days to Close to Open Opportunities",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'OPEN')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.Total # of Days to Close", "logicalColumn:Core.Fact - CX - Opportunity Header.Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total # of Days to Close",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY ,  CURRENT_DATE , %1)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.EXPECTED_CLOSE_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY ,  CURRENT_DATE , %1)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.EXPECTED_CLOSE_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Lead",
+          "rule" : "FIRST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Opportunity",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Converted Closed Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'FUSION_MKL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Header.# of Closed Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Header.Created By Module" ]
+        }
+      }
+    }, {
+      "name" : "-------- Filter --------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Opportunity Quoted",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.QUOTES_ASSOCIATION_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.QUOTES_ASSOCIATION_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Opportunity Indenifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.OPPORTUNITY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.OPPORTUNITY_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Primary Compititor Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.PRIMARY_COMPETITOR_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.PRIMARY_COMPETITOR_PARTY_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Status Category",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.STATUS_CATEGORY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.STATUS_CATEGORY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Customer Party Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.CUSTOMER_PARTY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.CUSTOMER_PARTY_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Expected Closed Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.EXPECTED_CLOSE_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.EXPECTED_CLOSE_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Created By Module",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.CREATED_BY_MODULE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.CREATED_BY_MODULE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Opportunity Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.OPPORTUNITY_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF.OPPORTUNITY_TYPE_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CXS_OPPORTUNITY_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_REVENUE_CF_Opportunity", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXM_CAMPAIGN_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_REVENUE_CF_Opportunity",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXM_CAMPAIGN_CF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Opportunity Status.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Expected Close Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Opportunity Line of Business.Detail", "logicalLevel:Core.Dim - CX - Opportunity Strategic.Detail", "logicalLevel:Core.Dim - CX - Opportunity Status Category.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - CX - Primary Competitor.Detail", "logicalLevel:Core.Dim - CX - Opportunity.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Campaign.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Actual Close Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Opportunity Close Reason.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Primary Contact.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Expected Close Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Primary Partner.Detail", "logicalLevel:Core.Dim - CX - Sales Stage.Detail", "logicalLevel:Core.Dim - CX - Opportunity Channel Type.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Actual Close Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Opportunity Deal Horizon.Detail", "logicalLevel:Core.Dim - CX - Resource - Opportunity Owner.Detail", "logicalLevel:Core.Dim - CX - Opportunity Decision.Detail", "logicalLevel:Core.Dim - CX - Security - Opportunity Access Group.Detail", "logicalLevel:Core.Dim - CX - Opportunity Risk Level.Detail", "logicalLevel:Core.Dim - CX - Security - Account.Detail", "logicalLevel:Core.Dim - CX - Security - Opportunity.Detail", "logicalLevel:Core.Dim - CX - Campaign Type.Detail", "logicalLevel:Core.Dim - CX - Campaign Status.Detail", "logicalLevel:Core.Dim - CX - Opportunity Renewal Process.Detail", "logicalLevel:Core.Dim - CX - Opportunity Type.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_REVENUE_CF_Opportunity", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_LEAD_OPPORTUNITY_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LEAD_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXM_CAMPAIGN_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_REVENUE_CF_Opportunity",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXM_CAMPAIGN_CF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_LEAD_OPPORTUNITY_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LEAD_CF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Security - Opportunity.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Converted Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Created Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - CX - Opportunity Decision.Detail", "logicalLevel:Core.Dim - CX - Security - Opportunity Access Group.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Converted Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Lead Organization Size.Detail", "logicalLevel:Core.Dim - CX - Lead Channel Type.Detail", "logicalLevel:Core.Dim - CX - Campaign.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Actual Close Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Created Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Opportunity Status Category.Detail", "logicalLevel:Core.Dim - CX - Lead Channel.Detail", "logicalLevel:Core.Dim - CX - Lead Rank.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Retired Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Retired Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Primary Competitor.Detail", "logicalLevel:Core.Dim - CX - Opportunity.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Actual Close Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Opportunity Channel Type.Detail", "logicalLevel:Core.Dim - CX - Opportunity Close Reason.Detail", "logicalLevel:Core.Dim - CX - Opportunity Deal Horizon.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Expected Close Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Opportunity Status.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Expected Close Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Opportunity Line of Business.Detail", "logicalLevel:Core.Dim - CX - Lead Organization Type.Detail", "logicalLevel:Core.Dim - CX - Opportunity Risk Level.Detail", "logicalLevel:Core.Dim - CX - Security - Account.Detail", "logicalLevel:Core.Dim - CX - Opportunity Strategic.Detail", "logicalLevel:Core.Dim - CX - Primary Contact.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Primary Partner.Detail", "logicalLevel:Core.Dim - CX - Resource - Lead Owner.Detail", "logicalLevel:Core.Dim - CX - Resource - Opportunity Owner.Detail", "logicalLevel:Core.Dim - CX - Lead Assignment Status.Detail", "logicalLevel:Core.Dim - CX - Sales Stage.Detail", "logicalLevel:Core.Dim - CX - Lead.Detail", "logicalLevel:Core.Dim - CX - Lead Customer Type.Detail", "logicalLevel:Core.Dim - CX - Lead Status.Detail", "logicalLevel:Core.Dim - CX - Lead Industry Classification.Detail", "logicalLevel:Core.Dim - CX - Lead Reject Reason.Detail", "logicalLevel:Core.Dim - CX - Lead Retire Reason.Detail", "logicalLevel:Core.Dim - CX - Lead Budget Status.Detail", "logicalLevel:Core.Dim - CX - Lead Partner Type.Detail", "logicalLevel:Core.Dim - CX - Lead Reassign Reason.Detail", "logicalLevel:Core.Dim - CX - Lead Timeframe.Detail", "logicalLevel:Core.Dim - CX - Campaign Type.Detail", "logicalLevel:Core.Dim - CX - Campaign Status.Detail", "logicalLevel:Core.Dim - CX - Opportunity Renewal Process.Detail", "logicalLevel:Core.Dim - CX - Opportunity Type.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Created Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Created Date Gregorian Calendar.Day" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_CX_SALES_ACCNT_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Account.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SALES_OPTY_CUSTOM_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Opportunity Access Group.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SALES_OPTY_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Opportunity.Security Enabled Flag" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Campaign Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Campaign Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Campaign",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Lead Converted Date Enterprise Calendar",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Lead Converted Date Gregorian Calendar",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Lead Created Date Enterprise Calendar",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Lead Created Date Gregorian Calendar",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Lead Retired Date Enterprise Calendar",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Lead Retired Date Gregorian Calendar",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Opportunity Actual Close Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Opportunity Actual Close Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Opportunity Created Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Opportunity Created Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Opportunity Expected Close Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Opportunity Expected Close Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Assignment Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Budget Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Channel Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Channel",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Customer Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Industry Classification",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Organization Size",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Organization Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Partner Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Rank",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Reassign Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Reject Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Retire Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Timeframe",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Channel Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Close Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Deal Horizon",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Decision",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Line of Business",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Renewal Process",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Risk Level",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Status Category",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Strategic",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Competitor",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Partner",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Lead Owner",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Opportunity Owner",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Stage",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Account",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Opportunity Access Group",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Opportunity",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

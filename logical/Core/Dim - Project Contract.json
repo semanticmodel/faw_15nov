@@ -1,0 +1,1510 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Project Contract",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Contract Header Identifier", "Contract Line Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Contract Header Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.CONTRACT_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.CONTRACT_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.CONTRACT_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Contract Header"
+    }, {
+      "name" : "Contract Line Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.CONTRACT_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.CONTRACT_LINE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Contract Line"
+    }, {
+      "name" : "Contract Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.CONTRACT_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Contract Header Id",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3), %4, %5)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_HEADER_D_TL.CONTRACT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.CONTRACT_HEADER_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.MAJOR_VERSION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.VERSION_TYPE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3), %4, %5)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_HEADER_D_TL.CONTRACT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.CONTRACT_HEADER_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.MAJOR_VERSION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.VERSION_TYPE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3), %4, %5)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_HEADER_D_TL.CONTRACT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.CONTRACT_HEADER_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.MAJOR_VERSION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.VERSION_TYPE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Contract Header Id",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3), %4, %5)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_HEADER_D_TL.DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.CONTRACT_HEADER_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.MAJOR_VERSION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.VERSION_TYPE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3), %4, %5)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_HEADER_D_TL.DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.CONTRACT_HEADER_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.MAJOR_VERSION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.VERSION_TYPE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3), %4, %5)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_HEADER_D_TL.DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.CONTRACT_HEADER_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.MAJOR_VERSION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.VERSION_TYPE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Version",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.MAJOR_VERSION" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.MAJOR_VERSION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.MAJOR_VERSION" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Organization ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.CONTRACT_ORGANIZATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.CONTRACT_ORGANIZATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.CONTRACT_ORGANIZATION_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Organization Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Contract Organization ID",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INTERNAL_ORG_D_TL.ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.CONTRACT_ORGANIZATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INTERNAL_ORG_D_TL.ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.CONTRACT_ORGANIZATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INTERNAL_ORG_D_TL.ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.CONTRACT_ORGANIZATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Start Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.START_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract End Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.END_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Type Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.CONTRACT_TYPE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Contract Type Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_TYPE_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.CONTRACT_TYPE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Contract Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_OKC_STATUS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Creation Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.CREATION_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Approved Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.APPROVED_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Signed Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.SIGNED_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Closed Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.TERMINATED_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Close Reason Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.TRN_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Close Reason",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Contract Close Reason Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_TRN_CODE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.TRN_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contribution Percent",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1 * 100",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.CONTRIBUTION_PERCENT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Billing Sequence",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.BILL_SEQUENCE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Header PO Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.CUST_PO_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transaction Type Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.TRANSACTION_TYPE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transaction Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Transaction Type Id",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AR_TRANSACTION_TYPES_D.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.TRANSACTION_TYPE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Net Invoice Flag Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.NET_INVOICE_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Net Invoice Flag",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Net Invoice Flag Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.NET_INVOICE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Header Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.CONTRACT_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.CONTRACT_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.CONTRACT_HEADER_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Line Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.LINE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.LINE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Line Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Conrtact Line Id",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3), %4, %5)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_LINE_TL.LINE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.CONTRACT_LINE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.MAJOR_VERSION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.VERSION_TYPE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3), %4, %5)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_LINE_TL.LINE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.CONTRACT_LINE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.MAJOR_VERSION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.VERSION_TYPE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Line Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Conrtact Line Id",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3), %4, %5)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_LINE_TL.LINE_DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.CONTRACT_LINE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.MAJOR_VERSION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.VERSION_TYPE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3), %4, %5)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_LINE_TL.LINE_DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.CONTRACT_LINE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.MAJOR_VERSION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.VERSION_TYPE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Line Start Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.START_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.START_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Line End Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.END_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Line Type Code",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.LINE_TYPE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.LINE_TYPE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Line Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Contract Line Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_LINE_TYPE_TL.LINE_TYPE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.LINE_TYPE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_LINE_TYPE_TL.LINE_TYPE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.LINE_TYPE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Line Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Line Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Contract Line Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_OKC_STATUS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_OKC_STATUS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract At Risk Flag Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.AT_RISK_YN" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.AT_RISK_YN" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract At Risk Flag",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Contract At Risk Flag Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.AT_RISK_YN", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.AT_RISK_YN", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Line Creation Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.CREATION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.CREATION_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Line Closed Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.DATE_TERMINATED" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.DATE_TERMINATED" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Line Close Reason Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.TRN_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.TRN_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Contract Line Close Reason",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Contract Line Close Reason Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_TRN_CODE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.TRN_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_TRN_CODE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.TRN_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Unit of Measure Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.UOM_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.UOM_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Unit of Measure",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Unit of Measure Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 16 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PROJECT_UNIT_OF_MEASURE_TL.UNIT_OF_MEASURE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.UOM_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 16 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PROJECT_UNIT_OF_MEASURE_TL.UNIT_OF_MEASURE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.UOM_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Line PO Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.CUST_PO_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.CUST_PO_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Percent Complete",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.PERCENT_COMPLETE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.PERCENT_COMPLETE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Last Revenue Recognized Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.LAST_REV_RECOG_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.LAST_REV_RECOG_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Active Flag",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Active Flag Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CASE  WHEN %2 = 'ACTIVE' THEN 'Y' ELSE 'N' END ,  VALUEOF(NQ_SESSION.%3),  CASE  WHEN %2 = 'ACTIVE' THEN 'Y' ELSE 'N' END )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CASE  WHEN %2 = 'ACTIVE' THEN 'Y' ELSE 'N' END ,  VALUEOF(NQ_SESSION.%3),  CASE  WHEN %2 = 'ACTIVE' THEN 'Y' ELSE 'N' END )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Provider Business Unit ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_PROVIDER_BUSINESS_UNIT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_PROVIDER_BUSINESS_UNIT_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Provider Business Unit",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Provider Business Unit ID",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_BUSINESS_UNIT_D_TL_Project.BUSINESS_UNIT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_PROVIDER_BUSINESS_UNIT_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_BUSINESS_UNIT_D_TL_Project.BUSINESS_UNIT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_PROVIDER_BUSINESS_UNIT_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receiver Business Unit ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_RCVR_BUSINESS_UNIT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_RCVR_BUSINESS_UNIT_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receiver Business Unit",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receiver Business Unit ID",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_BUSINESS_UNIT_D_TL_Project.BUSINESS_UNIT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_RCVR_BUSINESS_UNIT_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_BUSINESS_UNIT_D_TL_Project.BUSINESS_UNIT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_RCVR_BUSINESS_UNIT_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receiver Project ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_RECEIVER_PROJECT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_RECEIVER_PROJECT_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receiver Project Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receiver Project ID",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PROJECT_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_RECEIVER_PROJECT_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PROJECT_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_RECEIVER_PROJECT_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receiver Task ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_RECEIVER_TASK_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_RECEIVER_TASK_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receiver Task Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receiver Task ID",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PROJECT_ELEMENT_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_RECEIVER_TASK_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PROJECT_ELEMENT_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_RECEIVER_TASK_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receiver Expenditure Orgnaization ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_RECEIVER_EXPENDITURE_ORG_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_RECEIVER_EXPENDITURE_ORG_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receiver Expenditure Organization",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receiver Expenditure Orgnaization ID",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INTERNAL_ORG_D_TL.ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_RECEIVER_EXPENDITURE_ORG_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INTERNAL_ORG_D_TL.ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_RECEIVER_EXPENDITURE_ORG_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Use Original Task Owning Organization Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_EXP_ORG_SOURCE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_EXP_ORG_SOURCE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Use Original Task Owning Organization",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Use Original Task Owning Organization Flag",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_EXP_ORG_SOURCE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_EXP_ORG_SOURCE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receiver Expenditure Type ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_RECEIVER_EXPENDITURE_TYPE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_RECEIVER_EXPENDITURE_TYPE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receiver Expenditure Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receiver Expenditure Type ID",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PROJECT_EXPENDITURE_TYPE_D_TL.EXPENDITURE_TYPE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_RECEIVER_EXPENDITURE_TYPE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PROJECT_EXPENDITURE_TYPE_D_TL.EXPENDITURE_TYPE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_RECEIVER_EXPENDITURE_TYPE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Use Original Expenditure Type ID",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_EXP_TYPE_ORIG_EI_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_EXP_TYPE_ORIG_EI_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Use Original Expenditure Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Use Original Expenditure Type ID",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.IB_EXP_TYPE_ORIG_EI_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.IB_EXP_TYPE_ORIG_EI_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Active Flag Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ACTIVE' THEN 'Y' ELSE 'N' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ACTIVE' THEN 'Y' ELSE 'N' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Conrtact Line Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.CONTRACT_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF.CONTRACT_LINE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "-------------------Security Context----------------------------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Security Context Code - Contract BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_CONTRACT_BU_ContractFactDIm.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_CONTRACT_BU_ContractFact.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "---------------DFF Keys-----------------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "CONTRACT_HEADER_FLEXFIELD_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_CONTRACT_HEADER_D_DW_CONTRACT_HEADER_FLEXFIELD_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "CONTRACT_HEADER_FLEXFIELD_S_K_5001",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_HEADER_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_CONTRACT_HEADER_D_DW_CONTRACT_HEADER_FLEXFIELD_DFF.S_K_5001" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "OKC_LINES_DESC_FLEX_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_CONTRACT_LINE_CF_DW_OKC_LINES_DESC_FLEX_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_CONTRACT_LINE_CF_DW_OKC_LINES_DESC_FLEX_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "OKC_LINES_DESC_FLEX_S_K_5001",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_CONTRACT_LINE_CF_DW_OKC_LINES_DESC_FLEX_DFF.S_K_5001" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CONTRACT_LINE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_CONTRACT_LINE_CF_DW_OKC_LINES_DESC_FLEX_DFF.S_K_5001" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CONTRACT_LINE_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_CONTRACT_BU_ContractFactDIm", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_CONTRACT_LINE_CF_DW_OKC_LINES_DESC_FLEX_DFF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_CONTRACT_BU_ContractFactDIm",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_CONTRACT_LINE_CF_DW_OKC_LINES_DESC_FLEX_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Project Contract.Contract Line" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 IN ('A', 'C')",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_LINE_CF.VERSION_TYPE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_CONTRACT_HEADER_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_CONTRACT_HEADER_D_DW_CONTRACT_HEADER_FLEXFIELD_DFF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_CONTRACT_HEADER_D_DW_CONTRACT_HEADER_FLEXFIELD_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Project Contract.Contract Header" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 IN ('C', 'A')",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_HEADER_D.VERSION_TYPE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CONTRACT_LINE_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_CONTRACT_BU_ContractFact", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_CONTRACT_LINE_CF_DW_OKC_LINES_DESC_FLEX_DFF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_CONTRACT_BU_ContractFact",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CONTRACT_LINE_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_CONTRACT_LINE_CF_DW_OKC_LINES_DESC_FLEX_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Project Contract.Contract Line" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - Project Contract Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - Project Contract Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Contract Header",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Contract Header Identifier" ],
+        "displayKey" : "Contract Header Identifier"
+      }, {
+        "name" : "Contract Line",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Contract Line Identifier" ],
+        "displayKey" : "Contract Line Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Project Contract",
+        "levels" : [ "Dim - Project Contract Total", "Contract Header", "Contract Line" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_PPM_PROJECTS_CONTRACTS_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PROJ_SECURITY",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PPM_CONTRACT_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Project Contract.Security Context Code - Contract BU" ]
+      }
+    } ]
+  }
+}

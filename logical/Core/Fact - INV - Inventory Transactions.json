@@ -1,0 +1,321 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - INV - Inventory Transactions",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Inventory" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Primary Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_MATERIAL_TXNS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MATERIAL_TXNS_CF.PRIMARY_QUANTITY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF.DETAILED_PRIMARY_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Secondary Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_MATERIAL_TXNS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MATERIAL_TXNS_CF.SECONDARY_TRANSACTION_QUANTITY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('~NOVALUE~') AND %2 IN ('~NOVALUE~') THEN %3 WHEN %1 <> '~NOVALUE~' AND %2 IN ('~NOVALUE~') THEN %4 WHEN %1 IN ('~NOVALUE~') AND %2 <> '~NOVALUE~' THEN  NULL  WHEN %1 <> '~NOVALUE~' AND %2 <> '~NOVALUE~' THEN  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF.LOT_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF.SERIAL_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF.SECONDARY_TRANSACTION_QUANTITY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF.LOT_SEC_TRANSACTION_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Transaction Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_MATERIAL_TXNS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MATERIAL_TXNS_CF.TRANSACTION_QUANTITY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' AND %2 = '~NOVALUE~' THEN %3 ELSE %4 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF.LOT_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF.SERIAL_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF.TRANSACTION_QUANTITY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF.DETAILED_PRIMARY_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Issue Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 < 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV - Inventory Transactions.Primary Quantity", "logicalColumn:Core.Dim - INV - Inventory Transaction Details.Primary Quantity" ]
+        }
+      }
+    }, {
+      "name" : "Receipt Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 > 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV - Inventory Transactions.Primary Quantity", "logicalColumn:Core.Dim - INV - Inventory Transaction Details.Primary Quantity" ]
+        }
+      }
+    }, {
+      "name" : "Consignment Received Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Purchase Order Receipt' AND %3 = 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV - Inventory Transactions.Primary Quantity", "logicalColumn:Core.Dim - INV - Inventory Transaction Details.Transaction Type", "logicalColumn:Core.Dim - INV - Inventory Transaction Details.Owning Party Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Consignment Transferred Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Transfer to Owned' AND %3 = 2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV - Inventory Transactions.Primary Quantity", "logicalColumn:Core.Dim - INV - Inventory Transaction Details.Transaction Type", "logicalColumn:Core.Dim - INV - Inventory Transaction Details.Owning Party Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Security Context Code - Inv Org",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_LotSerial.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Inv BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_LotSerial.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_INV_MATERIAL_TXNS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MATERIAL_TXNS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MATERIAL_TXNS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MATERIAL_TXNS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Inventory Created By.Inventory Created By Detail", "logicalLevel:Core.Dim - Unit of Measure Secondary.Detail", "logicalLevel:Core.Dim - Unit of Measure Transaction.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Transfer SubInventory.Detail", "logicalLevel:Core.Dim - Project.Project Detail", "logicalLevel:Core.Dim - Locator.Locator Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - INV - Inventory Transaction Details.Transaction Number", "logicalLevel:Core.Dim - Sub Inventory.Dim - Sub Inventory Detail", "logicalLevel:Core.Dim - Sub Inventory Location.Sub Inventory Location Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar INV Creation Date.Detail", "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail", "logicalLevel:Core.Dim - Transaction Date.Detail", "logicalLevel:Core.Dim - Transfer Organization.Detail", "logicalLevel:Core.Dim - Expenditure Type.Expenditure Type Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Transfer Locator.Transfer Locator Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Inventory Transaction Date Gregorian Calendar.Day Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar INV Creation Date.Day Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Expenditure Organization.Expenditure Organization Detail", "logicalLevel:Core.Dim - Task.Task Detail", "logicalLevel:Core.Dim - Profit Center Business Unit.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_LotSerial", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_LotSerial" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_LotSerial",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_MTL_TXNS_LOT_SERIAL_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_LotSerial",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - INV - Inventory Transaction Details.INV - Inventory Transaction Details Detail", "logicalLevel:Core.Dim - Sub Inventory Location.Sub Inventory Location Detail", "logicalLevel:Core.Dim - Inventory Created By.Inventory Created By Detail", "logicalLevel:Core.Dim - Unit of Measure Secondary.Detail", "logicalLevel:Core.Dim - Unit of Measure Transaction.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Transfer SubInventory.Detail", "logicalLevel:Core.Dim - Project.Project Detail", "logicalLevel:Core.Dim - Locator.Locator Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Sub Inventory.Dim - Sub Inventory Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar INV Creation Date.Detail", "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail", "logicalLevel:Core.Dim - Transaction Date.Detail", "logicalLevel:Core.Dim - Transfer Organization.Detail", "logicalLevel:Core.Dim - Expenditure Type.Expenditure Type Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Transfer Locator.Transfer Locator Detail", "logicalLevel:Core.Dim - Inventory Transaction Date Gregorian Calendar.Day Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar INV Creation Date.Day Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Expenditure Organization.Expenditure Organization Detail", "logicalLevel:Core.Dim - Task.Task Detail", "logicalLevel:Core.Dim - Profit Center Business Unit.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_SCM_INV_INVENTORY_ORG_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_ORG_TRANSACTIONS_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Fact - INV - Inventory Transactions.Security Context Code - Inv Org" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_SCM_INV_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Fact - INV - Inventory Transactions.Security Context Code - Inv BU" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar INV Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar INV Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Expenditure Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Expenditure Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - INV - Inventory Transaction Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inv Item Catalog Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Created By",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Transaction Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Item Category Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Locator",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Profit Center Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Sub Inventory Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Sub Inventory",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Task",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Transaction Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Transfer Locator",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Transfer Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Transfer SubInventory",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure Secondary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure Transaction",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    } ]
+  }
+}

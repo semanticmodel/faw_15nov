@@ -1,0 +1,1819 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Inventory Receipt Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Shipment Line Identifier", "Lot", "Serial Number" ],
+    "logicalColumns" : [ {
+      "name" : "---------------------------Receipts Details------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Shipment Line Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_LINE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Shipment Lines"
+    }, {
+      "name" : "Line",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_LINE_NUM" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_LINE_NUM" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Document Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.DOCUMENT_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.DOCUMENT_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Document Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Document Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_RCV_SOURCE_DOCUMENT_TYPE_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.DOCUMENT_TYPE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_RCV_SOURCE_DOCUMENT_TYPE_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.DOCUMENT_TYPE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Document Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.DOCUMENT_TYPE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.DOCUMENT_TYPE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receipt Line Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receipt Line Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_RCV_SHIPMENT_STATUS_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_LINE_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_RCV_SHIPMENT_STATUS_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_LINE_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receipt Line Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_LINE_STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_LINE_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Destination Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Destination Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_RCV_DESTINATION_TYPE_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.DESTINATION_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_RCV_DESTINATION_TYPE_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.DESTINATION_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Destination Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.DESTINATION_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.DESTINATION_TYPE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Deliver To Location id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.DELIVER_TO_LOCATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.DELIVER_TO_LOCATION_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Deliver To Location",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Deliver To Location id",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_WORKER_LOCATION_D_TL.LOCATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.DELIVER_TO_LOCATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_WORKER_LOCATION_D_TL.LOCATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.DELIVER_TO_LOCATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receiving Location",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receiving Location id",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_WORKER_LOCATION_D_TL.LOCATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIP_TO_LOCATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_WORKER_LOCATION_D_TL.LOCATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIP_TO_LOCATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receiving Location id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIP_TO_LOCATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIP_TO_LOCATION_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Received Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.QUANTITY_RECEIVED" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.QUANTITY_RECEIVED" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Delivered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.QUANTITY_DELIVERED" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.QUANTITY_DELIVERED" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Bill of Lading",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.BILL_OF_LADING" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.BILL_OF_LADING" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Number of Packing Units",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.NUM_OF_CONTAINERS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.NUM_OF_CONTAINERS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Packing Slip",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.PACKING_SLIP" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.PACKING_SLIP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receipt Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RECEIPT_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RECEIPT_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipment",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transfer Order Shipment",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'TRANSFER ORDER' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.DOCUMENT_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'TRANSFER ORDER' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.DOCUMENT_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipment Header Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_HEADER_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Waybill",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.WAYBILL_AIRBILL_NUM" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.WAYBILL_AIRBILL_NUM" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipped Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPPED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPPED_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Notes",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.COMMENTS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.COMMENTS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "-----------------------------Order Reference------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Receipts Corrected Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receipts Corrected Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RECEIPT_CORRECTION_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RECEIPT_CORRECTION_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receipts Rejected Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RECEIPT_REJECTED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RECEIPT_REJECTED_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receipts Returned Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receipts Returned Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RECEIPT_RETURNED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RECEIPT_RETURNED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receipts Rejected Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receipts Rejected Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RECEIPT_REJECTED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RECEIPT_REJECTED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receipts Corrected Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RECEIPT_CORRECTION_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RECEIPT_CORRECTION_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receipts Returned Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RECEIPT_RETURNED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RECEIPT_RETURNED_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "-----------------------------------Unit of Measures----------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Primary UOM Conversion Factor",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.PUOM_CONVERSION_FACTOR" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.PUOM_CONVERSION_FACTOR" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "----------------------------------RMA Order Details------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Order Header Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RMA_ORDER_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RMA_ORDER_HEADER_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "RMA Order Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RMA_ORDER_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RMA_ORDER_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Order Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RMA_ORDER_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RMA_ORDER_TYPE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Order Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Order Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ORDER_TYPE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RMA_ORDER_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ORDER_TYPE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RMA_ORDER_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Ordered Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RMA_ORDERED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RMA_ORDERED_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Original Order Reference",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.ORIG_SALES_ORDER_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.ORIG_SALES_ORDER_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Original Source Order Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.ORIG_SOURCE_ORDER_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.ORIG_SOURCE_ORDER_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Return Line Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Return Line Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ORDER_RETURN_TYPE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RETURN_LINE_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ORDER_RETURN_TYPE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RETURN_LINE_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Return Reason",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Return Reason Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3),  CASE  WHEN %2 = '~NOVALUE~' THEN  NULL  ELSE  CAST (%2 AS DOUBLE PRECISION ) END )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_RETURN_REASON_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RETURN_REASON_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3),  CASE  WHEN %2 = '~NOVALUE~' THEN  NULL  ELSE  CAST (%2 AS DOUBLE PRECISION ) END )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_RETURN_REASON_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RETURN_REASON_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Expected Receipt Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RMA_EXPECTED_RECEIPT_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RMA_EXPECTED_RECEIPT_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Expected Return Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RMA_EXPECTED_RETURN_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RMA_EXPECTED_RETURN_QTY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Display Fulfilment Line Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RMA_DISPLAY_FULFILL_LINE_NUM_UNSPLIT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RMA_DISPLAY_FULFILL_LINE_NUM_UNSPLIT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Order Fulfillment Line Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RMA_FULFILL_LINE_ID_UNSPLIT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RMA_FULFILL_LINE_ID_UNSPLIT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Fulfilment Line Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RMA_FULFILL_LINE_NUMBER_UNSPLIT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RMA_FULFILL_LINE_NUMBER_UNSPLIT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Return Line Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RETURN_LINE_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RETURN_LINE_TYPE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Return Reason Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RETURN_REASON_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RETURN_REASON_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "---------------------------------Transfer Order Details-----------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Requisition Business Unit",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Requisition Business Unit Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_BUSINESS_UNIT_D_TL_RequisitioningBU.BUSINESS_UNIT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_REQ_BU_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_BUSINESS_UNIT_D_TL_RequisitioningBU.BUSINESS_UNIT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_REQ_BU_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requisition Business Unit Code",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_REQ_BU_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_REQ_BU_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transfer Order Destination Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Transfer Order Destination Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_DESTINATION_TYPE_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_DESTINATION_TYPE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_DESTINATION_TYPE_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_DESTINATION_TYPE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transfer Order Destination Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_DESTINATION_TYPE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_DESTINATION_TYPE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transaction Origin Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Transfer Origin Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_ORIGIN_TYPE_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_ORIGIN_TYPE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_ORIGIN_TYPE_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_ORIGIN_TYPE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transfer Origin Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_ORIGIN_TYPE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_ORIGIN_TYPE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Fulfillment Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Fulfillment Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_FULFILL_STATUS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_FULFILL_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_FULFILL_STATUS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_FULFILL_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Fulfillment Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_FULFILL_STATUS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_FULFILL_STATUS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Line Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Line Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_LINE_STATUS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_LINE_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_LINE_STATUS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_LINE_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Line Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_LINE_STATUS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_LINE_STATUS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requested Delivery Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_NEED_BY_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_NEED_BY_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Line Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_LINE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_LINE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transfer Order",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Creation Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_CREATION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_CREATION_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requisition Line",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_REQ_LINE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_REQ_LINE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requisition",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_REQ_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_REQ_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requested Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_REQUESTED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_REQUESTED_QTY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipped Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_SHIPPED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_SHIPPED_QTY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Supply Request Reference Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SUPPLY_ORDER_REFERENCE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SUPPLY_ORDER_REFERENCE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "----------------------Lot and Serial------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Lot",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RECEIPT_LOT_SERIALNUMBER_CF.LOT_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Lot"
+    }, {
+      "name" : "Serial Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RECEIPT_LOT_SERIALNUMBER_CF.SERIAL_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Lot"
+    }, {
+      "name" : "Lot Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RECEIPT_LOT_SERIALNUMBER_CF.DELIVERED_DETAILED_PRIMARY_QTY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "-----------------------------------Inventory Organization------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Material Management Business Unit Code",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.BUSINESS_UNIT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.BUSINESS_UNIT_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Material Management Business Unit",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Material Management Business Unit Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_BUSINESS_UNIT_D_TL_Common.BUSINESS_UNIT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.BUSINESS_UNIT_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_BUSINESS_UNIT_D_TL_Common.BUSINESS_UNIT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.BUSINESS_UNIT_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Profit Center Business Unit Code",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.PROFIT_CENTER_BU_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.PROFIT_CENTER_BU_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Profit Center Business Unit",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Profit Center Business Unit Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_BUSINESS_UNIT_D_TL_Common.BUSINESS_UNIT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.PROFIT_CENTER_BU_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_BUSINESS_UNIT_D_TL_Common.BUSINESS_UNIT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.PROFIT_CENTER_BU_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Deliver-to Person Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.DELIVER_TO_PERSON_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.DELIVER_TO_PERSON_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receiver Name Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RECEIVED_BY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RECEIVED_BY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Deliver-to Person",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Deliver-to Person Id",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PERSON_NAME_CURRENT_D.FULL_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.DELIVER_TO_PERSON_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PERSON_NAME_CURRENT_D.FULL_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.DELIVER_TO_PERSON_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receiver Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receiver Name Id",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PERSON_NAME_CURRENT_D.FULL_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RECEIVED_BY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PERSON_NAME_CURRENT_D.FULL_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RECEIVED_BY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "---------------------------DFF Receipt Headers------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "RCV_SHIPMENT_HEADERS_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_INVENTORY_RECEIPT_CF_LotSerial_DW_RCV_SHIPMENT_HEADERS_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_INVENTORY_RECEIPT_CF_DW_RCV_SHIPMENT_HEADERS_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Inv BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_InventoryReceiptLotSerial.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_InventoryReceipt.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Inv Org",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_InventoryReceiptLotSerial.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_InventoryReceipt.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RECEIPT_LOT_SERIALNUMBER_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_INVENTORY_RECEIPT_CF_LotSerial_DW_RCV_SHIPMENT_HEADERS_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_InventoryReceiptLotSerial", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_InventoryReceiptLotSerial" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RECEIPT_LOT_SERIALNUMBER_CF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_INVENTORY_RECEIPT_CF_LotSerial_DW_RCV_SHIPMENT_HEADERS_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_InventoryReceiptLotSerial",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_InventoryReceiptLotSerial",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Lot" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_INVENTORY_RECEIPT_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_InventoryReceipt", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_InventoryReceipt", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_INVENTORY_RECEIPT_CF_DW_RCV_SHIPMENT_HEADERS_DFF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_InventoryReceipt",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_InventoryReceipt",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_INVENTORY_RECEIPT_CF_DW_RCV_SHIPMENT_HEADERS_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Shipment Lines",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Shipment Line Identifier" ],
+        "displayKey" : "Shipment Line Identifier"
+      }, {
+        "name" : "Lot",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Lot" ],
+        "displayKey" : "Lot",
+        "additionalKeys" : [ [ "Serial Number" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Inventory Receipt Details",
+        "levels" : [ "Total", "Shipment Lines", "Lot" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_SCM_INV_INVENTORY_ORG_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_ORG_TRANSACTIONS_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Inventory Receipt Details.Security Context Code - Inv Org" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_SCM_INV_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Inventory Receipt Details.Security Context Code - Inv BU" ]
+      }
+    } ]
+  }
+}

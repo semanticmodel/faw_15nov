@@ -1,0 +1,60 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - NetSuite Number of Days",
+    "tags" : [ "Project:NetSuite Analytics Warehouse - NetSuite Financials", "Project:NetSuite Analytics Warehouse - NetSuite Sales" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Number of Days in Period",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_DAY_D_NetSuiteNumDays",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <  CURRENT_DATE  THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_DAY_D_NetSuiteNumDays.CALENDAR_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of Days in Period (Forecast)",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_DAY_D_NetSuiteNumDays",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_DAY_D_NetSuiteNumDays.CALENDAR_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_DAY_D_NetSuiteNumDays",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_DAY_D_NetSuiteNumDays" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Date NetSuite Gregorian Calendar.Day" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date NetSuite Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

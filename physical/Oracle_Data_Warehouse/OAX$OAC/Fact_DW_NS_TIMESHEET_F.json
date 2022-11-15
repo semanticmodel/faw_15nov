@@ -1,0 +1,47 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_NS_TIMESHEET_F",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_NS_TIMESHEET_F",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_TIMESHEET_F.STARTDATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EMPLOYEE_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_TIMESHEET_F.EMPLOYEE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EMPLOYEE_D.ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_SUBSIDIARY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_TIMESHEET_F.SUBSIDIARY",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_SUBSIDIARY_D.ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_TIMELINEAPPROVALSTATUS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_TIMESHEET_F.APPROVALSTATUS",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_TIMELINEAPPROVALSTATUS_D.KEY"
+          }
+        ]
+      }
+    ]
+  }
+}

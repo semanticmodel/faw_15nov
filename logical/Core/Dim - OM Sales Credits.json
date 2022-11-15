@@ -1,0 +1,133 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - OM Sales Credits",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Header ID" ],
+    "logicalColumns" : [ {
+      "name" : "Header ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_OM_SALES_CREDITS_CF_REV",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_SALES_CREDITS_CF_REV.HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_OM_SALES_CREDITS_CF_NONREV",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_SALES_CREDITS_CF_NONREV.HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - OM Sales Credits Detail"
+    }, {
+      "name" : "Salesperson",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_OM_SALES_CREDITS_CF_REV",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_PARTY_D_Salesperson_SC.PARTY_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_OM_SALES_CREDITS_CF_NONREV",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_PARTY_D_Salesperson_SC.PARTY_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Revenue Percentage",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_OM_SALES_CREDITS_CF_REV",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_SALES_CREDITS_CF_REV.PERCENT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Non Revenue Percentage",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_OM_SALES_CREDITS_CF_NONREV",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_SALES_CREDITS_CF_NONREV.PERCENT" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_OM_SALES_CREDITS_CF_REV",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_SALES_CREDITS_CF_REV", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_PARTY_D_Salesperson_SC" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_SALES_CREDITS_CF_REV",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_PARTY_D_Salesperson_SC",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - OM Sales Credits.Dim - OM Sales Credits Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_OM_SALES_CREDITS_CF_NONREV",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_PARTY_D_Salesperson_SC", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_SALES_CREDITS_CF_NONREV" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_PARTY_D_Salesperson_SC",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_SALES_CREDITS_CF_NONREV",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - OM Sales Credits.Dim - OM Sales Credits Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - OM Sales Credits Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - OM Sales Credits Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - OM Sales Credits Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Header ID" ],
+        "displayKey" : "Header ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "OM Sales Credits",
+        "levels" : [ "Dim - OM Sales Credits Total", "Dim - OM Sales Credits Detail" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_NS_PURCHASE_ORDER_LINES_F_Link",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_NS_PURCHASE_ORDER_LINES_F",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 =  VALUEOF(NQ_SESSION.%6)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PURCHASE_ORDER_LINES_F_Link.TRANSACTION",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.PURCHASEORDER_TRANSACTION",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PURCHASE_ORDER_LINES_F_Link.ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.PURCHASEORDER_LINE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PURCHASE_ORDER_LINES_F_Link.ACCOUNTINGBOOK",
+            "variable:NetSuite - Primary Accounting Book.NETSUITE_PRIMARY_ACCOUNTING_BOOK"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PURCHASE_ORDER_F_Link",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PURCHASE_ORDER_LINES_F_Link.TRANSACTION",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PURCHASE_ORDER_F_Link.ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "TRANSACTION",
+        "ID"
+      ]
+    ]
+  }
+}

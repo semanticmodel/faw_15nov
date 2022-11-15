@@ -1,0 +1,23 @@
+{
+  "initBlock" : {
+    "name" : "Gregorian Calendar - Trailing 5 Quarters",
+    "description" : "Defaults to the last 5 quarters + current quarter",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Absence Management", "Project:Fusion Analytics Warehouse - Account Analysis Foundation", "Project:Fusion Analytics Warehouse - Accounts Payable", "Project:Fusion Analytics Warehouse - Accounts Receivable", "Project:Fusion Analytics Warehouse - Assets", "Project:Fusion Analytics Warehouse - B2B Service Analytics", "Project:Fusion Analytics Warehouse - Customer Experience Subscription Analytics", "Project:Fusion Analytics Warehouse - Customer Experience Subscription Historical Trend", "Project:Fusion Analytics Warehouse - Diversity Analysis", "Project:Fusion Analytics Warehouse - Expense Management", "Project:Fusion Analytics Warehouse - GL Budgets Analysis", "Project:Fusion Analytics Warehouse - General Ledger", "Project:Fusion Analytics Warehouse - Goals and Career Development", "Project:Fusion Analytics Warehouse - Journeys", "Project:Fusion Analytics Warehouse - Learning Management", "Project:Fusion Analytics Warehouse - Marketing Campaign Closed Loop Analytics", "Project:Fusion Analytics Warehouse - Payroll Management", "Project:Fusion Analytics Warehouse - Performance Management and Check-ins", "Project:Fusion Analytics Warehouse - Procurement Management", "Project:Fusion Analytics Warehouse - Profile Matching", "Project:Fusion Analytics Warehouse - Purchase Agreements", "Project:Fusion Analytics Warehouse - Purchase Orders", "Project:Fusion Analytics Warehouse - Purchase Receipts", "Project:Fusion Analytics Warehouse - Purchasing", "Project:Fusion Analytics Warehouse - Reconciliation", "Project:Fusion Analytics Warehouse - Requisition", "Project:Fusion Analytics Warehouse - Salary Basis", "Project:Fusion Analytics Warehouse - Sales CPQ Integrated Analytics", "Project:Fusion Analytics Warehouse - Sales Pipeline", "Project:Fusion Analytics Warehouse - Sales Pipeline Snapshot", "Project:Fusion Analytics Warehouse - Succession Management", "Project:Fusion Analytics Warehouse - Talent Acquisition", "Project:Fusion Analytics Warehouse - Talent Profile Management", "Project:Fusion Analytics Warehouse - Talent Review", "Project:Fusion Analytics Warehouse - Time and Labor", "Project:Fusion Analytics Warehouse - Workforce Compensation", "Project:Fusion Analytics Warehouse - Workforce Management", "Project:NetSuite Analytics Warehouse - NetSuite Manufacturing", "Project:NetSuite Analytics Warehouse - NetSuite Sales Snapshots", "Project:Oracle Analytics for Fusion Common", "Project:Oracle Analytics for Fusion Financials" ],
+    "type" : "SESSION",
+    "connectionPool" : "connectionPool:Oracle_Data_Warehouse.Oracle_Data_Warehouse_Repository_Initblocks_Connection_Pool",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT\r\n    'TRAILING_5_GREGORIAN_QUARTERS',B.CAL_QUARTER_CODE\r\nFROM\r\n    ( SELECT \r\n        CAL_QUARTER_ID, CURRENT_CAL_QTR_CODE ,\r\n        (COUNT(1) OVER (ORDER BY CAL_QUARTER_ID)\r\n        ) AS RUN_COUNT \r\n      FROM\r\n        DW_QUARTER_D \r\n    )A,\r\n    ( SELECT \r\n        CAL_QUARTER_ID, CAL_QUARTER_CODE ,\r\n        (COUNT(1) OVER (ORDER BY CAL_QUARTER_ID)\r\n        ) AS RUN_COUNT \r\n      FROM\r\n        DW_QUARTER_D \r\n    )B \r\nWHERE\r\n    A.CURRENT_CAL_QTR_CODE = 'Current'\r\nAND B.RUN_COUNT BETWEEN A.RUN_COUNT-5 AND A.RUN_COUNT"
+    } ],
+    "variables" : [ {
+      "name" : "TRAILING_5_GREGORIAN_QUARTERS",
+      "value" : "'2000 Q 4'",
+      "enableUsersToSetValue" : false,
+      "securitySensitive" : false
+    } ],
+    "disable" : false,
+    "queryReturnsVariableNamesAndValues" : true,
+    "allowDeferredExecution" : true,
+    "cacheQueryResult" : false
+  }
+}

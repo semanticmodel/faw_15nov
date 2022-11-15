@@ -1,0 +1,49 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_PRFL_PRSN_PRV_EMPMT_CRNT_F",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PRFL_PRSN_PRV_EMPMT_CRNT_F",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_FUNCTION_D_TL_PerPrvEmpJobFunction",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_FUNCTION_D_TL_PerPrvEmpJobFunction.JOB_FUNCTION_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_PRV_EMPMT_CRNT_F.JOB_FUNCTION",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_FUNCTION_D_TL_PerPrvEmpJobFunction.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_GEOGRAPHY_D_PerPrevEmpCtr",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 <= %4 AND %5 >= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_GEOGRAPHY_D_PerPrevEmpCtr.GEOGRAPHY_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_PRV_EMPMT_CRNT_F.COUNTRY_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_GEOGRAPHY_D_PerPrevEmpCtr.START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_PRV_EMPMT_CRNT_F.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_GEOGRAPHY_D_PerPrevEmpCtr.END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      }
+    ],
+    "additionalKeys": [
+      [
+        "PROFILE_ITEM_ID",
+        "ASSIGNMENT_ID",
+        "BUSINESS_GROUP_ID",
+        "CONTENT_TYPE_ID"
+      ]
+    ]
+  }
+}

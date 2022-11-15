@@ -1,0 +1,101 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Opportunity Stage Status Category",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Opportunity Stage Status Category Code" ],
+    "logicalColumns" : [ {
+      "name" : "Opportunity Stage Status Category Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage_PromptOnly.CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Opportunity Stage Status Category",
+      "dataType" : "VARCHAR",
+      "sortBy" : "Opportunity Stage Status Category Code",
+      "descriptorColumn" : "Opportunity Stage Status Category Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage_PromptOnly.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage_PromptOnly.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Opportunity Stage Status Category.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage_PromptOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage",
+      "disable" : false,
+      "priority" : 5,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_STATUS_CATEGORY_D_TL_OptyStage" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Opportunity Stage Status Category.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Opportunity Stage Status Category Code" ],
+        "displayKey" : "Opportunity Stage Status Category Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Opportunity Stage Status Category",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

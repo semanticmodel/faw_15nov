@@ -1,0 +1,72 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - AR Receipt Distribution Account",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Receipt Distribution Code Combination Key" ],
+    "logicalColumns" : [ {
+      "name" : "Receipt Distribution Code Combination Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GL_CODE_COMBINATION_D_AR_ReceiptDistributionAccount",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D_AR_ReceiptDistributionAccount.CODE_COMBINATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Receipt Distribution Account Combination",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GL_CODE_COMBINATION_D_AR_ReceiptDistributionAccount",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D_AR_ReceiptDistributionAccount.CONCAT_SEGMENTS" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_GL_CODE_COMBINATION_D_AR_ReceiptDistributionAccount",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D_AR_ReceiptDistributionAccount" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Receipt Distribution Account.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Receipt Distribution Code Combination Key" ],
+        "displayKey" : "Receipt Distribution Code Combination Key"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "AR Receipt Distribution Account",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

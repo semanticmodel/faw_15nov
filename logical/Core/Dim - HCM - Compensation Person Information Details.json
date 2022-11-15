@@ -1,0 +1,1588 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Compensation Person Information Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Person Event Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Worksheet Manager Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_CompEvent .FULL_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_CompEventDegen.FULL_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Worksheet Manager Person Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_CompEvent .PERSON_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_CompEventDegen.PERSON_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Manager Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Manager Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CMP_MANAGER_STATUS_D_TL.MANAGER_STATUS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.MGR_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CMP_MANAGER_STATUS_D_TL.MANAGER_STATUS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.MGR_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Manager Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.MGR_STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.MGR_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Worker Processing Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Worker Processing Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CMP_EMPLOYEE_STATUS_D_TL.EMPLOYEE_STATUS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.EMP_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CMP_EMPLOYEE_STATUS_D_TL.EMPLOYEE_STATUS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.EMP_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Worker Processing Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.EMP_STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.EMP_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Worksheet Approval Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Worksheet Approval Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CMP_APPROVAL_D_TL.APPROVAL_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.APPROVAL_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CMP_APPROVAL_D_TL.APPROVAL_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.APPROVAL_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Worksheet Approval Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.APPROVAL_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.APPROVAL_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Worksheet Due Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.DUE_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.DUE_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Promotion Effective Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PROMOTION_D_CompEvent.ASG_CHANGE_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PROMOTION_D_CompEventDegen.ASG_CHANGE_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Proposed Grade Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_TL_CompEvent.PAY_GRADE_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_TL_CompEventDegen.PAY_GRADE_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Proposed Job Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL_CompEvent.JOB_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL_CompEventDegen.JOB_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Proposed Position Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_TL_CompEvent.POSITION_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_TL_CompEventDegen.POSITION_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment1",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT1" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT1" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment2",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT2" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT2" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment3",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT3" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT3" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment4",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT4" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT4" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment5",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT5" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT5" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment6",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT6" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT6" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment7",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT7" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT7" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment8",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT8" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT8" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment9",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT9" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT9" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment10",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT10" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT10" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment11",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT11" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT11" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment12",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT12" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT12" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment13",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT13" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT13" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment14",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT14" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT14" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment15",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT15" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT15" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment16",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT16" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT16" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment17",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT17" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT17" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment18",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT18" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT18" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment19",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT19" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT19" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment20",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT20" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT20" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment21",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT21" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT21" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment22",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT22" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT22" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment23",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT23" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT23" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment24",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT24" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT24" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment25",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT25" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT25" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment26",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT26" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT26" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment27",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT27" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT27" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment28",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT28" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT28" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment29",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT29" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT29" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment30",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT30" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT30" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment31",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT31" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT31" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment32",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT32" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT32" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment33",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT33" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT33" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment34",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT34" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT34" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment35",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT35" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT35" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment36",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT36" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT36" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment37",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT37" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT37" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment38",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT38" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT38" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment39",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT39" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT39" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment40",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT40" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT40" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment41",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT41" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT41" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment42",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT42" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT42" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment43",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT43" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT43" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment44",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT44" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT44" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment45",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT45" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT45" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment46",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT46" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT46" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment47",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT47" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT47" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment48",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT48" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT48" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment49",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT49" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT49" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment50",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.CUSTOM_SEGMENT50" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.CUSTOM_SEGMENT50" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment46 Meaning",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_46_D_TL .CUSTOM_SEGMENT_46_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_46_D_TL_CompEventDegen.CUSTOM_SEGMENT_46_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment47 Meaning",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_47_D_TL .CUSTOM_SEGMENT_47_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_47_D_TL_CompEventDegen.CUSTOM_SEGMENT_47_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment48 Meaning",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_48_D_TL.CUSTOM_SEGMENT_48_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_48_D_TL_CompEventDegen.CUSTOM_SEGMENT_48_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment49 Meaning",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_49_D_TL .CUSTOM_SEGMENT_49_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_49_D_TL_CompEventDegen.CUSTOM_SEGMENT_49_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Custom Segment50 Meaning",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_50_D_TL.CUSTOM_SEGMENT_50_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_50_D_TL_CompEventDegen.CUSTOM_SEGMENT_50_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Person Event Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent.PERSON_EVENT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen.PERSON_EVENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_50_D_TL", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_TL_CompEvent", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_CompEvent ", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL_CompEvent", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_49_D_TL ", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_TL_CompEvent", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_CompEvent ", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_46_D_TL ", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PROMOTION_D_CompEvent", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_48_D_TL", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_47_D_TL " ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_48_D_TL",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_46_D_TL ",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_47_D_TL ",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_50_D_TL",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_49_D_TL ",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PROMOTION_D_CompEvent",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_CompEvent ",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_CWB_PERSON_INFO_EF_CompEvent",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_CompEvent ",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_TL_CompEvent",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PROMOTION_D_CompEvent",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL_CompEvent",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PROMOTION_D_CompEvent",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_TL_CompEvent",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PROMOTION_D_CompEvent",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Compensation Person Information Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL_CompEventDegen", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_TL_CompEventDegen", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_48_D_TL_CompEventDegen", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PROMOTION_D_CompEventDegen", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_47_D_TL_CompEventDegen", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_49_D_TL_CompEventDegen", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_50_D_TL_CompEventDegen", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_CompEventDegen", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_46_D_TL_CompEventDegen", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_TL_CompEventDegen", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_CompEventDegen" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_46_D_TL_CompEventDegen",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_48_D_TL_CompEventDegen",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_47_D_TL_CompEventDegen",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_50_D_TL_CompEventDegen",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CUSTOM_SEGMENT_49_D_TL_CompEventDegen",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_CompEventDegen",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_CompEventDegen",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PERSON_INFO_D_Degen",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PROMOTION_D_CompEventDegen",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL_CompEventDegen",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PROMOTION_D_CompEventDegen",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_TL_CompEventDegen",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PROMOTION_D_CompEventDegen",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_CWB_PROMOTION_D_CompEventDegen",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_TL_CompEventDegen",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Compensation Person Information Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Person Event Identifier" ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Compensation Person Information Details",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_HCM_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "HCM_FACT_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_BUSINESSUNIT_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - HCM - HR Business Unit.Security Context Code - HCM Business Unit", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_DEPARTMENT_DATA",
+      "functionalGroup" : "HCM_FACT_DEPT",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_DEPARTMENT_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Department.Security Context Code - HCM Department", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_LEGAL_EMPLOYER_DATA",
+      "functionalGroup" : "HCM_FACT_LE",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_LEGAL_EMPLOYER_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Legal Employer.Security Context Code - HCM Legal Employer", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_VIEW_ALL_DATA",
+      "functionalGroup" : "HCM_FACT_ALL",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "1 = 1"
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_COUNTRY_DATA",
+      "functionalGroup" : "HCM_FACT_CTR",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_COUNTRY_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Country.Security Context Code - HCM Country List", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    } ]
+  }
+}

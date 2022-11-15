@@ -1,0 +1,151 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - To Department",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "To Department Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "To Department Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_DEPARTMENT_D_To_Dept_dim_only",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_To_Dept_dim_only.DEPARTMENT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_DEPARTMENT_D_TL_To_Dept_dim_only",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_TL_To_Dept_dim_only.DEPARTMENT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_DEPARTMENT_D_To_Dept",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_To_Dept.DEPARTMENT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_DEPARTMENT_D_TL_To_Dept",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_TL_To_Dept.DEPARTMENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "To Department Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_DEPARTMENT_D_TL_To_Dept_dim_only",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_TL_To_Dept_dim_only.DEPARTMENT_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_DEPARTMENT_D_TL_To_Dept",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_TL_To_Dept.DEPARTMENT_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_DEPARTMENT_D_To_Dept_dim_only",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_To_Dept_dim_only", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_DEPT_Dim" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_To_Dept_dim_only",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_DEPT_Dim",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : " INDEXCOL( VALUEOF(NQ_SESSION.%1), '-1', %2) =  INDEXCOL( VALUEOF(NQ_SESSION.%1), '-1', %3)",
+        "expressionObjects" : [ "variable:Check Department Context Defined.HCM_DEPT_SEC_DEFINED", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_To_Dept_dim_only.DEPARTMENT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_DEPT_Dim.SEC_OBJ_MEMBER_VAL" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_DEPARTMENT_D_TL_To_Dept_dim_only",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_TL_To_Dept_dim_only", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_DEPT_DimTL" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_TL_To_Dept_dim_only",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_DEPT_DimTL",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2) AND  INDEXCOL( VALUEOF(NQ_SESSION.%3), '-1', %4) =  INDEXCOL( VALUEOF(NQ_SESSION.%3), '-1', %5)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_TL_To_Dept_dim_only.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "variable:Check Department Context Defined.HCM_DEPT_SEC_DEFINED", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_TL_To_Dept_dim_only.DEPARTMENT_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_DEPT_DimTL.SEC_OBJ_MEMBER_VAL" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_DEPARTMENT_D_To_Dept",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_To_Dept" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - To Department.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_DEPARTMENT_D_TL_To_Dept",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_TL_To_Dept" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - To Department.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_TL_To_Dept.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "To Department Identifier" ],
+        "displayKey" : "To Department Name",
+        "additionalKeys" : [ [ "To Department Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "To Department",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

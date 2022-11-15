@@ -1,0 +1,459 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Project SLA Costing Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Transaction Number", "Line Number", "Reference Accounting Header Key", "Temporary Line Number", "Accounting Header Key", "Journal Header Identifier", "Journal Line Number" ],
+    "logicalColumns" : [ {
+      "name" : "Transaction Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.EXPENDITURE_ITEM_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.EXPENDITURE_ITEM_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Expenditure Item"
+    }, {
+      "name" : "Line Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.LINE_NUM" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.LINE_NUM" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Expenditure Line"
+    }, {
+      "name" : "Reference Accounting Header Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.REF_AE_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.REF_AE_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "SLA Detail"
+    }, {
+      "name" : "Temporary Line Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.AE_LINE_NUM" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.AE_LINE_NUM" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "SLA Detail"
+    }, {
+      "name" : "Accounting Header Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.AE_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.AE_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "SLA Detail"
+    }, {
+      "name" : "Accounting Class",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Accounting Class Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  CASE  WHEN %2 = 'BURDENED_DR' THEN 'BURDENED_COST' WHEN %2 = 'BURDENED_CR' THEN 'BURDENED_COST_CLEARING' WHEN %2 = 'BURDEN_DR' THEN 'BURDEN_COST' WHEN %2 = 'BURDEN_CR' THEN 'BURDEN_COST_CLEARING' WHEN %2 = 'RAW_DR' THEN 'RAW_COST' WHEN %2 = 'RAW_CR' THEN 'RAW_COST_CLEARING' ELSE %2 END ,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_XLA_ACCOUNT_CLASS_LKP_TL.ACCOUNTING_CLASS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.ACCOUNTING_CLASS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  CASE  WHEN %2 = 'BURDENED_DR' THEN 'BURDENED_COST' WHEN %2 = 'BURDENED_CR' THEN 'BURDENED_COST_CLEARING' WHEN %2 = 'BURDEN_DR' THEN 'BURDEN_COST' WHEN %2 = 'BURDEN_CR' THEN 'BURDEN_COST_CLEARING' WHEN %2 = 'RAW_DR' THEN 'RAW_COST' WHEN %2 = 'RAW_CR' THEN 'RAW_COST_CLEARING' ELSE %2 END ,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_XLA_ACCOUNT_CLASS_LKP_TL.ACCOUNTING_CLASS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.ACCOUNTING_CLASS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Accounting Class Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.ACCOUNTING_CLASS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.ACCOUNTING_CLASS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Distribution Account Source",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.DISTRIBUTION_ACCOUNT_SOURCE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.DISTRIBUTION_ACCOUNT_SOURCE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Raw Cost Flag Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RAW' THEN 'Y' ELSE 'N' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.COST_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RAW' THEN 'Y' ELSE 'N' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.COST_TYPE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Raw Cost Flag",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Raw Cost Flag Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RAW' THEN  LOOKUP( SPARSE %2, 'Y',  VALUEOF(NQ_SESSION.%3), 'Y') ELSE  LOOKUP( SPARSE %2, 'N',  VALUEOF(NQ_SESSION.%3), 'N') END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.COST_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'RAW' THEN  LOOKUP( SPARSE %2, 'Y',  VALUEOF(NQ_SESSION.%3), 'Y') ELSE  LOOKUP( SPARSE %2, 'N',  VALUEOF(NQ_SESSION.%3), 'N') END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.COST_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Project Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.PROJECT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.PROJECT_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Header Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_PRJSLACOST.JOURNAL_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "GLJournalDetail"
+    }, {
+      "name" : "Journal Line Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_PRJSLACOST.JOURNAL_LINE_NUM" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "GLJournalDetail"
+    }, {
+      "name" : "----------Security Context----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Security Context Code - Project BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_BU_CostSLAFact.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Project Organization",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_ORGANIZATION_CostSLAFact.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Expenditure BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_EXPENDITURE_BU_CostSLAFact.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Project List",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_SLA_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_PROJECT_MANAGER_CostSLAFact.SEC_OBJECT_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_PROJECT_SLA_COST_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_BU_CostSLAFact", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_EXPENDITURE_BU_CostSLAFact", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_ORGANIZATION_CostSLAFact", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_PROJECT_MANAGER_CostSLAFact" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_EXPENDITURE_BU_CostSLAFact",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_BU_CostSLAFact",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_ORGANIZATION_CostSLAFact",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_PROJECT_MANAGER_CostSLAFact",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Project SLA Costing Details.GLJournalDetail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_PROJECT_SLA_COST_CF_GLJournalID",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_PRJSLACOST" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_PRJSLACOST",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Project SLA Costing Details.GLJournalDetail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "All",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "All",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Expenditure Item",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transaction Number" ],
+        "displayKey" : "Transaction Number"
+      }, {
+        "name" : "Expenditure Line",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transaction Number", "Line Number" ],
+        "displayKey" : "Line Number",
+        "additionalKeys" : [ [ "Line Number" ] ]
+      }, {
+        "name" : "SLA Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Reference Accounting Header Key" ],
+        "displayKey" : "Reference Accounting Header Key",
+        "additionalKeys" : [ [ "Reference Accounting Header Key", "Temporary Line Number", "Accounting Header Key" ] ]
+      }, {
+        "name" : "GLJournalDetail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transaction Number", "Line Number", "Reference Accounting Header Key", "Temporary Line Number", "Accounting Header Key", "Journal Header Identifier", "Journal Line Number" ],
+        "displayKey" : "Journal Header Identifier",
+        "additionalKeys" : [ [ "Journal Header Identifier", "Journal Line Number" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Project SLA Costing Details",
+        "levels" : [ "All", "Expenditure Item", "Expenditure Line", "SLA Detail", "GLJournalDetail" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_PPM_EXPENDITURE_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PROJ_SECURITY",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PPM_EXPENDITURE_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Project SLA Costing Details.Security Context Code - Expenditure BU" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_PPM_PROJECT_MANAGER_DATA",
+      "functionalGroup" : "PROJ_SECURITY",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PPM_PROJECT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Project SLA Costing Details.Security Context Code - Project List" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_PPM_PROJECT_ORGANIZATION_DATA",
+      "functionalGroup" : "PROJ_SECURITY",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PPM_PROJECT_ORGANIZATION_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Project SLA Costing Details.Security Context Code - Project Organization" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_PPM_PROJECT_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PROJ_SECURITY",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PPM_PROJECT_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Project SLA Costing Details.Security Context Code - Project BU" ]
+      }
+    } ]
+  }
+}

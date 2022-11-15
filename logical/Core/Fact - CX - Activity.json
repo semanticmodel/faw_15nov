@@ -1,0 +1,435 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - CX - Activity",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Sales Pipeline" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "# of Activities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF.ACTIVITY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF.ACTIVITY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "countDistinctOverrides" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF",
+          "rule" : "COUNT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF",
+          "rule" : "COUNT_DISTINCT"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Open Activities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IN ('CANCELED', 'COMPLETE'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Activity.# of Activities", "logicalColumn:Core.Fact - CX - Activity.Activity Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Completed Activities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('COMPLETE'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Activity.# of Activities", "logicalColumn:Core.Fact - CX - Activity.Activity Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Expired Activities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <  CURRENT_DATE  AND  NOT %3 IN ('COMPLETE', 'CANCELED'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Activity.# of Activities", "logicalColumn:Core.Fact - CX - Activity.Activity Due Date", "logicalColumn:Core.Fact - CX - Activity.Activity Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Tasks",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'TASK')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Activity.# of Activities", "logicalColumn:Core.Fact - CX - Activity.Activity Function Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Appointments",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'APPOINTMENT')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Activity.# of Activities", "logicalColumn:Core.Fact - CX - Activity.Activity Function Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Call Reports",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CALLREPORT')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Activity.# of Activities", "logicalColumn:Core.Fact - CX - Activity.Activity Function Code" ]
+        }
+      }
+    }, {
+      "name" : "Average Activity Duration For Completed Activities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d *  FILTER(%2 USING %3 = 'COMPLETE') / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Activity.# of Completed Activities", "logicalColumn:Core.Fact - CX - Activity.Duration", "logicalColumn:Core.Fact - CX - Activity.Activity Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Average Number of Activities Per Team member",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Activity.# of Team Members", "logicalColumn:Core.Fact - CX - Activity.# of Activities" ]
+        }
+      }
+    }, {
+      "name" : "----------------------------Internal---------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'----------------------------Internal---------------------------'"
+        }
+      }
+    }, {
+      "name" : "Duration",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF.ACTIVITY_DURATION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF.ACTIVITY_DURATION" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Activity Resource",
+          "rule" : "FIRST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Activity",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Team Members",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF.RESOURCE_PARTY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Activity Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF.ACTIVITY_STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF.ACTIVITY_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Activity Due Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF.ACTIVITY_DUE_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF.ACTIVITY_DUE_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Activity Function Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF.ACTIVITY_FUNCTION_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF.ACTIVITY_FUNCTION_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CXS_ACTIVITY_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Security - Sales Activity Access Group.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Security - Sales Activity Assignee Based.Detail", "logicalLevel:Core.Dim - CX - Security - Sales Activity Resource Hierarchy Based.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual End Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Activity.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual Start Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Activity Actual End Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual Start Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Created Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Created Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Primary Contact.Detail", "logicalLevel:Core.Dim - CX - Activity Direction.Detail", "logicalLevel:Core.Dim - CX - Primary Partner.Detail", "logicalLevel:Core.Dim - CX - Resource - Activity Owner.Detail", "logicalLevel:Core.Dim - CX - Activity All Day.Detail", "logicalLevel:Core.Dim - CX - Activity Customer Type.Detail", "logicalLevel:Core.Dim - CX - Activity Function.Detail", "logicalLevel:Core.Dim - CX - Activity Outcome.Detail", "logicalLevel:Core.Dim - CX - Activity Priority.Detail", "logicalLevel:Core.Dim - CX - Activity Status.Detail", "logicalLevel:Core.Dim - CX - Activity Sub Type.Detail", "logicalLevel:Core.Dim - CX - Activity Type.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 <> 'S' AND (%2 = 'N' OR %2 IS NULL )",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF.RECURRENCE_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF.TEMPLATE_FLAG" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF",
+      "disable" : false,
+      "priority" : 5,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_ACTIVITY_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_ACTIVITY_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - CX - Activity.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual End Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Activity Resource Response.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual End Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual Start Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Activity Resource Show Time.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual Start Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Created Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Created Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Activity Resource.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Primary Contact.Detail", "logicalLevel:Core.Dim - CX - Activity Direction.Detail", "logicalLevel:Core.Dim - CX - Primary Partner.Detail", "logicalLevel:Core.Dim - CX - Resource - Activity Owner.Detail", "logicalLevel:Core.Dim - CX - Resource - Activity Team Member.Detail", "logicalLevel:Core.Dim - CX - Activity All Day.Detail", "logicalLevel:Core.Dim - CX - Activity Customer Type.Detail", "logicalLevel:Core.Dim - CX - Activity Function.Detail", "logicalLevel:Core.Dim - CX - Activity Outcome.Detail", "logicalLevel:Core.Dim - CX - Activity Priority.Detail", "logicalLevel:Core.Dim - CX - Activity Resource Set Reminder.Detail", "logicalLevel:Core.Dim - CX - Activity Status.Detail", "logicalLevel:Core.Dim - CX - Activity Sub Type.Detail", "logicalLevel:Core.Dim - CX - Activity Type.Detail", "logicalLevel:Core.Dim - CX - Security - Sales Activity Access Group.Detail", "logicalLevel:Core.Dim - CX - Security - Sales Activity Assignee Based.Detail", "logicalLevel:Core.Dim - CX - Security - Sales Activity Resource Hierarchy Based.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 <> 'S' AND (%2 = 'N' OR %2 IS NULL )",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF.ACTIVITY_RECURRENCE_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF.ACTIVITY_TEMPLATE_FLAG" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_CX_SALES_ACTIVITY_ASSIGNEE_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Sales Activity Assignee Based.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SALES_ACTIVITY_CUSTOM_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Sales Activity Access Group.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SALES_ACTIVITY_DELEGATOR_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 =  CAST ( VALUEOF(NQ_SESSION.%2) AS DOUBLE PRECISION )",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Activity.Activity Delegator Id", "variable:User Party ID.USER_PARTY_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SALES_ACTIVITY_RES_HIER_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Sales Activity Resource Hierarchy Based.Security Enabled Flag" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity All Day",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Customer Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Direction",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Function",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Outcome",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Priority",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Resource Response",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Resource Set Reminder",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Resource Show Time",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Resource",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Sub Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Actual End Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Actual End Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Actual Start Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Actual Start Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Created Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Created Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Partner",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Activity Owner",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Activity Team Member",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Sales Activity Access Group",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Sales Activity Assignee Based",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Sales Activity Resource Hierarchy Based",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

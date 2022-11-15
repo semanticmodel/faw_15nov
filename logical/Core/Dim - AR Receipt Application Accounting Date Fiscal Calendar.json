@@ -1,0 +1,301 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - AR Receipt Application Accounting Date Fiscal Calendar",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Receipt Application Accounting Adjustment Period Flag", "Receipt Application Accounting Date", "Receipt Application Accounting Fiscal Calendar Name" ],
+    "logicalColumns" : [ {
+      "name" : "Receipt Application Accounting Adjustment Period Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.ADJUSTMENT_PERIOD_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Period"
+    }, {
+      "name" : "Receipt Application Accounting Fiscal Calendar Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_PERIOD_SET_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Calendar"
+    }, {
+      "name" : "Receipt Application Accounting Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_DAY_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Receipt Application Accounting Day Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_DAY_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receipt Application Accounting Day Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receipt Application Accounting Day Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE  LOOKUP( SPARSE %2, %3, %3,  VALUEOF(NQ_SESSION.%4)) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_DAYS_OF_WEEK_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_DAY_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receipt Application Accounting Fiscal Period",
+      "dataType" : "VARCHAR",
+      "sortBy" : "Receipt Application Accounting Fiscal Period Sort Key",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_PERIOD_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Period"
+    }, {
+      "name" : "Receipt Application Accounting Fiscal Period Type",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_PERIOD_TYPE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Receipt Application Accounting Fiscal Period Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_PERIOD_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Period"
+    }, {
+      "name" : "Receipt Application Accounting Fiscal Period Sort Key",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_PERIOD_SORT_KEY" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Period"
+    }, {
+      "name" : "Receipt Application Accounting Fiscal Quarter Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_QUARTER_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Quarter"
+    }, {
+      "name" : "Receipt Application Accounting Fiscal Quarter",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_QUARTER_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Quarter"
+    }, {
+      "name" : "Receipt Application Accounting Fiscal Year",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_DAY_DATE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_YEAR_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Year"
+    }, {
+      "name" : "Receipt Application Accounting Date Trailing Year Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_TRAILING_YEAR_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Year"
+    }, {
+      "name" : "Receipt Application Accounting Date Trailing Quarter Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_TRAILING_QUARTER_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Quarter"
+    }, {
+      "name" : "Receipt Application Accounting Date Trailing Period Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar.FISCAL_TRAILING_PERIOD_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Fiscal Period"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_AR_Receipt_Application_Accounting_Date_Fiscal_Calendar" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Receipt Application Accounting Date Fiscal Calendar.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "TIME",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Fiscal Calendar",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Receipt Application Accounting Fiscal Calendar Name" ],
+        "displayKey" : "Receipt Application Accounting Fiscal Calendar Name",
+        "chronologicalKey" : [ "Receipt Application Accounting Fiscal Calendar Name" ]
+      }, {
+        "name" : "Fiscal Year",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Receipt Application Accounting Fiscal Calendar Name", "Receipt Application Accounting Fiscal Year" ],
+        "displayKey" : "Receipt Application Accounting Fiscal Year",
+        "additionalKeys" : [ [ "Receipt Application Accounting Fiscal Year" ] ],
+        "chronologicalKey" : [ "Receipt Application Accounting Fiscal Calendar Name", "Receipt Application Accounting Fiscal Year" ]
+      }, {
+        "name" : "Fiscal Quarter",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Receipt Application Accounting Fiscal Calendar Name", "Receipt Application Accounting Fiscal Quarter Number" ],
+        "displayKey" : "Receipt Application Accounting Fiscal Quarter Number",
+        "additionalKeys" : [ [ "Receipt Application Accounting Fiscal Quarter Number" ] ],
+        "chronologicalKey" : [ "Receipt Application Accounting Fiscal Calendar Name", "Receipt Application Accounting Fiscal Quarter Number" ]
+      }, {
+        "name" : "Fiscal Period",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Receipt Application Accounting Adjustment Period Flag", "Receipt Application Accounting Fiscal Period" ],
+        "displayKey" : "Receipt Application Accounting Fiscal Period",
+        "additionalKeys" : [ [ "Receipt Application Accounting Fiscal Period" ] ],
+        "chronologicalKey" : [ "Receipt Application Accounting Adjustment Period Flag", "Receipt Application Accounting Fiscal Period" ]
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Receipt Application Accounting Adjustment Period Flag", "Receipt Application Accounting Date" ],
+        "displayKey" : "Receipt Application Accounting Date",
+        "additionalKeys" : [ [ "Receipt Application Accounting Date" ] ],
+        "chronologicalKey" : [ "Receipt Application Accounting Adjustment Period Flag", "Receipt Application Accounting Date" ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "AR Receipt Application Accounting Date Fiscal Calendar",
+        "levels" : [ "Total", "Fiscal Calendar", "Fiscal Year", "Fiscal Quarter", "Fiscal Period", "Detail" ]
+      } ]
+    }
+  }
+}

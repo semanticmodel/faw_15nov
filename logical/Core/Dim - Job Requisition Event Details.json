@@ -1,0 +1,96 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Job Requisition Event Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Job Requisition Event Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Job Requisition Event Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Details"
+    }, {
+      "name" : "Job Requisition Event Date",
+      "dataType" : "TIMESTAMP",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Details"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Job Requisition Event Details.Details" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Details",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Job Requisition Event Identifier" ],
+        "displayKey" : "Job Requisition Event Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Job Requisition Event Details",
+        "levels" : [ "Total", "Details" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_HCM_REC_ALL_REQ_DATA",
+      "functionalGroup" : "DEGEN_JRE_ALL_REQ",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "1 = 1"
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_REC_REQ_DATA",
+      "functionalGroup" : "DEGEN_JRE_REQ",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2) OR 1 =  INDEXCOL( VALUEOF(NQ_SESSION.%3), 2, 1)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Job Requisition Security.Manager Identifier", "variable:Logged In HCM Person ID.HCM_PERSON_ID", "variable:Check Country Context Defined.HCM_CONT_SEC_DEFINED" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_COUNTRY_DATA",
+      "functionalGroup" : "DEGEN_JRE_CTR",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_COUNTRY_LIST' OR  INDEXCOL( VALUEOF(NQ_SESSION.%2), 1, %3) =  INDEXCOL( VALUEOF(NQ_SESSION.%2), 2,  VALUEOF(NQ_SESSION.%4))",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Country.Security Context Code - HCM Country List", "variable:Check HCM Recruitment Requisition Data Role.HCM_REC_REQ_DATA_ROLE", "logicalColumn:Core.Dim - Job Requisition Security.Manager Identifier", "variable:Logged In HCM Person ID.HCM_PERSON_ID" ]
+      }
+    } ]
+  }
+}

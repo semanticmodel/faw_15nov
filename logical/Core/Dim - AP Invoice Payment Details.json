@@ -1,0 +1,58 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - AP Invoice Payment Details",
+    "description" : "This dimension is for calculating metrics at Invoice Payment level for the AP Payment fact (e.g. Total Payment Days).",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Invoice Payment ID" ],
+    "logicalColumns" : [ {
+      "name" : "Invoice Payment ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_PAYMENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AP Invoice Payment Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Invoice Payment ID" ],
+        "displayKey" : "Invoice Payment ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "AP Invoice Payment Details",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

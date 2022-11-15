@@ -1,0 +1,837 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Job Requisition Event",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Talent Acquisition" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Number of Job Requisition Events",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Job Requisitions (on Event)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of Job Requisitions moved to Draft Phase",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'PHASE_ACTIVATION' AND %2 = 'REQUISITION_DRAFT' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'PHASE_ACTIVATION' AND %2 = 'REQUISITION_DRAFT' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of Job Requisitions moved to Approval Phase",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'PHASE_ACTIVATION' AND %2 = 'REQUISITION_APPROVAL' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'PHASE_ACTIVATION' AND %2 = 'REQUISITION_APPROVAL' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of Job Requisitions moved to Job Formatting Phase",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'PHASE_ACTIVATION' AND %2 = 'REQUISITION_JOB_FORMATTING' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'PHASE_ACTIVATION' AND %2 = 'REQUISITION_JOB_FORMATTING' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of Job Requisitions moved to Posting Phase",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'PHASE_ACTIVATION' AND %2 = 'REQUISITION_POSTING' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'PHASE_ACTIVATION' AND %2 = 'REQUISITION_POSTING' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of Job Requisitions moved to Open Phase",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'PHASE_ACTIVATION' AND %2 = 'REQUISITION_OPEN' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'PHASE_ACTIVATION' AND %2 = 'REQUISITION_OPEN' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of Job Requisitions moved to Cancelled State",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'STATE_ACTIVATION' AND %2 = 'REQUISITION_CANCELLED' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D.STATE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'STATE_ACTIVATION' AND %2 = 'REQUISITION_CANCELLED' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D.STATE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of Job Requisitions moved to Rejected State",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'STATE_ACTIVATION' AND %2 = 'REQUISITION_REJECTED' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D.STATE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'STATE_ACTIVATION' AND %2 = 'REQUISITION_REJECTED' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D.STATE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of Job Requisitions moved to Filled State",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'STATE_ACTIVATION' AND %2 = 'REQUISITION_FILLED' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D.STATE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'STATE_ACTIVATION' AND %2 = 'REQUISITION_FILLED' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D.STATE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of Job Requisitions moved to Suspended State",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'STATE_ACTIVATION' AND %2 = 'REQUISITION_SUSPENDED' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D.STATE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'STATE_ACTIVATION' AND %2 = 'REQUISITION_SUSPENDED' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D.STATE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Time To Fill",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'STATE_ACTIVATION' AND %2 = 'REQUISITION_FILLED' THEN  TIMESTAMPDIFF( SQL_TSI_DAY ,  IFNULL(%3, %4), %5) ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D.STATE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQUISITION_D.OPEN_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQUISITION_D.SRC_RECORD_CREATION_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_CALENDAR_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'STATE_ACTIVATION' AND %2 = 'REQUISITION_FILLED' THEN  TIMESTAMPDIFF( SQL_TSI_DAY ,  IFNULL(%3, %4), %5) ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D.STATE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQUISITION_D.OPEN_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQUISITION_D.SRC_RECORD_CREATION_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_CALENDAR_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "AVG",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of Job Requisitions moved to Deleted State",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'STATE_ACTIVATION' AND %2 = 'REQUISITION_DELETED' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D.STATE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'STATE_ACTIVATION' AND %2 = 'REQUISITION_DELETED' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D.STATE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQUISITION_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Job Requisition Draft to Approved Internal",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1,  CASE  WHEN %2 = %3 AND %4 = 'REQUISITION_APPROVAL' AND %5 = 'PHASE_ACTIVATION' THEN %2 ELSE  NULL  END )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_DRAFT_TO_OTHER_DATES_D.REQ_DRAFT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_DRAFT_TO_OTHER_DATES_D.REQ_APPROVED_DT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1,  CASE  WHEN %2 = %3 AND %4 = 'REQUISITION_APPROVAL' AND %5 = 'PHASE_ACTIVATION' THEN %2 ELSE  NULL  END )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_DRAFT_TO_OTHER_DATES_D.REQ_DRAFT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_DRAFT_TO_OTHER_DATES_D.REQ_APPROVED_DT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Job Requisition Approval to Job formatting Internal",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1,  CASE  WHEN %2 = %3 AND %4 = 'REQUISITION_JOB_FORMATTING' AND %5 = 'PHASE_ACTIVATION' THEN %2 ELSE  NULL  END )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_APPROVED_TO_OTHER_DATES_D.REQ_APPROVED_DT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_APPROVED_TO_OTHER_DATES_D.REQ_JOBFORMATTING_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1,  CASE  WHEN %2 = %3 AND %4 = 'REQUISITION_JOB_FORMATTING' AND %5 = 'PHASE_ACTIVATION' THEN %2 ELSE  NULL  END )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_APPROVED_TO_OTHER_DATES_D.REQ_APPROVED_DT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_APPROVED_TO_OTHER_DATES_D.REQ_JOBFORMATTING_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Job Requisition Job formatting to Posting Internal",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1,  CASE  WHEN %2 = %3 AND %4 = 'REQUISITION_POSTING' AND %5 = 'PHASE_ACTIVATION' THEN %2 ELSE  NULL  END )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_JOBFRMTG_TO_OTHER_DATES_D.REQ_JOBFORMATTING_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_JOBFRMTG_TO_OTHER_DATES_D.REQ_JOB_POSTING_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1,  CASE  WHEN %2 = %3 AND %4 = 'REQUISITION_POSTING' AND %5 = 'PHASE_ACTIVATION' THEN %2 ELSE  NULL  END )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_JOBFRMTG_TO_OTHER_DATES_D.REQ_JOBFORMATTING_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_JOBFRMTG_TO_OTHER_DATES_D.REQ_JOB_POSTING_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Job Requisition Posting to Open Internal",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1,  CASE  WHEN %2 = %3 AND %4 = 'REQUISITION_OPEN' AND %5 = 'PHASE_ACTIVATION' THEN %2 ELSE  NULL  END )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_POSTING_TO_OTHER_DATES_D.REQ_JOB_POSTING_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_POSTING_TO_OTHER_DATES_D.REQ_OPEN_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1,  CASE  WHEN %2 = %3 AND %4 = 'REQUISITION_OPEN' AND %5 = 'PHASE_ACTIVATION' THEN %2 ELSE  NULL  END )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_POSTING_TO_OTHER_DATES_D.REQ_JOB_POSTING_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_POSTING_TO_OTHER_DATES_D.REQ_OPEN_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D.PHASE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D.EVENT_TYPE_CODE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Time Elapsed (Days) From Draft Phase to Approval Phase",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Job Requisition Event.Job Requisition Draft to Approved Internal", "logicalColumn:Core.Fact - Job Requisition Event.Number of Job Requisitions moved to Approval Phase" ]
+        }
+      }
+    }, {
+      "name" : "Time Elapsed (Days) From Approval Phase to Job Formatting Phase",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Job Requisition Event.Job Requisition Approval to Job formatting Internal", "logicalColumn:Core.Fact - Job Requisition Event.Number of Job Requisitions moved to Job Formatting Phase" ]
+        }
+      }
+    }, {
+      "name" : "Time Elapsed (Days) From Job Formatting Phase to Posting Phase",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Job Requisition Event.Job Requisition Job formatting to Posting Internal", "logicalColumn:Core.Fact - Job Requisition Event.Number of Job Requisitions moved to Posting Phase" ]
+        }
+      }
+    }, {
+      "name" : "Time Elapsed (Days) From Posting Phase to Open Phase",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Job Requisition Event.Job Requisition Posting to Open Internal", "logicalColumn:Core.Fact - Job Requisition Event.Number of Job Requisitions moved to Open Phase" ]
+        }
+      }
+    }, {
+      "name" : "Total Openings (on Event)",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQUISITION_D.NUMBER_TO_HIRE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQUISITION_D.NUMBER_TO_HIRE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Job Requisition",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Phase Completion Duration (In Seconds)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 4 THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_TYPE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_STEP_DURATION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 4 THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_TYPE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_STEP_DURATION" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Job Requisition Event Details",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Job Requisition",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Phase Completion Duration (In Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CAST (%1 AS DOUBLE PRECISION ) / 60",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Job Requisition Event.Phase Completion Duration (In Seconds)" ]
+        }
+      }
+    }, {
+      "name" : "Phase Completion Duration (In Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CAST (%1 AS DOUBLE PRECISION ) / 24",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Job Requisition Event.Phase Completion Duration (In Hours)" ]
+        }
+      }
+    }, {
+      "name" : "State Completion Duration (In Seconds)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 11 THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_TYPE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_STEP_DURATION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 11 THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_EVENT_TYPE_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F.REQ_STEP_DURATION" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Job Requisition Event Details",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Job Requisition",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "State Completion Duration (In Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CAST (%1 AS DOUBLE PRECISION ) / 60",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Job Requisition Event.State Completion Duration (In Seconds)" ]
+        }
+      }
+    }, {
+      "name" : "State Completion Duration (In Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CAST (%1 AS DOUBLE PRECISION ) / 24",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Job Requisition Event.State Completion Duration (In Hours)" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_TA_JOB_REQ_EVENT_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_GEO_HIERARICHAL_NODES_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQUISITION_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_APPROVED_TO_OTHER_DATES_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_POSTING_TO_OTHER_DATES_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_DRAFT_TO_OTHER_DATES_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_JOBFRMTG_TO_OTHER_DATES_D" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_GEO_HIERARICHAL_NODES_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQUISITION_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_JOBFRMTG_TO_OTHER_DATES_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_APPROVED_TO_OTHER_DATES_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_DRAFT_TO_OTHER_DATES_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_POSTING_TO_OTHER_DATES_D",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - HR Business Unit.Detail", "logicalLevel:Core.Dim - Job Requisition Hiring Manager.Detail", "logicalLevel:Core.Dim - Job Requisition Primary Geography.Details", "logicalLevel:Core.Dim - Job Requisition Recruiter.Detail", "logicalLevel:Core.Dim - Position.Details", "logicalLevel:Core.Dim - Job Requisition Event Details.Details", "logicalLevel:Core.Dim - Legal Employer.Detail", "logicalLevel:Core.Dim - Recruiting Phase.Details", "logicalLevel:Core.Dim - Job Requisition Security.Detail", "logicalLevel:Core.Dim - Country.Detail", "logicalLevel:Core.Dim - Department.Detail", "logicalLevel:Core.Dim - Job Requisition Work Requirement.Detail", "logicalLevel:Core.Dim - Job Requisition Collaborator.Details", "logicalLevel:Core.Dim - Job Requisition.Details", "logicalLevel:Core.Dim - Job.Details", "logicalLevel:Core.Dim - Recruiting State.Details", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Manager Hierarchy.Detail", "logicalLevel:Core.Dim - Department Hierarchy.Detail", "logicalLevel:Core.Dim - Grade.Details", "logicalLevel:Core.Dim - Worker Location.Details", "logicalLevel:Core.Dim - Recruiting History Event Type.Details", "logicalLevel:Core.Dim - Job Requisition Phase State Sequence.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_TA_JOB_REQ_EVENT_F_Fiscal_Enterprise",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_APPROVED_TO_OTHER_DATES_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_POSTING_TO_OTHER_DATES_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_DRAFT_TO_OTHER_DATES_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_JOBFRMTG_TO_OTHER_DATES_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_GEO_HIERARICHAL_NODES_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQUISITION_D" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_REQUISITION_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_JOBFRMTG_TO_OTHER_DATES_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_APPROVED_TO_OTHER_DATES_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_DRAFT_TO_OTHER_DATES_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_REQ_POSTING_TO_OTHER_DATES_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_HISTORY_EVENT_TYPE_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TA_JOB_REQ_EVENT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_GEO_HIERARICHAL_NODES_D",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Job Requisition Recruiter.Detail", "logicalLevel:Core.Dim - Country.Detail", "logicalLevel:Core.Dim - Job Requisition Hiring Manager.Detail", "logicalLevel:Core.Dim - Job Requisition Work Requirement.Detail", "logicalLevel:Core.Dim - HCM - HR Business Unit.Detail", "logicalLevel:Core.Dim - Manager Hierarchy.Detail", "logicalLevel:Core.Dim - Legal Employer.Detail", "logicalLevel:Core.Dim - Job Requisition Phase State Sequence.Detail", "logicalLevel:Core.Dim - Job Requisition Security.Detail", "logicalLevel:Core.Dim - Department.Detail", "logicalLevel:Core.Dim - Department Hierarchy.Detail", "logicalLevel:Core.Dim - Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - Job Requisition.Details", "logicalLevel:Core.Dim - Grade.Details", "logicalLevel:Core.Dim - Worker Location.Details", "logicalLevel:Core.Dim - Job Requisition Primary Geography.Details", "logicalLevel:Core.Dim - Position.Details", "logicalLevel:Core.Dim - Job Requisition Event Details.Details", "logicalLevel:Core.Dim - Job.Details", "logicalLevel:Core.Dim - Recruiting Phase.Details", "logicalLevel:Core.Dim - Job Requisition Collaborator.Details", "logicalLevel:Core.Dim - Recruiting State.Details", "logicalLevel:Core.Dim - Recruiting History Event Type.Details" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_HCM_REC_ALL_REQ_DATA",
+      "functionalGroup" : "FACT_JRE_ALL_REQ",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "1 = 1"
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_REC_REQ_DATA",
+      "functionalGroup" : "FACT_JRE_REQ",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2) OR 1 =  INDEXCOL( VALUEOF(NQ_SESSION.%3), 2, 1)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Job Requisition Security.Manager Identifier", "variable:Logged In HCM Person ID.HCM_PERSON_ID", "variable:Check Country Context Defined.HCM_CONT_SEC_DEFINED" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_COUNTRY_DATA",
+      "functionalGroup" : "FACT_JRE_CTR",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_COUNTRY_LIST' OR  INDEXCOL( VALUEOF(NQ_SESSION.%2), 1, %3) =  INDEXCOL( VALUEOF(NQ_SESSION.%2), 2,  VALUEOF(NQ_SESSION.%4))",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Country.Security Context Code - HCM Country List", "variable:Check HCM Recruitment Requisition Data Role.HCM_REC_REQ_DATA_ROLE", "logicalColumn:Core.Dim - Job Requisition Security.Manager Identifier", "variable:Logged In HCM Person ID.HCM_PERSON_ID" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Country",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Department Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Department",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Grade",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - HR Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job Requisition Collaborator",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job Requisition Event Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job Requisition Hiring Manager",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job Requisition Phase State Sequence",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job Requisition Primary Geography",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job Requisition Recruiter",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job Requisition Security",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job Requisition Work Requirement",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job Requisition",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Employer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Manager Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Position",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Recruiting History Event Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Recruiting Phase",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Recruiting State",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Worker Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

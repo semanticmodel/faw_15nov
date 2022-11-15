@@ -1,0 +1,1417 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Fins - FA Asset Analysis",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Assets" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "======== Asset Details============",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Remaining Life in Service Date - Months",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CAST ( CEILING( CASE  WHEN %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) < 0 THEN 0 ELSE %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) END ) AS INTEGER )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LIFE_IN_MONTHS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life.CALENDAR_PERIOD_CLOSE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.DATE_PLACED_IN_SERVICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : " CAST ( CEILING( CASE  WHEN %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) < 0 THEN 0 ELSE %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) END ) AS INTEGER )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LIFE_IN_MONTHS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life.CALENDAR_PERIOD_CLOSE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.DATE_PLACED_IN_SERVICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Remaining Life in Service Date - Years",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " ROUND( CEILING( CASE  WHEN %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) < 0 THEN 0 ELSE %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) END ) / 12, 2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LIFE_IN_MONTHS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life.CALENDAR_PERIOD_CLOSE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.DATE_PLACED_IN_SERVICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : " ROUND( CEILING( CASE  WHEN %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) < 0 THEN 0 ELSE %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) END ) / 12, 2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LIFE_IN_MONTHS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life.CALENDAR_PERIOD_CLOSE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.DATE_PLACED_IN_SERVICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Remaining Life Prorate Date - Months",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CAST ( CEILING( CASE  WHEN %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) < 0 THEN 0 ELSE %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) END ) AS INTEGER )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LIFE_IN_MONTHS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life.CALENDAR_PERIOD_CLOSE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.PRORATE_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : " CAST ( CEILING( CASE  WHEN %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) < 0 THEN 0 ELSE %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) END ) AS INTEGER )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LIFE_IN_MONTHS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life.CALENDAR_PERIOD_CLOSE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.PRORATE_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Remaining Life Prorate Date - Years",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " ROUND( CEILING( CASE  WHEN %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) < 0 THEN 0 ELSE %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) END ) / 12, 2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LIFE_IN_MONTHS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life.CALENDAR_PERIOD_CLOSE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.PRORATE_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : " ROUND( CEILING( CASE  WHEN %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) < 0 THEN 0 ELSE %1 -  CAST ( EVALUATE('MONTHS_BETWEEN(\\%1,\\%2)', %2, %3) AS DOUBLE PRECISION ) END ) / 12, 2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LIFE_IN_MONTHS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life.CALENDAR_PERIOD_CLOSE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.PRORATE_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Asset Life - Months",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LIFE_IN_MONTHS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LIFE_IN_MONTHS" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Asset Life - Years",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " ROUND( CAST (%1 AS DOUBLE PRECISION ) / 12, 2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LIFE_IN_MONTHS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : " ROUND( CAST (%1 AS DOUBLE PRECISION ) / 12, 2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.LIFE_IN_MONTHS" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "------- LAST on Asset Period Level -----",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Current Units",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.UNITS_ASSIGNED" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.UNITS_ASSIGNED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "========== Ledger Currency ============",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "------- Simple SUM -------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Depreciation Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.DEPRN_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.DEPRN_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Bonus Depreciation",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.BONUS_DEPRN_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.BONUS_DEPRN_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "------- LAST on Asset Distribution Level -------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Original Cost",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.ORIGINAL_COST" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.ORIGINAL_COST" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Recoverable Cost",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <= %2 THEN %1 ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.RECOVERABLE_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.ADJUSTED_RECOVERABLE_COST" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <= %2 THEN %1 ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.RECOVERABLE_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.ADJUSTED_RECOVERABLE_COST" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Salvage Value",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.SALVAGE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.SALVAGE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "YTD Depreciation",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD.YTD_DEPRN" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  FLOOR((%1 - 1) / %2) = %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.PERIOD_COUNTER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D.NUMBER_PER_FISCAL_YEAR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_BOOK_CONTROLS_D.CURRENT_FISCAL_YEAR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD.YTD_DEPRN" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "YTD Bonus Depreciation",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD.BONUS_YTD_DEPRN" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  FLOOR((%1 - 1) / %2) = %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.PERIOD_COUNTER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D.NUMBER_PER_FISCAL_YEAR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_BOOK_CONTROLS_D.CURRENT_FISCAL_YEAR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD.BONUS_YTD_DEPRN" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "------- LAST on Asset Period Level -------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Current Cost",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.CURRENT_COST" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.CURRENT_COST" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Net Book Value",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.NET_BOOK_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.NET_BOOK_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "YTD Impairment",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.YTD_IMPAIRMENT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.YTD_IMPAIRMENT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Depreciation Reserve",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.DEPRN_RESERVE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.DEPRN_RESERVE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Impairment Reserve",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.IMPAIRMENT_RESERVE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.IMPAIRMENT_RESERVE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Revaluation Reserve",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.REVAL_RESERVE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.REVAL_RESERVE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-------- Derived --------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Depreciation Reserve Ratio",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - FA Asset Analysis.Current Cost", "logicalColumn:Core.Fact - Fins - FA Asset Analysis.Depreciation Reserve" ]
+        }
+      }
+    }, {
+      "name" : "============ Analytics Currency ============",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "------- Simple Sum --------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Depreciation Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_DEPRN_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_DEPRN_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Bonus Depreciation in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_BONUS_DEPRN_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_BONUS_DEPRN_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "------- LAST on Asset DistributionLevel --------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Original Cost in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_ORIGINAL_COST" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_ORIGINAL_COST" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Recoverable Cost in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <= %2 THEN %1 ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_RECOVERABLE_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_ADJUSTED_RECOVERABLE_COST" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <= %2 THEN %1 ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_RECOVERABLE_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_ADJUSTED_RECOVERABLE_COST" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Salvage Value in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_SALVAGE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_SALVAGE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "------- LAST on Asset Period Level --------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Current Cost in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_CURRENT_COST" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_CURRENT_COST" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Net Book Value in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_NET_BOOK_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_NET_BOOK_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "YTD Impairment in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_YTD_IMPAIRMENT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_YTD_IMPAIRMENT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Depreciation Reserve in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_DEPRN_RESERVE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_DEPRN_RESERVE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Impairment Reserve in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_IMPAIRMENT_RESERVE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_IMPAIRMENT_RESERVE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Revaluation Reserve in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_REVAL_RESERVE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.GLOBAL_REVAL_RESERVE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "YTD Depreciation in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD.GLOBAL_YTD_DEPRN" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  FLOOR((%1 - 1) / %2) = %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.PERIOD_COUNTER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D.NUMBER_PER_FISCAL_YEAR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_BOOK_CONTROLS_D.CURRENT_FISCAL_YEAR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD.GLOBAL_YTD_DEPRN" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "YTD Bonus Depreciation in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD.GLOBAL_BONUS_YTD_DEPRN" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  FLOOR((%1 - 1) / %2) = %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF.PERIOD_COUNTER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D.NUMBER_PER_FISCAL_YEAR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_BOOK_CONTROLS_D.CURRENT_FISCAL_YEAR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD.GLOBAL_BONUS_YTD_DEPRN" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-------- Derived ---------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Depreciation Reserve Ratio in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - FA Asset Analysis.Current Cost in Analytics Currency", "logicalColumn:Core.Fact - Fins - FA Asset Analysis.Depreciation Reserve in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Avg Asset Original Life (Yrs)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - FA Asset Analysis.Asset Life - Years", "logicalColumn:Core.Fact - Fins - FA Asset Analysis.Current Units" ]
+        }
+      }
+    }, {
+      "name" : "Avg Asset Remaining Life (Yrs)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - FA Asset Analysis.Remaining Life Prorate Date - Years", "logicalColumn:Core.Fact - Fins - FA Asset Analysis.Current Units" ]
+        }
+      }
+    }, {
+      "name" : "Lifespan Reached",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1 - %1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - FA Asset Analysis.Remaining Life Prorate Date - Years", "logicalColumn:Core.Fact - Fins - FA Asset Analysis.Asset Life - Years" ]
+        }
+      }
+    }, {
+      "name" : "Lifespan Remaining",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - FA Asset Analysis.Remaining Life Prorate Date - Years", "logicalColumn:Core.Fact - Fins - FA Asset Analysis.Asset Life - Years" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_BOOK_CONTROLS_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_BOOK_CONTROLS_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - FA Asset Calendar.Asset Fiscal Period", "logicalLevel:Core.Dim - FA Asset Details.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - FA Asset Analysis Asset Level Details.Detail", "logicalLevel:Core.Dim - FA Asset Book.Detail", "logicalLevel:Core.Dim - FA Asset Location.Detail", "logicalLevel:Core.Dim - FA Asset Category.Detail", "logicalLevel:Core.Dim - FA Asset Analysis Details.Detail", "logicalLevel:Core.Dim - FA Asset Key.Detail", "logicalLevel:Core.Dim - FA Prorate Convention Type.Detail", "logicalLevel:Core.Dim - FA Distribution History.Detail", "logicalLevel:Core.Dim - FA Depreciation Method.Detail", "logicalLevel:Core.Dim - FA Asset Financial Details.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - FA Asset Analysis Asset Period Level Details.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Ledger Set.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_ytd_deprn",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_BOOK_CONTROLS_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_remaining_life",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_BOOK_CONTROLS_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - FA Asset Calendar.Asset Calendar", "logicalLevel:Core.Dim - FA Asset Analysis Asset Level Details.Detail", "logicalLevel:Core.Dim - FA Asset Book.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - FA Asset Analysis Details.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - FA Asset Analysis Asset Period Level Details.Detail", "logicalLevel:Core.Dim - FA Asset Category.Detail", "logicalLevel:Core.Dim - FA Prorate Convention Type.Detail", "logicalLevel:Core.Dim - FA Asset Key.Detail", "logicalLevel:Core.Dim - FA Asset Financial Details.Detail", "logicalLevel:Core.Dim - FA Depreciation Method.Detail", "logicalLevel:Core.Dim - FA Distribution History.Detail", "logicalLevel:Core.Dim - FA Asset Details.Detail", "logicalLevel:Core.Dim - FA Asset Location.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Ledger Set.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_FIN_FA_ASSET_BOOK_DATA",
+      "functionalGroup" : "FA_BOOK",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_FA_ASSET_BOOK_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - FA Asset Analysis Details.Security Context Code - FA Asset Book" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - FA Asset Analysis Asset Level Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - FA Asset Analysis Asset Period Level Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - FA Asset Analysis Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - FA Asset Book",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - FA Asset Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - FA Asset Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - FA Asset Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - FA Asset Financial Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - FA Asset Key",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - FA Asset Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - FA Depreciation Method",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - FA Distribution History",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - FA Prorate Convention Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger Set",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

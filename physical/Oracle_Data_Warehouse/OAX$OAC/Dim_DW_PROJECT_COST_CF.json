@@ -1,0 +1,82 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_PROJECT_COST_CF",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PROJECT_COST_CF",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL_TransferPrice_Dim",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5 AND %6 =  VALUEOF(NQ_SESSION.%7)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL_TransferPrice_Dim.JOB_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_COST_CF.TRANSFER_PRICE_JOB_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_COST_CF.EXPENDITURE_CREATION_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL_TransferPrice_Dim.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL_TransferPrice_Dim.EFFECTIVE_END_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_TL_TransferPrice_Dim.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_PROJECT_COST_CF_PJC_EXP_ITEMS_ALL_DFF",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_COST_CF.EXPENDITURE_ITEM_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_PROJECT_COST_CF_PJC_EXP_ITEMS_ALL_DFF.S_K_5000"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_PROJECT_COST_CF_PROJECTS_STD_COST_COLLECTION_DFF",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_COST_CF.EXPENDITURE_ITEM_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_PROJECT_COST_CF_PROJECTS_STD_COST_COLLECTION_DFF.S_K_5000"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_BU_CostFactDim",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_COST_CF.RECVR_BUSINESS_UNIT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_BU_CostFactDim.SEC_OBJ_MEMBER_VAL"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_EXPENDITURE_BU_CostFactDim",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_COST_CF.PRVDR_BUSINESS_UNIT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_EXPENDITURE_BU_CostFactDim.SEC_OBJ_MEMBER_VAL"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_ORGANIZATION_CostFactDim",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_COST_CF.PROJECT_ORGANIZATION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_PROJECTS_ORGANIZATION_CostFactDim.SEC_OBJ_MEMBER_VAL"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_PROJECT_MANAGER_CostFactDim",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_COST_CF.PROJECT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_PROJECT_MANAGER_CostFactDim.PROJECT_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "EXPENDITURE_ITEM_ID",
+        "LINE_NUM"
+      ]
+    ]
+  }
+}

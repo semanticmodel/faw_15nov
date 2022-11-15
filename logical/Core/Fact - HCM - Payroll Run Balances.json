@@ -1,0 +1,1536 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - HCM - Payroll Run Balances",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Payroll Management" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Balance Value",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_A_BaseMeasure",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_EF_BaseMeasure",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-------Derived measures--------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Supplemental Earnings",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_A_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'SUPPLEMENTAL_EARNING' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_EF_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'SUPPLEMENTAL_EARNING' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Standard Earnings",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_A_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'STANDARD_EARNING' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_EF_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'STANDARD_EARNING' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Pre-statutory Deductions",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_A_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'PRE_STATUTORY_DEDUCTIONS' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_EF_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'PRE_STATUTORY_DEDUCTIONS' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Voluntary Deductions",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_A_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'VOLUNTARY_DEDUCTIONS' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_EF_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'VOLUNTARY_DEDUCTIONS' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Employee Tax Credits",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_A_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EMPLOYEE_TAX_CREDITS' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_EF_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EMPLOYEE_TAX_CREDITS' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Miscellaneous",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_A_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'MISCELLANEOUS' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_EF_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'MISCELLANEOUS' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Involuntary Deductions",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_A_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'INVOLUNTARY_DEDUCTIONS' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_EF_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'INVOLUNTARY_DEDUCTIONS' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Tax Deductions",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_A_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'TAX_DEDUCTIONS' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_EF_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'TAX_DEDUCTIONS' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Employer Charges",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_A_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EMPLOYER_CHARGES' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_EF_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EMPLOYER_CHARGES' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Employer Taxes",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_A_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EMPLOYER_TAXES' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_EF_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EMPLOYER_TAXES' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Direct Payments",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_A_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DIRECT_PAYMENTS' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_EF_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DIRECT_PAYMENTS' AND %2 = 'M' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Earning (Net)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_A_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'TOTAL_EARNING_NET' AND %2 = 'M' AND %3 = 'Net' THEN %4 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_TYPE_D_PayrollBalanceType.BASE_BALANCE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_EF_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'TOTAL_EARNING_NET' AND %2 = 'M' AND %3 = 'Net' THEN %4 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_TYPE_D_PayrollBalanceType.BASE_BALANCE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Earning (Net Pay)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_A_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'TOTAL_EARNING_NET_PAY' AND %2 = 'M' AND %3 = 'Net Pay' THEN %4 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_TYPE_D_PayrollBalanceType.BASE_BALANCE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A.BALANCE_VALUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PAY_RUN_BALANCE_EF_DerivedMeasures",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'TOTAL_EARNING_NET_PAY' AND %2 = 'M' AND %3 = 'Net Pay' THEN %4 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.MEASURE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_UOM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_TYPE_D_PayrollBalanceType.BASE_BALANCE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.BALANCE_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "----------Year to Date Measures-----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Standard Earnings (YTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Standard Earnings", "logicalLevel:Core.Dim - Date Gregorian Calendar.Year" ]
+        }
+      }
+    }, {
+      "name" : "Supplemental Earnings (YTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Supplemental Earnings", "logicalLevel:Core.Dim - Date Gregorian Calendar.Year" ]
+        }
+      }
+    }, {
+      "name" : "Pre-statutory Deductions (YTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Pre-statutory Deductions", "logicalLevel:Core.Dim - Date Gregorian Calendar.Year" ]
+        }
+      }
+    }, {
+      "name" : "Voluntary Deductions (YTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Voluntary Deductions", "logicalLevel:Core.Dim - Date Gregorian Calendar.Year" ]
+        }
+      }
+    }, {
+      "name" : "Employee Tax Credits (YTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employee Tax Credits", "logicalLevel:Core.Dim - Date Gregorian Calendar.Year" ]
+        }
+      }
+    }, {
+      "name" : "Miscellaneous (YTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Miscellaneous", "logicalLevel:Core.Dim - Date Gregorian Calendar.Year" ]
+        }
+      }
+    }, {
+      "name" : "Involuntary Deductions (YTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Involuntary Deductions", "logicalLevel:Core.Dim - Date Gregorian Calendar.Year" ]
+        }
+      }
+    }, {
+      "name" : "Tax Deductions (YTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Tax Deductions", "logicalLevel:Core.Dim - Date Gregorian Calendar.Year" ]
+        }
+      }
+    }, {
+      "name" : "Employer Charges (YTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Charges", "logicalLevel:Core.Dim - Date Gregorian Calendar.Year" ]
+        }
+      }
+    }, {
+      "name" : "Employer Taxes (YTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Taxes", "logicalLevel:Core.Dim - Date Gregorian Calendar.Year" ]
+        }
+      }
+    }, {
+      "name" : "Direct Payments (YTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Direct Payments", "logicalLevel:Core.Dim - Date Gregorian Calendar.Year" ]
+        }
+      }
+    }, {
+      "name" : "Total Earnings (Net) (YTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Total Earning (Net)", "logicalLevel:Core.Dim - Date Gregorian Calendar.Year" ]
+        }
+      }
+    }, {
+      "name" : "Total Earnings (Net Pay) (YTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Total Earning (Net Pay)", "logicalLevel:Core.Dim - Date Gregorian Calendar.Year" ]
+        }
+      }
+    }, {
+      "name" : "Balance Value (YTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Balance Value", "logicalLevel:Core.Dim - Date Gregorian Calendar.Year" ]
+        }
+      }
+    }, {
+      "name" : "--------Quarter to Date Measures----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Standard Earnings (QTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Standard Earnings", "logicalLevel:Core.Dim - Date Gregorian Calendar.Quarter" ]
+        }
+      }
+    }, {
+      "name" : "Supplemental Earnings (QTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Supplemental Earnings", "logicalLevel:Core.Dim - Date Gregorian Calendar.Quarter" ]
+        }
+      }
+    }, {
+      "name" : "Pre-statutory Deductions (QTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Pre-statutory Deductions", "logicalLevel:Core.Dim - Date Gregorian Calendar.Quarter" ]
+        }
+      }
+    }, {
+      "name" : "Voluntary Deductions (QTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Voluntary Deductions", "logicalLevel:Core.Dim - Date Gregorian Calendar.Quarter" ]
+        }
+      }
+    }, {
+      "name" : "Employee Tax Credits (QTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employee Tax Credits", "logicalLevel:Core.Dim - Date Gregorian Calendar.Quarter" ]
+        }
+      }
+    }, {
+      "name" : "Miscellaneous (QTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Miscellaneous", "logicalLevel:Core.Dim - Date Gregorian Calendar.Quarter" ]
+        }
+      }
+    }, {
+      "name" : "Involuntary Deductions (QTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Involuntary Deductions", "logicalLevel:Core.Dim - Date Gregorian Calendar.Quarter" ]
+        }
+      }
+    }, {
+      "name" : "Tax Deductions (QTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Tax Deductions", "logicalLevel:Core.Dim - Date Gregorian Calendar.Quarter" ]
+        }
+      }
+    }, {
+      "name" : "Employer Charges (QTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Charges", "logicalLevel:Core.Dim - Date Gregorian Calendar.Quarter" ]
+        }
+      }
+    }, {
+      "name" : "Employer Taxes (QTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Taxes", "logicalLevel:Core.Dim - Date Gregorian Calendar.Quarter" ]
+        }
+      }
+    }, {
+      "name" : "Direct Payments (QTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Direct Payments", "logicalLevel:Core.Dim - Date Gregorian Calendar.Quarter" ]
+        }
+      }
+    }, {
+      "name" : "Total Earnings (Net) (QTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Total Earning (Net)", "logicalLevel:Core.Dim - Date Gregorian Calendar.Quarter" ]
+        }
+      }
+    }, {
+      "name" : "Total Earnings (Net Pay) (QTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Total Earning (Net Pay)", "logicalLevel:Core.Dim - Date Gregorian Calendar.Quarter" ]
+        }
+      }
+    }, {
+      "name" : "Balance Value (QTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Balance Value", "logicalLevel:Core.Dim - Date Gregorian Calendar.Quarter" ]
+        }
+      }
+    }, {
+      "name" : "---------Month to Date Measures----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Standard Earnings (MTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Standard Earnings", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month" ]
+        }
+      }
+    }, {
+      "name" : "Supplemental Earnings (MTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Supplemental Earnings", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month" ]
+        }
+      }
+    }, {
+      "name" : "Pre-statutory Deductions (MTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Pre-statutory Deductions", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month" ]
+        }
+      }
+    }, {
+      "name" : "Voluntary Deductions (MTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Voluntary Deductions", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month" ]
+        }
+      }
+    }, {
+      "name" : "Employee Tax Credits (MTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employee Tax Credits", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month" ]
+        }
+      }
+    }, {
+      "name" : "Miscellaneous (MTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Miscellaneous", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month" ]
+        }
+      }
+    }, {
+      "name" : "Involuntary Deductions (MTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Involuntary Deductions", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month" ]
+        }
+      }
+    }, {
+      "name" : "Tax Deductions (MTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Tax Deductions", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month" ]
+        }
+      }
+    }, {
+      "name" : "Employer Charges (MTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Charges", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month" ]
+        }
+      }
+    }, {
+      "name" : "Employer Taxes (MTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Taxes", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month" ]
+        }
+      }
+    }, {
+      "name" : "Direct Payments (MTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Direct Payments", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month" ]
+        }
+      }
+    }, {
+      "name" : "Total Earnings (Net) (MTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Total Earning (Net)", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month" ]
+        }
+      }
+    }, {
+      "name" : "Total Earnings (Net Pay) (MTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Total Earning (Net Pay)", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month" ]
+        }
+      }
+    }, {
+      "name" : "Balance Value (MTD)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Balance Value", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month" ]
+        }
+      }
+    }, {
+      "name" : "--------Period Ago Measures---------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Standard Earnings Period Ago",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " AGO(%1, 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Standard Earnings" ]
+        }
+      }
+    }, {
+      "name" : "Supplemental Earnings Period Ago",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " AGO(%1, 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Supplemental Earnings" ]
+        }
+      }
+    }, {
+      "name" : "Miscellaneous Period Ago",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " AGO(%1, 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Miscellaneous" ]
+        }
+      }
+    }, {
+      "name" : "Pre-statutory Deductions Period Ago",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " AGO(%1, 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Pre-statutory Deductions" ]
+        }
+      }
+    }, {
+      "name" : "Involuntary Deductions Period Ago",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " AGO(%1, 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Involuntary Deductions" ]
+        }
+      }
+    }, {
+      "name" : "Voluntary Deductions Period Ago",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " AGO(%1, 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Voluntary Deductions" ]
+        }
+      }
+    }, {
+      "name" : "Tax Deductions Period Ago",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " AGO(%1, 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Tax Deductions" ]
+        }
+      }
+    }, {
+      "name" : "Employer Taxes Period Ago",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " AGO(%1, 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Taxes" ]
+        }
+      }
+    }, {
+      "name" : "Direct Payment Period Ago",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " AGO(%1, 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Direct Payments" ]
+        }
+      }
+    }, {
+      "name" : "Employee Tax Credit Period Ago",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " AGO(%1, 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employee Tax Credits" ]
+        }
+      }
+    }, {
+      "name" : "Employer Charges Period Ago",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " AGO(%1, 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Charges" ]
+        }
+      }
+    }, {
+      "name" : "Balance Value Period Ago",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " AGO(%1, 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Balance Value" ]
+        }
+      }
+    }, {
+      "name" : "---------Variance Measures----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Standard Earnings Variance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Standard Earnings", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Standard Earnings Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Supplemental Earnings Variance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Supplemental Earnings", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Supplemental Earnings Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Miscellaneous Variance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Miscellaneous", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Miscellaneous Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Pre-statutory Deductions Variance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Pre-statutory Deductions", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Pre-statutory Deductions Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Involuntary Deductions Variance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Involuntary Deductions", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Involuntary Deductions Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Voluntary Deductions Variance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Voluntary Deductions", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Voluntary Deductions Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Tax Deductions Variance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Tax Deductions", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Tax Deductions Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Employer Taxes Variance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Taxes", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Taxes Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Direct Payment Variance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Direct Payments", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Direct Payment Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Employee Tax Credit Variance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employee Tax Credits", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employee Tax Credit Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Employer Charges Variance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Charges", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Charges Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Balance Value Variance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Balance Value", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Balance Value Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "-------Growth Rate Measures--------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Standard Earnings Growth Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 / %2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Standard Earnings Variance", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Standard Earnings Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Supplemental Earnings Growth Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 / %2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Supplemental Earnings Variance", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Supplemental Earnings Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Miscellaneous Growth Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 / %2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Miscellaneous Variance", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Miscellaneous Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Pre-statutory Deductions Growth Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 / %2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Pre-statutory Deductions Variance", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Pre-statutory Deductions Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Involuntary Deductions Growth Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 / %2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Involuntary Deductions Variance", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Involuntary Deductions Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Voluntary Deductions Growth Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 / %2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Voluntary Deductions Variance", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Voluntary Deductions Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Tax Deductions Growth Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 / %2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Tax Deductions Variance", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Tax Deductions Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Employer Taxes Growth Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 / %2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Taxes Variance", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Taxes Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Direct Payment Growth Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 / %2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Direct Payment Variance", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Direct Payment Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Employee Tax Credit Growth Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 / %2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employee Tax Credit Variance", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employee Tax Credit Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Employer Charges Growth Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 / %2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Charges Variance", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Employer Charges Period Ago" ]
+        }
+      }
+    }, {
+      "name" : "Balance Value Growth Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1 / %2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Balance Value Variance", "logicalColumn:Core.Fact - HCM - Payroll Run Balances.Balance Value Period Ago" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_PAY_RUN_BALANCE_A_BaseMeasure",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Payroll.Detail", "logicalLevel:Core.Dim - HCM - Payroll Legislative Data Group.Detail", "logicalLevel:Core.Dim - HCM - Payroll Tax Reporting Unit.Detail", "logicalLevel:Core.Dim - HCM - Payroll Balance Category.Detail", "logicalLevel:Core.Dim - HCM - Payroll Balance Type.Detail", "logicalLevel:Core.Dim - HCM - Payroll Balance Dimension.Detail", "logicalLevel:Core.Dim - HCM - Payroll Statutory Unit.Detail", "logicalLevel:Core.Dim - Legal Employer.Detail", "logicalLevel:Core.Dim - HCM - Pay Legislation.Detail", "logicalLevel:Core.Dim - HCM Payroll Balance UOM.Detail", "logicalLevel:Core.Dim - HCM - HR Business Unit.Detail", "logicalLevel:Core.Dim - Department.Detail", "logicalLevel:Core.Dim - Worker Location.Details", "logicalLevel:Core.Dim - Reporting Establishment.Details", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month", "logicalLevel:Core.Dim - Currency.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_PAY_RUN_BALANCE_A_DerivedMeasures",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_PayrollBalanceCategory", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_TYPE_D_PayrollBalanceType", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_DIMENSION_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_PayrollBalanceCategory",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_TYPE_D_PayrollBalanceType",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_DIMENSION_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_A",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Pay Legislation.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - HCM - Payroll Balance Dimension.Detail", "logicalLevel:Core.Dim - HCM - Payroll Balance Category.Detail", "logicalLevel:Core.Dim - HCM - HR Business Unit.Detail", "logicalLevel:Core.Dim - Legal Employer.Detail", "logicalLevel:Core.Dim - Department.Detail", "logicalLevel:Core.Dim - HCM - Payroll Balance Type.Detail", "logicalLevel:Core.Dim - HCM - Payroll.Detail", "logicalLevel:Core.Dim - HCM - Payroll Tax Reporting Unit.Detail", "logicalLevel:Core.Dim - HCM - Payroll Statutory Unit.Detail", "logicalLevel:Core.Dim - Worker Location.Details", "logicalLevel:Core.Dim - Reporting Establishment.Details", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month", "logicalLevel:Core.Dim - HCM - Payroll Legislative Data Group.Detail", "logicalLevel:Core.Dim - HCM Payroll Balance UOM.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = %2 AND %3 = %4",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_PayrollBalanceCategory.BASE_CATEGORY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.BASE_CATEGORY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_DIMENSION_D.BASE_DIMENSION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.BASE_BALANCE_DIMENSION" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_PAY_RUN_BALANCE_EF_BaseMeasure",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - HR Business Unit.Detail", "logicalLevel:Core.Dim - HCM - Payroll.Detail", "logicalLevel:Core.Dim - HCM - Payroll Legislative Data Group.Detail", "logicalLevel:Core.Dim - HCM - Payroll Tax Reporting Unit.Detail", "logicalLevel:Core.Dim - HCM - Payroll Period.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - HCM - Payroll Balance Category.Detail", "logicalLevel:Core.Dim - HCM - Payroll Balance Type.Detail", "logicalLevel:Core.Dim - HCM - Pay Legislation.Detail", "logicalLevel:Core.Dim - HCM - Payroll Balance Dimension.Detail", "logicalLevel:Core.Dim - HCM - Payroll Statutory Unit.Detail", "logicalLevel:Core.Dim - HCM - Payroll Run Balance Details.Detail", "logicalLevel:Core.Dim - HCM - Payroll Action.Detail", "logicalLevel:Core.Dim - Reporting Establishment.Details", "logicalLevel:Core.Dim - HCM - Payroll Worker Relationship.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - HCM Payroll Balance UOM.Detail", "logicalLevel:Core.Dim - Department.Detail", "logicalLevel:Core.Dim - Tenure Band.Detail", "logicalLevel:Core.Dim - Department Hierarchy.Detail", "logicalLevel:Core.Dim - Legal Employer.Detail", "logicalLevel:Core.Dim - Assignment Details.Details", "logicalLevel:Core.Dim - Country.Detail", "logicalLevel:Core.Dim - Organization Hierarchy.Detail", "logicalLevel:Core.Dim - Grade.Details", "logicalLevel:Core.Dim - HCM - Bargaining Unit.Detail", "logicalLevel:Core.Dim - Job.Details", "logicalLevel:Core.Dim - Position.Details", "logicalLevel:Core.Dim - Worker.Details", "logicalLevel:Core.Dim - Worker Age Band.Detail", "logicalLevel:Core.Dim - Worker Location.Details", "logicalLevel:Core.Dim - Manager.Details" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_PAY_RUN_BALANCE_EF_DerivedMeasures",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_PayrollBalanceCategory", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_TYPE_D_PayrollBalanceType", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_DIMENSION_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_PayrollBalanceCategory",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_TYPE_D_PayrollBalanceType",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_DIMENSION_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Assignment Details.Details", "logicalLevel:Core.Dim - Country.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Department.Detail", "logicalLevel:Core.Dim - Department Hierarchy.Detail", "logicalLevel:Core.Dim - Grade.Details", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - HCM - Bargaining Unit.Detail", "logicalLevel:Core.Dim - HCM - HR Business Unit.Detail", "logicalLevel:Core.Dim - HCM - Pay Legislation.Detail", "logicalLevel:Core.Dim - HCM - Payroll.Detail", "logicalLevel:Core.Dim - HCM - Payroll Action.Detail", "logicalLevel:Core.Dim - HCM - Payroll Balance Category.Detail", "logicalLevel:Core.Dim - HCM - Payroll Balance Dimension.Detail", "logicalLevel:Core.Dim - HCM - Payroll Balance Type.Detail", "logicalLevel:Core.Dim - HCM - Payroll Legislative Data Group.Detail", "logicalLevel:Core.Dim - HCM - Payroll Period.Detail", "logicalLevel:Core.Dim - HCM - Payroll Run Balance Details.Detail", "logicalLevel:Core.Dim - HCM - Payroll Statutory Unit.Detail", "logicalLevel:Core.Dim - HCM - Payroll Tax Reporting Unit.Detail", "logicalLevel:Core.Dim - HCM - Payroll Worker Relationship.Detail", "logicalLevel:Core.Dim - HCM Payroll Balance UOM.Detail", "logicalLevel:Core.Dim - Job.Details", "logicalLevel:Core.Dim - Legal Employer.Detail", "logicalLevel:Core.Dim - Manager.Details", "logicalLevel:Core.Dim - Organization Hierarchy.Detail", "logicalLevel:Core.Dim - Position.Details", "logicalLevel:Core.Dim - Reporting Establishment.Details", "logicalLevel:Core.Dim - Tenure Band.Detail", "logicalLevel:Core.Dim - Worker.Details", "logicalLevel:Core.Dim - Worker Age Band.Detail", "logicalLevel:Core.Dim - Worker Location.Details" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = %2 AND %3 = %4",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_PayrollBalanceCategory.BASE_CATEGORY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.BASE_CATEGORY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_DIMENSION_D.BASE_DIMENSION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_CONFIG_HCM_PAY_USER_CONFIG_VALUES.BASE_BALANCE_DIMENSION" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_HCM_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "HCM_FACT_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - HCM - HR Business Unit.Security Context Code - HCM Business Unit" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_DEPARTMENT_DATA",
+      "functionalGroup" : "HCM_FACT_DEPT",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_DEPARTMENT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Department.Security Context Code - HCM Department" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_LEGAL_EMPLOYER_DATA",
+      "functionalGroup" : "HCM_FACT_LE",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_LEGAL_EMPLOYER_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Legal Employer.Security Context Code - HCM Legal Employer" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_VIEW_ALL_DATA",
+      "functionalGroup" : "HCM_FACT_ALL",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "1 = 1"
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_COUNTRY_DATA",
+      "functionalGroup" : "HCM_FACT_CTR",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_COUNTRY_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Country.Security Context Code - HCM Country List" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Assignment Details",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE",
+      "drivingTable" : "logicalTable:Core.Fact - HCM - Payroll Run Balances"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Country",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Department Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Department",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Grade",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Bargaining Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - HR Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Pay Legislation",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Payroll Action",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Payroll Balance Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Payroll Balance Dimension",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Payroll Balance Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Payroll Legislative Data Group",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Payroll Period",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Payroll Run Balance Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Payroll Statutory Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Payroll Tax Reporting Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Payroll Worker Relationship",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Payroll",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM Payroll Balance UOM",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Employer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Manager",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE",
+      "drivingTable" : "logicalTable:Core.Fact - HCM - Payroll Run Balances"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Organization Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Position",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Reporting Establishment",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Tenure Band",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Worker Age Band",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Worker Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Worker",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

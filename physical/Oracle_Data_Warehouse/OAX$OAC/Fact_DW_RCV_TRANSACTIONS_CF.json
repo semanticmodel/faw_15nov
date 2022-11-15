@@ -1,0 +1,70 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_RCV_TRANSACTIONS_CF",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_RCV_TRANSACTIONS_CF",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_LOCATOR_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TRANSACTIONS_CF.LOCATOR_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_LOCATOR_D.INVENTORY_LOCATION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TRANSACTIONS_CF.ORGANIZATION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D.ORGANIZATION_ID"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TRANSACTIONS_CF.SUBINVENTORY",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D.SECONDARY_INVENTORY_NAME"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TRANSACTIONS_CF.PROJECT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_D.PROJECT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ELEMENT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TRANSACTIONS_CF.TASK_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ELEMENT_D.PROJ_ELEMENT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WORKER_LOCATION_D_SubinventoryLocation",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TRANSACTIONS_CF.SUBINVENTORY_LOCATION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WORKER_LOCATION_D_SubinventoryLocation.LOCATION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TXN_LOT_SERIALNUMBER_CF",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TRANSACTIONS_CF.TRANSACTION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_TXN_LOT_SERIALNUMBER_CF.TRANSACTION_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "TRANSACTION_ID"
+      ],
+      [
+        "SHIPMENT_LINE_ID"
+      ]
+    ]
+  }
+}

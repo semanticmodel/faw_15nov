@@ -1,0 +1,51 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_PRFL_POSN_CMPTNCY_CRNT_F",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PRFL_POSN_CMPTNCY_CRNT_F",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_ITEM_D_TL_Posn_Comp",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 =  VALUEOF(NQ_SESSION.%6)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_ITEM_D_TL_Posn_Comp.BUSINESS_GROUP_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_CMPTNCY_CRNT_F.BUSINESS_GROUP_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_ITEM_D_TL_Posn_Comp.CONTENT_ITEM_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_CMPTNCY_CRNT_F.CONTENT_ITEM_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_ITEM_D_TL_Posn_Comp.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "RIGHT_OUTER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_Posn_CompMaxProf",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_CMPTNCY_CRNT_F.MAX_PROF_LEVEL_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_Posn_CompMaxProf.RATING_LEVEL_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_Posn_CompMinProf",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_CMPTNCY_CRNT_F.MIN_PROF_LEVEL_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_Posn_CompMinProf.RATING_LEVEL_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "PROFILE_ITEM_ID",
+        "BUSINESS_GROUP_ID",
+        "POSITION_ID",
+        "CONTENT_TYPE_ID"
+      ]
+    ]
+  }
+}

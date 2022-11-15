@@ -1,0 +1,55 @@
+{
+  "physicalTable" : {
+    "name" : "DW_MULTI_CAL_TIME_FILTER_FUSION_ASSET_BOOK",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "/* Dim Based - Asset Book - Year */ \r\nSELECT DISTINCT \r\n'01'                            AS calendar_type, \r\n'ASSET BOOK'                    AS driving_dim_code, \r\na.book_type_code                AS dimension_value, \r\na.book_type_code                 AS dimension_value_code,\r\n'Year'                          AS time_level, \r\nc.trailing_year_number          AS time_seq, \r\nTO_CHAR(c.fiscal_year)          AS time_value, \r\nc.trailing_year_number+1\tAS yago_time_seq \r\nFROM \r\nDW_FA_MC_BOOK_CONTROLS_D a, \r\nDW_FA_CALENDAR_PERIODS_D c \r\nWHERE \r\na.deprn_calendar = c.calendar_type \r\nand c.trailing_year_number BETWEEN 0 and 19 \r\n \r\nUNION \r\n \r\n/* Dim Based - Asset Book - Month  */ \r\nSELECT DISTINCT \r\n'01'                    AS calendar_type, \r\n'ASSET BOOK'            AS driving_dim_code, \r\na.book_type_code        AS dimension_value, \r\na.book_type_code                 AS dimension_value_code,\r\n'Month'                 AS time_level, \r\nc.trailing_period_number    AS time_seq, \r\nc.period_name               AS time_value, \r\nc.trailing_period_number+c.number_per_fiscal_year AS yago_time_seq \r\nFROM  \r\nDW_FA_MC_BOOK_CONTROLS_D a, \r\nDW_FA_CALENDAR_PERIODS_D c \r\nWHERE  \r\na.deprn_calendar = c.calendar_type \r\nand (c.trailing_period_number BETWEEN 0 and 19 OR c.trailing_period_number IN (52,53))"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "YAGO_TIME_SEQ",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "DIMENSION_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    }, {
+      "name" : "DRIVING_DIM_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 255,
+      "nullable" : false
+    }, {
+      "name" : "CALENDAR_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "TIME_LEVEL",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "TIME_SEQ",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "TIME_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "DIMENSION_VALUE_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    }
+  }
+}

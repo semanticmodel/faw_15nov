@@ -1,0 +1,73 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Contract Business Unit",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Contract Business Unit Key" ],
+    "logicalColumns" : [ {
+      "name" : "Contract Business Unit Key",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_BUSINESS_UNIT_D_Contract",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_Contract.BUSINESS_UNIT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Contract Business Unit Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Contract Business Unit Key",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_BUSINESS_UNIT_D_Contract",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_BUSINESS_UNIT_D_TL_Common.BUSINESS_UNIT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_Contract.BUSINESS_UNIT_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_BUSINESS_UNIT_D_Contract",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_Contract" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Contract Business Unit.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Contract Business Unit Key" ],
+        "displayKey" : "Contract Business Unit Name",
+        "additionalKeys" : [ [ "Contract Business Unit Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Contract Business Unit",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

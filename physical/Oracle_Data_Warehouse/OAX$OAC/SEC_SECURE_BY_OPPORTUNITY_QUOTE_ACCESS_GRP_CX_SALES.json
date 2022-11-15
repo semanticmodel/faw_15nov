@@ -1,0 +1,26 @@
+{
+  "physicalTable" : {
+    "name" : "SEC_SECURE_BY_OPPORTUNITY_QUOTE_ACCESS_GRP_CX_SALES",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT DISTINCT\r\n    sh.object_id AS quote_id,\r\n    'Y' AS security_enable_flg\r\nFROM\r\n    dw_cxs_object_share_d           sh,\r\n    dw_cxs_access_group_members_d   grp\r\nWHERE\r\n    grp.access_group_id = sh.access_group_id\r\n    AND grp.type_code = sh.access_group_type_code\r\n    AND sh.object_type = 'SalesOrderHeader'\r\n    AND grp.active_flag = 'Y'\r\n    AND grp.party_id = VALUEOF(NQ_SESSION.USER_PARTY_ID)\r\n"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "QUOTE_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "SECURITY_ENABLE_FLG",
+      "dataType" : "VARCHAR",
+      "length" : 3,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "additionalKeys" : [ [ "QUOTE_ID" ] ]
+  }
+}

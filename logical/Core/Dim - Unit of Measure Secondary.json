@@ -1,0 +1,116 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Unit of Measure Secondary",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Language", "Item Secondary UOM Code" ],
+    "logicalColumns" : [ {
+      "name" : "Language",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM_DimOnly.LANGUAGE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM.LANGUAGE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Item Secondary UOM Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM_DimOnly.UOM_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM.UOM_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Item Secondary UOM",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Item Secondary UOM Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 16 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_UNIT_OF_MEASURE_D_TL.UNIT_OF_MEASURE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM_DimOnly.UOM_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 16 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_UNIT_OF_MEASURE_D_TL.UNIT_OF_MEASURE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM.UOM_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM_DimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM_DimOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Unit of Measure Secondary.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SecondaryUOM" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Unit of Measure Secondary.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 100,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Item Secondary UOM Code" ],
+        "displayKey" : "Item Secondary UOM Code",
+        "additionalKeys" : [ [ "Language", "Item Secondary UOM Code" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Unit of Measure Secondary",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

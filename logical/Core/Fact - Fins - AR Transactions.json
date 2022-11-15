@@ -1,0 +1,1157 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Fins - AR Transactions",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Accounts Receivable", "Project:Oracle Analytics for Fusion Financials" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-----Non-Monetary Metric-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Invoice Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('CB', 'DEP', 'GUAR', 'INV') THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.CUSTOMER_TRX_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('CB', 'DEP', 'GUAR', 'INV') THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_NUMBER" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Transactions Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('DEP', 'INV', 'DM', 'CB', 'CM', 'GUAR') THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.CUSTOMER_TRX_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('DEP', 'INV', 'DM', 'CB', 'CM', 'GUAR') THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_NUMBER" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Debit Memos Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DM' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.CUSTOMER_TRX_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DM' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_NUMBER" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Credit Memos Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CM' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.CUSTOMER_TRX_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CM' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_NUMBER" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Credit Memo Application Details.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Credit Memo Applications Status.Total", "logicalLevel:Core.Dim - AR Transaction Type Applied.Total", "logicalLevel:Core.Dim - AR Transaction Source Applied.Total" ]
+      }
+    }, {
+      "name" : "Cleared Invoice Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CL' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.CUSTOMER_TRX_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CL' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_NUMBER" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Receipt Method.Total", "logicalLevel:Core.Dim - AR Receipts Status.Total", "logicalLevel:Core.Dim - AR Receipt Details.Total", "logicalLevel:Core.Dim - AR Receipt Applications Status.Total", "logicalLevel:Core.Dim - Customer Bank Account.Total", "logicalLevel:Core.Dim - AR Receipt Type.Total", "logicalLevel:Core.Dim - AR Receipt Application Activity.Total" ]
+      }
+    }, {
+      "name" : "Receipts Day Difference",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CL' THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %2, %3) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.SCHEDULE_ACTUAL_CLOSED_DATE_1" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CL' THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %2, %3) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.SCHEDULE_ACTUAL_CLOSED_DATE_1" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Receipt Method.Total", "logicalLevel:Core.Dim - AR Receipts Status.Total", "logicalLevel:Core.Dim - AR Receipt Details.Total", "logicalLevel:Core.Dim - AR Receipt Applications Status.Total", "logicalLevel:Core.Dim - Customer Bank Account.Total", "logicalLevel:Core.Dim - AR Receipt Type.Total", "logicalLevel:Core.Dim - AR Receipt Application Activity.Total" ]
+      }
+    }, {
+      "name" : "Avg Receipts Days",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Cleared Invoice Count", "logicalColumn:Core.Fact - Fins - AR Transactions.Receipts Day Difference" ]
+        }
+      }
+    }, {
+      "name" : "-----Ledger Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Invoice Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Invoice_Amount",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('CB', 'DEP', 'GUAR', 'INV') THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('CB', 'DEP', 'GUAR', 'INV') THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Receipt Method.Total", "logicalLevel:Core.Dim - AR Receipts Status.Total", "logicalLevel:Core.Dim - AR Receipt Details.Total", "logicalLevel:Core.Dim - AR Receipt Applications Status.Total", "logicalLevel:Core.Dim - Customer Bank Account.Total", "logicalLevel:Core.Dim - AR Receipt Type.Total", "logicalLevel:Core.Dim - AR Receipt Application Activity.Total" ]
+      }
+    }, {
+      "name" : "Avg Invoice Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Invoice Count", "logicalColumn:Core.Fact - Fins - AR Transactions.Invoice Amount" ]
+        }
+      }
+    }, {
+      "name" : "Debit Memos Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Invoice_Amount",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DM' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DM' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Receipt Application Activity.Total", "logicalLevel:Core.Dim - AR Receipt Method.Total", "logicalLevel:Core.Dim - AR Receipts Status.Total", "logicalLevel:Core.Dim - AR Receipt Details.Total", "logicalLevel:Core.Dim - AR Receipt Applications Status.Total", "logicalLevel:Core.Dim - Customer Bank Account.Total", "logicalLevel:Core.Dim - AR Receipt Type.Total" ]
+      }
+    }, {
+      "name" : "Avg Debit Memos Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Debit Memos Count", "logicalColumn:Core.Fact - Fins - AR Transactions.Debit Memos Amount" ]
+        }
+      }
+    }, {
+      "name" : "Credit Memos Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Invoice_Amount",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CM' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CM' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Total", "logicalLevel:Core.Dim - AR Credit Memo Application Details.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Credit Memo Applications Status.Total", "logicalLevel:Core.Dim - AR Receipt Application Activity.Total", "logicalLevel:Core.Dim - AR Receipt Method.Total", "logicalLevel:Core.Dim - AR Receipts Status.Total", "logicalLevel:Core.Dim - AR Receipt Details.Total", "logicalLevel:Core.Dim - AR Receipt Applications Status.Total", "logicalLevel:Core.Dim - Customer Bank Account.Total", "logicalLevel:Core.Dim - AR Receipt Type.Total", "logicalLevel:Core.Dim - AR Transaction Type Applied.Total", "logicalLevel:Core.Dim - AR Transaction Source Applied.Total" ]
+      }
+    }, {
+      "name" : "Avg Credit Memos Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Credit Memos Count", "logicalColumn:Core.Fact - Fins - AR Transactions.Credit Memos Amount" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Credit Memo Application Details.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Credit Memo Applications Status.Total", "logicalLevel:Core.Dim - AR Transaction Type Applied.Total", "logicalLevel:Core.Dim - AR Transaction Source Applied.Total" ]
+      }
+    }, {
+      "name" : "Total Transactions Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Invoice_Amount",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Receipt Application Activity.Total", "logicalLevel:Core.Dim - AR Receipt Method.Total", "logicalLevel:Core.Dim - AR Receipts Status.Total", "logicalLevel:Core.Dim - AR Receipt Details.Total", "logicalLevel:Core.Dim - AR Receipt Applications Status.Total", "logicalLevel:Core.Dim - Customer Bank Account.Total", "logicalLevel:Core.Dim - AR Receipt Type.Total" ]
+      }
+    }, {
+      "name" : "-----Analytics Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Invoice Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Invoice_Amount",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('CB', 'DEP', 'GUAR', 'INV') THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('CB', 'DEP', 'GUAR', 'INV') THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Receipt Method.Total", "logicalLevel:Core.Dim - AR Receipts Status.Total", "logicalLevel:Core.Dim - AR Receipt Details.Total", "logicalLevel:Core.Dim - AR Receipt Applications Status.Total", "logicalLevel:Core.Dim - Customer Bank Account.Total", "logicalLevel:Core.Dim - AR Receipt Type.Total", "logicalLevel:Core.Dim - AR Receipt Application Activity.Total" ]
+      }
+    }, {
+      "name" : "Avg Invoice Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Invoice Count", "logicalColumn:Core.Fact - Fins - AR Transactions.Invoice Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Debit Memos Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Invoice_Amount",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DM' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DM' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Receipt Application Activity.Total", "logicalLevel:Core.Dim - AR Receipt Method.Total", "logicalLevel:Core.Dim - AR Receipts Status.Total", "logicalLevel:Core.Dim - AR Receipt Details.Total", "logicalLevel:Core.Dim - AR Receipt Applications Status.Total", "logicalLevel:Core.Dim - Customer Bank Account.Total", "logicalLevel:Core.Dim - AR Receipt Type.Total" ]
+      }
+    }, {
+      "name" : "Avg Debit Memos Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Debit Memos Count", "logicalColumn:Core.Fact - Fins - AR Transactions.Debit Memos Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Credit Memos Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Invoice_Amount",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CM' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CM' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Total", "logicalLevel:Core.Dim - AR Credit Memo Application Details.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Credit Memo Applications Status.Total", "logicalLevel:Core.Dim - AR Receipt Application Activity.Total", "logicalLevel:Core.Dim - AR Receipt Method.Total", "logicalLevel:Core.Dim - AR Receipts Status.Total", "logicalLevel:Core.Dim - AR Receipt Details.Total", "logicalLevel:Core.Dim - AR Receipt Applications Status.Total", "logicalLevel:Core.Dim - Customer Bank Account.Total", "logicalLevel:Core.Dim - AR Receipt Type.Total", "logicalLevel:Core.Dim - AR Transaction Type Applied.Total", "logicalLevel:Core.Dim - AR Transaction Source Applied.Total" ]
+      }
+    }, {
+      "name" : "Avg Credit Memos Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Credit Memos Count", "logicalColumn:Core.Fact - Fins - AR Transactions.Credit Memos Amount in Analytics Currency" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Credit Memo Application Details.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Credit Memo Applications Status.Total", "logicalLevel:Core.Dim - AR Transaction Type Applied.Total", "logicalLevel:Core.Dim - AR Transaction Source Applied.Total" ]
+      }
+    }, {
+      "name" : "Total Transactions Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Invoice_Amount",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Receipt Application Activity.Total", "logicalLevel:Core.Dim - AR Receipt Method.Total", "logicalLevel:Core.Dim - AR Receipts Status.Total", "logicalLevel:Core.Dim - AR Receipt Details.Total", "logicalLevel:Core.Dim - AR Receipt Applications Status.Total", "logicalLevel:Core.Dim - Customer Bank Account.Total", "logicalLevel:Core.Dim - AR Receipt Type.Total" ]
+      }
+    }, {
+      "name" : "-----Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Invoice Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Invoice_Amount",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('CB', 'DEP', 'GUAR', 'INV') THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('CB', 'DEP', 'GUAR', 'INV') THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Receipt Application Activity.Total", "logicalLevel:Core.Dim - AR Receipt Method.Total", "logicalLevel:Core.Dim - AR Receipts Status.Total", "logicalLevel:Core.Dim - AR Receipt Details.Total", "logicalLevel:Core.Dim - AR Receipt Applications Status.Total", "logicalLevel:Core.Dim - Customer Bank Account.Total", "logicalLevel:Core.Dim - AR Receipt Type.Total" ]
+      }
+    }, {
+      "name" : "Avg Invoice Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Invoice Count", "logicalColumn:Core.Fact - Fins - AR Transactions.Invoice Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Debit Memos Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Invoice_Amount",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DM' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'DM' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Receipt Application Activity.Total", "logicalLevel:Core.Dim - AR Receipt Method.Total", "logicalLevel:Core.Dim - AR Receipts Status.Total", "logicalLevel:Core.Dim - AR Receipt Details.Total", "logicalLevel:Core.Dim - AR Receipt Applications Status.Total", "logicalLevel:Core.Dim - Customer Bank Account.Total", "logicalLevel:Core.Dim - AR Receipt Type.Total" ]
+      }
+    }, {
+      "name" : "Avg Debit Memos Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Debit Memos Count", "logicalColumn:Core.Fact - Fins - AR Transactions.Debit Memos Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Credit Memos Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Invoice_Amount",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CM' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CM' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_CLASS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Total", "logicalLevel:Core.Dim - AR Credit Memo Application Details.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Credit Memo Applications Status.Total", "logicalLevel:Core.Dim - AR Receipt Application Activity.Total", "logicalLevel:Core.Dim - AR Receipt Method.Total", "logicalLevel:Core.Dim - AR Receipts Status.Total", "logicalLevel:Core.Dim - AR Receipt Details.Total", "logicalLevel:Core.Dim - AR Receipt Applications Status.Total", "logicalLevel:Core.Dim - Customer Bank Account.Total", "logicalLevel:Core.Dim - AR Receipt Type.Total", "logicalLevel:Core.Dim - AR Transaction Type Applied.Total", "logicalLevel:Core.Dim - AR Transaction Source Applied.Total" ]
+      }
+    }, {
+      "name" : "Avg Credit Memos Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Credit Memos Count", "logicalColumn:Core.Fact - Fins - AR Transactions.Credit Memos Amount in Document Currency" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Credit Memo Application Details.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Credit Memo Applications Status.Total", "logicalLevel:Core.Dim - AR Transaction Type Applied.Total", "logicalLevel:Core.Dim - AR Transaction Source Applied.Total" ]
+      }
+    }, {
+      "name" : "Total Transactions Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Invoice_Amount",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF_Old",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - AR Receipt Business Unit.Total", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Total", "logicalLevel:Core.Dim - AR Receipt Application Activity.Total", "logicalLevel:Core.Dim - AR Receipt Method.Total", "logicalLevel:Core.Dim - AR Receipts Status.Total", "logicalLevel:Core.Dim - AR Receipt Details.Total", "logicalLevel:Core.Dim - AR Receipt Applications Status.Total", "logicalLevel:Core.Dim - Customer Bank Account.Total", "logicalLevel:Core.Dim - AR Receipt Type.Total" ]
+      }
+    }, {
+      "name" : "---- AR ML Metrics -----------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Paid Invoice Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CL' AND %2 = 'FULLY PAID' THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_PAYMENT_STATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.CUSTOMER_TRX_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Paid Late Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CL' AND %2 = 'FULLY PAID' AND %3 > %4 THEN %5 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_PAYMENT_STATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.SCHEDULE_ACTUAL_CLOSED_DATE_1", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.CUSTOMER_TRX_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Paid Late Invoice Ratio",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Paid Invoice Count", "logicalColumn:Core.Fact - Fins - AR Transactions.Paid Late Count" ]
+        }
+      }
+    }, {
+      "name" : "Paid Total Invoice Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CL' AND %2 = 'FULLY PAID' THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_PAYMENT_STATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Paid Late Invoice Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CL' AND %2 = 'FULLY PAID' AND %3 > %4 THEN %5 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_PAYMENT_STATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.SCHEDULE_ACTUAL_CLOSED_DATE_1", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Paid Late Amount Ratio",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Paid Total Invoice Amount", "logicalColumn:Core.Fact - Fins - AR Transactions.Paid Late Invoice Amount" ]
+        }
+      }
+    }, {
+      "name" : "Unpaid Invoice Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'OP' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.CUSTOMER_TRX_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unpaid Late Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'OP' AND %2 <  CURRENT_DATE  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.CUSTOMER_TRX_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unpaid Late Invoice Ratio",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Unpaid Invoice Count", "logicalColumn:Core.Fact - Fins - AR Transactions.Unpaid Late Count" ]
+        }
+      }
+    }, {
+      "name" : "Unpaid Total Invoice Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'OP' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unpaid Late Invoice Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'OP' AND %2 <  CURRENT_DATE  THEN %3 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unpaid Late Amount Ratio",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Transactions.Unpaid Total Invoice Amount", "logicalColumn:Core.Fact - Fins - AR Transactions.Unpaid Late Invoice Amount" ]
+        }
+      }
+    }, {
+      "name" : "Aging Days",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SCHEDULES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CL' AND %2 IN ('FULLY PAID', 'PARTIALLY PAID') AND %3 > %4 THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %4, %3) WHEN %1 = 'CL' AND %2 IN ('FULLY PAID', 'PARTIALLY PAID') AND %3 <= %4 THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %3, %4) WHEN %1 = 'OP' AND %4 <=  CURRENT_DATE  THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %4,  CURRENT_DATE ) WHEN %1 = 'OP' AND %4 >  CURRENT_DATE  THEN  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_SCHEDULE_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.TRANSACTION_PAYMENT_STATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.SCHEDULE_ACTUAL_CLOSED_DATE_1", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF.PAYMENT_DUE_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "AVG",
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AR_SCHEDULES_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Creation Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Natural Account Hierarchy.Detail", "logicalLevel:Core.Dim - AR Payment Terms.Detail", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Detail", "logicalLevel:Core.Dim - Ledger Set.Detail", "logicalLevel:Core.Dim - Party.Detail", "logicalLevel:Core.Dim - AR Update Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Detail", "logicalLevel:Core.Dim - Customer Sold To Location.Detail", "logicalLevel:Core.Dim - GL Segment1.Detail", "logicalLevel:Core.Dim - AR Schedule Status.Detail", "logicalLevel:Core.Dim - Customer Ship To Location.Detail", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment3.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - AR Invoicing Rule.Detail", "logicalLevel:Core.Dim - GL Segment9.Detail", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Detail", "logicalLevel:Core.Dim - Customer Ship To Contact.Detail", "logicalLevel:Core.Dim - Customer Account.Detail", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Transaction Due Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Created By.Detail", "logicalLevel:Core.Dim - Customer.Detail", "logicalLevel:Core.Dim - AR Receipt Method.Detail", "logicalLevel:Core.Dim - AR Transaction Details.Detail", "logicalLevel:Core.Dim - AR Transaction Source.Detail", "logicalLevel:Core.Dim - AR Transaction Class.Detail", "logicalLevel:Core.Dim - Balancing Segment.Detail", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Detail", "logicalLevel:Core.Dim - Updated By.Detail", "logicalLevel:Core.Dim - AR Transaction Type.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Customer Bill To Contact.Detail", "logicalLevel:Core.Dim - AR Transaction Created By.Detail", "logicalLevel:Core.Dim - GL Account.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Detail", "logicalLevel:Core.Dim - Salesperson.Detail", "logicalLevel:Core.Dim - GL Segment6.Detail", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Billing Business Unit.Detail", "logicalLevel:Core.Dim - AR Receivables Account.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Customer Bill To Location.Detail", "logicalLevel:Core.Dim - AR Interface Header Attributes.Detail", "logicalLevel:Core.Dim - Cost Center Hierarchy.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - GL Segment2.Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail", "logicalLevel:Core.Dim - GL Segment5.Detail", "logicalLevel:Core.Dim - Cost Center.Detail", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Invoice Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment4.Detail", "logicalLevel:Core.Dim - GL Segment7.Detail", "logicalLevel:Core.Dim - GL Segment10.Detail", "logicalLevel:Core.Dim - Natural Account.Detail", "logicalLevel:Core.Dim - AR Transaction Accounting Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment8.Detail", "logicalLevel:Core.Dim - AR Paying Customer.Detail", "logicalLevel:Core.Dim - AR Paying Customer Account.Detail", "logicalLevel:Core.Dim - Customer Ship To.Dim - Customer Ship To Detail", "logicalLevel:Core.Dim - AR Paying Customer Location.Detail", "logicalLevel:Core.Dim - AR Transaction Installment Sequence Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AR_SCHEDULES_CF_Invoice_Amount",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - GL Account.Detail", "logicalLevel:Core.Dim - AR Transaction Due Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - AR Transaction Details.Detail", "logicalLevel:Core.Dim - AR Transaction Source.Detail", "logicalLevel:Core.Dim - AR Transaction Class.Detail", "logicalLevel:Core.Dim - AR Receipt Method.Detail", "logicalLevel:Core.Dim - Created By.Detail", "logicalLevel:Core.Dim - Customer.Detail", "logicalLevel:Core.Dim - Party.Detail", "logicalLevel:Core.Dim - AR Update Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Detail", "logicalLevel:Core.Dim - AR Invoicing Rule.Detail", "logicalLevel:Core.Dim - AR Transaction Created By.Detail", "logicalLevel:Core.Dim - Customer Bill To Contact.Detail", "logicalLevel:Core.Dim - Customer Bill To Location.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Customer Account.Detail", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Detail", "logicalLevel:Core.Dim - Customer Ship To Contact.Detail", "logicalLevel:Core.Dim - Customer Sold To Location.Detail", "logicalLevel:Core.Dim - GL Segment1.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - AR Creation Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Natural Account Hierarchy.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - AR Receivables Account.Detail", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Detail", "logicalLevel:Core.Dim - Updated By.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - GL Segment3.Detail", "logicalLevel:Core.Dim - GL Segment2.Detail", "logicalLevel:Core.Dim - AR Paying Customer Account.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - AR Paying Customer Location.Detail", "logicalLevel:Core.Dim - AR Transaction Accounting Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment4.Detail", "logicalLevel:Core.Dim - Customer Ship To Location.Detail", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Schedule Status.Detail", "logicalLevel:Core.Dim - GL Segment5.Detail", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Detail", "logicalLevel:Core.Dim - Cost Center.Detail", "logicalLevel:Core.Dim - GL Segment6.Detail", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment9.Detail", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Payment Terms.Detail", "logicalLevel:Core.Dim - GL Segment7.Detail", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Detail", "logicalLevel:Core.Dim - Ledger Set.Detail", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Paying Customer.Detail", "logicalLevel:Core.Dim - GL Segment8.Detail", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Billing Business Unit.Detail", "logicalLevel:Core.Dim - GL Segment10.Detail", "logicalLevel:Core.Dim - Invoice Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - AR Interface Header Attributes.Detail", "logicalLevel:Core.Dim - Cost Center Hierarchy.Detail", "logicalLevel:Core.Dim - AR Transaction Type.Detail", "logicalLevel:Core.Dim - Balancing Segment.Detail", "logicalLevel:Core.Dim - Natural Account.Detail", "logicalLevel:Core.Dim - Salesperson.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail", "logicalLevel:Core.Dim - Customer Ship To.Dim - Customer Ship To Detail", "logicalLevel:Core.Dim - AR Transaction Installment Sequence Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AR_SCHEDULES_CF_Old",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SCHEDULES_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment3.Detail", "logicalLevel:Core.Dim - Customer Ship To Contact.Detail", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - GL Segment8.Detail", "logicalLevel:Core.Dim - Cost Center.Detail", "logicalLevel:Core.Dim - GL Segment5.Detail", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Detail", "logicalLevel:Core.Dim - Cost Center Hierarchy.Detail", "logicalLevel:Core.Dim - Natural Account Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Transaction Class.Detail", "logicalLevel:Core.Dim - Customer Bill To Contact.Detail", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Detail", "logicalLevel:Core.Dim - Natural Account.Detail", "logicalLevel:Core.Dim - GL Segment6.Detail", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment7.Detail", "logicalLevel:Core.Dim - AR Transaction Due Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Detail", "logicalLevel:Core.Dim - AR Receipt Method.Detail", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment9.Detail", "logicalLevel:Core.Dim - AR Schedule Status.Detail", "logicalLevel:Core.Dim - AR Transaction Details.Detail", "logicalLevel:Core.Dim - Invoice Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment1.Detail", "logicalLevel:Core.Dim - GL Segment4.Detail", "logicalLevel:Core.Dim - GL Segment10.Detail", "logicalLevel:Core.Dim - AR Application Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Created By.Detail", "logicalLevel:Core.Dim - AR Billing Business Unit.Detail", "logicalLevel:Core.Dim - AR Payment Terms.Detail", "logicalLevel:Core.Dim - Customer.Detail", "logicalLevel:Core.Dim - AR Transaction Accounting Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Customer Bill To Location.Detail", "logicalLevel:Core.Dim - Customer Account.Detail", "logicalLevel:Core.Dim - GL Account.Detail", "logicalLevel:Core.Dim - Customer Ship To Location.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Customer Sold To Location.Detail", "logicalLevel:Core.Dim - Balancing Segment.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment2.Detail", "logicalLevel:Core.Dim - Ledger Set.Detail", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Detail", "logicalLevel:Core.Dim - Currency.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_FIN_AR_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "AR_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_AR_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - AR Transaction Details.Security Context Code - AR Billing BU" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - AR Application Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Billing Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Creation Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Interface Header Attributes",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Invoicing Rule",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Paying Customer Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Paying Customer Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Paying Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Payment Terms",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Receipt Method",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Receivables Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Schedule Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Accounting Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Class",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Created By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Due Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Installment Sequence Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Source",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Update Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Balancing Segment Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Balancing Segment",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Center Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Center",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Created By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Account Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Ship To Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Ship To Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Ship To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment1 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment1",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment10 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment10",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment2 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment2",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment3 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment3",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment4 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment4",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment5 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment5",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment6 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment6",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment7 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment7",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment8 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment8",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment9 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment9",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger Set",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Natural Account Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Natural Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Party",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Salesperson",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Updated By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

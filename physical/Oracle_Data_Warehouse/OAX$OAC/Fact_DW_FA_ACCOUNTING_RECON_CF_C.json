@@ -1,0 +1,866 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_FA_ACCOUNTING_RECON_CF_C",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_FA_ACCOUNTING_RECON_CF",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_GLPostedDate_Fiscal_Calendar",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 IN ('N', '~NOVALUE~') AND %4 = %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_GLPostedDate_Fiscal_Calendar.FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.RECON_FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_GLPostedDate_Fiscal_Calendar.ADJUSTMENT_PERIOD_FLAG",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_GLPostedDate_Fiscal_Calendar.FISCAL_DAY_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.JOURNAL_POSTED_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_PaymentAccountingDate_Fiscal_Calendar",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 IN ('N', '~NOVALUE~')",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_PaymentAccountingDate_Fiscal_Calendar.FISCAL_DAY_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.RECON_ACCOUNTING_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_PaymentAccountingDate_Fiscal_Calendar.FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.RECON_FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_PaymentAccountingDate_Fiscal_Calendar.ADJUSTMENT_PERIOD_FLAG"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 IN ('N', '~NOVALUE~') AND %4 = %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.RECON_FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.ADJUSTMENT_PERIOD_FLAG",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_TransferToGLDate_Fiscal_Calendar.FISCAL_DAY_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_TRANSFER_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_JOURNAL_REV_STAT_LKP_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_JOURNAL_REV_STAT_LKP_TL.GL_JOURNAL_REV_STAT_LKP_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.JOURNAL_REVERSAL_STATUS",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_JOURNAL_REV_STAT_LKP_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_JOURNAL_STATUS_LKP_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_JOURNAL_STATUS_LKP_TL.GL_JOURNAL_STATUS_LKP_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.JOURNAL_LINE_STATUS",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_JOURNAL_STATUS_LKP_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_TRANSFER_STATUS_LKP_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_TRANSFER_STATUS_LKP_TL.GL_TRANSFER_STATUS_LKP_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_TRANSFER_STATUS_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_TRANSFER_STATUS_LKP_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOURNAL_CATEGORY_LKP_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOURNAL_CATEGORY_LKP_TL.JOURNAL_CATEGORY_LKP_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.JOURNAL_CATEGORY",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOURNAL_CATEGORY_LKP_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOURNAL_SOURCE_LKP_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOURNAL_SOURCE_LKP_TL.JOURNAL_SOURCE_LKP_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.JOURNAL_SOURCE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOURNAL_SOURCE_LKP_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL.ACCOUNTING_CLASS_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.ACCOUNTING_CLASS_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 =  VALUEOF(NQ_SESSION.%6)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL.APPLICATION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.APPLICATION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL.EVENT_CLASS_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.EVENT_CLASS_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_CLASSES_LKP_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_TYPES_LKP_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 =  VALUEOF(NQ_SESSION.%6)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_TYPES_LKP_TL.APPLICATION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.APPLICATION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_TYPES_LKP_TL.EVENT_TYPE_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.EVENT_TYPE_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_EVENT_TYPES_LKP_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_BALANCING_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D.GL_BALANCING_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_BLNC_SGMNT_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D.GL_BLNC_SGMNT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_BALANCING_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base.GL_BALANCING_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_BLNC_SGMNT_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base.GL_BLNC_SGMNT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.COST_CENTER_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D.COST_CENTER_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.COST_CENTER_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D.COST_CENTER_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.COST_CENTER_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base.COST_CENTER_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.COST_CENTER_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base.COST_CENTER_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_DocumentCurrency",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.TRANSACTION_CURRENCY_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_DocumentCurrency.CURRENCY_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_LedgerCurrency",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.LEDGER_CURRENCY_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_LedgerCurrency.CURRENCY_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.RECON_ACCOUNTING_DATE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.FISCAL_DAY_DATE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.RECON_FISCAL_PERIOD_NAME",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.FISCAL_PERIOD_NAME"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.RECON_FISCAL_PERIOD_SET_NAME",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.FISCAL_PERIOD_SET_NAME"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_GLAccountingDate_Calendar",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_FISCAL_PERIOD_NAME",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_GLAccountingDate_Calendar.FISCAL_PERIOD_NAME"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.JRNL_LINE_EFFECTIVE_DATE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_GLAccountingDate_Calendar.FISCAL_DAY_DATE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.RECON_FISCAL_PERIOD_SET_NAME",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_GLAccountingDate_Calendar.FISCAL_PERIOD_SET_NAME"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_CODE_COMBINATION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D.CODE_COMBINATION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT1",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT1_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT10",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT10_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT10",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT10_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT1",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT1_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT2",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT2_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT2",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT2_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT3",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT3_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT3",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT3_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT4",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT4_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT4",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT4_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT5",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT5_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT5",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT5_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT6",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT6_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT6",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT6_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT7",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT7_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT7",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT7_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT8",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT8_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT8",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT8_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT9",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT9_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT9",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.GL_SEGMENT9_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.LEDGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D.LEDGER_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.NATURAL_ACCOUNT_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D.NATURAL_ACCOUNT_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.NTRL_ACNT_SGMNT_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D.NTRL_ACNT_SGMNT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.NATURAL_ACCOUNT_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D_Base.NATURAL_ACCOUNT_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.NTRL_ACNT_SGMNT_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D_Base.NTRL_ACNT_SGMNT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_Created_By",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.CREATED_BY_USER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_Created_By.USERNAME"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_EXT_CF_T",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.AE_HEADER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_EXT_CF_T.AE_HEADER_ID"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.AE_LINE_NUM",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_EXT_CF_T.AE_LINE_NUM"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.JOURNAL_HEADER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_EXT_CF_T.JOURNAL_HEADER_ID"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.JOURNAL_LINE_NUM",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_EXT_CF_T.JOURNAL_LINE_NUM"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.REF_AE_HEADER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_EXT_CF_T.REF_AE_HEADER_ID"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.TEMP_LINE_NUM",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_EXT_CF_T.TEMP_LINE_NUM"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Adjustment Distribution",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_DST_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Adjustment Distribution.SUBLEDGER_LINKAGE_DST_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Adjustment",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Adjustment.SUBLEDGER_LINKAGE_HDR_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Asset Depreciation Detail",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_DST_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Asset Depreciation Detail.SUBLEDGER_LINKAGE_DST_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Asset Depreciation",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Asset Depreciation.SUBLEDGER_LINKAGE_HDR_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Asset Transactions Adjustment Distribution",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_DST_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Asset Transactions Adjustment Distribution.SUBLEDGER_LINKAGE_DST_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Asset Transactions Entered Calendar Period",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Asset Transactions Entered Calendar Period.CALENDAR_TYPE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Asset Transactions",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Asset Transactions.SUBLEDGER_LINKAGE_HDR_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Credit Memo Distribution Bill To Customer Account",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Credit Memo Distribution Bill To Customer Account.CREATED_BY"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Credit Memo Distribution Paying To Customer Account",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Credit Memo Distribution Paying To Customer Account.CREATED_BY"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Credit Memo Distribution",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_DST_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Credit Memo Distribution.SUBLEDGER_LINKAGE_DST_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Invoice Batch",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Invoice Batch.BATCH_NAME"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Invoice Distribution Batch",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_DST_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Invoice Distribution Batch.BATCH_NAME"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Invoice Distribution PO Distribution",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Invoice Distribution PO Distribution.PURCHASE_ORDER_NUMBER"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Invoice Distribution Receiving Shipment",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_DST_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Invoice Distribution Receiving Shipment.CREATED_BY"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Invoice Distribution",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_DST_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Invoice Distribution.SUBLEDGER_LINKAGE_DST_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Invoice PO Header",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Invoice PO Header.PURCHASE_ORDER_NUMBER"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Invoice Prepayment Distribution",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_DST_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Invoice Prepayment Distribution.SUBLEDGER_LINKAGE_DST_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Invoice Prepayment",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Invoice Prepayment.SUBLEDGER_LINKAGE_HDR_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Invoice",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Invoice.SUBLEDGER_LINKAGE_HDR_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Payment Distribution",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_DST_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Payment Distribution.SUBLEDGER_LINKAGE_DST_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Payment",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Payment.SUBLEDGER_LINKAGE_HDR_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Project Cost Distribution",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_DST_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Project Cost Distribution.SUBLEDGER_LINKAGE_DST_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Receipts Distribution Pay From Customer Account",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Receipts Distribution Pay From Customer Account.CREATED_BY"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Receipts Distribution",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_DST_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Receipts Distribution.SUBLEDGER_LINKAGE_DST_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Receipts Pay From Customer Account",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Receipts Pay From Customer Account.CREATED_BY"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Receipts",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Receipts.SUBLEDGER_LINKAGE_HDR_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Transaction Bill To Customer Account",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Transaction Bill To Customer Account.CREATED_BY"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Transaction Distribution Bill To Customer Account",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Transaction Distribution Bill To Customer Account.CREATED_BY"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Transaction Distribution Paying To Customer Account",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Transaction Distribution Paying To Customer Account.CREATED_BY"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Transaction Distribution Ship To Party Site",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_DST_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Transaction Distribution Ship To Party Site.CREATED_BY"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Transaction Distribution",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_DST_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Transaction Distribution.SUBLEDGER_LINKAGE_DST_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Transaction Paying To Customer Account",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Transaction Paying To Customer Account.CREATED_BY"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Transaction Ship To Party Site",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_DST_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Transaction Ship To Party Site.CREATED_BY"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Template Transaction",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_ACCOUNTING_RECON_CF_C.SUBLEDGER_LINKAGE_HDR_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Template Transaction.SUBLEDGER_LINKAGE_HDR_ENTITY_ID"
+          }
+        ]
+      }
+    ]
+  }
+}

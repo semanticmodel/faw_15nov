@@ -1,0 +1,46 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionScheduledProduct",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_UNIT_OF_MEASURE_D_TL",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionScheduledProduct.UOM_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SUBSCRIPTION_PRODUCT_CF.SCHEDULED_ITEM_UOM",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionScheduledProduct.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionScheduledProduct.UOM_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.SCHEDULED_ITEM_UOM",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_UNIT_OF_MEASURE_D_TL_SubscriptionScheduledProduct.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      }
+    ],
+    "additionalKeys": [
+      [
+        "LANGUAGE",
+        "UOM_CODE"
+      ]
+    ]
+  }
+}

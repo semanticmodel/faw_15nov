@@ -1,0 +1,57 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - NetSuite Inventory Snapshot Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Inventory Snapshot Date" ],
+    "logicalColumns" : [ {
+      "name" : "Inventory Snapshot Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_INVENTORY_SNAPSHOT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORY_SNAPSHOT_F.SNAPSHOT_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_NS_INVENTORY_SNAPSHOT_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORY_SNAPSHOT_F" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Inventory Snapshot Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Inventory Snapshot Date" ],
+        "displayKey" : "Inventory Snapshot Date"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "NetSuite Inventory Snapshot Details",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

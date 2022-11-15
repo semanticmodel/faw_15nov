@@ -1,0 +1,81 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_ADVIMP_PRMTN_ETHNICITY_P",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_ADVIMP_PRMTN_ETHNICITY_P",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_EEO1_JOB_CATEGORY_D_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ADVIMP_PRMTN_ETHNICITY_P.LEGISLATIVE_JOB_CATEGORY_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_EEO1_JOB_CATEGORY_D_TL.EEO1_JOB_CATEGORY_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_EEO1_JOB_CATEGORY_D_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ETHNICITY_D_TL_DiversityAnalysis",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ADVIMP_PRMTN_ETHNICITY_P.ETHNICITY",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ETHNICITY_D_TL_DiversityAnalysis.ETHNICITY",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ETHNICITY_D_TL_DiversityAnalysis.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ADVIMP_PRMTN_ETHNICITY_P.LEGISLATION_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL.COUNTRY"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REPORTING_EST_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ADVIMP_PRMTN_ETHNICITY_P.REPORTING_ESTABLISHMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REPORTING_EST_D.REPORTING_EST_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REPORTING_EST_D_TL",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ADVIMP_PRMTN_ETHNICITY_P.REPORTING_ESTABLISHMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REPORTING_EST_D_TL.REPORTING_EST_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_YEAR_D_GregorianCalendar",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ADVIMP_PRMTN_ETHNICITY_P.PERIOD",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_YEAR_D_GregorianCalendar.CAL_YEAR_CODE"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "PERIOD",
+        "REPORTING_ESTABLISHMENT_ID",
+        "LEGISLATIVE_JOB_CATEGORY_CODE",
+        "LEGISLATION_CODE",
+        "ETHNICITY"
+      ]
+    ]
+  }
+}

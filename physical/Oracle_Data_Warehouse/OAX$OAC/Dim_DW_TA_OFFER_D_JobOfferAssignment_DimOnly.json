@@ -1,0 +1,31 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_TA_OFFER_D_JobOfferAssignment_DimOnly",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_TA_OFFER_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_ASG_D_JobOffer_DimOnly",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) >= %4 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_ASG_D_JobOffer_DimOnly.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_OFFER_D_JobOfferAssignment_DimOnly.ASSIGNMENT_OFFER_ID",
+            "variable:Gregorian Calendar - Current Gregorian Day.CURRENT_GREGORIAN_DAY",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_ASG_D_JobOffer_DimOnly.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_ASG_D_JobOffer_DimOnly.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      }
+    ],
+    "additionalKeys": [
+      [
+        "ASSIGNMENT_OFFER_ID"
+      ]
+    ]
+  }
+}

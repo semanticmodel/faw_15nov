@@ -1,0 +1,1380 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - NetSuite Statement Charge",
+    "tags" : [ "Project:NetSuite Analytics Warehouse - NetSuite Sales" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "<<<<<<<<<<<<<< TRANSACTION >>>>>>>>>>>>>>>",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Number of Statement Charges",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Estimated Gross Profit Percent",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1 * 100",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.ESTGROSSPROFITPERCENT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "--------------------------------Transaction Currency Amounts--------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Estimated Gross Profit in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.ESTGROSSPROFIT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Total Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.FOREIGNTOTAL" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Paid Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.FOREIGNAMOUNTPAID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Unpaid Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.FOREIGNAMOUNTUNPAID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Recognized Revenue in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.RECOGNIZEDREVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "--------------------------------------Base  Currency Amounts-------------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Estimated Gross Profit in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.BASE_ESTGROSSPROFIT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Total Amount in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.BASE_TOTAL" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Paid Amount in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.BASE_AMOUNTPAID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Unpaid Amount in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.BASE_AMOUNTUNPAID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Recognized Revenue in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.BASE_RECOGNIZEDREVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "----------------------------Analytics Currency Amounts------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Estimated Gross Profit in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G_Header.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.BASE_ESTGROSSPROFIT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.HISTORICALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Total Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G_Header.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.BASE_TOTAL", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.HISTORICALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Paid Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G_Header.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.BASE_AMOUNTPAID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.HISTORICALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Unpaid Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G_Header.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.BASE_AMOUNTUNPAID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.HISTORICALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Recognized Revenue in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G_Header.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.BASE_RECOGNIZEDREVENUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.HISTORICALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Expense Account.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "<<<<<<<<<<<<<< TRANSACTION LINES>>>>>>>>>>>>>>>",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Number of Statement Charge Lines",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.TRANSACTION" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Item Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'T' THEN %2 ELSE %2 * -(1) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.MAINLINE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Line Estimated Gross Profit Percent",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 / %2 * 100",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - NetSuite Statement Charge.Line Estimated Gross Profit in Transaction Currency", "logicalColumn:Core.Fact - NetSuite Statement Charge.Item Net Amount in Transaction Currency" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Item Rate Percent",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.IS_RATEPERCENT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.RATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "AVG",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "--------------------------------Transaction Currency Amounts----------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Item Net Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'T' THEN %2 ELSE %2 * -(1) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.MAINLINE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.NETAMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Line Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'T' THEN %2 ELSE %2 * -(1) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.MAINLINE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.FOREIGNAMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Item Rate in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.IS_RATEPERCENT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.RATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Line Estimated Gross Profit in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.ESTGROSSPROFIT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Linked Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.FXAMOUNTLINKED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Line Amount Paid in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.FOREIGNAMOUNTPAID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Line Amount Unpaid in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.FOREIGNAMOUNTUNPAID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Used Payment Line Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.FOREIGNPAYMENTAMOUNTUSED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Unused Payment Line Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.FOREIGNPAYMENTAMOUNTUNUSED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Credit Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.CREDITFOREIGNAMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Debit Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.DEBITFOREIGNAMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Accounting Line Credit Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.CREDIT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Accounting Line Debit Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.DEBIT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "--------------------------------------Base  Currency Amounts---------------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Item Net Amount in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'T' THEN %2 ELSE %2 * -(1) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.MAINLINE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_NETAMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Line Amount in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'T' THEN %2 ELSE %2 * -(1) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.MAINLINE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Item Rate in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_RATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Line Estimated Gross Profit in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_ESTGROSSPROFIT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Linked Amount in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_AMOUNTLINKED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Line Amount Paid in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_AMOUNTPAID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Line Amount Unpaid in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_AMOUNTUNPAID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Used Payment Line Amount in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_PAYMENTAMOUNTUSED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Unused Payment Line Amount in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_PAYMENTAMOUNTUNUSED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Credit Amount in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_CREDITAMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Debit Amount in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_DEBITAMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "-------------------------Analytics Currency Amounts-------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Item Net Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'T' THEN  CASE  WHEN %2 = 'CURRENT' THEN  IFNULL(%3, 1) * %4 WHEN %2 = 'AVERAGE' THEN  IFNULL(%5, 1) * %4 WHEN %2 = 'HISTORICAL' THEN  IFNULL(%6, 1) * %4 WHEN %2 = 'PERACCOUNT' THEN  CASE  WHEN %7 = 'CURRENT' THEN  IFNULL(%3, 1) * %4 WHEN %7 = 'AVERAGE' THEN  IFNULL(%5, 1) * %4 WHEN %7 = 'HISTORICAL' THEN  IFNULL(%6, 1) * %4 END  END  ELSE  CASE  WHEN %2 = 'CURRENT' THEN  IFNULL(%3, 1) * %4 * -(1) WHEN %2 = 'AVERAGE' THEN  IFNULL(%5, 1) * %4 * -(1) WHEN %2 = 'HISTORICAL' THEN  IFNULL(%6, 1) * %4 * -(1) WHEN %2 = 'PERACCOUNT' THEN  CASE  WHEN %7 = 'CURRENT' THEN  IFNULL(%3, 1) * %4 * -(1) WHEN %7 = 'AVERAGE' THEN  IFNULL(%5, 1) * %4 * -(1) WHEN %7 = 'HISTORICAL' THEN  IFNULL(%6, 1) * %4 * -(1) END  END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.MAINLINE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_NETAMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.HISTORICALRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCOUNT_D.GENERALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Line Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'T' THEN  CASE  WHEN %2 = 'CURRENT' THEN  IFNULL(%3, 1) * %4 WHEN %2 = 'AVERAGE' THEN  IFNULL(%5, 1) * %4 WHEN %2 = 'HISTORICAL' THEN  IFNULL(%6, 1) * %4 WHEN %2 = 'PERACCOUNT' THEN  CASE  WHEN %7 = 'CURRENT' THEN  IFNULL(%3, 1) * %4 WHEN %7 = 'AVERAGE' THEN  IFNULL(%5, 1) * %4 WHEN %7 = 'HISTORICAL' THEN  IFNULL(%6, 1) * %4 END  END  ELSE  CASE  WHEN %2 = 'CURRENT' THEN  IFNULL(%3, 1) * %4 * -(1) WHEN %2 = 'AVERAGE' THEN  IFNULL(%5, 1) * %4 * -(1) WHEN %2 = 'HISTORICAL' THEN  IFNULL(%6, 1) * %4 * -(1) WHEN %2 = 'PERACCOUNT' THEN  CASE  WHEN %7 = 'CURRENT' THEN  IFNULL(%3, 1) * %4 * -(1) WHEN %7 = 'AVERAGE' THEN  IFNULL(%5, 1) * %4 * -(1) WHEN %7 = 'HISTORICAL' THEN  IFNULL(%6, 1) * %4 * -(1) END  END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.MAINLINE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.HISTORICALRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCOUNT_D.GENERALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Item Rate in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN  CASE  WHEN %6 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %6 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %6 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_RATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.HISTORICALRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCOUNT_D.GENERALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Line Estimated Gross Profit in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN  CASE  WHEN %6 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %6 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %6 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_ESTGROSSPROFIT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.HISTORICALRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCOUNT_D.GENERALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Linked Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN  CASE  WHEN %6 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %6 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %6 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_AMOUNTLINKED", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.HISTORICALRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCOUNT_D.GENERALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Line Amount Paid in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN  CASE  WHEN %6 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %6 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %6 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_AMOUNTPAID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.HISTORICALRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCOUNT_D.GENERALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Line Amount Unpaid in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN  CASE  WHEN %6 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %6 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %6 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_AMOUNTUNPAID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.HISTORICALRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCOUNT_D.GENERALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Used Payment Line Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN  CASE  WHEN %6 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %6 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %6 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_PAYMENTAMOUNTUSED", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.HISTORICALRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCOUNT_D.GENERALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Unused Payment Line Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN  CASE  WHEN %6 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %6 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %6 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_PAYMENTAMOUNTUNUSED", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.HISTORICALRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCOUNT_D.GENERALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Credit Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN  CASE  WHEN %6 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %6 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %6 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_CREDITAMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.HISTORICALRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCOUNT_D.GENERALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Debit Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN  CASE  WHEN %6 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %6 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %6 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.BASE_DEBITAMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.HISTORICALRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCOUNT_D.GENERALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "--------------------------------------Accounting Book Currency Amounts---------------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'N/A'"
+        }
+      }
+    }, {
+      "name" : "Accounting Book Credit Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.ACCOUNTINGBOOK_CREDIT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Accounting Book Debit Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.ACCOUNTINGBOOK_DEBIT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Accounting Book Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.ACCOUNTINGBOOK_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    }, {
+      "name" : "Accounting Book Net Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.ACCOUNTINGBOOK_NETAMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line" ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_NS_STATEMENT_CHARGE_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G_Header", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G_Header",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Date NetSuite Gregorian Calendar.Day", "logicalLevel:Core.Dim - NetSuite Currency.Detail", "logicalLevel:Core.Dim - NetSuite Exchange Rate Type.Detail", "logicalLevel:Core.Dim - NetSuite Accounting Period.Detail", "logicalLevel:Core.Dim - NetSuite Classification.Detail", "logicalLevel:Core.Dim - NetSuite Created By User.Detail", "logicalLevel:Core.Dim - NetSuite Statement Charge Status.Detail", "logicalLevel:Core.Dim - NetSuite Department.Detail", "logicalLevel:Core.Dim - NetSuite Customer.Detail", "logicalLevel:Core.Dim - NetSuite Entity.Detail", "logicalLevel:Core.Dim - NetSuite Fiscal Calendar.Fiscal Date", "logicalLevel:Core.Dim - NetSuite Location.Detail", "logicalLevel:Core.Dim - NetSuite Modified By User.Detail", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Header", "logicalLevel:Core.Dim - NetSuite Subsidiary.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_F.SUBSIDIARY", "variable:NetSuite - List of Subsidiaries.NETSUITE_SUBSIDIARY_LIST" ]
+      },
+      "distinctValues" : true
+    }, {
+      "name" : "Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCOUNT_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCOUNT_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Exchange Rate Type.Detail", "logicalLevel:Core.Dim - NetSuite Currency.Detail", "logicalLevel:Core.Dim - NetSuite Account.Detail", "logicalLevel:Core.Dim - NetSuite Accounting Book.Detail", "logicalLevel:Core.Dim - NetSuite Created By User.Detail", "logicalLevel:Core.Dim - NetSuite Statement Charge Details.Statement Charge Line", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Detail", "logicalLevel:Core.Dim - NetSuite Classification.Detail", "logicalLevel:Core.Dim - NetSuite Accounting Period.Detail", "logicalLevel:Core.Dim - NetSuite Cost Estimate Type.Detail", "logicalLevel:Core.Dim - NetSuite Customer.Detail", "logicalLevel:Core.Dim - NetSuite Department.Detail", "logicalLevel:Core.Dim - NetSuite Statement Charge Status.Detail", "logicalLevel:Core.Dim - NetSuite Entity.Detail", "logicalLevel:Core.Dim - NetSuite Fiscal Calendar.Fiscal Date", "logicalLevel:Core.Dim - NetSuite Expense Account.Detail", "logicalLevel:Core.Dim - NetSuite Item.Detail", "logicalLevel:Core.Dim - NetSuite Location.Detail", "logicalLevel:Core.Dim - NetSuite Modified By User.Detail", "logicalLevel:Core.Dim - NetSuite Subsidiary.Detail", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Merchandise Hierarchy Node", "logicalLevel:Core.Dim - Date NetSuite Gregorian Calendar.Day" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_STATEMENT_CHARGE_LINES_F.SUBSIDIARY", "variable:NetSuite - List of Subsidiaries.NETSUITE_SUBSIDIARY_LIST" ]
+      },
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date NetSuite Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Book Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Book",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Period",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Classification",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Cost Estimate Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Created By User",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Department",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Exchange Rate Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Expense Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Merchandise Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Modified By User",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Statement Charge Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Statement Charge Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Subsidiary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

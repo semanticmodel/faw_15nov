@@ -1,0 +1,95 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Service Request Milestone Status",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "SR Milestone Status Code" ],
+    "logicalColumns" : [ {
+      "name" : "SR Milestone Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL.CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL_PromptOnly.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "SR Milestone Status",
+      "dataType" : "VARCHAR",
+      "sortBy" : "SR Milestone Status Code",
+      "descriptorColumn" : "SR Milestone Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL_PromptOnly.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL_PromptOnly.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Service Request Milestone Status.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Service Request Milestone Status.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "SR Milestone Status Code" ],
+        "displayKey" : "SR Milestone Status Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Service Request Milestone Status",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,127 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Country (Role Playing)",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Country Code" ],
+    "logicalColumns" : [ {
+      "name" : "Country Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_COUNTRY_D_TL_DimOnly_RolePlaying",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_DimOnly_Roleplaying.COUNTRY" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_COUNTRY_D_TL_RolePlaying",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_Roleplaying.COUNTRY" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Country Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_COUNTRY_D_TL_DimOnly_RolePlaying",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_DimOnly_Roleplaying.COUNTRY_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_COUNTRY_D_TL_RolePlaying",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_Roleplaying.COUNTRY_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Security Context Code - HCM Country List",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_COUNTRY_D_TL_RolePlaying",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_CTR_Fact_Roleplaying.SEC_OBJ_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_COUNTRY_D_TL_DimOnly_RolePlaying",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_DimOnly_Roleplaying", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_CTR_Dim_Roleplaying_Country" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_DimOnly_Roleplaying",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_CTR_Dim_Roleplaying_Country",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Country (Role Playing).Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2) AND  INDEXCOL( VALUEOF(NQ_SESSION.%3), '-1', %4) =  INDEXCOL( VALUEOF(NQ_SESSION.%3), '-1', %5)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_DimOnly_Roleplaying.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "variable:Check Country Context Defined.HCM_CONT_SEC_DEFINED", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_DimOnly_Roleplaying.COUNTRY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_CTR_Dim_Roleplaying_Country.SEC_OBJ_MEMBER_VAL" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_COUNTRY_D_TL_RolePlaying",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_Roleplaying", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_CTR_Fact_Roleplaying" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_Roleplaying",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_HCM_CTR_Fact_Roleplaying",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Country (Role Playing).Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Country Code" ],
+        "displayKey" : "Country Name",
+        "additionalKeys" : [ [ "Country Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Country (Role Playing)",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

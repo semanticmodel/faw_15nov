@@ -1,0 +1,820 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - HCM - Person Profile",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Talent Profile Management" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Number Of Profiles",
+      "description" : "Number of  profiles",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF.PROFILE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number Of Workers With Profiles",
+      "description" : "Number of Workers with profiles",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF.PERSON_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number Of Active Profiles",
+      "description" : "Number of profiles with Profile status is Active",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'A')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Number Of Profiles", "logicalColumn:Core.Dim - Person Profile Details.Profile Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Workers With Active Profiles",
+      "description" : "Number of workers with profiles status is active",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'A')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Number Of Workers With Profiles", "logicalColumn:Core.Dim - Person Profile Details.Profile Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Percentage Of Active Proflies",
+      "description" : "Percentage of workers that have an active profile as against the total workers",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "100 * %1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Number Of Active Profiles", "logicalColumn:Core.Fact - HCM - Person Profile.Number Of Profiles" ]
+        }
+      }
+    }, {
+      "name" : "----------INTERNAL METRICS----------------------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Competencies",
+      "description" : "Number of competencies possessed by the worker",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_CMPTNCY_CRNT_F.CONTENT_ITEM_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Degrees",
+      "description" : "Number of degrees possessed by the worker",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_DEGREES_CRNT_F.CONTENT_ITEM_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Liscenses and Certifications",
+      "description" : "Number of licenses and certifications possessed by the worker",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_LIC_CERT_CRNT_F.CONTENT_ITEM_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Honors and Awards",
+      "description" : "Number of honours and awards possessed by the worker",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_HNR_AWARD_CRNT_F.CONTENT_ITEM_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Languages",
+      "description" : "Number of languages possessed by the worker",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_LANGUAGES_CRNT_F.CONTENT_ITEM_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Workers With Performance Rating",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_PERF_RTNG_CRNT_F.PERSON_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Workers With Potential Rating",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_POT_RTNG_CRNT_F.PERSON_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Workers With Risk Of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_RSK_LOSS_CRNT_F.PERSON_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Workers With Impact Of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_IMPC_LOSS_CRNT_F.PERSON_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "------------------DERIEVED METRICS---------------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Number Of Competencies",
+      "description" : "Number of competencies possessed by the worker",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Competencies", "logicalColumn:Core.Dim - Person Profile Competency.Content Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Degrees",
+      "description" : "Number of degrees possessed by the worker",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Degrees", "logicalColumn:Core.Dim - Person Profile Degrees.Content Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Licenses and Certifications",
+      "description" : "Number of licenses and certifications possessed by the worker",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Liscenses and Certifications", "logicalColumn:Core.Dim - Person Profile Liscenses and Certification.Content Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Honors and Awards",
+      "description" : "Number of honours and awards possessed by the worker",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Honors and Awards", "logicalColumn:Core.Dim - Person Profile Honors and Awards.Content Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Languages",
+      "description" : "Number of languages possessed by the worker",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Languages", "logicalColumn:Core.Dim - Person Profile Languages.Content Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Workers Willing To Relocate",
+      "description" : "Number of workers willing to re-locate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Number Of Workers With Profiles", "logicalColumn:Core.Dim - Person Profile Work Requirements.Willing To Relocate Indicator Code" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Workers Ready for Domestic Travel",
+      "description" : "Number of workers ready for domestic travel",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Number Of Workers With Profiles", "logicalColumn:Core.Dim - Person Profile Work Requirements.Domestic Travel Indicator Code" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Workers Ready for International Travel",
+      "description" : "Number of workers ready for international travel",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Number Of Workers With Profiles", "logicalColumn:Core.Dim - Person Profile Work Requirements.International Travel Indicator Code" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Workers Ready Now for Career Move",
+      "description" : "Number Of Workers Ready Now for Career Move",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'R')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Number Of Workers With Profiles", "logicalColumn:Core.Dim - Person Profile Career Preferences.Next Career Move Timing Code" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Workers With Performance Rating",
+      "description" : "Number of Workers with performance rating",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Workers With Performance Rating", "logicalColumn:Core.Dim - Person Profile Performance Ratings.Content Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Number Of High Performers",
+      "description" : "Workers rated as high performers",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Number Of Workers With Performance Rating", "logicalColumn:Core.Dim - Performance Rating.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Medium Performers",
+      "description" : "Workers rated as medium performers",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Medium'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Number Of Workers With Performance Rating", "logicalColumn:Core.Dim - Performance Rating.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Low Performers",
+      "description" : "Workers rated as low performers",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Number Of Workers With Performance Rating", "logicalColumn:Core.Dim - Performance Rating.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Workers With Potential Rating",
+      "description" : "Number of Workers with Potential Rating",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Workers With Potential Rating", "logicalColumn:Core.Dim - Person Profile Potential Ratings.Content Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Number Of High Potential",
+      "description" : "Workers rated as high potential",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Number Of Workers With Potential Rating", "logicalColumn:Core.Dim - Potential Rating.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Medium Potential",
+      "description" : "Workers rated as medium potential",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Medium'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Number Of Workers With Potential Rating", "logicalColumn:Core.Dim - Potential Rating.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Low Potential",
+      "description" : "Workers rated as low potential",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Number Of Workers With Potential Rating", "logicalColumn:Core.Dim - Potential Rating.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Workers With Risk Of Loss",
+      "description" : "Number of workers that are at risk of loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Workers With Risk Of Loss", "logicalColumn:Core.Dim - Person Profile Risk Of Loss.Content Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Workers With Impact Of Loss",
+      "description" : "Number of Workers with  impact of loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Person Profile.Workers With Impact Of Loss", "logicalColumn:Core.Dim - Person Profile Impact of Loss.Content Type Identifier" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_PRV_EMPMT_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_RSK_LOSS_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_SKILL_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_SPCL_PROJ_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_HNR_AWARD_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_LIC_CERT_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_PERF_RTNG_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_POT_RTNG_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_WRK_REQ_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_ADV_RDYNS_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_TLNT_SCOR_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_CAR_PREF_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_IMPC_LOSS_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_MEMBRSHIP_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_CMPTNCY_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_DEGREES_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_EDU_LEVEL_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_LANGUAGES_CRNT_F" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_ADV_RDYNS_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_LIC_CERT_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_IMPC_LOSS_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_POT_RTNG_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_PRV_EMPMT_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_SPCL_PROJ_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_CAR_PREF_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_LANGUAGES_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_PERF_RTNG_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_SKILL_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_RSK_LOSS_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_WRK_REQ_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_CMPTNCY_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_HNR_AWARD_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_EDU_LEVEL_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_DEGREES_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_MEMBRSHIP_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_PRSN_ASG_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_TLNT_SCOR_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Reporting Establishment.Details", "logicalLevel:Core.Dim - Organization Hierarchy.Detail", "logicalLevel:Core.Dim - Person Profile Talent Score.Detail", "logicalLevel:Core.Dim - Person Profile Impact of Loss.Detail", "logicalLevel:Core.Dim - Person Profile Adv Readiness.Detail", "logicalLevel:Core.Dim - Manager.Details", "logicalLevel:Core.Dim - Department.Detail", "logicalLevel:Core.Dim - Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - Manager Security.Detail", "logicalLevel:Core.Dim - Job.Details", "logicalLevel:Core.Dim - Person Profile Education Level.Detail", "logicalLevel:Core.Dim - Assignment Manager List.Detail", "logicalLevel:Core.Dim - Person Profile Languages.Detail", "logicalLevel:Core.Dim - Department Hierarchy.Detail", "logicalLevel:Core.Dim - HCM - HR Business Unit.Detail", "logicalLevel:Core.Dim - Country.Detail", "logicalLevel:Core.Dim - Person Profile Performance Ratings.Detail", "logicalLevel:Core.Dim - Person Profile Skills.Detail", "logicalLevel:Core.Dim - Person Profile Potential Ratings.Detail", "logicalLevel:Core.Dim - Legal Employer.Detail", "logicalLevel:Core.Dim - Person Profile Previous Employment.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Worker.Details", "logicalLevel:Core.Dim - Person Profile Risk Of Loss.Detail", "logicalLevel:Core.Dim - HCM - Bargaining Unit.Detail", "logicalLevel:Core.Dim - Manager Hierarchy.Detail", "logicalLevel:Core.Dim - Person Profile Degrees.Detail", "logicalLevel:Core.Dim - Person Profile Competency.Detail", "logicalLevel:Core.Dim - Position.Details", "logicalLevel:Core.Dim - Person Profile Liscenses and Certification.Detail", "logicalLevel:Core.Dim - Performance Rating.Detail", "logicalLevel:Core.Dim - Grade.Details", "logicalLevel:Core.Dim - Person Profile Special Projects.Detail", "logicalLevel:Core.Dim - Worker Location.Details", "logicalLevel:Core.Dim - Tenure Band.Detail", "logicalLevel:Core.Dim - Assignment Details.Details", "logicalLevel:Core.Dim - Worker Age Band.Detail", "logicalLevel:Core.Dim - Person Profile Details.Detail", "logicalLevel:Core.Dim - Potential Rating.Detail", "logicalLevel:Core.Dim - Person Profile Honors and Awards.Detail", "logicalLevel:Core.Dim - Person Profile Career Preferences.Detail", "logicalLevel:Core.Dim - Person Profile Work Requirements.Detail", "logicalLevel:Core.Dim - Person Profile Memberships.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_HCM_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "HCM_FACT_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_BUSINESSUNIT_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - HCM - HR Business Unit.Security Context Code - HCM Business Unit", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_DEPARTMENT_DATA",
+      "functionalGroup" : "HCM_FACT_DEPT",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_DEPARTMENT_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Department.Security Context Code - HCM Department", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_LEGAL_EMPLOYER_DATA",
+      "functionalGroup" : "HCM_FACT_LE",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_LEGAL_EMPLOYER_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Legal Employer.Security Context Code - HCM Legal Employer", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_LINE_MANAGER_DATA",
+      "functionalGroup" : "HCM_FACT_LM",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2) OR %3 =  VALUEOF(NQ_SESSION.%4)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Manager Security.Manager Identifier", "variable:Logged In HCM Person ID.HCM_PERSON_ID", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_VIEW_ALL_DATA",
+      "functionalGroup" : "HCM_FACT_ALL",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "1 = 1"
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_COUNTRY_DATA",
+      "functionalGroup" : "HCM_FACT_CTR",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_COUNTRY_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Country.Security Context Code - HCM Country List", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Assignment Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Assignment Manager List",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Country",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Department Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Department",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Grade",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Bargaining Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - HR Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Employer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Manager Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Manager Security",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Manager",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Organization Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Performance Rating",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Adv Readiness",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Career Preferences",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Competency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Degrees",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Education Level",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Honors and Awards",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Impact of Loss",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Languages",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Liscenses and Certification",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Memberships",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Performance Ratings",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Potential Ratings",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Previous Employment",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Risk Of Loss",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Skills",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Special Projects",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Talent Score",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Person Profile Work Requirements",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Position",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Potential Rating",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Reporting Establishment",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Tenure Band",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Worker Age Band",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Worker Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Worker",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

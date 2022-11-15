@@ -1,0 +1,352 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - HCM - Position Model Profile",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Talent Profile Management" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Number Of Position Model Profiles",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_POSITION_CRNT_EF.PROFILE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number Of Positions With Profiles",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_POSITION_CRNT_EF.POSITION_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number Of Profiles that Requires Travel",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Position Model Profile.Number Of Position Model Profiles", "logicalColumn:Core.Dim - Model Profile Work Requirements.Domestic Travel Indicator Code", "logicalColumn:Core.Dim - Model Profile Work Requirements.International Travel Indicator Code" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Profiles that Requires Relocation",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Position Model Profile.Number Of Position Model Profiles", "logicalColumn:Core.Dim - Model Profile Work Requirements.Willing To Relocate Indicator Code" ]
+        }
+      }
+    }, {
+      "name" : "----------INTERNAL METRICS----------------------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Competencies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_CMPTNCY_CRNT_F.CONTENT_ITEM_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Degrees",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_DEGREES_CRNT_F.CONTENT_ITEM_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Honors and Awards",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_HNR_AWARD_CRNT_F.CONTENT_ITEM_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Languages",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_LANGUAGES_CRNT_F.CONTENT_ITEM_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "License and Certifications",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_LIC_CERT_CRNT_F.CONTENT_ITEM_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Memberships",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_MEMBRSHIP_CRNT_F.CONTENT_ITEM_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "------------------DERIEVED METRICS---------------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Number Of Competencies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Position Model Profile.Competencies", "logicalColumn:Core.Dim - Model Profile Competency.Content Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Degrees",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Position Model Profile.Degrees", "logicalColumn:Core.Dim - Model Profile Degree.Content Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Honors and Awards",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Position Model Profile.Honors and Awards", "logicalColumn:Core.Dim - Model Profile Honors and Awards.Content Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Languages",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Position Model Profile.Languages", "logicalColumn:Core.Dim - Model Profile Languages.Content Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Number Of License and Certifications",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Position Model Profile.License and Certifications", "logicalColumn:Core.Dim - Model Profile License and Certifications.Content Type Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Number Of Memberships",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IS NULL )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Position Model Profile.Memberships", "logicalColumn:Core.Dim - Model Profile Memberships.Content Type Identifier" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_CMPTNCY_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_LANGUAGES_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_LIC_CERT_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_WRK_REQ_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_HNR_AWARD_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_MEMBRSHIP_CRNT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_POSITION_CRNT_EF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_DEGREES_CRNT_F" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_CMPTNCY_CRNT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_LANGUAGES_CRNT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_LIC_CERT_CRNT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_WRK_REQ_CRNT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_HNR_AWARD_CRNT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_MEMBRSHIP_CRNT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_ITEM_POSITION_CRNT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_POSN_DEGREES_CRNT_F",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Model Profile Competency.Detail", "logicalLevel:Core.Dim - Model Profile Degree.Detail", "logicalLevel:Core.Dim - Model Profile Languages.Detail", "logicalLevel:Core.Dim - Position.Details", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Model Profile Memberships.Detail", "logicalLevel:Core.Dim - Position Model Profile Details.Detail", "logicalLevel:Core.Dim - Model Profile Honors and Awards.Detail", "logicalLevel:Core.Dim - Model Profile License and Certifications.Detail", "logicalLevel:Core.Dim - Model Profile Work Requirements.Detail", "logicalLevel:Core.Dim - Date Enterprise Calendar.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Model Profile Competency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Model Profile Degree",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Model Profile Honors and Awards",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Model Profile Languages",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Model Profile License and Certifications",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Model Profile Memberships",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Model Profile Work Requirements",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Position Model Profile Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Position",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

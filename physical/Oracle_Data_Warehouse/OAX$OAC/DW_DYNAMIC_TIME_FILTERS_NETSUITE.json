@@ -1,0 +1,40 @@
+{
+  "physicalTable" : {
+    "name" : "DW_DYNAMIC_TIME_FILTERS_NETSUITE",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "select\r\n'NETSUITE' AS pillar,\r\n'01' as Calendar_Type,\r\n'Year' AS time_level,\r\nSUM(1)OVER(PARTITION BY b.fiscal_period_set_name ORDER BY b.fiscal_year_number DESC)AS time_seq,\r\nTO_CHAR(b.fiscal_year_name) AS time_value\r\nfrom\r\n(select distinct \r\nfiscalcalendar fiscal_period_set_name,\r\ntop_periodname fiscal_year_name, \r\nto_number(to_char(top_startdate,'yyyy')) fiscal_year_number, \r\ntop_startdate year_start_date, \r\ntop_enddate year_end_date, \r\ncase when trunc(sysdate) between top_startdate and top_enddate then 'Current' else null end current_fiscal_year_code\r\nfrom DW_NS_FISCALCALPERIOD_DH\r\n) a,\r\n(select distinct \r\nfiscalcalendar fiscal_period_set_name,\r\ntop_periodname fiscal_year_name, \r\nto_number(to_char(top_startdate,'yyyy')) fiscal_year_number, \r\ntop_startdate year_start_date, \r\ntop_enddate year_end_date, \r\ncase when trunc(sysdate) between top_startdate and top_enddate then 'Current' else null end current_fiscal_year_code\r\nfrom DW_NS_FISCALCALPERIOD_DH\r\n) b \r\nwhere a.fiscal_period_set_name=VALUEOF(NQ_SESSION.NETSUITE_SUBSIDIARY_CALENDAR) and a.fiscal_period_set_name = b.fiscal_period_set_name\r\nand a.current_fiscal_year_code = 'Current'\r\nAND b.fiscal_year_number BETWEEN a.fiscal_year_number - 19 AND a.fiscal_year_number\r\nUNION\r\nselect\r\n'NETSUITE' AS pillar,\r\n'01' as Calendar_Type,\r\n'Quarter' AS time_level,\r\nSUM(1)OVER(PARTITION BY b.fiscal_period_set_name ORDER BY b.runcount DESC)AS time_seq,\r\nTO_CHAR(b.fiscal_quarter_name) AS time_value\r\nfrom\r\n(select fiscal_period_set_name, fiscal_quarter_name, current_fiscal_quarter_code,\r\nCOUNT(1)OVER(PARTITION BY fiscal_period_set_name ORDER BY fiscal_period_set_name,quarter_start_date,quarter_end_date) runcount\r\nfrom\r\n(select distinct \r\nfiscalcalendar fiscal_period_set_name,\r\nlevel1_periodname fiscal_quarter_name, \r\nlevel1_startdate quarter_start_date, \r\nlevel1_enddate quarter_end_date, \r\ncase when trunc(sysdate) between level1_startdate and level1_enddate then 'Current' else null end current_fiscal_quarter_code\r\nfrom DW_NS_FISCALCALPERIOD_DH\r\n)\r\n) a,\r\n(select fiscal_period_set_name, fiscal_quarter_name, current_fiscal_quarter_code,\r\nCOUNT(1)OVER(PARTITION BY fiscal_period_set_name ORDER BY fiscal_period_set_name,quarter_start_date,quarter_end_date) runcount\r\nfrom\r\n(select distinct \r\nfiscalcalendar fiscal_period_set_name,\r\nlevel1_periodname fiscal_quarter_name, \r\nlevel1_startdate quarter_start_date, \r\nlevel1_enddate quarter_end_date, \r\ncase when trunc(sysdate) between level1_startdate and level1_enddate then 'Current' else null end current_fiscal_quarter_code\r\nfrom DW_NS_FISCALCALPERIOD_DH\r\n)\r\n) b \r\nwhere a.fiscal_period_set_name=VALUEOF(NQ_SESSION.NETSUITE_SUBSIDIARY_CALENDAR) and a.fiscal_period_set_name = b.fiscal_period_set_name\r\nand a.current_fiscal_quarter_code = 'Current'\r\nAND b.runcount BETWEEN a.runcount - 19 AND a.runcount\r\nUNION\r\nselect\r\n'NETSUITE' AS pillar,\r\n'01' as Calendar_Type,\r\n'Month' AS time_level,\r\nSUM(1)OVER(PARTITION BY b.fiscal_period_set_name ORDER BY b.runcount DESC)AS time_seq,\r\nTO_CHAR(b.fiscal_month_name) AS time_value\r\nfrom\r\n(select fiscal_period_set_name, fiscal_month_name, current_fiscal_month_code,\r\nCOUNT(1)OVER(PARTITION BY fiscal_period_set_name ORDER BY fiscal_period_set_name,month_start_date,month_end_date) runcount\r\nfrom\r\n(select distinct \r\nfiscalcalendar fiscal_period_set_name,\r\nlevel2_periodname fiscal_month_name, \r\nlevel2_startdate month_start_date, \r\nlevel2_enddate month_end_date, \r\ncase when trunc(sysdate) between level2_startdate and level2_enddate then 'Current' else null end current_fiscal_month_code\r\nfrom DW_NS_FISCALCALPERIOD_DH\r\n)\r\n) a,\r\n(select fiscal_period_set_name, fiscal_month_name, current_fiscal_month_code,\r\nCOUNT(1)OVER(PARTITION BY fiscal_period_set_name ORDER BY fiscal_period_set_name,month_start_date,month_end_date) runcount\r\nfrom\r\n(select distinct \r\nfiscalcalendar fiscal_period_set_name,\r\nlevel2_periodname fiscal_month_name, \r\nlevel2_startdate month_start_date, \r\nlevel2_enddate month_end_date, \r\ncase when trunc(sysdate) between level2_startdate and level2_enddate then 'Current' else null end current_fiscal_month_code\r\nfrom DW_NS_FISCALCALPERIOD_DH\r\n)\r\n) b \r\nwhere a.fiscal_period_set_name=VALUEOF(NQ_SESSION.NETSUITE_SUBSIDIARY_CALENDAR) and a.fiscal_period_set_name = b.fiscal_period_set_name\r\nand a.current_fiscal_month_code = 'Current'\r\nAND b.runcount BETWEEN a.runcount - 19 AND a.runcount\r\nUNION\r\nSELECT DISTINCT\r\n    'NETSUITE' AS pillar,\r\n    '02' as Calendar_Type,\r\n    'Year' AS time_level,\r\n     ROW_NUMBER() OVER(\r\n        ORDER BY\r\n            b.cal_year_id DESC\r\n    )AS time_seq,\r\n    TO_CHAR(b.cal_year_id)AS time_value\r\nFROM\r\n    dw_year_d a,\r\n    dw_year_d b\r\nWHERE \r\n    a.current_cal_year_code = 'Current'\r\n    AND\r\n    b.cal_year_id BETWEEN a.cal_year_id - 19 AND a.cal_year_id\r\nUNION\r\nSELECT  \r\n    'NETSUITE' AS pillar,\r\n    '02' as Calendar_Type,\r\n    'Quarter' AS time_level,\r\n     ROW_NUMBER() OVER(\r\n        ORDER BY\r\n            b.cal_quarter_code DESC\r\n    )AS time_seq,\r\n    b.cal_quarter_code AS time_value\r\nFROM\r\n\r\n     (\r\n        SELECT\r\n            cal_quarter_code ,\r\n            current_cal_qtr_code,\r\n            (COUNT(1)OVER(\r\n                    ORDER BY\r\n                    cal_year_id,cal_quarter_code\r\n            ))AS run_count\r\n        FROM\r\n            dw_quarter_d\r\n    )a,\r\n    (SELECT\r\n            cal_quarter_code ,\r\n            current_cal_qtr_code,\r\n            (COUNT(1)OVER(\r\n                    ORDER BY\r\n                    cal_year_id,cal_quarter_code\r\n            ))AS run_count\r\n        FROM\r\n            dw_quarter_d\r\n        \r\n    )b\r\n       \r\n    WHERE a.current_cal_qtr_code = 'Current'\r\n    AND b.run_count BETWEEN a.run_count - 19 AND a.run_count\r\nUNION\r\nSELECT  \r\n    'NETSUITE' AS pillar,\r\n    '02' as Calendar_Type,\r\n    'Month' AS time_level,\r\n     ROW_NUMBER() OVER(\r\n        ORDER BY\r\n            b.cal_month_start_date DESC\r\n    )AS time_seq,\r\n    b.cal_month_code AS time_value\r\nFROM\r\n\r\n     (\r\n        SELECT\r\n            cal_month_start_date ,\r\n            current_cal_month_code,\r\n             cal_month_code,\r\n            (COUNT(1)OVER(\r\n                    ORDER BY\r\n                    cal_year_id,cal_month_start_date\r\n            ))AS run_count\r\n        FROM\r\n            dw_month_d\r\n    )a,\r\n    (SELECT\r\n            cal_month_start_date ,\r\n            current_cal_month_code,\r\n            cal_month_code,\r\n            (COUNT(1)OVER(\r\n                    ORDER BY\r\n                    cal_year_id,cal_month_start_date\r\n            ))AS run_count\r\n        FROM\r\n            dw_month_d\r\n        \r\n    )b\r\n       \r\n    WHERE a.current_cal_month_code = 'Current'\r\n    AND b.run_count BETWEEN a.run_count - 19 AND a.run_count"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "PILLAR",
+      "dataType" : "VARCHAR",
+      "length" : 10,
+      "nullable" : false
+    }, {
+      "name" : "TIME_LEVEL",
+      "dataType" : "VARCHAR",
+      "length" : 10,
+      "nullable" : false
+    }, {
+      "name" : "TIME_SEQ",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "TIME_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 20,
+      "nullable" : false
+    }, {
+      "name" : "CALENDAR_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 2,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    }
+  }
+}

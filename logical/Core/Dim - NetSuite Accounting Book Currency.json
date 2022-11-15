@@ -1,0 +1,85 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - NetSuite Accounting Book Currency",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Accounting Book Currency Key" ],
+    "logicalColumns" : [ {
+      "name" : "Accounting Book Currency Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_ACCCTBOOKCURRENCY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCCTBOOKCURRENCY_D.ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Accounting Book Currency Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_ACCCTBOOKCURRENCY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCCTBOOKCURRENCY_D.NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Accounting Book Currency Symbol",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_ACCCTBOOKCURRENCY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCCTBOOKCURRENCY_D.SYMBOL" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_NS_ACCCTBOOKCURRENCY_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ACCCTBOOKCURRENCY_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Accounting Book Currency Key" ],
+        "displayKey" : "Accounting Book Currency Key"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "NetSuite Accounting Book Currency",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

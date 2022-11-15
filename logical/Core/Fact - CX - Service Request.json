@@ -1,0 +1,1173 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - CX - Service Request",
+    "tags" : [ "Project:Fusion Analytics Warehouse - B2B Service Analytics" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Raw # of SRs",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.SERVICE_REQUEST_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.Raw # of SRs", "logicalColumn:Core.Fact - CX - Service Request.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Critical SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Critical Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of In Progress SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_INPROGRESS')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Status Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of In Progress Critical SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_INPROGRESS' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Status Type Code", "logicalColumn:Core.Fact - CX - Service Request.Critical Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of New SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_NEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Status Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of New Critical SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_NEW' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Status Type Code", "logicalColumn:Core.Fact - CX - Service Request.Critical Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Open SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('ORA_SVC_INPROGRESS', 'ORA_SVC_NEW', 'ORA_SVC_WAITING'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Status Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Open Critical SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('ORA_SVC_INPROGRESS', 'ORA_SVC_NEW', 'ORA_SVC_WAITING') AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Status Type Code", "logicalColumn:Core.Fact - CX - Service Request.Critical Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of SRs Pending Agent Action",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('ORA_SVC_INPROGRESS', 'ORA_SVC_NEW') AND %3 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Status Type Code", "logicalColumn:Core.Fact - CX - Service Request.Assignee Resource Identifier" ]
+        }
+      }
+    }, {
+      "name" : "# of Unassigned SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Assignee Resource Identifier" ]
+        }
+      }
+    }, {
+      "name" : "# of Waiting SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('ORA_SVC_WAITING'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Status Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Waiting Critical SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('ORA_SVC_WAITING') AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Status Type Code", "logicalColumn:Core.Fact - CX - Service Request.Critical Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Closed SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_CLOSED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Status Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Closed Critical SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of Closed SRs", "logicalColumn:Core.Fact - CX - Service Request.Critical Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Resolved SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_RESOLVED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Status Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Resolved Critical SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of Resolved SRs", "logicalColumn:Core.Fact - CX - Service Request.Critical Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Reopened SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <>  TO_DATETIME('01/01/1901 00:00', 'dd/mm/yyyy hh:mi'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Last Reopen Timestamp" ]
+        }
+      }
+    }, {
+      "name" : "# of Low Severity SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV3')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Medium Severity SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV2')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "# of High Severity SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV1')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Open High Severity Critical SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('ORA_SVC_INPROGRESS', 'ORA_SVC_NEW', 'ORA_SVC_WAITING') AND %3 = 'ORA_SVC_SEV1' AND %4 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Status Type Code", "logicalColumn:Core.Fact - CX - Service Request.Severity Code", "logicalColumn:Core.Fact - CX - Service Request.Critical Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of SRs Resolved in under 24 hrs",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('ORA_SVC_RESOLVED', 'ORA_SVC_CLOSED') AND %2 <>  TO_DATETIME('01/01/1901 00:00', 'dd/mm/yyyy hh:mi') AND %3 = 'N' AND 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %4, %2) / 60.0d < 24 THEN %5 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.STATUS_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.LAST_RESOLVED_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.SERVICE_REQUEST_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of SRs Resolved in 24-48 hrs",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('ORA_SVC_RESOLVED', 'ORA_SVC_CLOSED') AND %2 <>  TO_DATETIME('01/01/1901 00:00', 'dd/mm/yyyy hh:mi') AND %3 = 'N' AND 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %4, %2) / 60.0d BETWEEN 24 AND 48 THEN %5 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.STATUS_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.LAST_RESOLVED_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.SERVICE_REQUEST_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Initial Resource Assigned SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <>  TO_DATETIME('01/01/1901 00:00', 'dd/mm/yyyy hh:mi'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Initial Resource Assign Timestamp" ]
+        }
+      }
+    }, {
+      "name" : "Average # of Reopened SRs",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.Internal - # of Resolved Closed SRs", "logicalColumn:Core.Fact - CX - Service Request.# of Reopened SRs" ]
+        }
+      }
+    }, {
+      "name" : "% Reopened SRs",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE 100.0d *  CAST (%2 AS DOUBLE PRECISION ) / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of Closed SRs", "logicalColumn:Core.Fact - CX - Service Request.Internal - # of Reopened Closed SRs" ]
+        }
+      }
+    }, {
+      "name" : "SR Resolution Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "100.0d *  CASE  WHEN %1 > 0 THEN (%2 + %3) / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.# of Resolved SRs", "logicalColumn:Core.Fact - CX - Service Request.# of Closed SRs" ]
+        }
+      }
+    }, {
+      "name" : "SR Resolution Rate (Monthly)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "100.0d *  CASE  WHEN %1 > 0 THEN (%2 + %3) / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.# of Resolved SRs", "logicalColumn:Core.Fact - CX - Service Request.# of Closed SRs" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - CX - Date - Service Request Open Date Gregorian Calendar.Month" ]
+      }
+    }, {
+      "name" : "Month Ago SR Resolution Rate (Monthly)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "100.0d *  AGO(%1, %2, 1)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.SR Resolution Rate (Monthly)", "logicalLevel:Core.Dim - CX - Date - Service Request Open Date Gregorian Calendar.Month" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - CX - Date - Service Request Open Date Gregorian Calendar.Month" ]
+      }
+    }, {
+      "name" : "SR Resolution Velocity Rate (Monthly)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1.0d * (%1 - %2) / %2 * 100",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.SR Resolution Rate (Monthly)", "logicalColumn:Core.Fact - CX - Service Request.Month Ago SR Resolution Rate (Monthly)" ]
+        }
+      }
+    }, {
+      "name" : "Open SR Age (Days)",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('ORA_SVC_NEW', 'ORA_SVC_INPROGRESS', 'ORA_SVC_WAITING') AND %2 = 'N' THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %3,  CURRENT_DATE ) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.STATUS_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Open SR Age (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of Open SRs", "logicalColumn:Core.Fact - CX - Service Request.Open SR Age (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Total Time to Assign to Resource (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <>  TO_DATETIME('01/01/1901 00:00', 'dd/mm/yyyy hh:mi') AND %2 = 'N' THEN 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %3, %1) / 1440.0d END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.INITIAL_RESOURCE_ASSIGN_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Time to Assign to Resource (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <>  TO_DATETIME('01/01/1901 00:00', 'dd/mm/yyyy hh:mi') AND %2 = 'N' THEN 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %3, %1) / 60.0d END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.INITIAL_RESOURCE_ASSIGN_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Time to Assign to Resource (Mins)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <>  TO_DATETIME('01/01/1901 00:00', 'dd/mm/yyyy hh:mi') AND %2 = 'N' THEN 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %3, %1) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.INITIAL_RESOURCE_ASSIGN_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Time to Assign to Queue (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <>  TO_DATETIME('01/01/1901 00:00', 'dd/mm/yyyy hh:mi') AND %2 = 'N' THEN 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %3, %1) / 1440.0d END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.INITIAL_QUEUE_ASSIGN_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Time to Assign to Queue (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <>  TO_DATETIME('01/01/1901 00:00', 'dd/mm/yyyy hh:mi') AND %2 = 'N' THEN 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %3, %1) / 60.0d END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.INITIAL_QUEUE_ASSIGN_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Time to Assign to Queue (Mins)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <>  TO_DATETIME('01/01/1901 00:00', 'dd/mm/yyyy hh:mi') AND %2 = 'N' THEN 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %3, %1) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.INITIAL_QUEUE_ASSIGN_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Time to Close (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_SVC_CLOSED' AND %2 = 'N' THEN 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %3, %4) / 1440.0d END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.STATUS_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.CLOSED_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Time to Close (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_SVC_CLOSED' AND %2 = 'N' THEN 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %3, %4) / 60.0d END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.STATUS_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.CLOSED_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Time to Close (Mins)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'ORA_SVC_CLOSED' AND %2 = 'N' THEN 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %3, %4) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.STATUS_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.CLOSED_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Time to Resolve (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('ORA_SVC_RESOLVED', 'ORA_SVC_CLOSED') AND %2 <>  TO_DATETIME('01/01/1901 00:00', 'dd/mm/yyyy hh:mi') AND %3 = 'N' THEN 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %4, %2) / 1440.0d END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.STATUS_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.LAST_RESOLVED_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Time to Resolve (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('ORA_SVC_RESOLVED', 'ORA_SVC_CLOSED') AND %2 <>  TO_DATETIME('01/01/1901 00:00', 'dd/mm/yyyy hh:mi') AND %3 = 'N' THEN 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %4, %2) / 60.0d END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.STATUS_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.LAST_RESOLVED_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Time to Resolve (Mins)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IN ('ORA_SVC_RESOLVED', 'ORA_SVC_CLOSED') AND %2 <>  TO_DATETIME('01/01/1901 00:00', 'dd/mm/yyyy hh:mi') AND %3 = 'N' THEN 1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %4, %2) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.STATUS_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.LAST_RESOLVED_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Time to Assign to Resource (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1.0d * %1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.Total Time to Assign to Resource (Days)", "logicalColumn:Core.Fact - CX - Service Request.# of Initial Resource Assigned SRs" ]
+        }
+      }
+    }, {
+      "name" : "Average Time to Assign to Resource (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1.0d * %1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.Total Time to Assign to Resource (Hours)", "logicalColumn:Core.Fact - CX - Service Request.# of Initial Resource Assigned SRs" ]
+        }
+      }
+    }, {
+      "name" : "Average Time to Assign to Resource (Mins)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1.0d * %1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.Total Time to Assign to Resource (Mins)", "logicalColumn:Core.Fact - CX - Service Request.# of Initial Resource Assigned SRs" ]
+        }
+      }
+    }, {
+      "name" : "Average Time to Close (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of Closed SRs", "logicalColumn:Core.Fact - CX - Service Request.Total Time to Close (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Average Time to Close (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of Closed SRs", "logicalColumn:Core.Fact - CX - Service Request.Total Time to Close (Hours)" ]
+        }
+      }
+    }, {
+      "name" : "Average Time to Close (Mins)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of Closed SRs", "logicalColumn:Core.Fact - CX - Service Request.Total Time to Close (Mins)" ]
+        }
+      }
+    }, {
+      "name" : "Average Time to Resolve (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.Internal - # of Resolved Closed SRs", "logicalColumn:Core.Fact - CX - Service Request.Total Time to Resolve (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Average Time to Resolve (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.Internal - # of Resolved Closed SRs", "logicalColumn:Core.Fact - CX - Service Request.Total Time to Resolve (Hours)" ]
+        }
+      }
+    }, {
+      "name" : "Average Time to Resolve (Mins)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.Internal - # of Resolved Closed SRs", "logicalColumn:Core.Fact - CX - Service Request.Total Time to Resolve (Mins)" ]
+        }
+      }
+    }, {
+      "name" : "-------- Service request Transfer Metrics--------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "# of SRs Transferred",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Service Request Transfer Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Transfers",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.Internal - Service Request Transfer Count", "logicalColumn:Core.Dim - CX - Service Request.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "% SRs Transferred",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 1 THEN 100.0d *  CAST (%2 AS DOUBLE PRECISION ) /  NULLIF(%1, 0) END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.# of SRs Transferred" ]
+        }
+      }
+    }, {
+      "name" : "Average # of Transfers",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d *  CAST (%2 AS DOUBLE PRECISION ) /  NULLIF(%1, 0) END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs Transferred", "logicalColumn:Core.Fact - CX - Service Request.# of Transfers" ]
+        }
+      }
+    }, {
+      "name" : "-------- Filter --------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Critical Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.CRITICAL_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Status Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.STATUS_TYPE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Severity Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.SEVERITY_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Last Resolved Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.LAST_RESOLVED_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Open Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Assignee Resource Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.ASSIGNEE_RESOURCE_PARTY_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Internal - # of Reopened Closed SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_CLOSED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of Reopened SRs", "logicalColumn:Core.Fact - CX - Service Request.Status Type Code" ]
+        }
+      }
+    }, {
+      "name" : "Internal - # of Resolved Closed SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('ORA_SVC_RESOLVED', 'ORA_SVC_CLOSED'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request.# of SRs", "logicalColumn:Core.Fact - CX - Service Request.Status Type Code" ]
+        }
+      }
+    }, {
+      "name" : "Last Reopen Timestamp",
+      "dataType" : "TIMESTAMP",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.LAST_REOPEN_TIMESTAMP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Initial Resource Assign Timestamp",
+      "dataType" : "TIMESTAMP",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.INITIAL_RESOURCE_ASSIGN_TIMESTAMP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Open Timestamp",
+      "dataType" : "TIMESTAMP",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.OPEN_TIMESTAMP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Last Resolved Timestamp",
+      "dataType" : "TIMESTAMP",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.LAST_RESOLVED_TIMESTAMP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Service Request Transfer Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.TRANSFER_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Service Request Deleted Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.DELETED_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Internal - Service Request Transfer Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.TRANSFER_COUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CXSR_SERVICE_REQUESTS_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Date - Service Request Open Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Service Request Resolution Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Service Stripe.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Last Reopen Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Service Request Close Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Service Request Channel Type.Detail", "logicalLevel:Core.Dim - CX - Service Request Resolution.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - CX - Service Request Owner Type.Detail", "logicalLevel:Core.Dim - CX - Service Request Status Type.Detail", "logicalLevel:Core.Dim - CX - Service Request Status.Detail", "logicalLevel:Core.Dim - CX - Security - Service Request Access Group.Detail", "logicalLevel:Core.Dim - CX - Service Request.Detail", "logicalLevel:Core.Dim - CX - Service Channel.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Resolution Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Service Request Source.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Last Reopen Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Open Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Service Product.Detail", "logicalLevel:Core.Dim - CX - Sales Product.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Primary Contact.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Last Transfer Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Close Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Security - Account.Detail", "logicalLevel:Core.Dim - CX - Service Queue.Detail", "logicalLevel:Core.Dim - CX - Resource - Service Request Assignee.Detail", "logicalLevel:Core.Dim - CX - Service Request Problem.Detail", "logicalLevel:Core.Dim - CX - Service Category.Detail", "logicalLevel:Core.Dim - CX - Service Request Severity.Detail", "logicalLevel:Core.Dim - CX - Service Request Priority.Detail", "logicalLevel:Core.Dim - CX - Service Request Resolution Outcome.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Last Transfer Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Service Request Transfer Reason.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'ORA_SVC_CRM'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_SERVICE_REQUESTS_F.STRIPE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_CX_SALES_ACCNT_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Account.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SERVICE_REQUEST_ALL_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "1 = 1"
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SERVICE_REQUEST_CUSTOM_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Service Request Access Group.Security Enabled Flag" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Close Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Close Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Last Reopen Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Last Reopen Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Last Transfer Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Last Transfer Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Open Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Open Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Resolution Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Resolution Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Service Request Assignee",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Product",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Account",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Service Request Access Group",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Channel",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Product",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Queue",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Channel Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Owner Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Priority",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Problem",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Resolution Outcome",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Resolution",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Severity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Source",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Status Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Transfer Reason",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Stripe",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

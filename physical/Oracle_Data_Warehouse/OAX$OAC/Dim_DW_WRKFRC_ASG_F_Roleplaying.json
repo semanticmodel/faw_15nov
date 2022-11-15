@@ -1,0 +1,47 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_WRKFRC_ASG_F_Roleplaying",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_WRKFRC_ASG_F",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Source_Asg_Roleplaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) >= %4 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) <= %5 AND %6 = 'Y'",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Source_Asg_Roleplaying.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Roleplaying.SOURCE_ASSIGNMENT_ID",
+            "variable:Gregorian Calendar - Current Gregorian Day.CURRENT_GREGORIAN_DAY",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Source_Asg_Roleplaying.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Source_Asg_Roleplaying.EFFECTIVE_END_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Source_Asg_Roleplaying.EFFECTIVE_LATEST_CHANGE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SERVICE_PERIOD_D_Roleplaying",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Roleplaying.PERIOD_OF_SERVICE_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SERVICE_PERIOD_D_Roleplaying.PERIOD_OF_SERVICE_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "ASSIGNMENT_ID",
+        "EFFECTIVE_END_DATE",
+        "EFFECTIVE_LATEST_CHANGE",
+        "EFFECTIVE_SEQUENCE",
+        "EFFECTIVE_START_DATE"
+      ],
+      [
+        "ASSIGNMENT_ID"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,72 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Security - Opportunity",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Opportunity ID" ],
+    "logicalColumns" : [ {
+      "name" : "Opportunity ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Security_SEC_SECURE_BY_OPPORTUNITY_CX_SALES",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OPPORTUNITY_CX_SALES.OPPORTUNITY_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Security Enabled Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Security_SEC_SECURE_BY_OPPORTUNITY_CX_SALES",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OPPORTUNITY_CX_SALES.SECURITY_ENABLE_FLG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Security_SEC_SECURE_BY_OPPORTUNITY_CX_SALES",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OPPORTUNITY_CX_SALES" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Security - Opportunity.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Opportunity ID" ],
+        "displayKey" : "Opportunity ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Security - Opportunity",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,24 @@
+{
+  "initBlock" : {
+    "name" : "HCM Login Role",
+    "description" : "Returns values \r\n3 - View All Data role\r\n2 - Is a line Manager\r\n1 -  Atleast One of the context is defined and has one of the Data Roles (BU/Dept/LE) and not a line Manager\r\n0 - no context and no functional roles",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Absence Management", "Project:Fusion Analytics Warehouse - Diversity Analysis", "Project:Fusion Analytics Warehouse - Expense Management", "Project:Fusion Analytics Warehouse - Expense Management - Skeleton", "Project:Fusion Analytics Warehouse - Goals and Career Development", "Project:Fusion Analytics Warehouse - Journeys", "Project:Fusion Analytics Warehouse - Learning Management", "Project:Fusion Analytics Warehouse - Learning Management - Skeleton", "Project:Fusion Analytics Warehouse - Payroll Management", "Project:Fusion Analytics Warehouse - Performance Management and Check-ins", "Project:Fusion Analytics Warehouse - Profile Matching", "Project:Fusion Analytics Warehouse - Salary Basis", "Project:Fusion Analytics Warehouse - Succession Management", "Project:Fusion Analytics Warehouse - Talent Acquisition", "Project:Fusion Analytics Warehouse - Talent Profile Management", "Project:Fusion Analytics Warehouse - Talent Review", "Project:Fusion Analytics Warehouse - Time and Labor", "Project:Fusion Analytics Warehouse - Workforce Compensation", "Project:Fusion Analytics Warehouse - Workforce Management" ],
+    "type" : "SESSION",
+    "connectionPool" : "connectionPool:Oracle_Data_Warehouse.Oracle_Data_Warehouse_Repository_Initblocks_Connection_Pool",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT\r\n  CASE\r\n    WHEN (Instr('VALUEOF(NQ_SESSION.ROLES)', 'OA4F_HCM_VIEW_ALL_DATA') > 0 OR Instr('VALUEOF(NQ_SESSION.ROLES)', 'OA4F_HCM_VIEW_ALL_DATA') > 0) \r\n    THEN 3\r\n    ELSE\r\n      CASE\r\n        WHEN Instr('VALUEOF(NQ_SESSION.ROLES)', 'OA4F_HCM_LINE_MANAGER_DATA') > 0\r\n        THEN 2\r\n        ELSE\r\n          CASE\r\n            WHEN (VALUEOF(NQ_SESSION.HCM_CONTEXT_SEC_DEFINED) = 1\r\n            AND ('VALUEOF(NQ_SESSION.ROLES)' LIKE '%OA4F_HCM_BUSINESS_UNIT_DATA%'\r\n            OR 'VALUEOF(NQ_SESSION.ROLES)' LIKE '%OA4F_HCM_DEPARTMENT_DATA%'\r\n            OR 'VALUEOF(NQ_SESSION.ROLES)' LIKE '%OA4F_HCM_LEGAL_EMPLOYER_DATA%'))\r\n            THEN 1              \r\n            ELSE 0\r\n          END\r\n      END\r\n  END\r\nFROM dual "
+    } ],
+    "variables" : [ {
+      "name" : "HCM_LOGIN_ROLE",
+      "value" : "0",
+      "enableUsersToSetValue" : false,
+      "securitySensitive" : false
+    } ],
+    "dependencies" : [ "Check Context Security is defined" ],
+    "disable" : false,
+    "queryReturnsVariableNamesAndValues" : false,
+    "allowDeferredExecution" : true,
+    "cacheQueryResult" : true
+  }
+}

@@ -1,0 +1,88 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Revenue Category",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Revenue Category Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Revenue Category Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_RBS_REVENUE_CATEGORY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_REVENUE_CATEGORY_D.REVENUE_CATEGORY_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Revenue Category Detail"
+    }, {
+      "name" : "Revenue Category",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Revenue Category Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_RBS_REVENUE_CATEGORY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_REVENUE_CATEGORY_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_REVENUE_CATEGORY_D.REVENUE_CATEGORY_NAME", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Revenue Category Detail"
+    }, {
+      "name" : "Revenue Category Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_RBS_REVENUE_CATEGORY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_REVENUE_CATEGORY_D.REVENUE_CATEGORY_NAME" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_RBS_REVENUE_CATEGORY_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_REVENUE_CATEGORY_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Revenue Category.Revenue Category Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "All",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "All",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Revenue Category Detail",
+        "numberOfElements" : 20,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Revenue Category Identifier" ],
+        "displayKey" : "Revenue Category",
+        "additionalKeys" : [ [ "Revenue Category" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Revenue Category",
+        "levels" : [ "All", "Revenue Category Detail" ]
+      } ]
+    }
+  }
+}

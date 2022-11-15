@@ -1,0 +1,119 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Subscription Payment Term",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Subscription Payment Term Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Subscription Payment Term Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PAYMENT_TERMS_D_TL_Subscription_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYMENT_TERMS_D_TL_Subscription_PromptOnly.PAYMENT_TERMS_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PAYMENT_TERMS_D_TL_Subscription",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYMENT_TERMS_D_TL_Subscription.PAYMENT_TERMS_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Subscription Payment Term Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Subscription Payment Term Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PAYMENT_TERMS_D_TL_Subscription_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 64 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYMENT_TERMS_D_TL_Subscription_PromptOnly.PAYMENT_TERM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYMENT_TERMS_D_TL_Subscription_PromptOnly.PAYMENT_TERMS_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PAYMENT_TERMS_D_TL_Subscription",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 64 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYMENT_TERMS_D_TL_Subscription.PAYMENT_TERM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYMENT_TERMS_D_TL_Subscription.PAYMENT_TERMS_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Subscription Payment Term Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Subscription Payment Term Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PAYMENT_TERMS_D_TL_Subscription_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 64 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYMENT_TERMS_D_TL_Subscription_PromptOnly.PAYMENT_TERM_DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYMENT_TERMS_D_TL_Subscription_PromptOnly.PAYMENT_TERMS_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PAYMENT_TERMS_D_TL_Subscription",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 64 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYMENT_TERMS_D_TL_Subscription.PAYMENT_TERM_DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYMENT_TERMS_D_TL_Subscription.PAYMENT_TERMS_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_PAYMENT_TERMS_D_TL_Subscription_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYMENT_TERMS_D_TL_Subscription_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Subscription Payment Term.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYMENT_TERMS_D_TL_Subscription_PromptOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_PAYMENT_TERMS_D_TL_Subscription",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAYMENT_TERMS_D_TL_Subscription" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Subscription Payment Term.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Subscription Payment Term Identifier" ],
+        "displayKey" : "Subscription Payment Term Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Subscription Payment Term",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

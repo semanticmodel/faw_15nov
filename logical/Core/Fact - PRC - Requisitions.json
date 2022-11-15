@@ -1,0 +1,1111 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - PRC - Requisitions",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Purchasing", "Project:Fusion Analytics Warehouse - Requisition" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Requisition Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Quantity Value", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Requisition Quantity Value",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.DISTRIBUTION_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Requisition Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_HEADER_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Requisition Line Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.LINE_PARENT_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Rejected Requisition Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'REJECTED' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_DOCUMENT_STATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_HEADER_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Rejected Requisition Lines Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' AND %2 = 'REJECTED' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.LINE_PARENT_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_DOCUMENT_STATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Pending Approval Requisition Lines Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' AND %2 = 'PENDING APPROVAL' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.LINE_PARENT_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_LINE_STATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unprocessed Requisition Lines Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' AND %2 = 'N' AND %3 = 'EXTERNAL' THEN %4 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.LINE_PARENT_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.PROCESSED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.SOURCE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Approved Requisition Lines Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' AND %2 = 'APPROVED' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.LINE_PARENT_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_LINE_STATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Processed Requisition Lines Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' AND %2 = 'Y' AND %3 = 'EXTERNAL' THEN %4 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.LINE_PARENT_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.PROCESSED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.SOURCE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unfulfilled Requisition Lines Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' AND %2 = 'N' AND %3 = 'Y' AND %4 = 'EXTERNAL' THEN %5 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.LINE_PARENT_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.FULFILLED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.PROCESSED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.SOURCE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Fulfilled Requisition Lines Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' AND %2 = 'Y' AND %3 = 'EXTERNAL' THEN %4 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.LINE_PARENT_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.FULFILLED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.SOURCE_TYPE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Requisition Approval Cycle Time Days",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQ_APPROVAL_CYCLE_TIME" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Requisition Distribution Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Requisition Header Details",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "PR to PO Cycle Time Value",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQ_PROCESS_CYCLE_TIME" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Requisition Distribution Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Requisition Line Details",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "PR to PO Cycle Time",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.PR to PO Cycle Time Value", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.External Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Fulfilled Cycle Time Days Value",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQ_SUBMIT_TO_FULFIL_TIME" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Requisition Distribution Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Requisition Line Details",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Fulfilled Cycle Time Days",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'Y' AND %4 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Fulfilled Cycle Time Days Value", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Fulfilled Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.External Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Requisition Approval to PO Fulfillment Time Value",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQ_APPROVAL_TO_FULFIL_TIME" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Requisition Distribution Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Requisition Line Details",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Requisition Approval to PO Fulfillment Time",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'Y' AND %4 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Approval to PO Fulfillment Time Value", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Fulfilled Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.External Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Unprocessed Average Aging Days Value",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM  CAST (%1 AS DATE )) = '4712' AND  EXTRACT( MONTH  FROM  CAST (%1 AS DATE )) = '12' AND  DAYOFMONTH( CAST (%1 AS DATE )) = '31' THEN  NULL  ELSE  TIMESTAMPDIFF( SQL_TSI_DAY ,  CAST (%1 AS TIMESTAMP ),  CURRENT_DATE ) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.LINE_LAST_APPROVAL_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Requisition Distribution Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Requisition Line Details",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unprocessed Average Aging Days",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'N' AND %4 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Unprocessed Average Aging Days Value", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Processed Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.External Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Requisition Amount Value in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IS NULL  AND  NOT %2 IS NULL  AND %2 <> 0 THEN %2 ELSE %3 * %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.DISTRIBUTION_QUANTITY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.GLOBAL_DISTRIBUTION_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.GLOBAL_UNIT_PRICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Requisition Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount Value in Analytics Currency", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Requisition Amount Value",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IS NULL  AND  NOT %2 IS NULL  AND %2 <> 0 THEN %2 ELSE %3 * %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.DISTRIBUTION_QUANTITY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.DISTRIBUTION_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.UNIT_PRICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Requisition Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount Value", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Unprocessed Overdue Requisition Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'N' AND %4 = 'Y' AND %5 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount Value in Analytics Currency", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Processed Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Overdue Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.External Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Unprocessed Overdue Requisition Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'N' AND %4 = 'Y' AND %5 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount Value", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Processed Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Overdue Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.External Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Approved Requisition Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount Value in Analytics Currency", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Approved Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Approved Requisition Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount Value", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Approved Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Processed Requisition Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'Y' AND %4 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount Value in Analytics Currency", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Processed Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.External Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Processed Requisition Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'Y' AND %4 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount Value", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Processed Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.External Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Unfulfilled Requisition Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'N' AND %4 = 'Y' AND %5 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount Value in Analytics Currency", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Fulfilled Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Processed Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.External Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Unfulfilled Requisition Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'N' AND %4 = 'Y' AND %5 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount Value", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Fulfilled Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Processed Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.External Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Unfulfilled Overdue Requisition Amount  in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'N' AND %4 = 'Y' AND %5 = 'Y' AND %6 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount Value in Analytics Currency", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Fulfilled Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Overdue Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Processed Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.External Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Unfulfilled Overdue Requisition Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'N' AND %4 = 'Y' AND %5 = 'Y' AND %6 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount Value", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Fulfilled Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Overdue Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Processed Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.External Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Fulfilled Requisition Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'Y' AND %4 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount Value in Analytics Currency", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Fulfilled Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.External Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Fulfilled Requisition Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'Y' AND %4 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount Value", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.Fulfilled Indicator", "logicalColumn:Core.Fact - PRC - Requisitions.External Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Split Replaced Reinstate Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.LINE_PARENT_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "External Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EXTERNAL' THEN 'Y' ELSE 'N' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.SOURCE_TYPE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Fulfilled Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.FULFILLED_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Processed Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.PROCESSED_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Approved Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'APPROVED' THEN 'Y' ELSE 'N' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.REQUISITION_LINE_STATUS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Overdue Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <  CURRENT_DATE  THEN 'Y' ELSE 'N' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.NEED_BY_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Unfulfilled Overdue Requisition %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  IFNULL(%1, 0) <> 0 THEN  IFNULL(%2, 0) / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount", "logicalColumn:Core.Fact - PRC - Requisitions.Unfulfilled Overdue Requisition Amount" ]
+        }
+      }
+    }, {
+      "name" : "Unfulfilled Overdue Requisition % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  IFNULL(%1, 0) <> 0 THEN  IFNULL(%2, 0) / %1 * 100 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Amount in Analytics Currency", "logicalColumn:Core.Fact - PRC - Requisitions.Unfulfilled Overdue Requisition Amount  in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Requisition Primary Quantity Value",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.PUOM_DISTRIBUTION_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Requisition Primary Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Requisitions.Requisition Primary Quantity Value", "logicalColumn:Core.Fact - PRC - Requisitions.Split Replaced Reinstate Indicator" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_REQUISITION_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Requisition Procurement Business Unit.Detail", "logicalLevel:Core.Dim - PRC - Purchase Buyer.Detail", "logicalLevel:Core.Dim - GL Segment3.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - GL Segment7.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Cost Center.Detail", "logicalLevel:Core.Dim - GL Segment5.Detail", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment9.Detail", "logicalLevel:Core.Dim - PRC - Requisition Submission Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - GL Segment4.Detail", "logicalLevel:Core.Dim - GL Segment6.Detail", "logicalLevel:Core.Dim - PRC - Requisition Overriding Approver.Detail", "logicalLevel:Core.Dim - GL Segment1.Detail", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Detail", "logicalLevel:Core.Dim - Natural Account Hierarchy.Detail", "logicalLevel:Core.Dim - Procurement Category Hierarchy.Detail", "logicalLevel:Core.Dim - PRC - Requisition Source Type.Detail", "logicalLevel:Core.Dim - GL Segment10.Detail", "logicalLevel:Core.Dim - PRC - Procurement Item.Procurement Item", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Detail", "logicalLevel:Core.Dim - Supplier Category Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment8.Detail", "logicalLevel:Core.Dim - Cost Center Hierarchy.Detail", "logicalLevel:Core.Dim - PRC - PO Line Status.Detail", "logicalLevel:Core.Dim - GL Account.Detail", "logicalLevel:Core.Dim - PRC - Requisition Line Details.Requisition Line", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Detail", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Detail", "logicalLevel:Core.Dim - PRC - Requisition Approver.Detail", "logicalLevel:Core.Dim - PRC - Procurement Business Unit.Detail", "logicalLevel:Core.Dim - PRC - PO Line Details.PO Line", "logicalLevel:Core.Dim - Supplier Sites.Detail", "logicalLevel:Core.Dim - Supplier.Detail", "logicalLevel:Core.Dim - GL Segment2.Detail", "logicalLevel:Core.Dim - Balancing Segment.Detail", "logicalLevel:Core.Dim - PRC - Requisition Created By.Detail", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - PRC - Requisition Updated By.Detail", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Detail", "logicalLevel:Core.Dim - Natural Account.Detail", "logicalLevel:Core.Dim - PRC - Requisition Approved Date.Detail", "logicalLevel:Core.Dim - PRC - Requisition Submitted By.Dim - PRC - Requisition Submitted By Detail", "logicalLevel:Core.Dim - PRC - Requisition Business Unit.Detail", "logicalLevel:Core.Dim - PRC - Requisition Approved Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - PRC - Requisition Creation Date.Detail", "logicalLevel:Core.Dim - PRC - Requisition Item Source.Detail", "logicalLevel:Core.Dim - PRC - Requisition Creation Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - PRC - Requisition Submission Date.Detail", "logicalLevel:Core.Dim - PRC - Requisition Entered By.Detail", "logicalLevel:Core.Dim - PRC - Requisition Header Details.Requisition Header", "logicalLevel:Core.Dim - PRC - Requisition Status.Detail", "logicalLevel:Core.Dim - PRC - Requisition Line Status.Detail", "logicalLevel:Core.Dim - PRC - Requisition Line Type.Detail", "logicalLevel:Core.Dim - PRC - Requester.Detail", "logicalLevel:Core.Dim - PRC - Requisition Line Requested Delivery Date.Detail", "logicalLevel:Core.Dim - PRC - Requisition Line Requested Delivery Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - PRC - Requisition Charge Account Combination.Detail", "logicalLevel:Core.Dim - Sub Inventory.Dim - Sub Inventory Detail", "logicalLevel:Core.Dim - PRC - Agreement Line Details.Agreement Line Detail", "logicalLevel:Core.Dim - PRC - Customer Deliver To Location.Detail", "logicalLevel:Core.Dim - PRC - Deliver To Location.Detail", "logicalLevel:Core.Dim - PRC - PO Destination Type.Detail", "logicalLevel:Core.Dim - PRC - Agreement Header Details.Agreement Header Detail", "logicalLevel:Core.Dim - PRC - PO Status.Detail", "logicalLevel:Core.Dim - PRC - PO Header Details.PO Header", "logicalLevel:Core.Dim - PRC - PO Line Type.Detail", "logicalLevel:Core.Dim - PRC - Requisition Distribution Details.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Category.Detail", "logicalLevel:Core.Dim - Deliver to Location Type.Dim - Deliver to Location Type Detail", "logicalLevel:Core.Dim - PRC - Requisition Details.Requisition Distribution", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Task.Task Detail", "logicalLevel:Core.Dim - Project.Project Detail", "logicalLevel:Core.Dim - Expenditure Type.Expenditure Type Detail", "logicalLevel:Core.Dim - Expenditure Organization.Expenditure Organization Detail", "logicalLevel:Core.Dim - PRC - Sales Order Details.Detail", "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_PROC_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PRCSPEND",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PROC_SPEND_PRC_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Requisition Line Details.Security Context Code - Procurement BU" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_PROC_REQ_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PRCSPEND",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PROC_REQ_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Requisition Line Details.Security Context Code - Requisition BU" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Balancing Segment Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Balancing Segment",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Center Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Center",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Deliver to Location Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Expenditure Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Expenditure Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment1 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment1",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment10 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment10",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment2 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment2",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment3 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment3",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment4 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment4",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment5 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment5",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment6 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment6",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment7 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment7",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment8 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment8",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment9 Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Segment9",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inv Item Catalog Category",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Item",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Item Category Hierarchy",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Natural Account Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Natural Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Customer Deliver To Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Deliver To Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - PO Destination Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - PO Header Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - PO Line Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - PO Line Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - PO Line Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - PO Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Procurement Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Procurement Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Purchase Buyer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requester",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Approved Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Approved Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Approver",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Charge Account Combination",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Created By",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Creation Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Distribution Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Entered By",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Header Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Item Source",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Line Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Line Requested Delivery Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Line Requested Delivery Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Line Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Line Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Overriding Approver",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Procurement Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Source Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Submission Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Submission Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Submitted By",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Requisition Updated By",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Sales Order Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Procurement Category Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Sub Inventory",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Supplier Category Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Supplier Sites",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Supplier",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Task",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

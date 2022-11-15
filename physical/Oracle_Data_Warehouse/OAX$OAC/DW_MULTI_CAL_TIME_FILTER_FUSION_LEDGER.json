@@ -1,0 +1,55 @@
+{
+  "physicalTable" : {
+    "name" : "DW_MULTI_CAL_TIME_FILTER_FUSION_LEDGER",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "\r\n/* Dim Based - Ledger - Year - Begin */\r\n\r\nSELECT DISTINCT\r\n       '01'                              AS calendar_type,\r\n       'LEDGER'                          AS driving_dim_code,\r\n       l.ledger_name                     AS dimension_value,\t\r\n       TO_CHAR(l.ledger_id)         dimension_value_code,\r\n       'Year'                            AS time_level,    \r\n       a.fiscal_trailing_year_number     AS time_seq,\r\n       TO_CHAR(a.fiscal_year_number)     AS time_value,\r\n       a.fiscal_trailing_year_number + 1 AS yago_time_seq\r\n FROM\r\n      dw_fiscal_year_d a,\r\n\t  dw_ledger_d l\r\nWHERE\r\n      a.fiscal_trailing_year_number BETWEEN 0 and 19\r\n  AND a.fiscal_period_set_name = l.ledger_calender_name\r\n\r\n/* Dim Based - Ledger - Year - End */  \r\n\t\r\nUNION ALL\r\n\r\n/* Dim Based - Ledger - Quarter - Begin */\r\n\r\nSELECT DISTINCT\r\n       '01'                               AS calendar_type,\r\n       'LEDGER'                           AS driving_dim_code,\r\n       l.ledger_name                      AS dimension_value,\r\n       TO_CHAR(l.ledger_id)         dimension_value_code,\t\r\n       'Quarter'                          AS time_level,\r\n       a.fiscal_trailing_quarter_number   AS time_seq,\r\n       a.fiscal_quarter_code              AS time_value,\r\n       a.fiscal_trailing_quarter_number + 4 AS yago_time_seq\t\r\n     FROM\r\n       dw_fiscal_quarter_d a,\r\n\t   dw_ledger_d l\r\n WHERE\r\n       a.fiscal_trailing_quarter_number BETWEEN 0 and 19\r\n   AND a.fiscal_period_set_name = l.ledger_calender_name\r\n\r\n\r\n/* Dim Based - Ledger - Quarter - End */\r\n\r\nUNION ALL\r\n\r\n/* Dim Based - Ledger - Month - Begin */\r\nSELECT calendar_type,    \r\n       driving_dim_code,\r\n       dimension_value,\t\r\n       dimension_value_code,\r\n       time_level,\r\n       time_seq,\r\n       time_value,\r\n       time_seq + m2.no_of_periods AS yago_time_seq\r\nFROM\r\n(\r\nSELECT DISTINCT \r\n       '01'                              AS calendar_type,\r\n       'LEDGER'                          AS driving_dim_code,\r\n       l.ledger_name                     AS dimension_value,\t\r\n       TO_CHAR(l.ledger_id)              AS dimension_value_code,\r\n       'Month'                           AS time_level,\r\n       a.fiscal_trailing_period_number   AS time_seq,\r\n       a.fiscal_period_name              AS time_value,\r\n       a.fiscal_period_set_name          AS fiscal_period_set_name\r\n  FROM\r\n       dw_fiscal_period_d a,\r\n       dw_ledger_d l\r\n WHERE adjustment_period_flag = 'N'\r\n   AND (a.fiscal_trailing_period_number BETWEEN 0 and 19 OR a.fiscal_trailing_period_number IN (52,53))\r\n   AND a.fiscal_period_set_name = l.ledger_calender_name\r\n) m1,\r\n(\r\nselect fiscal_period_set_name,max(no_of_periods) as no_of_periods\r\n   from (\r\n    select fiscal_period_set_name,fiscal_year_number,count(distinct fiscal_period_name) as no_of_periods\r\n      from dw_fiscal_period_d\r\n     where adjustment_period_flag = 'N'\r\n     group by fiscal_period_set_name,fiscal_year_number\r\n   )\r\n   group by fiscal_period_set_name\r\n) m2\r\nWHERE m1.fiscal_period_set_name = m2.fiscal_period_set_name\r\n\r\n\r\n/* Dim Based - Ledger - Month - End */\r\n\r\n\r\n"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "DIMENSION_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    }, {
+      "name" : "DRIVING_DIM_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 255,
+      "nullable" : false
+    }, {
+      "name" : "CALENDAR_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "TIME_LEVEL",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "TIME_SEQ",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "TIME_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "YAGO_TIME_SEQ",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "DIMENSION_VALUE_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    }
+  }
+}

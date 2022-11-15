@@ -1,0 +1,72 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - OM Status Orders",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Status Indicator" ],
+    "logicalColumns" : [ {
+      "name" : "Status Indicator",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_OM_STATUS_D_Orders",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_STATUS_D_Orders.STATUS_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - OM Status Orders Detail"
+    }, {
+      "name" : "Order Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Status Indicator",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_OM_STATUS_D_Orders",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_OM_STATUS_D_TL.DISPLAY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_STATUS_D_Orders.STATUS_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_OM_STATUS_D_Orders",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_STATUS_D_Orders" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - OM Status Orders.Dim - OM Status Orders Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - OM Status Orders Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - OM Status Orders Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - OM Status Orders Detail",
+        "numberOfElements" : 2,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Status Indicator" ],
+        "displayKey" : "Status Indicator"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "OM Status Orders",
+        "levels" : [ "Dim - OM Status Orders Total", "Dim - OM Status Orders Detail" ]
+      } ]
+    }
+  }
+}

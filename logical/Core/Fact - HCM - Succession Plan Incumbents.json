@@ -1,0 +1,481 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - HCM - Succession Plan Incumbents",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Succession Management" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-----------Base Measures-----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Incumbent Count - Incumbent Plan",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 = 'Y' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent.ACTIVE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent.INCUMBENT_PLAN_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.INCUMBENT_PERSON_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Inferred Incumbent Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND (%2 = 'Y' OR %3 = 'Y') THEN %4 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent.ACTIVE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent.JOB_PLAN_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent.POSITION_PLAN_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.INCUMBENT_PERSON_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Incumbents",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent.ACTIVE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.INCUMBENT_PERSON_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Incumbent Departed Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND  CAST ( VALUEOF(NQ_SESSION.%2) AS DATE ) > %3 THEN %4 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent.INCUMBENT_PLAN_TYPE_FLAG", "variable:Gregorian Calendar - Current Gregorian Day.CURRENT_GREGORIAN_DAY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SERVICE_PERIOD_D_Incumbent.ACTUAL_TERMINATION_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.INCUMBENT_PERSON_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----------Derived Measures-----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Incumbent with High Risk of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'High')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Succession Plan Incumbents.Incumbent Count - Incumbent Plan", "logicalColumn:Core.Dim - HCM - Manager Assessed Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Percentage of Incumbents with High Risk of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "100 * %1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Succession Plan Incumbents.Incumbent with High Risk of Loss", "logicalColumn:Core.Fact - HCM - Succession Plan Incumbents.Incumbent Count - Incumbent Plan" ]
+        }
+      }
+    }, {
+      "name" : "Incumbent with High Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'High')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Succession Plan Incumbents.Incumbent Count - Incumbent Plan", "logicalColumn:Core.Dim - HCM - Manager Assessed Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Percentage of Incumbents with High Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "100 * %1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Succession Plan Incumbents.Incumbent with High Impact of Loss", "logicalColumn:Core.Fact - HCM - Succession Plan Incumbents.Incumbent Count - Incumbent Plan" ]
+        }
+      }
+    }, {
+      "name" : "High Risk of Loss Incumbents without Candidates",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'High')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Succession Plan Incumbents.Incumbents without Candidates", "logicalColumn:Core.Dim - HCM - Manager Assessed Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "High Impact of Loss Incumbents without Candidates",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'High')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Succession Plan Incumbents.Incumbents without Candidates", "logicalColumn:Core.Dim - HCM - Manager Assessed Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Plans with High Risk Incumbents and No Candidates",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'High')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Succession Plan Incumbents.Plans with No Candidates", "logicalColumn:Core.Dim - HCM - Manager Assessed Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Plans with High Risk Incumbents and No Ready Now Candidates",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Succession Plan Incumbents.Plans with High Risk Incumbents", "logicalColumn:Core.Fact - HCM - Succession Plan Incumbents.Plans with High Risk Incumbents with Ready Now Candidates" ]
+        }
+      }
+    }, {
+      "name" : "Successful Plans with High Risk Incumbents",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'High')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Succession Plan Incumbents.Successful Plans", "logicalColumn:Core.Dim - HCM - Manager Assessed Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "-----------Internal Measures-----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Incumbents without Candidates",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 0 AND %2 = 'Y' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent.CANDIDATE_COUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent.INCUMBENT_PLAN_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.INCUMBENT_PERSON_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Plans with No Candidates",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 0 AND %2 = 'Y' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent.CANDIDATE_COUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent.INCUMBENT_PLAN_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Plans",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent.INCUMBENT_PLAN_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Successful Plans",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 = 'ORA_HRM_SUCCESSOR' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent.INCUMBENT_PLAN_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_CANDIDATE_D.SUCCESSION_STATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_CANDIDATE_D.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Plans with High Risk Incumbents",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'High')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Succession Plan Incumbents.Total Plans", "logicalColumn:Core.Dim - HCM - Manager Assessed Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Plans with High Risk Incumbents with Ready Now Candidates",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('PARAM_READINESS_BAND_A_ID') AND %3 = 'High')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Succession Plan Incumbents.Total Plans", "logicalColumn:Core.Dim - HCM - Candidate Readiness Band.Parameter Code", "logicalColumn:Core.Dim - HCM - Manager Assessed Risk of Loss.Name" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_CANDIDATE_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUCCSSN_PLAN_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_PARAM_CONFIG_CandidateReadiness", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SERVICE_PERIOD_D_Incumbent" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_CANDIDATE_D",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUCCSSN_PLAN_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SERVICE_PERIOD_D_Incumbent",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_CANDIDATE_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_PARAM_CONFIG_CandidateReadiness",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Assignment Details (Role Playing).Details", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - HCM - Worker (Role Playing).Details", "logicalLevel:Core.Dim - HCM - Manager (Role Playing).Details", "logicalLevel:Core.Dim - HCM - Potential Details (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Succession Plan Details.Detail", "logicalLevel:Core.Dim - HCM - Performance Details (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Manager Assessed Risk of Loss.Detail", "logicalLevel:Core.Dim - HCM - Work Requirements (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Tenure Band (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Worker Age Band (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Grade (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Department (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Legal Employer (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - HR Business Unit (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Country (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Bargaining Unit (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Job (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Position (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Reporting Establishment (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Worker Location (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Succession Plan Owner Security.Detail", "logicalLevel:Core.Dim - HCM - Succession Plan Incumbent Details.Detail", "logicalLevel:Core.Dim - HCM - Career Preferences (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Manager Assessed Impact of Loss.Detail", "logicalLevel:Core.Dim - HCM - Manager Assessed Performance.Detail", "logicalLevel:Core.Dim - HCM - Manager Assessed Potential.Detail", "logicalLevel:Core.Dim - Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - HCM - Candidate Readiness Band.Detail", "logicalLevel:Core.Dim - HCM - Department Hierarchy (Role Playing).Detail", "logicalLevel:Core.Dim - HCM - Succession Plan Owner.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PRIMARY_FLAG" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_HCM_VIEW_ALL_DATA",
+      "functionalGroup" : "HCM_FACT_ALL",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "1 = 1"
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_SUCCESSION_LINE_MANAGER_DATA",
+      "functionalGroup" : "HCM_FACT_LM",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - HCM - Succession Plan Owner Security.Person Identifier", "variable:Logged In HCM Person ID.HCM_PERSON_ID" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Assignment Details (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Bargaining Unit (Role Playing)",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Career Preferences (Role Playing)",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Country (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Department (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Department Hierarchy (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Grade (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - HR Business Unit (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Job (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Legal Employer (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Manager (Role Playing)",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Manager Assessed Impact of Loss",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Manager Assessed Performance",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Manager Assessed Potential",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Manager Assessed Risk of Loss",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Performance Details (Role Playing)",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Position (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Potential Details (Role Playing)",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Reporting Establishment (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Succession Plan Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Succession Plan Incumbent Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Succession Plan Owner Security",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Succession Plan Owner",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Tenure Band (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Work Requirements (Role Playing)",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Worker (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Worker Age Band (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Worker Location (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

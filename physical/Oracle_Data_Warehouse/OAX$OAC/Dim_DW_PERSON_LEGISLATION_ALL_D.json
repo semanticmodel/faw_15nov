@@ -1,0 +1,90 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_PERSON_LEGISLATION_ALL_D",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PERSON_LEGISLATION_ALL_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_DISABILITY_D_Worker",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_DISABILITY_D_Worker.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.DATE_TO",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_DISABILITY_D_Worker.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_DISABILITY_D_Worker.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATIVE_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 >= %6 AND %5 <= %7",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATIVE_D.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATIVE_D.LEGISLATION_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.LEGISLATION_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.DATE_TO",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATIVE_D.DW_DATE_FROM",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATIVE_D.DW_DATE_TO"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_CITIZENSHIP_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.PERSON_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_CITIZENSHIP_D.PERSON_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_Worker",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.PERSON_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_Worker.PERSON_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_ETHNICITY_ALL_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.PERSON_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_ETHNICITY_ALL_D.PERSON_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_ETHNICITY_D_Worker",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.LEGISLATION_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_ETHNICITY_D_Worker.LEGISLATION_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D.PERSON_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_ETHNICITY_D_Worker.PERSON_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "DATE_FROM",
+        "LEGISLATION_CODE",
+        "PERSON_ID"
+      ],
+      [
+        "PERSON_ID"
+      ]
+    ]
+  }
+}

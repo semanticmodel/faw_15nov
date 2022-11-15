@@ -1,0 +1,476 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_SUCCSSN_PLAN_INCUMBENT_EF",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_AgeBand_RolePlaying",
+        "joinExpression": {
+          "expressionTemplate": " IFNULL(%1, -(99999)) >= %2 AND  IFNULL(%1, -(99999)) <= %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.AGE_IN_YEARS",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_AgeBand_RolePlaying.MIN_RANGE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_AgeBand_RolePlaying.MAX_RANGE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_TenureBand_RolePlaying",
+        "joinExpression": {
+          "expressionTemplate": " IFNULL(%1, -(99999)) >= %2 AND  IFNULL(%1, -(99999)) <= %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.TENURE_IN_YEARS",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_TenureBand_RolePlaying.MIN_RANGE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_TenureBand_RolePlaying.MAX_RANGE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BARGAINING_UNIT_D_TL_Roleplaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BARGAINING_UNIT_D_TL_Roleplaying.BARGAINING_UNIT_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.BARGAINING_UNIT_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BARGAINING_UNIT_D_TL_Roleplaying.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_Roleplaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_Roleplaying.COUNTRY",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.LEGISLATION_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COUNTRY_D_TL_Roleplaying.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_PERIOD_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 >= %2 AND %1 <= %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_CREATION_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_PERIOD_D.ENTERPRISE_PERIOD_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_PERIOD_D.ENTERPRISE_PERIOD_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_QUARTER_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 >= %2 AND %1 <= %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_CREATION_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_QUARTER_D.ENTERPRISE_QUARTER_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_QUARTER_D.ENTERPRISE_QUARTER_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_YEAR_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 >= %2 AND %1 <= %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_CREATION_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_YEAR_D.ENTERPRISE_YEAR_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_YEAR_D.ENTERPRISE_YEAR_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_Roleplaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_Roleplaying.JOB_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.JOB_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_Roleplaying.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_JOB_D_Roleplaying.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MONTH_D_GregorianCalendar",
+        "joinExpression": {
+          "expressionTemplate": "%1 >= %2 AND %1 <= %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_CREATION_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MONTH_D_GregorianCalendar.CAL_MONTH_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MONTH_D_GregorianCalendar.CAL_MONTH_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_RolePlaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_RolePlaying.GRADE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.GRADE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_RolePlaying.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_GRADE_D_RolePlaying.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D_Roleplaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 >= %6 AND %5 <= %7",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D_Roleplaying.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.INCUMBENT_PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D_Roleplaying.LEGISLATION_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.LEGISLATION_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D_Roleplaying.DATE_FROM",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_LEGISLATION_ALL_D_Roleplaying.DATE_TO"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_Roleplaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_Roleplaying.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.INCUMBENT_PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_Roleplaying.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_Roleplaying.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_PERFORMANCE_F_RolePlaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 >= %6 AND %5 <= %7",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_PERFORMANCE_F_RolePlaying.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.INCUMBENT_PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_PERFORMANCE_F_RolePlaying.RATING_LEVEL_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PERFORMANCE_RATING_LEVEL_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_PERFORMANCE_F_RolePlaying.DATE_FROM",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_PERFORMANCE_F_RolePlaying.DATE_TO"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_POTENTIAL_F_RolePlaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 >= %6 AND %5 <= %7",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_POTENTIAL_F_RolePlaying.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.INCUMBENT_PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_POTENTIAL_F_RolePlaying.RATING_LEVEL_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.POTENTIAL_RATING_LEVEL_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_POTENTIAL_F_RolePlaying.DATE_FROM",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_POTENTIAL_F_RolePlaying.DATE_TO"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_Roleplaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_Roleplaying.POSITION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.POSITION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_Roleplaying.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_POSITION_D_Roleplaying.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_QUARTER_D_GregorianCalendar",
+        "joinExpression": {
+          "expressionTemplate": "%1 >= %2 AND %1 <= %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_CREATION_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_QUARTER_D_GregorianCalendar.CAL_QUARTER_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_QUARTER_D_GregorianCalendar.CAL_QUARTER_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SEX_D_TL_Roleplaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SEX_D_TL_Roleplaying.SEX",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.SEX",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SEX_D_TL_Roleplaying.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Roleplaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5 AND %6 = 'Y'",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Roleplaying.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Roleplaying.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Roleplaying.EFFECTIVE_END_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_F_Roleplaying.EFFECTIVE_LATEST_CHANGE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager_Roleplaying",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 >= %4 AND %3 <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager_Roleplaying.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.ASSIGNMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager_Roleplaying.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WRKFRC_ASG_SUPERVISOR_F_Manager_Roleplaying.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_YEAR_D_GregorianCalendar",
+        "joinExpression": {
+          "expressionTemplate": "%1 >= %2 AND %1 <= %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_CREATION_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_YEAR_D_GregorianCalendar.CAL_YEAR_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_YEAR_D_GregorianCalendar.CAL_YEAR_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_RolePlaying",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.BUSINESS_UNIT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BUSINESS_UNIT_D_RolePlaying.BUSINESS_UNIT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DAY_D_GregorianCalendar",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_CREATION_DATE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DAY_D_GregorianCalendar.CALENDAR_DATE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_Dept_RolePlaying",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.DEPARTMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DEPARTMENT_D_Dept_RolePlaying.DEPARTMENT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_DATE_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_CREATION_DATE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_DATE_D.ENTERPRISE_DATE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_EMPLOYER_D_RolePlaying",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.LEGAL_EMPLOYER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_EMPLOYER_D_RolePlaying.LEGAL_EMPLOYER_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_CAR_PREF_CRNT_F_RolePlaying",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.ASSIGNMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_CAR_PREF_CRNT_F_RolePlaying.ASSIGNMENT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_WRK_REQ_CRNT_F_RolePlaying",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.ASSIGNMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_WRK_REQ_CRNT_F_RolePlaying.ASSIGNMENT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_ManagerAssessed_ImpactofLoss",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.IMPACT_OF_LOSS_RATING_LEVEL_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_ManagerAssessed_ImpactofLoss.RATING_LEVEL_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_ManagerAssessed_Performance",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PERFORMANCE_RATING_LEVEL_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_ManagerAssessed_Performance.RATING_LEVEL_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_ManagerAssessed_Potential",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.POTENTIAL_RATING_LEVEL_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_ManagerAssessed_Potential.RATING_LEVEL_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_ManagerAssessed_RiskofLoss",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.RISK_OF_LOSS_RATING_LEVEL_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RATING_LEVEL_D_ManagerAssessed_RiskofLoss.RATING_LEVEL_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REPORTING_EST_D_Roleplaying",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.REPORTING_ESTABLISHMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_REPORTING_EST_D_Roleplaying.REPORTING_EST_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SERVICE_PERIOD_D_Incumbent",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PERIOD_OF_SERVICE_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SERVICE_PERIOD_D_Incumbent.PERIOD_OF_SERVICE_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUCCSSN_PLAN_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUCCSSN_PLAN_D.PLAN_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUCCSSN_PLAN_OWNER_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUCCSSN_PLAN_OWNER_D.PLAN_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUCCSSN_PLAN_OWNER_D_Security",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUCCSSN_PLAN_OWNER_D_Security.PLAN_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WORKER_LOCATION_D_Roleplaying",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.LOCATION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_WORKER_LOCATION_D_Roleplaying.LOCATION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_CANDIDATE_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_CANDIDATE_D.PLAN_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_INCUMBENT_EF.PLAN_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D_Incumbent.PLAN_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "ASSIGNMENT_ID",
+        "PLAN_INCUMBENT_ID"
+      ]
+    ]
+  }
+}

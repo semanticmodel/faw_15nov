@@ -1,0 +1,119 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Payroll Legislative Data Group",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Legislative Data Group Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Legislative Data Group Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_LEGISLATIVE_DATA_GROUP_D_PayrollLDGDimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATIVE_DATA_GROUP_D_PayrollLDGDimOnly.LEGISLATIVE_DATA_GROUP_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_LEGISLATIVE_DATA_GROUP_D_TL_PayrollLDGDimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATIVE_DATA_GROUP_D_TLPayrollLDGDimOnly.LEGISLATIVE_DATA_GROUP_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_LEGISLATIVE_DATA_GROUP_D_PayrollLDG",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATIVE_DATA_GROUP_D_PayrollLDG.LEGISLATIVE_DATA_GROUP_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Legislative Data Group Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_LEGISLATIVE_DATA_GROUP_D_TL_PayrollLDGDimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATIVE_DATA_GROUP_D_TLPayrollLDGDimOnly.NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_LEGISLATIVE_DATA_GROUP_D_PayrollLDG",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATIVE_DATA_GROUP_D_TL_PayrollLDG.NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_LEGISLATIVE_DATA_GROUP_D_PayrollLDGDimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATIVE_DATA_GROUP_D_PayrollLDGDimOnly" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_LEGISLATIVE_DATA_GROUP_D_TL_PayrollLDGDimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATIVE_DATA_GROUP_D_TLPayrollLDGDimOnly" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATIVE_DATA_GROUP_D_TLPayrollLDGDimOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_LEGISLATIVE_DATA_GROUP_D_PayrollLDG",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATIVE_DATA_GROUP_D_TL_PayrollLDG", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATIVE_DATA_GROUP_D_PayrollLDG" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATIVE_DATA_GROUP_D_TL_PayrollLDG",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGISLATIVE_DATA_GROUP_D_PayrollLDG",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Legislative Data Group Identifier" ],
+        "displayKey" : "Legislative Data Group Name",
+        "additionalKeys" : [ [ "Legislative Data Group Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Payroll Legislative Data Group",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,409 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - CX - Opportunity Stage Progression",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Sales Pipeline" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "# of Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F.OPPORTUNITY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average # of Days in Stage",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Days in Stage" ]
+        }
+      }
+    }, {
+      "name" : "# of Opportunities Across Stages",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F.OPPORTUNITY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - CX - Opportunity Stage Progression.Total", "logicalLevel:Core.Dim - CX - Historical Sales Stage.Total", "logicalLevel:Core.Dim - CX - Date - Stage Enter Date Gregorian Calendar.Total", "logicalLevel:Core.Dim - CX - Date - Stage Exit Date Gregorian Calendar.Total", "logicalLevel:Core.Dim - CX - Date - Stage Enter Date Enterprise Calendar.Total", "logicalLevel:Core.Dim - CX - Date - Stage Exit Date Enterprise Calendar.Total" ]
+      }
+    }, {
+      "name" : "% Opportunities by Stage",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 100.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Opportunities Across Stages", "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "# of Progressed Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <>  TO_DATETIME('31-DEC-4712', 'DD-MON-YYYY'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.Stage Exit Date" ]
+        }
+      }
+    }, {
+      "name" : "% Progressed",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 100.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Opportunities Across Stages", "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Progressed Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Average # of Days Stalled in Stage",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Days Stalled in Stage" ]
+        }
+      }
+    }, {
+      "name" : "Conversion Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE 100.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Won Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Win Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE 100.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Won/Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Won Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "Loss Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN 0 ELSE 100.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Won/Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Lost Opportunities" ]
+        }
+      }
+    }, {
+      "name" : "-----------Internal-------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'-----------Internal-------------'"
+        }
+      }
+    }, {
+      "name" : "Opportunity Status Category",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F.STATUS_CATEGORY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "# of Days in Stage",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <=  CURRENT_DATE  THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %2, %1) ELSE  TIMESTAMPDIFF( SQL_TSI_DAY , %2,  CURRENT_DATE ) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F.STAGE_EXIT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F.STAGE_ENTER_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Days Stalled in Stage",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'OPEN' AND  TIMESTAMPDIFF( SQL_TSI_DAY , %2,  IFNULL(%3,  CURRENT_DATE )) > %4 THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %2,  CURRENT_DATE ) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F.STATUS_CATEGORY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F.STAGE_ENTER_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F.STAGE_EXIT_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SALES_STAGE_D_Historical.MAXIMUM_DAYS_IN_STAGE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Stage Exit Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F.STAGE_EXIT_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "# of Won Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WON')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Lost Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'LOST')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Won/Lost Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('WON', 'LOST'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Stage Progression.Opportunity Status Category" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_OPPORTUNITY_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SALES_STAGE_D_Historical" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_OPPORTUNITY_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_OPPORTUNITY_STAGE_PROGRESS_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SALES_STAGE_D_Historical",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Opportunity Deal Horizon.Detail", "logicalLevel:Core.Dim - CX - Primary Partner.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Expected Close Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Security - Opportunity Access Group.Detail", "logicalLevel:Core.Dim - CX - Opportunity Decision.Detail", "logicalLevel:Core.Dim - CX - Security - Account.Detail", "logicalLevel:Core.Dim - CX - Opportunity Risk Level.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Expected Close Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Opportunity Status.Detail", "logicalLevel:Core.Dim - CX - Historical Sales Stage.Detail", "logicalLevel:Core.Dim - CX - Primary Contact.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Opportunity Stage Status Category.Detail", "logicalLevel:Core.Dim - CX - Primary Competitor.Detail", "logicalLevel:Core.Dim - CX - Opportunity Stage Progression.Detail", "logicalLevel:Core.Dim - CX - Opportunity Line of Business.Detail", "logicalLevel:Core.Dim - CX - Security - Opportunity.Detail", "logicalLevel:Core.Dim - CX - Opportunity.Detail", "logicalLevel:Core.Dim - CX - Resource - Opportunity Owner.Detail", "logicalLevel:Core.Dim - CX - Opportunity Close Reason.Detail", "logicalLevel:Core.Dim - CX - Date - Stage Enter Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Opportunity Channel Type.Detail", "logicalLevel:Core.Dim - CX - Date - Stage Exit Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Opportunity Status Category.Detail", "logicalLevel:Core.Dim - CX - Date - Stage Enter Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Stage Exit Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - CX - Opportunity Strategic.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Opportunity Renewal Process.Detail", "logicalLevel:Core.Dim - CX - Opportunity Type.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_CX_SALES_ACCNT_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Account.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SALES_OPTY_CUSTOM_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Opportunity Access Group.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SALES_OPTY_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Opportunity.Security Enabled Flag" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Opportunity Expected Close Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Opportunity Expected Close Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Stage Enter Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Stage Enter Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Stage Exit Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Stage Exit Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Historical Sales Stage",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Channel Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Close Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Deal Horizon",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Decision",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Line of Business",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Renewal Process",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Risk Level",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Stage Progression",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Stage Status Category",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Status Category",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Strategic",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Competitor",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Partner",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Opportunity Owner",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Account",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Opportunity Access Group",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Opportunity",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

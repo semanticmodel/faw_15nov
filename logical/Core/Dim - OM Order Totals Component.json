@@ -1,0 +1,102 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - OM Order Totals Component",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Header Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Header Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_OM_ORDER_TOTALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_ORDER_TOTALS_CF.HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - OM Order Totals Component Detail"
+    }, {
+      "name" : "Order Total Component Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_OM_ORDER_TOTALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_ORDER_TOTALS_CF.TOTAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - OM Order Totals Component Detail"
+    }, {
+      "name" : "Order Total Component",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Order Total Component Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_OM_ORDER_TOTALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_QP_TOTAL_DEFINITIONS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_ORDER_TOTALS_CF.TOTAL_DEFINITION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - OM Order Totals Component Detail"
+    }, {
+      "name" : "Order Total Component Code",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_OM_ORDER_TOTALS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_ORDER_TOTALS_CF.TOTAL_DEFINITION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - OM Order Totals Component Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_OM_ORDER_TOTALS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_OM_ORDER_TOTALS_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - OM Order Totals Component Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - OM Order Totals Component Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - OM Order Totals Component Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Header Identifier" ],
+        "displayKey" : "Header Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "OM Order Totals Component",
+        "levels" : [ "Dim - OM Order Totals Component Total", "Dim - OM Order Totals Component Detail" ]
+      } ]
+    }
+  }
+}

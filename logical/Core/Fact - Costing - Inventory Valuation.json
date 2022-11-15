@@ -1,0 +1,393 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Costing - Inventory Valuation",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Cost Management" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-------------------------- Analytics Currency--------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Costed On-Hand Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_INV_VALUATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.QUANTITY_ONHAND" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Accounted On-Hand Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_INV_VALUATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.GLOBAL_ACCTD_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Costed On-Hand Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_INV_VALUATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL( IFNULL( IFNULL(%1, %2), %3), 0.0) * %4",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.GLOBAL_STANDARD_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.GLOBAL_PERP_AVERAGE_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.GLOBAL_VU_UNIT_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.QUANTITY_ONHAND" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unit Cost",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_INV_VALUATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL( IFNULL( IFNULL(%1, %2), %3), 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.GLOBAL_STANDARD_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.GLOBAL_PERP_AVERAGE_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.GLOBAL_VU_UNIT_COST" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unaccounted On-Hand Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_INV_VALUATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL( IFNULL( IFNULL(%1, %2), %3), 0.0) * %4 - ( IFNULL(%5, 0.0) +  IFNULL(%6, 0.0))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.GLOBAL_STANDARD_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.GLOBAL_PERP_AVERAGE_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.GLOBAL_VU_UNIT_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.QUANTITY_ONHAND", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.GLOBAL_ACCTD_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.GLOBAL_EXCL_FROM_ACCTG_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-------------------------- Document (Transaction) Currency--------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Costed On-Hand Quantity in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_INV_VALUATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.QUANTITY_ONHAND" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Accounted On-Hand Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_INV_VALUATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.ACCTD_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Costed On-Hand Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_INV_VALUATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL( IFNULL( IFNULL(%1, %2), %3), 0.0) * %4",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.STANDARD_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.PERP_AVERAGE_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.VU_UNIT_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.QUANTITY_ONHAND" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unit Cost in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_INV_VALUATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL( IFNULL( IFNULL(%1, %2), %3), 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.STANDARD_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.PERP_AVERAGE_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.VU_UNIT_COST" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Unaccounted On-Hand Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_INV_VALUATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL( IFNULL( IFNULL(%1, %2), %3), 0.0) * %4 - ( IFNULL(%5, 0.0) +  IFNULL(%6, 0.0))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.STANDARD_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.PERP_AVERAGE_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.VU_UNIT_COST", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.QUANTITY_ONHAND", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.ACCTD_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF.EXCL_FROM_ACCTG_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-------------------------- Security Object --------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Security Context Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_INV_VALUATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_Inv_Valuation.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CST_INV_VALUATION_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_Inv_Valuation" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_INV_VALUATION_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_Inv_Valuation",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Date Fiscal Calendar.Fiscal Period", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Locator.Locator Detail", "logicalLevel:Core.Dim - Costing - Inventory Valuation Details.Detail", "logicalLevel:Core.Dim - Sub Inventory.Dim - Sub Inventory Detail", "logicalLevel:Core.Dim - Costing Item Catalog Category.Detail", "logicalLevel:Core.Dim - Sub Inventory Location.Sub Inventory Location Detail", "logicalLevel:Core.Dim - Cost Valuation Unit.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Cost Organization Book.Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Month", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_SCM_CST_COSTING_ORG_DATA",
+      "functionalGroup" : "SCM_CST",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_CST_COST_ORG_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Inventory Valuation.Security Context Code" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Cost Organization Book",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Valuation Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Costing - Inventory Valuation Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Costing Item Catalog Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Item Category Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Locator",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Sub Inventory Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Sub Inventory",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

@@ -1,0 +1,501 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Costing - Cost Accounting",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Cost Accounting" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Debit Credit Sign",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_DR_CR_SIGN" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_DR_CR_SIGN" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "------------------------Cost Accounting----------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Transaction Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF_Transactions",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.TRANSACTION_QTY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Currency.Total", "logicalLevel:Core.Dim - Cost Element.Total", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Distribution Accounting Date.Total", "logicalLevel:Core.Dim - GL Account Cost Accounting.Total", "logicalLevel:Core.Dim - Cost Accounting Created By.Total", "logicalLevel:Core.Dim - Costing - Cost Accounting Details.Transaction Details" ]
+      }
+    }, {
+      "name" : "Costed Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF_Layers",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTION_LAYERS_CF.QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Currency.Total", "logicalLevel:Core.Dim - Cost Element.Total", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Distribution Accounting Date.Total", "logicalLevel:Core.Dim - GL Account Cost Accounting.Total", "logicalLevel:Core.Dim - Cost Accounting Created By.Total", "logicalLevel:Core.Dim - Costing - Cost Accounting Details.Layer Details" ]
+      }
+    }, {
+      "name" : "-------------------------Cost Currency----------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Transaction Amount Base",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Transaction Debit Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'DR'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Cost Accounting.Transaction Amount Base", "logicalColumn:Core.Fact - Costing - Cost Accounting.Debit Credit Sign" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Costing - Cost Accounting Details.Distribution Details" ]
+      }
+    }, {
+      "name" : "Transaction Credit Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'CR'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Cost Accounting.Transaction Amount Base", "logicalColumn:Core.Fact - Costing - Cost Accounting.Debit Credit Sign" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Costing - Cost Accounting Details.Distribution Details" ]
+      }
+    }, {
+      "name" : "Transaction Net Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 + %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Cost Accounting.Transaction Debit Amount", "logicalColumn:Core.Fact - Costing - Cost Accounting.Transaction Credit Amount" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Costing - Cost Accounting Details.Distribution Details" ]
+      }
+    }, {
+      "name" : "-------------------Ledger Currency-------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Accounted Amount Base",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.COST_DISTRIBUTION_LINE_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions.COST_DISTRIBUTION_LINE_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Accounted Debit Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'DR'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Cost Accounting.Accounted Amount Base", "logicalColumn:Core.Fact - Costing - Cost Accounting.Debit Credit Sign" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Costing - Cost Accounting Details.Distribution Details" ]
+      }
+    }, {
+      "name" : "Accounted  Credit Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'CR'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Cost Accounting.Accounted Amount Base", "logicalColumn:Core.Fact - Costing - Cost Accounting.Debit Credit Sign" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Costing - Cost Accounting Details.Distribution Details" ]
+      }
+    }, {
+      "name" : "Accounted Net Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 + %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Cost Accounting.Accounted Debit Amount", "logicalColumn:Core.Fact - Costing - Cost Accounting.Accounted  Credit Amount" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Costing - Cost Accounting Details.Distribution Details" ]
+      }
+    }, {
+      "name" : "-------------------------------- Security Object -------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Security Context Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_DISTRIBUTIONS.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF_Transactions",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_TRANSACTIONS.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_TRANSACTIONS.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF_Layers",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_TRANSACTIONS.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transaction Quantity Implicit Fact",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF.TRANSACTION_QTY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CST_DISTRIBUTION_LINES_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_DISTRIBUTIONS" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_DISTRIBUTIONS",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Cost Organization Book.Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Cost Valuation Unit.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Distribution Accounting Date.Detail", "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail", "logicalLevel:Core.Dim - Costing Item Catalog Category.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Profit Center Business Unit.Detail", "logicalLevel:Core.Dim - GL Account Cost Accounting.Detail", "logicalLevel:Core.Dim - Unit of Measure Cost Accounting.Detail", "logicalLevel:Core.Dim - Cost Element.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Cost Accounting Created By.Detail", "logicalLevel:Core.Dim - Costing - Cost Accounting Details.Distribution Details", "logicalLevel:Core.Dim - Cost Transaction Type.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : " NOT %1 IS NULL ",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF.TRANSACTION_ID" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CST_TRANSACTIONS_CF_Transactions",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_TRANSACTIONS", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_TRANSACTIONS",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Cost Organization Book.Detail", "logicalLevel:Core.Dim - Cost Valuation Unit.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Profit Center Business Unit.Detail", "logicalLevel:Core.Dim - Task.Task Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Expenditure Type.Expenditure Type Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Accounting Creation Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Accounting Costed Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Accounting Transaction Date.Detail", "logicalLevel:Core.Dim - Cost Accounting Created By.Detail", "logicalLevel:Core.Dim - Unit of Measure Cost Accounting.Detail", "logicalLevel:Core.Dim - Costing Item Catalog Category.Detail", "logicalLevel:Core.Dim - Cost Transaction Type.Detail", "logicalLevel:Core.Dim - Costing - Cost Accounting Details.Transaction Details", "logicalLevel:Core.Dim - Expenditure Organization.Expenditure Organization Detail", "logicalLevel:Core.Dim - Project.Project Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CST_TRANSACTIONS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_TRANSACTIONS", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_TRANSACTIONS",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_DISTRIBUTION_LINES_CF_Transactions",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Accounting Creation Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Accounting Transaction Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Distribution Accounting Date.Detail", "logicalLevel:Core.Dim - Project.Project Detail", "logicalLevel:Core.Dim - Costing - Cost Accounting Details.Distribution Details", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Accounting Costed Date.Detail", "logicalLevel:Core.Dim - Cost Transaction Type.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Cost Accounting Created By.Detail", "logicalLevel:Core.Dim - Cost Element.Detail", "logicalLevel:Core.Dim - Task.Task Detail", "logicalLevel:Core.Dim - Cost Organization Book.Detail", "logicalLevel:Core.Dim - Cost Valuation Unit.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Costing Item Catalog Category.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - GL Account Cost Accounting.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Expenditure Type.Expenditure Type Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Profit Center Business Unit.Detail", "logicalLevel:Core.Dim - Unit of Measure Cost Accounting.Detail", "logicalLevel:Core.Dim - Expenditure Organization.Expenditure Organization Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CST_TRANSACTIONS_CF_Layers",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTION_LAYERS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_TRANSACTIONS", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTION_LAYERS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_CA_TRANSACTIONS",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_TRANSACTIONS_CF",
+          "joinType" : "RIGHT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Cost Organization Book.Detail", "logicalLevel:Core.Dim - Cost Valuation Unit.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Profit Center Business Unit.Detail", "logicalLevel:Core.Dim - Task.Task Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Expenditure Type.Expenditure Type Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Accounting Creation Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Accounting Costed Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Cost Accounting Transaction Date.Detail", "logicalLevel:Core.Dim - Unit of Measure Cost Accounting.Detail", "logicalLevel:Core.Dim - Costing Item Catalog Category.Detail", "logicalLevel:Core.Dim - Cost Transaction Type.Detail", "logicalLevel:Core.Dim - Expenditure Organization.Expenditure Organization Detail", "logicalLevel:Core.Dim - Costing - Cost Accounting Details.Layer Details", "logicalLevel:Core.Dim - Project.Project Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_SCM_CST_COSTING_ORG_DATA",
+      "functionalGroup" : "SCM_CA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_CST_COST_ORG_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Fact - Costing - Cost Accounting.Security Context Code" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Accounting Created By",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Element",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Organization Book",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Transaction Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Cost Valuation Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Costing - Cost Accounting Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Costing Item Catalog Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Cost Accounting Costed Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Cost Accounting Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Cost Accounting Transaction Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Cost Distribution Accounting Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Expenditure Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Expenditure Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Account Cost Accounting",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inv Item Catalog Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Item Category Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Profit Center Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Task",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure Cost Accounting",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

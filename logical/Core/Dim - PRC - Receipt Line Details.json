@@ -1,0 +1,662 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - Receipt Line Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Shipment Line Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Shipment Line Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SHIPMENT_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.SHIPMENT_LINE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Line",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SHIPMENT_LINE_NUM" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.SHIPMENT_LINE_NUM" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Consigned Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.CONSIGNED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.CONSIGNED_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Substitute Receipt Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SUBSTITUTE_ITEM_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.SUBSTITUTE_ITEM_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Delivery Performance (Tolderance)",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN 'Early' WHEN %2 = 'Y' THEN 'On-Time' WHEN %3 = 'Y' THEN 'Late' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.EARLY_DELIVERY_TOLERANCE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ONTIME_DELIVERY_TOLERANCE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.LATE_DELIVERY_TOLERANCE_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN 'Early' WHEN %2 = 'Y' THEN 'On-Time' WHEN %3 = 'Y' THEN 'Late' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.EARLY_DELIVERY_TOLERANCE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.ONTIME_DELIVERY_TOLERANCE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.LATE_DELIVERY_TOLERANCE_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Delivery Performance",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN 'Early' WHEN %2 = 'Y' THEN 'On-Time' WHEN %3 = 'Y' THEN 'Late' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.EARLY_DELIVERY_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ONTIME_DELIVERY_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.LATE_DELIVERY_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN 'Early' WHEN %2 = 'Y' THEN 'On-Time' WHEN %3 = 'Y' THEN 'Late' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.EARLY_DELIVERY_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.ONTIME_DELIVERY_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.LATE_DELIVERY_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Receipts Rejected Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.RECEIPT_REJECTED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.RECEIPT_REJECTED_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Receipts Returned Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.RECEIPT_RETURNED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.RECEIPT_RETURNED_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Receipts Corrected Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.RECEIPT_CORRECTION_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.RECEIPT_CORRECTION_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "ASN Based Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ASN_BASED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.ASN_BASED_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "ASN Based",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "ASN Based Indicator",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.ASN_BASED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.ASN_BASED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Consigned",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Consigned Indicator",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.CONSIGNED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.CONSIGNED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Receipts Corrected",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receipts Corrected Indicator",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.RECEIPT_CORRECTION_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.RECEIPT_CORRECTION_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Receipts Rejected",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receipts Rejected Indicator",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.RECEIPT_REJECTED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.RECEIPT_REJECTED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Receipts Returned",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Receipts Returned Indicator",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.RECEIPT_RETURNED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.RECEIPT_RETURNED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Substitute Receipt",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Substitute Receipt Indicator",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SUBSTITUTE_ITEM_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_Y_N_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.SUBSTITUTE_ITEM_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Receipt Line"
+    }, {
+      "name" : "Security Context Code - Requisition BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_REQ_BU_ReceiptFact.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_PROC_REQ_BUSINESSUNIT_LIST'"
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Procurment BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_PRC_BU_ReceiptFact.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_PROC_SPEND_PRC_BUSINESSUNIT_LIST'"
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Inventory Org",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_INV_ORG_ReceiptFact.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_INV_ORG_TRANSACTIONS_LIST'"
+          }
+        } ]
+      }
+    }, {
+      "name" : "-----DFF Keys-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "RCV_SHIPMENT_LINES_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_RCV_SHIPMENTS_CF_DW_RCV_SHIPMENT_LINES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_RCV_SHIPMENTS_CF_Dim_DW_RCV_SHIPMENT_LINES.S_K_5000" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Primary UOM Conversion Factor",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.PUOM_CONVERSION_FACTOR" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.PUOM_CONVERSION_FACTOR" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Item Primary UOM Code (Transaction)",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.PUOM_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.PUOM_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Item Primary UOM (Transaction)",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Item Primary UOM Code (Transaction)",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 16 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_UNIT_OF_MEASURE_D_TL.UNIT_OF_MEASURE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.PUOM_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 16 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_UNIT_OF_MEASURE_D_TL.UNIT_OF_MEASURE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.PUOM_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Item Primary UOM Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  VALUEOF(NQ_SESSION.%3) = 'Y' OR  VALUEOF(NQ_SESSION.%4) = 'Y' THEN %1 ELSE %2 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Receipt Line Details.Item Primary UOM Code (Transaction)", "logicalColumn:Core.Dim - Inventory Item.Item Primary UOM Code", "variable:undeclaredVariables.AM_FA_SCM_UOM", "variable:undeclaredVariables.AM_FA_ERP_UOM" ]
+        }
+      }
+    }, {
+      "name" : "Item Primary UOM",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Item Primary UOM Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  VALUEOF(NQ_SESSION.%3) = 'Y' OR  VALUEOF(NQ_SESSION.%4) = 'Y' THEN %1 ELSE %2 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Receipt Line Details.Item Primary UOM (Transaction)", "logicalColumn:Core.Dim - Inventory Item.Item Primary UOM", "variable:undeclaredVariables.AM_FA_SCM_UOM", "variable:undeclaredVariables.AM_FA_ERP_UOM" ]
+        }
+      }
+    }, {
+      "name" : "Manufacturer",
+      "description" : "Name of the company that manufactures the item being purchased.",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.PO_MANUFACTURER" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.PO_MANUFACTURER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Manufacturer Part Number",
+      "description" : "Number that uniquely identifies the item as provided by the manufacturer.",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.PO_MANUFACTURER_PART_NUM" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = '~NOVALUE~' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF.PO_MANUFACTURER_PART_NUM" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_RCV_SHIPMENTS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_REQ_BU_ReceiptFact", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_RCV_SHIPMENTS_CF_DW_RCV_SHIPMENT_LINES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_PRC_BU_ReceiptFact", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_INV_ORG_ReceiptFact" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_REQ_BU_ReceiptFact",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_RCV_SHIPMENTS_CF_DW_RCV_SHIPMENT_LINES_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_PRC_BU_ReceiptFact",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_INV_ORG_ReceiptFact",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'PO' AND %2 = 'Y' AND %3 = 'N'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SOURCE_DOCUMENT_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.SHIPMENT_RECEIVED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.UNORDERED_RECEIPT_FLAG" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_RCV_SHIPMENTS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_RCV_SHIPMENTS_CF_Dim_DW_RCV_SHIPMENT_LINES" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RCV_SHIPMENTS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_DW_RCV_SHIPMENTS_CF_Dim_DW_RCV_SHIPMENT_LINES",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Receipt Line",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Shipment Line Identifier" ],
+        "displayKey" : "Line",
+        "additionalKeys" : [ [ "Line" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - Receipt Line Details",
+        "levels" : [ "Total", "Receipt Line" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_PROC_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PRCSPEND",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PROC_SPEND_PRC_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Receipt Line Details.Security Context Code - Procurment BU" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_PROC_REQ_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PRCSPEND",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PROC_REQ_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Receipt Line Details.Security Context Code - Requisition BU" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_SCM_INV_INVENTORY_ORG_DATA",
+      "functionalGroup" : "PRCSPEND",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_ORG_TRANSACTIONS_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Receipt Line Details.Security Context Code - Inventory Org" ]
+      }
+    } ]
+  }
+}

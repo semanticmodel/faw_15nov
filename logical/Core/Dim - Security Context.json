@@ -1,0 +1,100 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Security Context",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Row Wid" ],
+    "logicalColumns" : [ {
+      "name" : "Security Object Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "SEC_SECURE_BY_OBJ_MEMBER_USER_SECURITY_AUDIT",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_SECURITY_AUDIT.SEC_OBJ_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Security Context Detail"
+    }, {
+      "name" : "Row Wid",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "SEC_SECURE_BY_OBJ_MEMBER_USER_SECURITY_AUDIT",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_SECURITY_AUDIT.ROW_WID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Security Context Detail"
+    }, {
+      "name" : "Security Object Key",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "SEC_SECURE_BY_OBJ_MEMBER_USER_SECURITY_AUDIT",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_SECURITY_AUDIT.SEC_OBJ_KEY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Object Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "SEC_SECURE_BY_OBJ_MEMBER_USER_SECURITY_AUDIT",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_SECURITY_AUDIT.SEC_OBJ_NAME" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "SEC_SECURE_BY_OBJ_MEMBER_USER_SECURITY_AUDIT",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.SEC_SECURE_BY_OBJ_MEMBER_USER_SECURITY_AUDIT" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Security Context.Dim - Security Context Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - Security Context Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - Security Context Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - Security Context Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Row Wid" ],
+        "displayKey" : "Row Wid"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Security Context",
+        "levels" : [ "Dim - Security Context Total", "Dim - Security Context Detail" ]
+      } ]
+    }
+  }
+}

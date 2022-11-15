@@ -1,0 +1,26 @@
+{
+  "physicalTable" : {
+    "name" : "SEC_SECURE_BY_PROJECT_MANAGER",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT  PARTY.PROJECT_ID ,\r\n              'OA4F_SEC_PPM_PROJECT_LIST' SEC_OBJECT_CODE\r\nFROM DW_PROJECT_PARTY_D PARTY ,   \r\n     DW_USER_PERSON_D PER,\r\n     DW_PROJECT_ROLE_TYPE_D PRT1,\r\n     DW_PROJECT_ROLE_TYPE_D PRT2\r\nWHERE PARTY.RESOURCE_SOURCE_ID = PER.PERSON_ID  \r\n  AND UPPER(PER.USERNAME)=UPPER('VALUEOF(NQ_SESSION.USER)')\r\n  AND PRT1.PROJECT_ROLE_ID=1\r\n  AND PRT1.ROLE_ID = PRT2.ROLE_ID\r\n  AND PARTY.PROJECT_ROLE_ID = PRT2.PROJECT_ROLE_ID\r\n"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "PROJECT_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "SEC_OBJECT_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 255,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "additionalKeys" : [ [ "PROJECT_ID" ] ]
+  }
+}

@@ -1,0 +1,920 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - CX - Subscriptions",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Customer Experience Subscription Analytics" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "# of Subscriptions",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.SUBSCRIPTION_PRODUCT_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Active Subscriptions",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'ORA_ACTIVE'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of New Active Subscriptions",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'ORA_ACTIVE' AND %3 = 'Y'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.First Subscription Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Active Subscriptions Added - Last 30 days",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'ORA_ACTIVE' AND  TIMESTAMPDIFF( SQL_TSI_DAY , %3,  CURRENT_DATE ) BETWEEN 0 AND 30), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Start Date" ]
+        }
+      }
+    }, {
+      "name" : "# of Expired Subscriptions",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'ORA_EXPIRED'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Subscriptions Expired - Last 30 days",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'ORA_EXPIRED' AND  TIMESTAMPDIFF( SQL_TSI_DAY , %3,  CURRENT_DATE ) BETWEEN 0 AND 30), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription End Date" ]
+        }
+      }
+    }, {
+      "name" : "# of Active Subscriptions Expiring - Next 30 days",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING  NOT %2 IN ('ORA_DRAFT', 'ORA_CANCELED') AND  TIMESTAMPDIFF( SQL_TSI_DAY ,  CURRENT_DATE , %3) BETWEEN 0 AND 30), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription End Date" ]
+        }
+      }
+    }, {
+      "name" : "# of Renewed Active Subscriptions",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'ORA_ACTIVE' AND %3 = 'Y'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.Renewal Subscription Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Renewed Subscriptions",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Y'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Renewal Subscription Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Terminated Subscriptions",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'ORA_CLOSED' AND %3 = '~NOVALUE~' AND %4 = '~NOVALUE~'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Date - Subscription Amend Effective Date Gregorian Calendar.Subscription Amend Effective Day Code", "logicalColumn:Core.Dim - CX - Date - Subscription Suspended Date Gregorian Calendar.Subscription Suspended Day Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Evergreen Subscriptions",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Y'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Evergreen Subscription Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Expansion Active Subscriptions",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'ORA_ACTIVE' AND %3 = 'Y'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.Subscription MRR Expansion Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Expansion Subscriptions",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Y'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Subscription MRR Expansion Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Active Subscription Upgrades",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'ORA_ACTIVE' AND %3 = 'ORA_UPGRADE'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.Subscription Amend Reason Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Subscription Upgrades",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'ORA_UPGRADE'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Subscription Amend Reason Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Active Subscription Downgrades",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'ORA_ACTIVE' AND %3 = ' ORA_DOWNGRADE'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.Subscription Amend Reason Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Subscription Downgrades",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'ORA_DOWNGRADE'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Subscriptions", "logicalColumn:Core.Dim - CX - Subscription.Subscription Amend Reason Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Customers",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.SUBSCRIPTION_PRIMARY_PARTY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Customers with Active Subscriptions",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'ORA_ACTIVE'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Customers", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Products",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CAST (%1 AS CHARACTER ( 30 )) || '~' ||  CAST (%2 AS CHARACTER ( 30 ))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.INVENTORY_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.INVENTORY_ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Products with Active Subscriptions",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'ORA_ACTIVE'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Products", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code" ]
+        }
+      }
+    }, {
+      "name" : "-----Analytics Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "Subscription Total Contract Value (TCV) in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.GLOBAL_PRODUCT_NET_PRICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Subscription Invoiced Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.GLOBAL_INVOICED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Subscription Credited Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.GLOBAL_CREDITED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Subscription Closed Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.GLOBAL_CLOSED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Subscription Cancelled Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.GLOBAL_CANCELED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Subscription MRR in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.GLOBAL_MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Active Subscription MRR in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_ACTIVE')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.Subscription MRR in Analytics Currency", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code" ]
+        }
+      }
+    }, {
+      "name" : "First Active MRR in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_ACTIVE' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.Subscription MRR in Analytics Currency", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.First Subscription Flag" ]
+        }
+      }
+    }, {
+      "name" : "Expansion Active MRR in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_ACTIVE' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.Subscription MRR in Analytics Currency", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.Subscription MRR Expansion Flag" ]
+        }
+      }
+    }, {
+      "name" : "Contraction Active MRR in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_ACTIVE' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.Subscription MRR in Analytics Currency", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.Subscription MRR Contraction Flag" ]
+        }
+      }
+    }, {
+      "name" : "Activated Renewal MRR in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_ACTIVE' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.Subscription MRR in Analytics Currency", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.Renewal Subscription Flag" ]
+        }
+      }
+    }, {
+      "name" : "Average Revenue per Customer (ARPU) in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Customers with Active Subscriptions", "logicalColumn:Core.Fact - CX - Subscriptions.Active Subscription MRR in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Early Termination Fee in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.GLOBAL_EARLY_TERMINATION_FEE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'NA'"
+        }
+      }
+    }, {
+      "name" : "Subscription Total Contract Value (TCV) in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.PRODUCT_NET_PRICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Subscription Invoiced Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.INVOICED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Subscription Credited Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.CREDITED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Subscription Closed Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.CLOSED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Subscription Cancelled Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.CANCELED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Subscription MRR in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.MONTHLY_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Active Subscription MRR in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_ACTIVE')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.Subscription MRR in Document Currency", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code" ]
+        }
+      }
+    }, {
+      "name" : "First Active MRR in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_ACTIVE' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.Subscription MRR in Document Currency", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.First Subscription Flag" ]
+        }
+      }
+    }, {
+      "name" : "Expansion Active MRR in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_ACTIVE' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.Subscription MRR in Document Currency", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.Subscription MRR Expansion Flag" ]
+        }
+      }
+    }, {
+      "name" : "Contraction Active MRR in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_ACTIVE' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.Subscription MRR in Document Currency", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.Subscription MRR Contraction Flag" ]
+        }
+      }
+    }, {
+      "name" : "Activated Renewal MRR in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_ACTIVE' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.Subscription MRR in Document Currency", "logicalColumn:Core.Dim - CX - Subscription.Internal - Subscription Status Code", "logicalColumn:Core.Dim - CX - Subscription.Renewal Subscription Flag" ]
+        }
+      }
+    }, {
+      "name" : "Average Revenue per Customer (ARPU) in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Subscriptions.# of Customers with Active Subscriptions", "logicalColumn:Core.Fact - CX - Subscriptions.Active Subscription MRR in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Early Termination Fee in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF.EARLY_TERMINATION_FEE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_SUBSCRIPTION_PRODUCT_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Subscription Header Bill Service.Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Closed Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Start Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Subscription Header Renewal Pricing Method Used.Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Cancelled Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Start Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Subscription Header Partial Period Start.Detail", "logicalLevel:Core.Dim - CX - Subscription.Detail", "logicalLevel:Core.Dim - CX - Subscription Header Status.Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Amend Effective Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Subscription Header Partial Period Type.Detail", "logicalLevel:Core.Dim - CX - Date - Subscription End Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Subscription Header Renewal Process.Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Renewed Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Subscription Header Renewal Process Used.Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Suspended Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Amend Effective Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Subscription Cancelled Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Subscription Closed Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Date - Subscription End Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Customer Ship To.Dim - Customer Ship To Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Renewed Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - CX - Date - Subscription Suspended Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Subscription Product Change Reason.Detail", "logicalLevel:Core.Dim - CX - Subscription Header.Detail", "logicalLevel:Core.Dim - CX - Subscription Customer Account Ship To.CX - Subscription Customer Account Ship To Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail", "logicalLevel:Core.Dim - CX - Subscription Suspend Reason.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - CX - Subscription Quote-to Contact.Detail", "logicalLevel:Core.Dim - CX - Subscription Header Billing Date Code.Detail", "logicalLevel:Core.Dim - CX - Subscription Ship-to Location.Detail", "logicalLevel:Core.Dim - CX - Subscription Bill-to Site Use Location.Detail", "logicalLevel:Core.Dim - CX - Subscription Close Credit Method.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - CX - Subscription Close Reason.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - CX - Subscription Amend Reason.Detail", "logicalLevel:Core.Dim - CX - Subscription Status.Detail", "logicalLevel:Core.Dim - CX - Subscription Sales Product Type.Detail", "logicalLevel:Core.Dim - CX - Subscription Amend Credit Method.Detail", "logicalLevel:Core.Dim - CX - Subscription Billing Date Code.Detail", "logicalLevel:Core.Dim - CX - Subscription Cancel Reason.Detail", "logicalLevel:Core.Dim - CX - Subscription Payment Method.Detail", "logicalLevel:Core.Dim - CX - Subscription Renewal Payment Method.Detail", "logicalLevel:Core.Dim - CX - Subscription Tax Exemption Reason.Detail", "logicalLevel:Core.Dim - CX - Subscription Price Adjustment Basis.Detail", "logicalLevel:Core.Dim - CX - Subscription Tax Exemption Control.Detail", "logicalLevel:Core.Dim - CX - Subscription Price Adjustment Type.Detail", "logicalLevel:Core.Dim - CX - Subscription Pricing Term Pricing Method.Detail", "logicalLevel:Core.Dim - CX - Subscription Renewal Type.Detail", "logicalLevel:Core.Dim - CX - Subscription Suspend Credit Method.Detail", "logicalLevel:Core.Dim - CX - Subscription Scheduled Product UOM.Detail", "logicalLevel:Core.Dim - CX - Subscription Payment Term.Detail", "logicalLevel:Core.Dim - CX - Subscription Pricing Term Period.Detail", "logicalLevel:Core.Dim - CX - Subscription Billing Frequency.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription Amend Effective Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription Amend Effective Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription Cancelled Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription Cancelled Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription Closed Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription Closed Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription End Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription End Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription Renewed Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription Renewed Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription Start Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription Start Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription Suspended Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Subscription Suspended Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Amend Credit Method",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Amend Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Bill-to Site Use Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Billing Date Code",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Billing Frequency",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Cancel Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Close Credit Method",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Close Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Customer Account Ship To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Header Bill Service",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Header Billing Date Code",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Header Partial Period Start",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Header Partial Period Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Header Renewal Pricing Method Used",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Header Renewal Process Used",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Header Renewal Process",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Header Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Header",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Payment Method",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Payment Term",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Price Adjustment Basis",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Price Adjustment Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Pricing Term Period",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Pricing Term Pricing Method",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Product Change Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Quote-to Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Renewal Payment Method",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Renewal Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Sales Product Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Scheduled Product UOM",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Ship-to Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Suspend Credit Method",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Suspend Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Tax Exemption Control",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription Tax Exemption Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Subscription",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Account Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Ship To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

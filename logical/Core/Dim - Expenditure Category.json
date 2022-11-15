@@ -1,0 +1,122 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Expenditure Category",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Expenditure Category Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Expenditure Category Identifier",
+      "description" : "Unique identifier for Expenditure Categories.",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_EXP_CATEGORY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXP_CATEGORY_D.EXPENDITURE_CATEGORY_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Expenditure Category Detail"
+    }, {
+      "name" : "Expenditure Category",
+      "description" : "Expenditure Category Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Expenditure Category Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_EXP_CATEGORY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PROJECT_EXP_CATEGORY_TL.EXPENDITURE_CATEGORY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXP_CATEGORY_D.EXPENDITURE_CATEGORY_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Expenditure Category Detail"
+    }, {
+      "name" : "Expenditure Category Description",
+      "description" : "Expenditure Category Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Expenditure Category Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_EXP_CATEGORY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PROJECT_EXP_CATEGORY_TL.DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXP_CATEGORY_D.EXPENDITURE_CATEGORY_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "----------DFF Keys----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "PJF_EXP_CATEGORIES_B_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_EXP_CATEGORY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_PROJECT_EXP_CATEGORY_D_DW_PJF_EXP_CATEGORIES_B_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_PROJECT_EXP_CATEGORY_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXP_CATEGORY_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_PROJECT_EXP_CATEGORY_D_DW_PJF_EXP_CATEGORIES_B_DFF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXP_CATEGORY_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Dim_DW_PROJECT_EXP_CATEGORY_D_DW_PJF_EXP_CATEGORIES_B_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Expenditure Category.Expenditure Category Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "All",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "All",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Expenditure Category Detail",
+        "numberOfElements" : 20,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Expenditure Category Identifier" ],
+        "displayKey" : "Expenditure Category",
+        "additionalKeys" : [ [ "Expenditure Category" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Expenditure Category",
+        "levels" : [ "All", "Expenditure Category Detail" ]
+      } ]
+    }
+  }
+}

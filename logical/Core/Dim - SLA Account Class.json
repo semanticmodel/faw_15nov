@@ -1,0 +1,99 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - SLA Account Class",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Account Class Code" ],
+    "logicalColumns" : [ {
+      "name" : "Account Class Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL_PromptOnly.ACCOUNTING_CLASS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL.ACCOUNTING_CLASS_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Account Class",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Account Class Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_XLA_ACCOUNT_CLASS_LKP_TL.ACCOUNTING_CLASS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL_PromptOnly.ACCOUNTING_CLASS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_XLA_ACCOUNT_CLASS_LKP_TL.ACCOUNTING_CLASS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL.ACCOUNTING_CLASS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - SLA Account Class.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL_PromptOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_XLA_ACCOUNT_CLASS_LKP_TL" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - SLA Account Class.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Account Class Code" ],
+        "displayKey" : "Account Class Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "SLA Account Class",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

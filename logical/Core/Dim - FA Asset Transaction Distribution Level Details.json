@@ -1,0 +1,97 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - FA Asset Transaction Distribution Level Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Asset ID", "Distribution ID" ],
+    "logicalColumns" : [ {
+      "name" : "Asset ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_SLA_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.ASSET_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Details"
+    }, {
+      "name" : "Distribution ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_FA_SLA_TRANSACTIONS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.DISTRIBUTION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Details"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_FA_SLA_TRANSACTIONS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_TRANSACTION_HEADERS_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_ASSET_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_ADDITIONS_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_RETIREMENTS_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_FA_BOOK_FATransactionsFact" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_TRANSACTION_HEADERS_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_ADDITIONS_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_FA_BOOK_FATransactionsFact",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_RETIREMENTS_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_ASSET_INVOICES_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Details",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Asset ID", "Distribution ID" ],
+        "displayKey" : "Asset ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "FA Asset Transaction Distribution Level Details",
+        "levels" : [ "Total", "Details" ]
+      } ]
+    }
+  }
+}

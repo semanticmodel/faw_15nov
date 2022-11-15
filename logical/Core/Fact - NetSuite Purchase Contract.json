@@ -1,0 +1,643 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - NetSuite Purchase Contract",
+    "tags" : [ "Project:NetSuite Analytics Warehouse - NetSuite Purchases" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "<<<<<<<<<<<<<<<<<<< TRANSACTION >>>>>>>>>>>>>>>>>>",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Number of Purchase Contracts",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_PURCHASE_CONTRACT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F.ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Number of Days Until Expiration",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_PURCHASE_CONTRACT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'B' AND %2 >  CURRENT_TIMESTAMP(0) THEN  TIMESTAMPDIFF( SQL_TSI_DAY ,  CURRENT_TIMESTAMP(0), %2) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F.STATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F.ENDDATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Number of Rejected Purchase Contracts",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_PURCHASE_CONTRACT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'R' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F.STATUS", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F.ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Rejected Percent",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 / %2 * 100",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - NetSuite Purchase Contract.Number of Rejected Purchase Contracts", "logicalColumn:Core.Fact - NetSuite Purchase Contract.Total Number of Purchase Contracts" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "----------------------------------- Transaction Currency Amounts -----------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Maximum Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_PURCHASE_CONTRACT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F.MAXIMUMAMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Minimum Amount in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_PURCHASE_CONTRACT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F.MINIMUMAMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Average Maximum Amount in Transaction Currency (Not Exposed)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 'B' THEN %2 / %3 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Dim - NetSuite Purchase Contract Status.Purchase Contract Status Code", "logicalColumn:Core.Fact - NetSuite Purchase Contract.Maximum Amount in Transaction Currency", "logicalColumn:Core.Fact - NetSuite Purchase Contract.Total Number of Purchase Contracts" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Average Minimum Amount in Transaction Currency (Not Exposed)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 'B' THEN %2 / %3 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Dim - NetSuite Purchase Contract Status.Purchase Contract Status Code", "logicalColumn:Core.Fact - NetSuite Purchase Contract.Minimum Amount in Transaction Currency", "logicalColumn:Core.Fact - NetSuite Purchase Contract.Total Number of Purchase Contracts" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "---------------------------- Base Currency Amounts --------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Maximum Amount in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_PURCHASE_CONTRACT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F.BASE_MAXIMUMAMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Minimum Amount in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_PURCHASE_CONTRACT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F.BASE_MINIMUMAMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Average Maximum Amount in Base Currency (Not Exposed)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 'B' THEN %2 / %3 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Dim - NetSuite Purchase Contract Status.Purchase Contract Status Code", "logicalColumn:Core.Fact - NetSuite Purchase Contract.Maximum Amount in Base Currency", "logicalColumn:Core.Fact - NetSuite Purchase Contract.Total Number of Purchase Contracts" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Average Minimum Amount in Base Currency (Not Exposed)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 'B' THEN %2 / %3 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Dim - NetSuite Purchase Contract Status.Purchase Contract Status Code", "logicalColumn:Core.Fact - NetSuite Purchase Contract.Minimum Amount in Base Currency", "logicalColumn:Core.Fact - NetSuite Purchase Contract.Total Number of Purchase Contracts" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "--------------------------- Analytics Currency Amounts --------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Maximum Amount In Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_PURCHASE_CONTRACT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G_Header.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F.BASE_MAXIMUMAMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.HISTORICALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Minimum Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_PURCHASE_CONTRACT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G_Header.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F.BASE_MINIMUMAMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header.HISTORICALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Average Maximum Amount in Analytics Currency (Not Exposed)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 'B' THEN %2 / %3 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Dim - NetSuite Purchase Contract Status.Purchase Contract Status Code", "logicalColumn:Core.Fact - NetSuite Purchase Contract.Maximum Amount In Analytics Currency", "logicalColumn:Core.Fact - NetSuite Purchase Contract.Total Number of Purchase Contracts" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "Average Minimum Amount in Analytics Currency (Not Exposed)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 'B' THEN %2 / %3 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Dim - NetSuite Purchase Contract Status.Purchase Contract Status Code", "logicalColumn:Core.Fact - NetSuite Purchase Contract.Minimum Amount in Analytics Currency", "logicalColumn:Core.Fact - NetSuite Purchase Contract.Total Number of Purchase Contracts" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Entity.Total", "logicalLevel:Core.Dim - NetSuite Inventory Location.Total", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book.Total", "logicalLevel:Core.Dim - NetSuite Item.Total", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Total", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Total", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Total", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "<<<<<<<<<<<<<<<<<<<< TRANSACTION LINES >>>>>>>>>>>>>>>>>>>>>",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Number of Purchase Contract Lines",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_PURCHASE_CONTRACT_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_LINES_F.TRANSACTION" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Line" ]
+      }
+    }, {
+      "name" : "Item Rate Percent",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_PURCHASE_CONTRACT_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_LINES_F.IS_RATEPERCENT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_LINES_F.RATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "AVG",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Line" ]
+      }
+    }, {
+      "name" : "------------------------------- Transaction Currency Amounts --------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Item Rate in Transaction Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_PURCHASE_CONTRACT_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_LINES_F.IS_RATEPERCENT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_LINES_F.RATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Line" ]
+      }
+    }, {
+      "name" : "------------------------------ Base Currency Amounts -----------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Item Rate in Base Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_PURCHASE_CONTRACT_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_LINES_F.BASE_RATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Line" ]
+      }
+    }, {
+      "name" : "------------------------------- Analytics Currency Amounts -------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Item Rate in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_PURCHASE_CONTRACT_LINES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'CURRENT' THEN  IFNULL(%2, 1) * %3 WHEN %1 = 'AVERAGE' THEN  IFNULL(%4, 1) * %3 WHEN %1 = 'HISTORICAL' THEN  IFNULL(%5, 1) * %3 WHEN %1 = 'PERACCOUNT' THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G.CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.CURRENTRATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_LINES_F.BASE_RATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.AVERAGERATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G.HISTORICALRATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Line" ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_NS_PURCHASE_CONTRACT_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G_Header" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G_Header",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G_Header",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Modified By User.Detail", "logicalLevel:Core.Dim - NetSuite Purchase Contract Status.Detail", "logicalLevel:Core.Dim - NetSuite Classification.Detail", "logicalLevel:Core.Dim - NetSuite Effectivity Type.Detail", "logicalLevel:Core.Dim - NetSuite Incoterm.Detail", "logicalLevel:Core.Dim - NetSuite Subsidiary.Detail", "logicalLevel:Core.Dim - NetSuite Location.Detail", "logicalLevel:Core.Dim - NetSuite Payment Terms.Detail", "logicalLevel:Core.Dim - NetSuite Next Approver.Detail", "logicalLevel:Core.Dim - NetSuite Department.Detail", "logicalLevel:Core.Dim - Date NetSuite Gregorian Calendar.Day", "logicalLevel:Core.Dim - NetSuite Currency.Detail", "logicalLevel:Core.Dim - NetSuite Exchange Rate Type.Detail", "logicalLevel:Core.Dim - NetSuite Vendor.Detail", "logicalLevel:Core.Dim - NetSuite Created By User.Detail", "logicalLevel:Core.Dim - NetSuite Employee.Detail", "logicalLevel:Core.Dim - NetSuite Accounting Period.Detail", "logicalLevel:Core.Dim - NetSuite Approval Status.Detail", "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Header", "logicalLevel:Core.Dim - NetSuite Fiscal Calendar.Fiscal Date" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_F.SUBSIDIARY", "variable:NetSuite - List of Subsidiaries.NETSUITE_SUBSIDIARY_LIST" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_NS_PURCHASE_CONTRACT_LINES_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_LINES_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_LINES_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_EXCHANGERATETYPE_G",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_LINES_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_CONSOLIDATEDEXCHANGERATE_G",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Purchase Contract Details.Purchase Contract Line", "logicalLevel:Core.Dim - NetSuite Inventory Subsidiary.Detail", "logicalLevel:Core.Dim - NetSuite Inventory Location.Detail", "logicalLevel:Core.Dim - NetSuite Entity.Detail", "logicalLevel:Core.Dim - NetSuite Fiscal Calendar.Fiscal Date", "logicalLevel:Core.Dim - NetSuite Item.Detail", "logicalLevel:Core.Dim - NetSuite Approval Status.Detail", "logicalLevel:Core.Dim - NetSuite Department.Detail", "logicalLevel:Core.Dim - NetSuite Inventory Reporting Location.Detail", "logicalLevel:Core.Dim - NetSuite Classification.Detail", "logicalLevel:Core.Dim - NetSuite Purchase Contract Status.Detail", "logicalLevel:Core.Dim - NetSuite Accounting Book Currency.Detail", "logicalLevel:Core.Dim - NetSuite Subsidiary.Detail", "logicalLevel:Core.Dim - NetSuite Accounting Period.Detail", "logicalLevel:Core.Dim - NetSuite Modified By User.Detail", "logicalLevel:Core.Dim - NetSuite Accounting Book.Detail", "logicalLevel:Core.Dim - NetSuite Location.Detail", "logicalLevel:Core.Dim - NetSuite Merchandise Hierarchy.Merchandise Hierarchy Node", "logicalLevel:Core.Dim - NetSuite Effectivity Type.Detail", "logicalLevel:Core.Dim - NetSuite Created By User.Detail", "logicalLevel:Core.Dim - NetSuite Next Approver.Detail", "logicalLevel:Core.Dim - NetSuite Payment Terms.Detail", "logicalLevel:Core.Dim - NetSuite Exchange Rate Type.Detail", "logicalLevel:Core.Dim - NetSuite Committed Inventory.Detail", "logicalLevel:Core.Dim - NetSuite Incoterm.Detail", "logicalLevel:Core.Dim - NetSuite Vendor.Detail", "logicalLevel:Core.Dim - NetSuite Employee.Detail", "logicalLevel:Core.Dim - NetSuite Currency.Detail", "logicalLevel:Core.Dim - Date NetSuite Gregorian Calendar.Day" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PURCHASE_CONTRACT_LINES_F.SUBSIDIARY", "variable:NetSuite - List of Subsidiaries.NETSUITE_SUBSIDIARY_LIST" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_CONTENT_REPORTING_CONFIG",
+      "functionalGroup" : "REPORT_CONFIG",
+      "status" : "DISABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - NetSuite Subsidiary.Subsidiary Identifier", "variable:NetSuite - List of Subsidiaries.NETSUITE_SUBSIDIARY_LIST" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date NetSuite Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Book Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Book",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Accounting Period",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Approval Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Classification",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Committed Inventory",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Created By User",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Department",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Effectivity Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Employee",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Exchange Rate Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Incoterm",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Inventory Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Inventory Reporting Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Inventory Subsidiary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Merchandise Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Modified By User",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Next Approver",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Payment Terms",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Purchase Contract Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Purchase Contract Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Subsidiary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - NetSuite Vendor",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

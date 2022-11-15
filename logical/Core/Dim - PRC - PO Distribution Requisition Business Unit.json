@@ -1,0 +1,119 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - PO Distribution Requisition Business Unit",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "PO Distribution Requisition Business Unit Key" ],
+    "logicalColumns" : [ {
+      "name" : "PO Distribution Requisition Business Unit Key",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition_PromptOnly.ORGANIZATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition.ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "PO Distribution Requisition Business Unit Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "PO Distribution Requisition Business Unit Key",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INTERNAL_ORG_D_TL.ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition_PromptOnly.ORGANIZATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INTERNAL_ORG_D_TL.ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition.ORGANIZATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "PO Distribution Requisition Business Unit Number",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition_PromptOnly.ORGANIZATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition.ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition_PromptOnly" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition_PromptOnly.REQUISITION_BU_FLAG" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_PRC_PO_Distribution_Requisition" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "PO Distribution Requisition Business Unit Key" ],
+        "displayKey" : "PO Distribution Requisition Business Unit Name",
+        "additionalKeys" : [ [ "PO Distribution Requisition Business Unit Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - PO Distribution Requisition Business Unit",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

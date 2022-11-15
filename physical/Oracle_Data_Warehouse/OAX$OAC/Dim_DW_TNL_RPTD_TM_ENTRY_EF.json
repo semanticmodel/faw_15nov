@@ -1,0 +1,92 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_TNL_RPTD_TM_ENTRY_EF",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_TNL_RPTD_TM_ENTRY_EF",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_TYPE_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) >= %4 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_TYPE_D.ABSENCE_TYPE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TNL_RPTD_TM_ENTRY_EF.ABSENCE_TYPE_ID",
+            "variable:Gregorian Calendar - Current Gregorian Day.CURRENT_GREGORIAN_DAY",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_TYPE_D.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_TYPE_D.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_TYPE_D_AbsenceCategory",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) >= %4 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) <= %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_TYPE_D_AbsenceCategory.ABSENCE_TYPE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TNL_RPTD_TM_ENTRY_EF.ABSENCE_TYPE_ID",
+            "variable:Gregorian Calendar - Current Gregorian Day.CURRENT_GREGORIAN_DAY",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_TYPE_D_AbsenceCategory.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_TYPE_D_AbsenceCategory.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TNL_TIMECARD_STATUS_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND  CURRENT_DATE  BETWEEN %5 AND %6",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TNL_TIMECARD_STATUS_D.TM_REC_GRP_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TNL_RPTD_TM_ENTRY_EF.TMCRD_TM_REC_GRP_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TNL_TIMECARD_STATUS_D.TM_REC_GRP_VERSION",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TNL_RPTD_TM_ENTRY_EF.TMCRD_TM_REC_GRP_VERSION",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TNL_TIMECARD_STATUS_D.DATE_FROM",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TNL_TIMECARD_STATUS_D.DATE_TO"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_ProcessedReportedTimeCards",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TNL_RPTD_TM_ENTRY_EF.TIME_REPORTER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_ProcessedReportedTimeCards.PERSON_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_ProcessedReportedTimeCards",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TNL_RPTD_TM_ENTRY_EF.TIME_REPORTER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_ProcessedReportedTimeCards.PERSON_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TNL_TIMECARD_D_ProcessedReportedTimeCards",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TNL_RPTD_TM_ENTRY_EF.TMCRD_TM_REC_GRP_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TNL_TIMECARD_D_ProcessedReportedTimeCards.TM_REC_GRP_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "TM_REC_ID"
+      ],
+      [
+        "TM_REC_ID",
+        "TM_REC_VERSION"
+      ]
+    ]
+  }
+}

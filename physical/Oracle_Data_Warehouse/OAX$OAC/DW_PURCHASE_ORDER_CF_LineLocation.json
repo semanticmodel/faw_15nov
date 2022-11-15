@@ -1,0 +1,472 @@
+{
+  "physicalTable" : {
+    "name" : "DW_PURCHASE_ORDER_CF_LineLocation",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "select PO.PUOM_CODE,\r\n\r\nPO.PUOM_CONVERSION_FACTOR,\r\n\r\nPO.ACCEPTANCE_DUE_DATE,\r\n\t\r\nPO.ACCEPTANCE_REQUIRED_FLAG,\r\n\t\r\nPO.AGREEMENT_LEAKAGE_FLAG,\r\n\t\r\nPO.ALLOW_SUBSTITUTE_RECEIPTS_FLAG,\r\n\t\r\nPO.APPROVED_FLAG,\r\n\t\r\nPO.BACK_TO_BACK_FLAG,\r\n\r\nPO.BASE_UNIT_PRICE,\r\n\t\r\nPO.BUDGET_CONTROL_ENABLED_FLAG,\r\n\t\r\nPO.BUYER_MANAGED_TRANSPORT_FLAG,\r\n\t\r\nPO.CANCEL_DATE,\r\n\t\r\nPO.CANCEL_REASON,\r\n\t\r\nPO.CLOSED_FOR_INVOICE_DATE,\r\n\t\r\nPO.CLOSED_FOR_RECEIVING_DATE,\r\n\t\r\nPO.CLOSED_REASON, \r\n\t\r\nPO.COMMENTS,\r\n\t\r\nPO.COMMUNICATION_METHOD,\r\n\t\r\nPO.CONFIRMING_ORDER_FLAG,\r\n\t\r\nPO.CONSIGNMENT_LINE_FLAG,\r\n\t\r\nPO.DESTINATION_TYPE_CODE,\r\n\t\r\nPO.DOCUMENT_CREATION_METHOD,\r\n\t\r\nPO.DOCUMENT_STATUS,\r\n\r\nPO.DISCOUNT,\r\n\r\nPO.DISCOUNT_REASON,\r\n\r\nPO.DISCOUNT_TYPE,\r\n\t\r\nPO.FROZEN_FLAG,\r\n\t\r\nPO.FUNDS_STATUS,\r\n\t\r\nPO.LINE_STATUS,\r\n\t\r\nPO.MANUAL_PRICE_CHANGE_FLAG,\r\n\t\r\nPO.MATCH_APPROVAL_LEVEL,\r\n\t\r\nPO.MATCH_OPTION,\r\n\t\r\nPO.NEED_BY_DATE,\r\n\t\r\nPO.NEGOTIATED_FLAG,\r\n\t\r\nPO.NOTE_TO_RECEIVER,\r\n\t\r\nPO.NOTE_TO_VENDOR,\r\n\t\r\nPO.OVER_RECEIPT_QUANTITY_FLAG,\r\n\t\r\nPO.PAY_ON_RECEIPT_INDICATOR,\r\n\t\r\nPO.PO_APPROVAL_CYCLE_TIME,\r\n\t\r\nPO.PO_APPROVED_DATE,\r\n\t\r\nPO.PO_CLOSE_CYCLE_TIME,\r\n\t\r\nPO.PO_CLOSED_DATE,\r\n\t\r\nPO.PO_COMMUNICATED_DATE,\r\n\t\r\nPO.PO_CREATION_DATE,\r\n\r\nPO.PO_CREATION_DATE_1,\r\n\t\r\nPO.PO_DOCUMENT_DATE,\r\n\t\r\nPO.PO_DOCUMENT_TYPE,\r\n\r\nPO.PO_HEADER_CARRIER_ID,\r\n\r\nPO.PO_HEADER_MODE_OF_TRANSPORT,\r\n\r\nPO.PO_HEADER_SERVICE_LEVEL,\r\n\t\r\nPO.PO_LINE_CANCEL_DATE,\r\n\t\r\nPO.PO_LINE_CANCELLED_BY,\r\nPO.PO_LINE_LOC_CARRIER_ID,\r\nPO.PO_LINE_LOC_MODE_OF_TRANSPORT,\r\nPO.PO_LINE_LOC_SERVICE_LEVEL,\r\n\t\r\nPO.PO_LINE_TYPE_ID,\r\n\t\r\nPO.PO_LINE_UNIT_PRICE,\r\n\r\nPO.PO_LINE_UNIT_PRICE_DERIVED,\r\n\t\r\nPO.PO_LINE_UOM_CODE,\r\n\t\r\nPO.PO_OPEN_DATE,\r\n\t\r\nPO.PO_SCHEDULE_ID,\r\n\t\r\nPO.PO_SCHEDULE_NUMBER,\r\n\r\nPO.PO_SCH_QUANTITY,\r\n\t\r\nPO.PO_SUBMIT_DATE,\r\n\t\r\nPO.PROC_CARD_INDICATOR,\r\n\t\r\nPO.PROC_FISCAL_PERIOD_SET_NAME,\r\n\t\r\nPO.PROC_FISCAL_PERIOD_TYPE,\r\nPO.PRODUCT_TYPE,\r\n\t\r\nPO.PROMISED_DATE,\r\n\t\r\nPO.PROMISED_SHIP_DATE,\r\n\t\r\nPO.PURCHASE_ORDER_ID,\r\n\t\r\nPO.PURCHASE_ORDER_LINE_ID,\r\n\t\r\nPO.PURCHASE_ORDER_LINE_NUMBER,\r\n\t\r\nPO.PURCHASE_ORDER_NUMBER,\r\n\t\r\nPO.RECEIVING_ROUTING_ID,\r\n\r\nPO.REQ_FISCAL_PERIOD_SET_NAME,\r\n\t\r\nPO.REQ_FISCAL_PERIOD_TYPE,\r\n\t\r\nPO.REQUESTED_SHIP_DATE,\r\n\t\r\nPO.REVISED_DATE,\r\n\t\r\nPO.REVISION_NUM,\r\n\t\r\nPO.SCHEDULE_STATUS,\r\n\t\r\nPO.SHIPMENT_CLOSED_DATE,\r\n\r\nPO.SOURCING_BASED_FLAG,\r\n\t\r\nPO.STYLE_ID,\r\n\t\r\nPO.TERMS_ID,\r\n\r\nPO.TOTAL_EXCLUDING_ALL_TAX,\r\n\t\r\nPO.UOM_CODE,\r\nPO.SUPPLIER_ID,\r\nPO.SUPPLIER_SITE_ID,\r\nPO.MANUFACTURER,\r\nPO.MANUFACTURER_PART_NUM\r\n\t\r\nfrom dw_purchase_order_cf PO, \r\n(select PO_DISTRIBUTION_ID from \r\n    \r\n(select PO_SCHEDULE_ID , \r\nPO_DISTRIBUTION_ID,\r\nROW_NUMBER() OVER (PARTITION BY PO_SCHEDULE_ID ORDER BY PO_DISTRIBUTION_ID) as schedule_row \r\nfrom dw_purchase_order_cf) \r\n\r\nwhere schedule_row = 1) POschedule\r\n\r\n    \r\nwhere PO.PO_DISTRIBUTION_ID = POschedule.PO_DISTRIBUTION_ID"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "CLOSED_FOR_RECEIVING_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "OVER_RECEIPT_QUANTITY_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : false
+    }, {
+      "name" : "UOM_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "PO_LINE_UNIT_PRICE",
+      "dataType" : "DOUBLE",
+      "length" : 38,
+      "nullable" : true
+    }, {
+      "name" : "LINE_STATUS",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "PURCHASE_ORDER_LINE_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "ACCEPTANCE_DUE_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PO_SCHEDULE_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "APPROVED_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "DESTINATION_TYPE_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "SOURCING_BASED_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "PO_LINE_LOC_CARRIER_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PRODUCT_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 256,
+      "nullable" : true
+    }, {
+      "name" : "PO_SCH_QUANTITY",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "CLOSED_REASON",
+      "dataType" : "VARCHAR",
+      "length" : 256,
+      "nullable" : true
+    }, {
+      "name" : "PAY_ON_RECEIPT_INDICATOR",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "PO_LINE_UOM_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "MANUAL_PRICE_CHANGE_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : false
+    }, {
+      "name" : "PURCHASE_ORDER_LINE_NUMBER",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "ACCEPTANCE_REQUIRED_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "PO_SCHEDULE_NUMBER",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "BACK_TO_BACK_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "DOCUMENT_CREATION_METHOD",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "COMMENTS",
+      "dataType" : "VARCHAR",
+      "length" : 256,
+      "nullable" : true
+    }, {
+      "name" : "PO_APPROVAL_CYCLE_TIME",
+      "dataType" : "DOUBLE",
+      "length" : 22,
+      "nullable" : true
+    }, {
+      "name" : "PO_OPEN_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "MATCH_APPROVAL_LEVEL",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "PURCHASE_ORDER_NUMBER",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "PO_LINE_LOC_MODE_OF_TRANSPORT",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "AGREEMENT_LEAKAGE_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "PO_SUBMIT_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "BUDGET_CONTROL_ENABLED_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "DOCUMENT_STATUS",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "COMMUNICATION_METHOD",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "PO_APPROVED_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "MATCH_OPTION",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "RECEIVING_ROUTING_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "ALLOW_SUBSTITUTE_RECEIPTS_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "PROC_CARD_INDICATOR",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "BUYER_MANAGED_TRANSPORT_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "FROZEN_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "CONFIRMING_ORDER_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "PO_CLOSE_CYCLE_TIME",
+      "dataType" : "DOUBLE",
+      "length" : 22,
+      "nullable" : true
+    }, {
+      "name" : "PO_LINE_LOC_SERVICE_LEVEL",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "NEED_BY_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "REQUESTED_SHIP_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PROC_FISCAL_PERIOD_SET_NAME",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "CANCEL_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "FUNDS_STATUS",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "CONSIGNMENT_LINE_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "PO_CLOSED_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "NEGOTIATED_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "REVISED_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PROC_FISCAL_PERIOD_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "CANCEL_REASON",
+      "dataType" : "VARCHAR",
+      "length" : 256,
+      "nullable" : true
+    }, {
+      "name" : "PO_COMMUNICATED_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "NOTE_TO_RECEIVER",
+      "dataType" : "VARCHAR",
+      "length" : 2048,
+      "nullable" : true
+    }, {
+      "name" : "REVISION_NUM",
+      "dataType" : "DOUBLE",
+      "length" : 38,
+      "nullable" : true
+    }, {
+      "name" : "PROMISED_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "CLOSED_FOR_INVOICE_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PO_CREATION_DATE_1",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "NOTE_TO_VENDOR",
+      "dataType" : "VARCHAR",
+      "length" : 2048,
+      "nullable" : true
+    }, {
+      "name" : "SCHEDULE_STATUS",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "PROMISED_SHIP_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PO_DOCUMENT_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "SHIPMENT_CLOSED_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PURCHASE_ORDER_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PO_DOCUMENT_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "STYLE_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PO_LINE_CANCEL_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "TERMS_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PO_LINE_CANCELLED_BY",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PO_LINE_TYPE_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "TOTAL_EXCLUDING_ALL_TAX",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "REQ_FISCAL_PERIOD_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "REQ_FISCAL_PERIOD_SET_NAME",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "BASE_UNIT_PRICE",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "DISCOUNT",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "DISCOUNT_REASON",
+      "dataType" : "VARCHAR",
+      "length" : 256,
+      "nullable" : true
+    }, {
+      "name" : "DISCOUNT_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "PO_LINE_UNIT_PRICE_DERIVED",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PO_HEADER_CARRIER_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PO_HEADER_MODE_OF_TRANSPORT",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "PO_HEADER_SERVICE_LEVEL",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "PO_CREATION_DATE",
+      "dataType" : "TIMESTAMP",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PUOM_CONVERSION_FACTOR",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PUOM_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : true
+    }, {
+      "name" : "SUPPLIER_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "SUPPLIER_SITE_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "MANUFACTURER_PART_NUM",
+      "dataType" : "VARCHAR",
+      "length" : 999,
+      "nullable" : true
+    }, {
+      "name" : "MANUFACTURER",
+      "dataType" : "VARCHAR",
+      "length" : 999,
+      "nullable" : true
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 1,
+      "expiryUnit" : "DAYS"
+    },
+    "additionalKeys" : [ [ "PO_SCHEDULE_ID" ] ]
+  }
+}

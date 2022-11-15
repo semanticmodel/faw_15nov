@@ -1,0 +1,40 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_FISCAL_DAY_D_InvoiceAccountingDate_Fiscal_Calendar",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_FISCAL_DAY_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 = %6 AND %7 IN ('N', '~NOVALUE~')",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceAccountingDate_Fiscal_Calendar.FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceAccountingDate_Fiscal_Calendar.FISCAL_PERIOD_TYPE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.FISCAL_PERIOD_TYPE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceAccountingDate_Fiscal_Calendar.FISCAL_DAY_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_ACCOUNTING_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D_InvoiceAccountingDate_Fiscal_Calendar.ADJUSTMENT_PERIOD_FLAG"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      }
+    ],
+    "additionalKeys": [
+      [
+        "FISCAL_PERIOD_NAME",
+        "FISCAL_PERIOD_SET_NAME",
+        "ADJUSTMENT_PERIOD_FLAG",
+        "FISCAL_DAY_DATE"
+      ],
+      [
+        "FISCAL_DAY_DATE",
+        "FISCAL_PERIOD_SET_NAME"
+      ]
+    ]
+  }
+}

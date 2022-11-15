@@ -1,0 +1,134 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - FA Asset Revaluation Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Transaction Header ID" ],
+    "logicalColumns" : [ {
+      "name" : "Transaction Header ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_REVALUATIONS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_REVALUATIONS_D_PromptOnly.TRANSACTION_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_REVALUATIONS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_REVALUATIONS_D.TRANSACTION_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Reval Method",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_REVALUATIONS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_REVALUATIONS_D_PromptOnly.REVAL_METHOD" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_REVALUATIONS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_REVALUATIONS_D.REVAL_METHOD" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Reval Value Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_REVALUATIONS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_REVALUATIONS_D_PromptOnly.REVAL_VALUE_TYPE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_REVALUATIONS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_REVALUATIONS_D.REVAL_VALUE_TYPE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Reval Value Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Reval Value Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_REVALUATIONS_D_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_FA_REVAL_VALUE_TYPES_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_REVALUATIONS_D_PromptOnly.REVAL_VALUE_TYPE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_REVALUATIONS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_FA_REVAL_VALUE_TYPES_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_REVALUATIONS_D.REVAL_VALUE_TYPE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_FA_REVALUATIONS_D_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_REVALUATIONS_D_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - FA Asset Revaluation Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_FA_REVALUATIONS_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_REVALUATIONS_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - FA Asset Revaluation Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transaction Header ID" ],
+        "displayKey" : "Transaction Header ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "FA Asset Revaluation Details",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

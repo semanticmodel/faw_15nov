@@ -1,0 +1,1088 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Fins - AP Holds",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Accounts Payable", "Project:Oracle Analytics for Fusion Financials" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-----Internal Calculation Metric-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Invoice Hold Ledger Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Header Hold Ledger Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' AND %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Line Hold Ledger Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' AND  NOT %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Line Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Release Ledger Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'NO' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Header Release Ledger Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'NO' AND %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Line Release Ledger Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'NO' AND  NOT %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Line Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Hold Global Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Header Hold Global Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' AND %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Line Hold Global Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' AND  NOT %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.GLOBAL_INVOICE_LINE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Line Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Release Global Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'NO' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Header Release Global Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'NO' AND %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Line Release Global Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'NO' AND  NOT %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.GLOBAL_INVOICE_LINE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Line Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Hold Transaction Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Header Hold Transaction Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' AND %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Line Hold Transaction Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' AND  NOT %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Line Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Release Transaction Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'NO' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Header Release Transaction Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'NO' AND %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Line Release Transaction Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'NO' AND  NOT %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+          "rule" : "MAX"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - AP Invoice Line Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Non Monetary Metric-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Invoices on Hold Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Headers on Hold Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' AND %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Invoice Lines on Hold Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' AND  NOT %2 IS NULL  THEN %3 * 1000000000000000000 + %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Header Holds Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' AND %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Line Holds Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' AND  NOT %2 IS NULL  THEN %3 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_LINE_NUMBER", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Holds Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Active and Released Holds Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Holding Days",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " TIMESTAMPDIFF( SQL_TSI_DAY , %1,  CASE  WHEN %2 = 'YES' THEN  CURRENT_DATE  ELSE %3 END )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.RELEASED_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Days on Hold",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 ELSE  NULL  END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Total Active and Released Holds Count", "logicalColumn:Core.Fact - Fins - AP Holds.Total Holding Days" ]
+        }
+      }
+    }, {
+      "name" : "-----Ledger Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Invoices on Hold Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Hold Ledger Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoice Headers on Hold Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Header Hold Ledger Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoice Lines on Hold Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Line Hold Ledger Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoices on Hold Release Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Release Ledger Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoice Headers on Hold Release Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Header Release Ledger Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoice Lines on Hold Release Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Line Release Ledger Amount" ]
+        }
+      }
+    }, {
+      "name" : "-----Analytics Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Invoices on Hold Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Hold Global Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoice Headers on Hold Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Header Hold Global Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoice Lines on Hold Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Line Hold Global Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoices on Hold Release Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Release Global Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoice Headers on Hold Release Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Header Release Global Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoice Lines on Hold Release Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Line Release Global Amount" ]
+        }
+      }
+    }, {
+      "name" : "-----Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Invoices on Hold Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Hold Transaction Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoice Headers on Hold Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Header Hold Transaction Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoice Lines on Hold Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Line Hold Transaction Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoices on Hold Release Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Release Transaction Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoice Headers on Hold Release Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Header Release Transaction Amount" ]
+        }
+      }
+    }, {
+      "name" : "Invoice Lines on Hold Release Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AP Holds.Invoice Line Release Transaction Amount" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AP_HOLDS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Invoice Created By.Detail", "logicalLevel:Core.Dim - Held By.Detail", "logicalLevel:Core.Dim - Invoice Creation Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - AP Invoice Details.Detail", "logicalLevel:Core.Dim - Invoice Accounting Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Created By.Detail", "logicalLevel:Core.Dim - AP Release Reason.Detail", "logicalLevel:Core.Dim - AP Invoice Payment Status.Detail", "logicalLevel:Core.Dim - AP Approval Status.Detail", "logicalLevel:Core.Dim - Discount Due Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - AP Source.Detail", "logicalLevel:Core.Dim - AP Validation Status.Detail", "logicalLevel:Core.Dim - AP Invoice Line Details.Detail", "logicalLevel:Core.Dim - AP Transaction Type.Detail", "logicalLevel:Core.Dim - Ledger Set.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - AP Invoice Payment Method.Detail", "logicalLevel:Core.Dim - Supplier Sites.Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Invoice Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - AP Invoice Hold Indicator.Detail", "logicalLevel:Core.Dim - Supplier.Detail", "logicalLevel:Core.Dim - AP Terms.Detail", "logicalLevel:Core.Dim - Payables Invoicing Business Unit.Detail", "logicalLevel:Core.Dim - Payment Due Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Hold Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Third Party Remit-to Supplier.Detail", "logicalLevel:Core.Dim - Released By.Detail", "logicalLevel:Core.Dim - AP Invoice Hold Details.Detail", "logicalLevel:Core.Dim - Release Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Invoice Updated By.Detail", "logicalLevel:Core.Dim - AP Hold Reason.Detail", "logicalLevel:Core.Dim - AP Transaction Details.Transaction Line", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Party.Detail", "logicalLevel:Core.Dim - PRC - Spend Header.Invoice Header" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_FIN_AP_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "AP_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_AP_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - AP Invoice Details.Security Context Code - AP Invoicing BU" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - AP Approval Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Hold Reason",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Invoice Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Invoice Hold Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Invoice Hold Indicator",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Invoice Line Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Invoice Payment Method",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Invoice Payment Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Release Reason",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Source",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Terms",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Transaction Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Transaction Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AP Validation Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Created By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Discount Due Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Held By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Hold Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Accounting Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Created By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Creation Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Updated By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger Set",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Spend Header",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Party",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Payables Invoicing Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Payment Due Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Release Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Released By",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Supplier Sites",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Supplier",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Third Party Remit-to Supplier",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - Receipt Shipping Method",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Freight Carrier Id" ],
+    "logicalColumns" : [ {
+      "name" : "Freight Carrier Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.FREIGHT_CARRIER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Shipping Method",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Freight Carrier Id",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_RCV_SHIPMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> '-99999' THEN  LOOKUP( SPARSE %2, %1, %1) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF.FREIGHT_CARRIER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PARTY_D_PRC_Freight_Carrier.PARTY_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_RCV_SHIPMENTS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_RCV_SHIPMENTS_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Freight Carrier Id" ],
+        "displayKey" : "Shipping Method",
+        "additionalKeys" : [ [ "Shipping Method" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - Receipt Shipping Method",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,45 @@
+{
+  "physicalTable" : {
+    "name" : "Subscription_Aggregate_Period_Day",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT D.SNAPSHOT_PERIOD_ID,\r\n       D.PERIOD_START_DATE         SNAPSHOT_DATE,\r\n       D.PREVIOUS_PERIOD_START_DATE    PREVIOUS_SNAPSHOT_DATE,\r\n       D.CURRENT_PERIOD_FLAG,\r\n       D.MONTH_CODE,\r\n       D.PREVIOUS_SNAPSHOT_PERIOD_ID\r\nFROM\r\n    DW_CXS_SUBSCRIPTION_SNAPSHOT_D D\r\nWHERE\r\n    D.PERIOD_TYPE = 'DAILY'\r\n    AND D.PERIOD_START_DATE >= ( SELECT MIN(PERIOD_START_DATE) FROM DW_CXS_SUBSCRIPTION_SNAPSHOT_D M WHERE PERIOD_TYPE = 'MONTH')"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "PREVIOUS_SNAPSHOT_DATE",
+      "dataType" : "DATETIME",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "SNAPSHOT_DATE",
+      "dataType" : "DATETIME",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "PREVIOUS_SNAPSHOT_PERIOD_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "CURRENT_PERIOD_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 16,
+      "nullable" : false
+    }, {
+      "name" : "MONTH_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 64,
+      "nullable" : false
+    }, {
+      "name" : "SNAPSHOT_PERIOD_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    }
+  }
+}

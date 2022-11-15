@@ -1,0 +1,23 @@
+{
+  "initBlock" : {
+    "name" : "Enterprise Current Day",
+    "tags" : [ "Project:Fusion Analytics Warehouse - B2B Service Analytics", "Project:Fusion Analytics Warehouse - Diversity Analysis", "Project:Fusion Analytics Warehouse - Journeys", "Project:Fusion Analytics Warehouse - Learning Management", "Project:Fusion Analytics Warehouse - Marketing Campaign Closed Loop Analytics", "Project:Fusion Analytics Warehouse - Payroll Management", "Project:Fusion Analytics Warehouse - Profile Matching", "Project:Fusion Analytics Warehouse - Succession Management", "Project:Fusion Analytics Warehouse - Time and Labor", "Project:NetSuite Analytics Warehouse - NetSuite Manufacturing", "Project:Oracle Analytics for Fusion Common" ],
+    "type" : "SESSION",
+    "connectionPool" : "connectionPool:Oracle_Data_Warehouse.Oracle_Data_Warehouse_Repository_Initblocks_Connection_Pool",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT DISTINCT CASE WHEN PARAMETER_VALUE='Gregorian' THEN (SELECT DISTINCT TO_CHAR(CALENDAR_DATE) FROM DW_DAY_D WHERE  CURRENT_CAL_DAY_CODE='Current') ELSE (SELECT DISTINCT TO_CHAR(FISCAL_DAY_DATE) FROM DW_FISCAL_DAY_D WHERE FISCAL_PERIOD_SET_NAME='VALUEOF(NQ_SESSION.ENTERPRISE_CALENDAR)'\r\nAND CURRENT_FISCAL_DAY_CODE='Current') END AS CURRENT_ENTERPRISE_DAY FROM DW_CONTENT_PARAM_CONFIG WHERE PARAMETER_CODE='PARAM_GLOBAL_ENTERPRISE_CALENDAR'"
+    } ],
+    "variables" : [ {
+      "name" : "CURRENT_ENTERPRISE_DAY",
+      "value" : "'31-DEC-2000'",
+      "enableUsersToSetValue" : false,
+      "securitySensitive" : false
+    } ],
+    "dependencies" : [ "Enterprise Calendar" ],
+    "disable" : false,
+    "queryReturnsVariableNamesAndValues" : false,
+    "allowDeferredExecution" : true,
+    "cacheQueryResult" : true
+  }
+}

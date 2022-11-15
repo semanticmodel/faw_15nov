@@ -1,0 +1,82 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Deliver to Location Type",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Code" ],
+    "logicalColumns" : [ {
+      "name" : "Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_POR_DLVR_TO_LCTN_TYPE_D_TL.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Deliver to Location Type Detail"
+    }, {
+      "name" : "Deliver To Location Type",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_REQUISITION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> '-99999' AND %1 = 'Y' THEN %2 ELSE  CASE  WHEN %3 <> -(99999) THEN 'EXTERNAL' ELSE %2 END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.ONE_TIME_LOCATION_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_POR_DLVR_TO_LCTN_TYPE_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF.DELIVER_TO_CUST_LOCATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Deliver to Location Type Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_REQUISITION_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_POR_DLVR_TO_LCTN_TYPE_D_TL" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_REQUISITION_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_POR_DLVR_TO_LCTN_TYPE_D_TL",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_POR_DLVR_TO_LCTN_TYPE_D_TL.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - Deliver to Location Type Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - Deliver to Location Type Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - Deliver to Location Type Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Code" ],
+        "displayKey" : "Deliver To Location Type",
+        "additionalKeys" : [ [ "Deliver To Location Type" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Deliver to Location Type",
+        "levels" : [ "Dim - Deliver to Location Type Total", "Dim - Deliver to Location Type Detail" ]
+      } ]
+    }
+  }
+}

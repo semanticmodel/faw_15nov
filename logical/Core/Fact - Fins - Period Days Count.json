@@ -1,0 +1,81 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Fins - Period Days Count",
+    "tags" : [ "Project:Fusion Analytics Warehouse - General Ledger", "Project:Oracle Analytics for Fusion Financials" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "# of Elapsed Days",
+      "description" : "Returns # of days in the current period chosen in the report.",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_W_DAY_D_LEDGER",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1 ||  CAST (%2 AS VARCHAR ( 10 ))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_W_DAY_D_LEDGER.FISCAL_CALENDAR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_W_DAY_D_LEDGER.FISCAL_DAY_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - GL Balance Details.Total", "logicalLevel:Core.Dim - GL Journal Details.Total", "logicalLevel:Core.Dim - Legal Entity.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total" ]
+      }
+    }, {
+      "name" : "# of Cumulative Elapsed Days",
+      "description" : "Returns # of days in the current period chosen in the report.",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_W_DAY_D_LEDGER",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_W_DAY_D_LEDGER.FISCAL_DAY_OF_YEAR" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "MAX",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Balancing Segment.Total", "logicalLevel:Core.Dim - Cost Center.Total", "logicalLevel:Core.Dim - Natural Account.Total", "logicalLevel:Core.Dim - GL Account.Total", "logicalLevel:Core.Dim - GL Segment2.Total", "logicalLevel:Core.Dim - GL Segment1.Total", "logicalLevel:Core.Dim - GL Segment3.Total", "logicalLevel:Core.Dim - GL Segment4.Total", "logicalLevel:Core.Dim - GL Segment5.Total", "logicalLevel:Core.Dim - GL Segment6.Total", "logicalLevel:Core.Dim - GL Segment7.Total", "logicalLevel:Core.Dim - GL Segment8.Total", "logicalLevel:Core.Dim - GL Segment9.Total", "logicalLevel:Core.Dim - GL Segment10.Total", "logicalLevel:Core.Dim - GL Balance Details.Total", "logicalLevel:Core.Dim - GL Journal Details.Total", "logicalLevel:Core.Dim - Legal Entity.Total", "logicalLevel:Core.Dim - Cost Center Hierarchy.Total", "logicalLevel:Core.Dim - Natural Account Hierarchy.Total", "logicalLevel:Core.Dim - Balancing Segment Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment1 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment2 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment3 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment4 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment5 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment6 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment7 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment8 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment9 Hierarchy.Total", "logicalLevel:Core.Dim - GL Segment10 Hierarchy.Total" ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_W_DAY_D_LEDGER",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_W_DAY_D_LEDGER" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Ledger Set.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_FIN_GL_ACCESS_SET_DATA",
+      "functionalGroup" : "GL_LEDGER",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_LEDGER_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Ledger.Security Context Code - Ledger" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger Set",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

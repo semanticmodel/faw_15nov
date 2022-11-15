@@ -1,0 +1,1570 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Transfer Order Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Transfer Order Header ID", "Transfer Order Line ID", "Transfer Order Distribution ID" ],
+    "logicalColumns" : [ {
+      "name" : "Transfer Order",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TRANSFER_ORDER_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.TRANSFER_ORDER_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Creation Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TO_CREATION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TO_CREATION_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transaction Origin Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SOURCE_TYPE_LOOKUP" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.SOURCE_TYPE_LOOKUP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transaction Origin Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Transaction Origin Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_ORIGIN_TYPE_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SOURCE_TYPE_LOOKUP", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_ORIGIN_TYPE_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.SOURCE_TYPE_LOOKUP", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Description",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.DESCRIPTION" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Header Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.HEADER_STATUS_LOOKUP" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.HEADER_STATUS_LOOKUP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Header Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_HEADER_STATUS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.HEADER_STATUS_LOOKUP", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_HEADER_STATUS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.HEADER_STATUS_LOOKUP", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Interface Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.INTERFACE_STATUS_LOOKUP" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.INTERFACE_STATUS_LOOKUP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Interface Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Interface Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_INTERFACE_STATUS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.INTERFACE_STATUS_LOOKUP", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_INTERFACE_STATUS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.INTERFACE_STATUS_LOOKUP", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requisitioning BU ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.REQUISITION_BU_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.REQUISITION_BU_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requisitioning BU",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Requisitioning BU ID",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_BUSINESS_UNIT_D_TL_RequisitioningBU.BUSINESS_UNIT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.REQUISITION_BU_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_BUSINESS_UNIT_D_TL_RequisitioningBU.BUSINESS_UNIT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.REQUISITION_BU_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transfer Price",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TRANSFER_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.TRANSFER_PRICE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Total Tax",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TOTAL_TAX" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.TOTAL_TAX" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transfer Order Header ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TRANSFER_ORDER_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.TRANSFER_ORDER_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Total"
+    }, {
+      "name" : "Transfer Order Line ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TRANSFER_ORDER_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.TRANSFER_ORDER_LINE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transfer Order Line"
+    }, {
+      "name" : "Transfer Order Distribution ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TRANSFER_ORDER_DISTRIBUTION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TRANSFER_ORDER_DISTRIBUTION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Transfer Order Distribution"
+    }, {
+      "name" : "Line Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TRANSFER_ORDER_LINE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.TRANSFER_ORDER_LINE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Line Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.STATUS_LOOKUP" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.STATUS_LOOKUP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Line Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Line Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_LINE_STATUS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.STATUS_LOOKUP", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_LINE_STATUS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.STATUS_LOOKUP", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Fulfillment Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.FULFILLMENT_LOOKUP" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.FULFILLMENT_LOOKUP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Fulfillment Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Fulfillment Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_FULFILL_STATUS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.FULFILLMENT_LOOKUP", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_FULFILL_STATUS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.FULFILLMENT_LOOKUP", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Destination Location ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.DESTINATION_LOCATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.DESTINATION_LOCATION_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Destination Location",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Destination Location ID",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_WORKER_LOCATION_D_TL.LOCATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.DESTINATION_LOCATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_WORKER_LOCATION_D_TL.LOCATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.DESTINATION_LOCATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Destination Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.DESTINATION_TYPE_LOOKUP" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.DESTINATION_TYPE_LOOKUP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Destination Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Destination Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_DESTINATION_TYPE_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.DESTINATION_TYPE_LOOKUP", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_DESTINATION_TYPE_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.DESTINATION_TYPE_LOOKUP", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requested Delivery Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.REQUESTED_DELIVERY_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.REQUESTED_DELIVERY_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requested Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.REQUESTED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.REQUESTED_QTY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipped Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SHIPPED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.SHIPPED_QTY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Received Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.RECEIVED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.RECEIVED_QTY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Delivered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.DELIVERED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.DELIVERED_QTY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Unit Price",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.UNIT_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.UNIT_PRICE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requisition",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.REQUISITION_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.REQUISITION_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requisition Line",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.REQUISITION_LINE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.REQUISITION_LINE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Comment",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.COMMENTS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.COMMENTS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Supply Request Reference Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SUPPLY_ORDER_REFERENCE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.SUPPLY_ORDER_REFERENCE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Request Reference Line",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SUPPLY_ORDER_REF_LINE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.SUPPLY_ORDER_REF_LINE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Revision",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.ITEM_REVISION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.ITEM_REVISION" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Change Request Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.CHANGE_REQUESTED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.CHANGE_REQUESTED_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Scheduled Ship Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SCHEDULED_SHIP_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.SCHEDULED_SHIP_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Total Transfer Price",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TOTAL_TRANSFER_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.TOTAL_TRANSFER_PRICE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Interface Error Message",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.INTERFACE_ERR_MSG_TEXT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.INTERFACE_ERR_MSG_TEXT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipping Priority Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SHIPMENT_PRIORITY_LOOKUP" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.SHIPMENT_PRIORITY_LOOKUP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Shipping Priority",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Shipping Priority Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_WSH_SHIPPING_PRIORITY_LKP_TL_TransferOrder.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SHIPMENT_PRIORITY_LOOKUP", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_WSH_SHIPPING_PRIORITY_LKP_TL_TransferOrder.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.SHIPMENT_PRIORITY_LOOKUP", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Original Transfer Order for Return",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.RETURN_ORIGINAL_TO_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.RETURN_ORIGINAL_TO_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Original Transfer Order Line for Return",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.RETURN_ORIGINAL_TO_LINE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.RETURN_ORIGINAL_TO_LINE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Firm Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.FIRM_STATUS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.FIRM_STATUS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Firm Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Firm Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_FIRM_STATUS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.FIRM_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_TO_FIRM_STATUS_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.FIRM_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Physical Material Return Required Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.MATERIAL_RETURN_REQUIRED" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.MATERIAL_RETURN_REQUIRED" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Physical Material Return Required",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Physical Material Return Required Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL_TransferOrder.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.MATERIAL_RETURN_REQUIRED", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL_TransferOrder.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.MATERIAL_RETURN_REQUIRED", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Note to Receiver",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.NOTE_TO_RECEIVER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.NOTE_TO_RECEIVER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Note to Supplier",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.NOTE_TO_SUPPLIER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.NOTE_TO_SUPPLIER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Source Subinventory",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_SourceSubInventory.SECONDARY_INVENTORY_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_SourceSubInventory.SECONDARY_INVENTORY_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Destination Subinventory",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_DestinationSubInventory.SECONDARY_INVENTORY_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_DestinationSubInventory.SECONDARY_INVENTORY_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Change Initiating Person",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_ChangePerson.FULL_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_ChangePerson.FULL_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requester",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_RequesterPerson.FULL_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_RequesterPerson.FULL_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Distribution",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.DISTRIBUTION_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.DISTRIBUTION_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Distribution Requested Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.DISTRIBUTION_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.DISTRIBUTION_QTY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.DISTRIBUTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.DISTRIBUTION_AMOUNT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Distribution Delivered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.DISTRIBUTION_DELIVERED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.DISTRIBUTION_DELIVERED_QTY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requested Quantity Percentage",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.PERCENT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.PERCENT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Funds Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.FUNDS_STATUS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.FUNDS_STATUS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Funds Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Funds Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_POR_FUNDS_STATUS_D_TL_TransferOrder.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.FUNDS_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_POR_FUNDS_STATUS_D_TL_TransferOrder.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.FUNDS_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Budget Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.BUDGET_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.BUDGET_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Charge Account",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D_ChargeAccount.CONCAT_SEGMENTS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D_ChargeAccount.CONCAT_SEGMENTS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Conversion Factor",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SECONDARY_UOM_CONVERSION_FACTOR" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.SECONDARY_UOM_CONVERSION_FACTOR" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Inv BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_TransferOrder.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_TransferOrderDistribution.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Inv Org",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_TransferOrder.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_TransferOrderDistribution.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "--------------------DFF Keys--------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "INV_TRANSFER_ORDER_HEADERS_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_CF_DW_INV_TRANSFER_ORDER_HEADERS_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_DIST_CF_DW_INV_TRANSFER_ORDER_HEADERS_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "INV_TRANSFER_ORDER_LINES_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_CF_DW_INV_TRANSFER_ORDER_LINES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_DIST_CF_DW_INV_TRANSFER_ORDER_LINES_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "INV_TRANSFER_ORDER_DISTRIBS_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_DIST_CF_DW_INV_TRANSFER_ORDER_DISTRIBS_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_DIST_CF_DW_INV_TRANSFER_ORDER_DISTRIBS_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_SourceSubInventory", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_ChangePerson", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D_ChargeAccount", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_DestinationSubInventory", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_RequesterPerson", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_DIST_CF_DW_INV_TRANSFER_ORDER_DISTRIBS_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_CF_DW_INV_TRANSFER_ORDER_HEADERS_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_CF_DW_INV_TRANSFER_ORDER_LINES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_TransferOrder", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_TransferOrder" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_RequesterPerson",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_SourceSubInventory",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_ChangePerson",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_DestinationSubInventory",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_CF_DW_INV_TRANSFER_ORDER_HEADERS_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_CF_DW_INV_TRANSFER_ORDER_LINES_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_TransferOrder",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_TransferOrder",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D_ChargeAccount",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_DIST_CF_DW_INV_TRANSFER_ORDER_DISTRIBS_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Distribution" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_SourceSubInventory", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_ChangePerson", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D_ChargeAccount", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_DestinationSubInventory", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_RequesterPerson", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_DIST_CF_DW_INV_TRANSFER_ORDER_DISTRIBS_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_DIST_CF_DW_INV_TRANSFER_ORDER_HEADERS_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_DIST_CF_DW_INV_TRANSFER_ORDER_LINES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_TransferOrderDistribution", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_TransferOrderDistribution" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D_ChargeAccount",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INV_TRANSFER_ORDER_DIST_CF_DW_INV_TRANSFER_ORDER_DISTRIBS_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Distribution" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transfer Order Header ID" ],
+        "displayKey" : "Transfer Order Header ID"
+      }, {
+        "name" : "Transfer Order Line",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transfer Order Line ID" ],
+        "displayKey" : "Transfer Order Line ID"
+      }, {
+        "name" : "Transfer Order Distribution",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Transfer Order Distribution ID" ],
+        "displayKey" : "Transfer Order Distribution ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Transfer Order Details",
+        "levels" : [ "Total", "Transfer Order Line", "Transfer Order Distribution" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_SCM_INV_INVENTORY_ORG_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_ORG_TRANSACTIONS_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Transfer Order Details.Security Context Code - Inv Org" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_SCM_INV_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Transfer Order Details.Security Context Code - Inv BU" ]
+      }
+    } ]
+  }
+}

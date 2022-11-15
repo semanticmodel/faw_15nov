@@ -1,0 +1,26 @@
+{
+  "physicalTable" : {
+    "name" : "Dim_DW_ERR_RECORD_STRUCTURE_View",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT \r\nTARGET_TABLE_NAME,\r\nCAST(LISTAGG(column_name, ' || ') WITHIN GROUP (ORDER BY target_table_name,column_name) AS VARCHAR2(1000 CHAR)) AS PRIMARY_KEY_COLUMNS \r\nFROM DW_ERR_RECORD_STRUCTURE GROUP BY target_table_name"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "TARGET_TABLE_NAME",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    }, {
+      "name" : "PRIMARY_KEY_COLUMNS",
+      "dataType" : "VARCHAR",
+      "length" : 1000,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "additionalKeys" : [ [ "TARGET_TABLE_NAME" ] ]
+  }
+}

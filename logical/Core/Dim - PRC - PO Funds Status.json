@@ -1,0 +1,98 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - PO Funds Status",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Funds Status Code" ],
+    "logicalColumns" : [ {
+      "name" : "Funds Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL_PromptOnly.CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Funds Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Funds Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL_PromptOnly.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL_PromptOnly.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL_PromptOnly" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL_PromptOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_POR_FUNDS_STATUS_D_TL" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Funds Status Code" ],
+        "displayKey" : "Funds Status",
+        "additionalKeys" : [ [ "Funds Status" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - PO Funds Status",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

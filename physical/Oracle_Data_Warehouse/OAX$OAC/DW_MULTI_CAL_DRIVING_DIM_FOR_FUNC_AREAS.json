@@ -1,0 +1,40 @@
+{
+  "physicalTable" : {
+    "name" : "DW_MULTI_CAL_DRIVING_DIM_FOR_FUNC_AREAS",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "select  source\r\n      , driving_dim_code\r\n      , module_code\r\n      , calendar_type\r\n      , activated_indicator\r\nfrom (\r\nselect b.pillar_code as source,\r\nfinal.driving_dim_code,\r\nnull as module_code,\r\n'01' as calendar_type,\r\nmax(show_indicator) as activated_indicator\r\nfrom (\r\nselect a.* ,b.*, case when activated_status='SHOW' then 1 else 0 end as show_indicator\r\nfrom\r\n(select substr(regexp_replace(sa,'_',' '),4) as sa,activated_status\r\nfrom (\r\nSELECT REPLACE(A.RPD_VAR,'\"','') sa,MAX(CASE WHEN A.MODULE_CODE IN (SELECT MODULE_CODE FROM CONTENT_ACTIVATED_MODULES WHERE ACTIVATION_STATUS='Y') THEN 'SHOW' ELSE 'HIDE' END) AS ACTIVATED_STATUS\r\nFROM CONTENT_SA_MODULE_MAPPING A\r\nWHERE A.MODULE_CODE IS NOT NULL\r\nGROUP BY A.RPD_VAR\r\n)) a,(\r\nselect distinct driving_dim_code,regexp_replace(subject_area,'\"','') as sa,default_dim_flag\r\nfrom CONTENT_APPSHELL_DRIVING_DIM_SA_MAPPING\r\norder by regexp_replace(subject_area,'\"','')\r\n) b\r\nwhere  a.sa = b.sa\r\n) final, CONTENT_APPSHELL_DRIVING_DIMS b\r\nwhere final.driving_dim_code = b.driving_dim_code\r\ngroup by final.driving_dim_code,b.pillar_code\r\nunion\r\nselect source as source,\r\nnull as driving_dim_code ,\r\nnull as module_code,\r\ncalendar_type.calendar_type as calendar_type,\r\nmax(show_indicator) as activated_indicator\r\nfrom\r\n(select a.* ,\r\nTRIM(substr(a.sa,1,regexp_instr(a.sa,'-')-2)) as module,\r\nb.default_dim_flag,coalesce(b.source,'FUSION')as source, case when activated_status='SHOW' then 1 else 0 end as show_indicator\r\nfrom\r\n(select substr(regexp_replace(sa,'_',' '),4) as sa,activated_status\r\nfrom (\r\nSELECT REPLACE(A.RPD_VAR,'\"','') sa,MAX(CASE WHEN A.MODULE_CODE IN (SELECT MODULE_CODE FROM CONTENT_ACTIVATED_MODULES WHERE ACTIVATION_STATUS='Y') THEN 'SHOW' ELSE 'HIDE' END) AS ACTIVATED_STATUS\r\nFROM CONTENT_SA_MODULE_MAPPING A\r\nWHERE A.MODULE_CODE IS NOT NULL\r\nGROUP BY A.RPD_VAR\r\n)) a,(\r\nselect distinct a.driving_dim_code,regexp_replace(a.subject_area,'\"','') as sa,a.default_dim_flag,b.pillar_code as source\r\nfrom CONTENT_APPSHELL_DRIVING_DIM_SA_MAPPING a, CONTENT_APPSHELL_DRIVING_DIMS b\r\nwhere a.driving_dim_code = b.driving_dim_code\r\norder by regexp_replace(subject_area,'\"','')\r\n) b\r\nwhere a.sa = b.sa(+)\r\norder by a.sa\r\n) non_fiscal , (select '02' as calendar_type from dual union select '03' as calendar_type from dual) calendar_type\r\nwhere ((source = 'FUSION' and calendar_type in (2,3)) OR (source = 'NETSUITE' and calendar_type = 2))\r\ngroup by source,calendar_type.calendar_type\r\n) final\r\n"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "SOURCE",
+      "dataType" : "VARCHAR",
+      "length" : 128,
+      "nullable" : false
+    }, {
+      "name" : "ACTIVATED_INDICATOR",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "DRIVING_DIM_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 255,
+      "nullable" : true
+    }, {
+      "name" : "MODULE_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : true
+    }, {
+      "name" : "CALENDAR_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 10,
+      "nullable" : true
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    }
+  }
+}

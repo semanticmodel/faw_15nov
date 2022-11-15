@@ -1,0 +1,38 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_TLNTRVW_MEETING_D",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_TLNTRVW_MEETING_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_TL_Meetings",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_TL_Meetings.ORGANIZATION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D.MEETING_ORGANIZATION_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_TL_Meetings.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_MeetingLeader",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_MEETING_D.MEETING_LEADER_PERSON_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_MeetingLeader.PERSON_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "MEETING_ID"
+      ]
+    ]
+  }
+}

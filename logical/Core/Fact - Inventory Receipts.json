@@ -1,0 +1,1013 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Inventory Receipts",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Inventory" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Accepted Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.QUANTITY_ACCEPTED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ]
+      }
+    }, {
+      "name" : "Delivered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.QUANTITY_DELIVERED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ]
+      }
+    }, {
+      "name" : "Rejected Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.QUANTITY_REJECTED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ]
+      }
+    }, {
+      "name" : "Returned Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.QUANTITY_RETURNED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ]
+      }
+    }, {
+      "name" : "Shipped Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.QUANTITY_SHIPPED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ]
+      }
+    }, {
+      "name" : "Received Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.QUANTITY_RECEIVED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ]
+      }
+    }, {
+      "name" : "----------------Primary------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'Dummy'"
+        }
+      }
+    }, {
+      "name" : "Primary Delivered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IS NULL  THEN %2 ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RECEIPT_LOT_SERIALNUMBER_CF.DELIVERED_DETAILED_PRIMARY_QTY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.PUOM_QUANTITY_DELIVERED" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.PUOM_QUANTITY_DELIVERED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Lot" ]
+      }
+    }, {
+      "name" : "Primary Accepted Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.PUOM_QUANTITY_ACCEPTED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ]
+      }
+    }, {
+      "name" : "Primary Received Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.PUOM_QUANTITY_RECEIVED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ]
+      }
+    }, {
+      "name" : "Primary Rejected Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.PUOM_QUANTITY_REJECTED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ]
+      }
+    }, {
+      "name" : "Primary Returned Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IS NULL  THEN %2 ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RECEIPT_LOT_SERIALNUMBER_CF.RETURNED_LOT_PRIMARY_QTY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.PUOM_QUANTITY_RETURNED" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.PUOM_QUANTITY_RETURNED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Lot" ]
+      }
+    }, {
+      "name" : "Primary Shipped Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.PUOM_QUANTITY_SHIPPED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ]
+      }
+    }, {
+      "name" : "----------------Secondary------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'Dummy'"
+        }
+      }
+    }, {
+      "name" : "Secondary Accepted Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SECONDARY_QTY_ACCEPTED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ]
+      }
+    }, {
+      "name" : "Secondary Delivered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IS NULL  THEN %2 ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RECEIPT_LOT_SERIALNUMBER_CF.DELIVERED_LOT_SECONDARY_QTY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SECONDARY_QTY_DELIVERED" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SECONDARY_QTY_DELIVERED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Lot" ]
+      }
+    }, {
+      "name" : "Secondary Rejected Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SECONDARY_QTY_REJECTED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ]
+      }
+    }, {
+      "name" : "Secondary Returned Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 IS NULL  THEN %2 ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RECEIPT_LOT_SERIALNUMBER_CF.RETURNED_LOT_SECONDARY_QTY", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SECONDARY_QTY_RETURNED" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SECONDARY_QTY_RETURNED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Lot" ]
+      }
+    }, {
+      "name" : "Secondary Received Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SECONDARY_QUANTITY_RECEIVED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ]
+      }
+    }, {
+      "name" : "Secondary Shipped Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SECONDARY_QUANTITY_SHIPPED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ]
+      }
+    }, {
+      "name" : "----------------Count------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'Dummy'"
+        }
+      }
+    }, {
+      "name" : "Receipt Headers Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_HEADER_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Receipt Lines Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Transfer Order Count_Transient",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_HEADER_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "RMA Order Count_Transient",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RMA_ORDER_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RMA_ORDER_HEADER_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Order Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 + %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Inventory Receipts.RMA Order Count_Transient", "logicalColumn:Core.Fact - Inventory Receipts.Transfer Order Count_Transient" ]
+        }
+      }
+    }, {
+      "name" : "Transfer Order Line Count_Transient",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.TRANSFER_ORDER_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.TRANSFER_ORDER_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "RMA Order Line Count_Transient",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RMA_ORDER_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RMA_ORDER_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Order Line Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 + %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Inventory Receipts.RMA Order Line Count_Transient", "logicalColumn:Core.Fact - Inventory Receipts.Transfer Order Line Count_Transient" ]
+        }
+      }
+    }, {
+      "name" : "Receipt Lines On Time Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.ONTIME_DELIVERY_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.ONTIME_DELIVERY_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Received Lines On Time %",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  IFNULL(%1, 0) <> 0 THEN  IFNULL(%2, 0) * 100 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Inventory Receipts.Receipt Lines Count", "logicalColumn:Core.Fact - Inventory Receipts.Receipt Lines On Time Count" ]
+        }
+      }
+    }, {
+      "name" : "Receipt Lines Late Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.LATE_DELIVERY_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.LATE_DELIVERY_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Received Lines Late %",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  IFNULL(%1, 0) <> 0 THEN  IFNULL(%2, 0) * 100 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Inventory Receipts.Receipt Lines Count", "logicalColumn:Core.Fact - Inventory Receipts.Receipt Lines Late Count" ]
+        }
+      }
+    }, {
+      "name" : "Receipt Lines Early Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.EARLY_DELIVERY_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.EARLY_DELIVERY_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Received Lines Early %",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  IFNULL(%1, 0) <> 0 THEN  IFNULL(%2, 0) * 100 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Inventory Receipts.Receipt Lines Count", "logicalColumn:Core.Fact - Inventory Receipts.Receipt Lines Early Count" ]
+        }
+      }
+    }, {
+      "name" : "Receipt Lines with Correction Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RECEIPT_CORRECTION_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RECEIPT_CORRECTION_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Receipt Lines with Correction %",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  IFNULL(%1, 0) <> 0 THEN  IFNULL(%2, 0) * 100 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Inventory Receipts.Receipt Lines Count", "logicalColumn:Core.Fact - Inventory Receipts.Receipt Lines with Correction Count" ]
+        }
+      }
+    }, {
+      "name" : "Receipt Lines Rejected Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RECEIPT_REJECTED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RECEIPT_REJECTED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Receipt Lines Rejected %",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  IFNULL(%1, 0) <> 0 THEN  IFNULL(%2, 0) * 100 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Inventory Receipts.Receipt Lines Count", "logicalColumn:Core.Fact - Inventory Receipts.Receipt Lines Rejected Count" ]
+        }
+      }
+    }, {
+      "name" : "Receipt Lines Accepted Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RECEIPT_ACCEPTED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RECEIPT_ACCEPTED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Receipt Lines Accepted %",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  IFNULL(%1, 0) <> 0 THEN  IFNULL(%2, 0) * 100 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Inventory Receipts.Receipt Lines Count", "logicalColumn:Core.Fact - Inventory Receipts.Receipt Lines Accepted Count" ]
+        }
+      }
+    }, {
+      "name" : "Receipt Lines Returned Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.RECEIPT_RETURNED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial.SHIPMENT_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.RECEIPT_RETURNED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF.SHIPMENT_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Receipt Lines Returned %",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN  IFNULL(%1, 0) <> 0 THEN  IFNULL(%2, 0) * 100 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Inventory Receipts.Receipt Lines Count", "logicalColumn:Core.Fact - Inventory Receipts.Receipt Lines Returned Count" ]
+        }
+      }
+    }, {
+      "name" : "Security Context Code - Inv Org",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_InventoryReceiptLotSerial.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_InventoryReceipt.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Inv BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_InventoryReceiptLotSerial.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INVENTORY_RECEIPT_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_InventoryReceipt.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RECEIPT_LOT_SERIALNUMBER_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_InventoryReceiptLotSerial", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_InventoryReceiptLotSerial" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_RECEIPT_LOT_SERIALNUMBER_CF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_InventoryReceiptLotSerial",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF_LotSerial",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_InventoryReceiptLotSerial",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar Inventory Receipt Header Creation Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar Inventory Receipt Line Creation Date.Day", "logicalLevel:Core.Dim - Unit of Measure Secondary.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar Transfer Order Creation Date.Day", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Customer.Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Transfer Order Creation Date.Detail", "logicalLevel:Core.Dim - Unit of Measure Transaction.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Inventory Receipt Line Creation Date.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Inventory Receipt Header Creation Date.Detail", "logicalLevel:Core.Dim - Destination Organization.Details", "logicalLevel:Core.Dim - Source Organization.Details", "logicalLevel:Core.Dim - Carrier.Dim - Carrier Detail", "logicalLevel:Core.Dim - OM Sales Business Unit.Dim - OM Sales Business Unit Detail", "logicalLevel:Core.Dim - OM Status Fulfillment Lines.Dim - OM Status Fulfillment Lines Detail", "logicalLevel:Core.Dim - OM Status Orders.Dim - OM Status Orders Detail", "logicalLevel:Core.Dim - Inventory Receipt Details.Lot" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_INVENTORY_RECEIPT_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_InventoryReceipt", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_InventoryReceipt" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_InventoryReceipt",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVENTORY_RECEIPT_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_InventoryReceipt",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar Transfer Order Creation Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar Inventory Receipt Header Creation Date.Day", "logicalLevel:Core.Dim - Date Gregorian Calendar Inventory Receipt Line Creation Date.Day", "logicalLevel:Core.Dim - Date Fiscal Calendar Inventory Receipt Header Creation Date.Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Customer.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Transfer Order Creation Date.Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar Inventory Receipt Line Creation Date.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Unit of Measure Transaction.Detail", "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail", "logicalLevel:Core.Dim - Unit of Measure Secondary.Detail", "logicalLevel:Core.Dim - Source Organization.Details", "logicalLevel:Core.Dim - Destination Organization.Details", "logicalLevel:Core.Dim - Carrier.Dim - Carrier Detail", "logicalLevel:Core.Dim - OM Sales Business Unit.Dim - OM Sales Business Unit Detail", "logicalLevel:Core.Dim - OM Status Fulfillment Lines.Dim - OM Status Fulfillment Lines Detail", "logicalLevel:Core.Dim - OM Status Orders.Dim - OM Status Orders Detail", "logicalLevel:Core.Dim - Inventory Receipt Details.Shipment Lines" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_SCM_INV_INVENTORY_ORG_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_ORG_TRANSACTIONS_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Fact - Inventory Receipts.Security Context Code - Inv Org" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_SCM_INV_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Fact - Inventory Receipts.Security Context Code - Inv BU" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Carrier",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Inventory Receipt Header Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Inventory Receipt Line Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar Transfer Order Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar Inventory Receipt Header Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar Inventory Receipt Line Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar Transfer Order Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Destination Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inv Item Catalog Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Receipt Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Item Category Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Sales Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Status Fulfillment Lines",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - OM Status Orders",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Source Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure Secondary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure Transaction",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

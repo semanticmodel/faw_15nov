@@ -1,0 +1,1538 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - AR Revenue Transaction Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Customer Trx Distribution ID", "Reference Accounting Header Key", "Temporary Line Number", "Accounting Header Key", "Accounting Line Number", "Journal Header Key", "Journal Line Number" ],
+    "logicalColumns" : [ {
+      "name" : "--------------------Line Level--------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Line Description",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.LINE_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.LINE_DESCRIPTION" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Memo Line Set ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.MEMO_LINE_SET_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.MEMO_LINE_SET_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Memo Line ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.MEMO_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.MEMO_LINE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Memo Line",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Memo Line ID",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2, %4)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AR_MEMO_LINES_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.MEMO_LINE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.MEMO_LINE_SET_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.MEMO_LINE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Tax Classification",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_CLASSIFICATION_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_CLASSIFICATION_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Rule Start Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SCH_RULE_START_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SCH_RULE_START_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Rule End Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SCH_RULE_END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SCH_RULE_END_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Sales Order Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SALES_ORDER_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SALES_ORDER_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Order Fulfilment Line Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SALES_ORDER_FULFILL_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SALES_ORDER_FULFILL_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SALES_ORDER_FULFILL_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.SALES_ORDER_FULFILL_LINE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "----- Distribution Level -----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Customer Trx Distribution ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUST_TRX_LINE_GL_DIST_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUST_TRX_LINE_GL_DIST_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUST_TRX_LINE_GL_DIST_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUST_TRX_LINE_GL_DIST_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution"
+    }, {
+      "name" : "Detail Line Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.DETAIL_LINE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.DETAIL_LINE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.DETAIL_LINE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.DETAIL_LINE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_GL_SLA_RECONCILIATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_GL_SLA_RECONCILIATION_CF.DETAIL_LINE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Distribution Comments",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.DISTRIBUTION_COMMENTS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.DISTRIBUTION_COMMENTS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.DISTRIBUTION_COMMENTS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.DISTRIBUTION_COMMENTS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_GL_SLA_RECONCILIATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_GL_SLA_RECONCILIATION_CF.DISTRIBUTION_COMMENTS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Tax Rate Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_RATE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_RATE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Tax Rate Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Tax Rate Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ZX_RATES_LKP_TL.TAX_RATE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_RATE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ZX_RATES_LKP_TL.TAX_RATE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_RATE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Tax Rate",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_RATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = -(99999) THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_RATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Tax Regime Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_REGIME_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_REGIME_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Tax Regime",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Tax Regime Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ZX_REGIMES_LKP_TL.TAX_REGIME_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_REGIME_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ZX_REGIMES_LKP_TL.TAX_REGIME_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_REGIME_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Tax Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Tax Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Tax Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ZX_TAXES_LKP_TL.TAX_FULL_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ZX_TAXES_LKP_TL.TAX_FULL_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Tax Point Basis Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_POINT_BASIS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_POINT_BASIS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Tax Point Basis",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Tax Point Basis Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_TAX_POINT_BASIS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_POINT_BASIS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_TAX_POINT_BASIS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_POINT_BASIS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Tax Point Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_POINT_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_POINT_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Tax Line Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_LINE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TAX_LINE_NUMBER" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Place of Supply Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.PLACE_OF_SUPPLY_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.PLACE_OF_SUPPLY_TYPE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Place of Supply",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Place of Supply Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PLACE_OF_SUPPLY_TYPE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.PLACE_OF_SUPPLY_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_PLACE_OF_SUPPLY_TYPE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.PLACE_OF_SUPPLY_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Bill-to Site Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUSTOMER_BILL_TO_SITE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUSTOMER_BILL_TO_SITE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUSTOMER_BILL_TO_SITE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUSTOMER_BILL_TO_SITE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Ship-to Site Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUSTOMER_SHIP_TO_SITE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUSTOMER_SHIP_TO_SITE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUSTOMER_SHIP_TO_SITE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUSTOMER_SHIP_TO_SITE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Posted Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.GL_POSTED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.GL_POSTED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.GL_POSTED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.GL_POSTED_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Account Class Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Account Class",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Account Class Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AR_ACCOUNT_CLASS_TL.ACCOUNT_CLASS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AR_ACCOUNT_CLASS_TL.ACCOUNT_CLASS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AR_ACCOUNT_CLASS_TL.ACCOUNT_CLASS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AR_ACCOUNT_CLASS_TL.ACCOUNT_CLASS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNT_CLASS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Reference Accounting Header Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.REF_AE_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.REF_AE_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_GL_SLA_RECONCILIATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_GL_SLA_RECONCILIATION_CF.REF_AE_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "SLA Distribution"
+    }, {
+      "name" : "Temporary Line Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TEMP_LINE_NUM" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.TEMP_LINE_NUM" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_GL_SLA_RECONCILIATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_GL_SLA_RECONCILIATION_CF.TEMP_LINE_NUM" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "SLA Distribution"
+    }, {
+      "name" : "Accounting Header Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.AE_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.AE_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_GL_SLA_RECONCILIATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_GL_SLA_RECONCILIATION_CF.AE_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "SLA Distribution"
+    }, {
+      "name" : "Accounting Line Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_GL_SLA_RECONCILIATION_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_GL_SLA_RECONCILIATION_CF.AE_LINE_NUM" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "GL Journal Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JRNL_HDR_DFLT_EFFECTIVE_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Batch",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_BATCH_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_BATCH_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Header",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_HEADER_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_HEADER_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Header ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Journal Header Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Reversal Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_REVERSAL_STATUS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Reversal Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Reversal Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GL_JOURNAL_REV_STAT_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_REVERSAL_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Paying Site Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUSTOMER_PAYING_SITE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUSTOMER_PAYING_SITE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUSTOMER_PAYING_SITE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.CUSTOMER_PAYING_SITE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Source Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_SOURCE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Source Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Journal Source Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_JOURNAL_SOURCE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_SOURCE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Category Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_CATEGORY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Category Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Journal Category Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_JOURNAL_CATEGORY_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_CATEGORY", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Header Created By Login Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_HEADER_CREATED_BY_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Header Creation Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_HEADER_CREATION_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Line Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_LINE_NUM" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_LINE_NUM" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Journal Line Description",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_LINE_DESCRIPTION" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Posted Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_LINE_STATUS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_LINE_STATUS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Posted Status Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Posted Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GL_JOURNAL_STATUS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_LINE_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2, 'GL_JOURNAL_STATUS',  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GL_JOURNAL_STATUS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.JOURNAL_LINE_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Ledger Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.LEDGER_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Ledger Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Ledger Key",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_LEDGER_D_Linkage.LEDGER_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV.LEDGER_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "--------------------DFF Keys--------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "RA_CUST_TRX_LINE_GL_DIST_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUST_TRX_LINE_GL_DIST_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUST_TRX_LINE_GL_DIST_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUST_TRX_LINE_GL_DIST_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUST_TRX_LINE_GL_DIST_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "RA_CUSTOMER_TRX_LINES_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_LINES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_LINES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_LINES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_LINES_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "RA_CUSTOMER_TRX_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "JE_RA_CUSTOMER_TRX_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_AGG_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_JE_RA_CUSTOMER_TRX_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_JE_RA_CUSTOMER_TRX_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_JE_RA_CUSTOMER_TRX_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_JE_RA_CUSTOMER_TRX_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AR_REVENUE_AGG_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_LINES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_JE_RA_CUSTOMER_TRX_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUST_TRX_LINE_GL_DIST_DFF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_LINES_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUST_TRX_LINE_GL_DIST_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_JE_RA_CUSTOMER_TRX_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Revenue Transaction Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 <> 'EXCHANGE_GAIN_LOSS'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNTING_CLASS_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AR_SLA_REVENUE_AGG_CF_GLJournalID",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_LINES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_JE_RA_CUSTOMER_TRX_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUST_TRX_LINE_GL_DIST_DFF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_LINES_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUST_TRX_LINE_GL_DIST_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_JE_RA_CUSTOMER_TRX_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Revenue Transaction Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 <> 'EXCHANGE_GAIN_LOSS'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF.ACCOUNTING_CLASS_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AR_REVENUE_CF",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUST_TRX_LINE_GL_DIST_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_JE_RA_CUSTOMER_TRX_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_LINES_DFF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUST_TRX_LINE_GL_DIST_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_JE_RA_CUSTOMER_TRX_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_LINES_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Revenue Transaction Details.Distribution" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AR_REVENUE_CF_GLJournalID",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUST_TRX_LINE_GL_DIST_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_LINES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_JE_RA_CUSTOMER_TRX_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_ARREV",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUST_TRX_LINE_GL_DIST_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_RA_CUSTOMER_TRX_LINES_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AR_SLA_REVENUE_AGG_CF_DW_JE_RA_CUSTOMER_TRX_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_REVENUE_AGG_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_GL_SLA_RECONCILIATION_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_GL_SLA_RECONCILIATION_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Revenue Transaction Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Distribution",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Customer Trx Distribution ID" ],
+        "displayKey" : "Customer Trx Distribution ID"
+      }, {
+        "name" : "SLA Distribution",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Reference Accounting Header Key" ],
+        "displayKey" : "Reference Accounting Header Key",
+        "additionalKeys" : [ [ "Customer Trx Distribution ID", "Reference Accounting Header Key", "Temporary Line Number", "Accounting Header Key" ] ]
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Customer Trx Distribution ID", "Reference Accounting Header Key", "Temporary Line Number", "Accounting Header Key", "Journal Header Key", "Journal Line Number", "Accounting Line Number" ],
+        "displayKey" : "Journal Header Key",
+        "additionalKeys" : [ [ "Journal Header Key" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "AR Revenue Transaction Details",
+        "levels" : [ "Total", "Distribution", "SLA Distribution", "Detail" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_FIN_AR_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "AR_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_AR_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - AR Revenue Header Details.Security Context Code - AR Billing BU" ]
+      }
+    } ]
+  }
+}

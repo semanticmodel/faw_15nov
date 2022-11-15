@@ -1,0 +1,351 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Performance Goal Plan",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Goal Plan Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Goal Plan Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_TL_Performance_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_TL_Performance_DimOnly.GOAL_PLAN_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_TL_Performance",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_TL_Performance.GOAL_PLAN_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Plan Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance_DimOnly.GOAL_PLAN_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance.GOAL_PLAN_TYPE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Plan Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Goal Plan Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GOAL_PLAN_TYPE_D_TL.GOAL_PLAN_TYPE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance_DimOnly.GOAL_PLAN_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GOAL_PLAN_TYPE_D_TL.GOAL_PLAN_TYPE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance.GOAL_PLAN_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Primary Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance_DimOnly.PRIMARY_GOAL_PLAN_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance.PRIMARY_GOAL_PLAN_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Primary Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Primary Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INDICATOR_Y_N_TL.YES_NO_IND_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance_DimOnly.PRIMARY_GOAL_PLAN_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INDICATOR_Y_N_TL.YES_NO_IND_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance.PRIMARY_GOAL_PLAN_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Sub Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance_DimOnly.GOAL_SUBTYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance.GOAL_SUBTYPE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Sub Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Goal Sub Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GOAL_SUB_TYPE_D_TL.GOAL_SUB_TYPE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance_DimOnly.GOAL_SUBTYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GOAL_SUB_TYPE_D_TL.GOAL_SUB_TYPE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance.GOAL_SUBTYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Plan Active Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance_DimOnly.GOAL_PLAN_ACTIVE_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance.GOAL_PLAN_ACTIVE_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Plan Active Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Goal Plan Active Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ACTIVE_INACTIVE_D_TL.STATUS_CODE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance_DimOnly.GOAL_PLAN_ACTIVE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ACTIVE_INACTIVE_D_TL.STATUS_CODE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance.GOAL_PLAN_ACTIVE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Plan Start Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance_DimOnly.GOAL_PLAN_START_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance.GOAL_PLAN_START_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Plan End Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance_DimOnly.GOAL_PLAN_END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance.GOAL_PLAN_END_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Goal Plan Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance_DimOnly.GOAL_PLAN_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_TL_Performance_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_TL_Performance_DimOnly.GOAL_PLAN_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_Performance",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance.GOAL_PLAN_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_GOAL_PLAN_D_TL_Performance",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_TL_Performance.GOAL_PLAN_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_GOAL_PLAN_D_Performance_DimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance_DimOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Performance Goal Plan.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_GOAL_PLAN_D_TL_Performance_DimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_TL_Performance_DimOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Performance Goal Plan.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_TL_Performance_DimOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_GOAL_PLAN_D_Performance",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_Performance" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Performance Goal Plan.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_GOAL_PLAN_D_TL_Performance",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_TL_Performance" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Performance Goal Plan.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GOAL_PLAN_D_TL_Performance.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Goal Plan Identifier" ],
+        "displayKey" : "Goal Plan Name",
+        "additionalKeys" : [ [ "Goal Plan Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Performance Goal Plan",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

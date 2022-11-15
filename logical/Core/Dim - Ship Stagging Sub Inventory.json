@@ -1,0 +1,88 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Ship Stagging Sub Inventory",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Subinventory Organization Key", "Staging Subinventory" ],
+    "logicalColumns" : [ {
+      "name" : "Staging Subinventory",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INV_SUBINVENTORY_D_StagingSubinventory",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_StagingSubinventory.SECONDARY_INVENTORY_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Stagging Sub Inventory Detail"
+    }, {
+      "name" : "Staging Subinventory Description",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INV_SUBINVENTORY_D_StagingSubinventory",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_StagingSubinventory.DESCRIPTION" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Stagging Sub Inventory Detail"
+    }, {
+      "name" : "Subinventory Organization Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INV_SUBINVENTORY_D_StagingSubinventory",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_StagingSubinventory.ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Ship Stagging Sub Inventory Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_INV_SUBINVENTORY_D_StagingSubinventory",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_SUBINVENTORY_D_StagingSubinventory" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Ship Stagging Sub Inventory.Dim - Ship Stagging Sub Inventory Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - Ship Stagging Sub Inventory Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - Ship Stagging Sub Inventory Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - Ship Stagging Sub Inventory Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Staging Subinventory Description" ],
+        "displayKey" : "Staging Subinventory Description",
+        "additionalKeys" : [ [ "Subinventory Organization Key", "Staging Subinventory" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Ship Stagging Sub Inventory",
+        "levels" : [ "Dim - Ship Stagging Sub Inventory Total", "Dim - Ship Stagging Sub Inventory Detail" ]
+      } ]
+    }
+  }
+}

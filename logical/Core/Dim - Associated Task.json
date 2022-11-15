@@ -1,0 +1,130 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Associated Task",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Associated Task Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Associated Task Description",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_ELEMENT_D_Associated_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ELEMENT_D_Associated_TL.DESCRIPTION" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Associated Task Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_ELEMENT_D_Associated",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ELEMENT_D_Associated.PROJ_ELEMENT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PROJECT_ELEMENT_D_Associated_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ELEMENT_D_Associated.PROJ_ELEMENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Associated Task Detail"
+    }, {
+      "name" : "Associated Task Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_ELEMENT_D_Associated_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ELEMENT_D_Associated_TL.NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Associated Task Detail"
+    }, {
+      "name" : "Associated Task Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PROJECT_ELEMENT_D_Associated",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ELEMENT_D_Associated.ELEMENT_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PROJECT_ELEMENT_D_Associated_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ELEMENT_D_Associated.ELEMENT_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Associated Task Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_PROJECT_ELEMENT_D_Associated",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ELEMENT_D_Associated" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Associated Task.Associated Task Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_PROJECT_ELEMENT_D_Associated_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ELEMENT_D_Associated", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ELEMENT_D_Associated_TL" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ELEMENT_D_Associated",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ELEMENT_D_Associated_TL",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Associated Task.Associated Task Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "All",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "All",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Associated Task Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Associated Task Identifier" ],
+        "displayKey" : "Associated Task Name",
+        "additionalKeys" : [ [ "Associated Task Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Associated Task",
+        "levels" : [ "All", "Associated Task Detail" ]
+      } ]
+    }
+  }
+}

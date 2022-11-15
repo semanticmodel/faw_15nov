@@ -1,0 +1,48 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_LM_LEARNING_ITEM_D",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_LM_LEARNING_ITEM_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LM_LEARNING_ITEM_D_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4) AND %5 = %6",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LM_LEARNING_ITEM_D.LEARNING_ITEM_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LM_LEARNING_ITEM_D_TL.LEARNING_ITEM_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LM_LEARNING_ITEM_D_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LM_LEARNING_ITEM_D_TL.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LM_LEARNING_ITEM_D.EFFECTIVE_START_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_LearningItemPublishedBy",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LM_LEARNING_ITEM_D.ATTRIBUTION_PERSON_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_LearningItemPublishedBy.PERSON_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_LearningItemPublishedBy",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LM_LEARNING_ITEM_D.ATTRIBUTION_PERSON_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_LearningItemPublishedBy.PERSON_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "LEARNING_ITEM_ID"
+      ]
+    ]
+  }
+}

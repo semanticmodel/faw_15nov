@@ -1,0 +1,55 @@
+{
+  "physicalTable" : {
+    "name" : "DW_MULTI_CAL_TIME_FILTER_FUSION_ENTERPRISE",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "\r\n/* Enterprise - Year from Fiscal - Begin */\r\n\r\nSELECT '03'                              AS calendar_type,\r\n       null                              AS driving_dim_code,\r\n       null                              AS dimension_value, \r\n       null                              AS dimension_value_code,\r\n       'Year' AS time_level,    \r\n       a.fiscal_trailing_year_number     AS time_seq,\r\n       TO_CHAR(a.fiscal_year_number)     AS time_value,\r\n       a.fiscal_trailing_year_number + 1 AS yago_time_seq\r\n  FROM\r\n       dw_fiscal_year_d a\r\n WHERE\r\n       a.fiscal_trailing_year_number BETWEEN 0 AND 19\r\n   AND a.fiscal_period_set_name = (select parameter_value \r\n                                     from dw_content_param_config \r\n                                    where parameter_code = 'PARAM_GLOBAL_ENTERPRISE_CALENDAR' \r\n                                   )    \r\n\r\n\r\n/* Enterprise - Year from Fiscal - End */\r\n\r\nUNION ALL\r\n\r\n/* Enterprise - Year from Gregorian - Begin */\r\n\r\nSELECT '03'                              AS calendar_type,\r\n       null                              AS driving_dim_code, \r\n       null                              AS dimension_value, \r\n       null                              AS dimension_value_code,       \r\n       'Year'                            AS time_level,\r\n       a.trailing_year_number            AS time_seq,\r\n       TO_CHAR(a.cal_year_id)            AS time_value,\r\n       a.trailing_year_number + 1        AS yago_time_seq       \r\n  FROM\r\n       dw_year_d a\r\n WHERE\r\n       a.trailing_year_number BETWEEN 0 AND 19\r\n   AND EXISTS (select   1  \r\n                        from dw_content_param_config \r\n                       where parameter_code = 'PARAM_GLOBAL_ENTERPRISE_CALENDAR'\r\n                         and parameter_value ='Gregorian'\r\n                     )\r\n  \r\n\r\n/* Enterprise - Year from Gregorian - End */\r\n\r\nUNION ALL  \r\n\r\n/* Enterprise - Quarter - Begin */\r\n\r\n\r\n/* Enterprise - Quarter from Fiscal - Begin */\r\nSELECT DISTINCT\r\n       '03'                                 AS calendar_type,\r\n       null                                 AS driving_dim_code,\r\n       null                                 AS dimension_value,\r\n       null                                 AS dimension_value_code,       \r\n       'Quarter'                            AS time_level,\r\n       a.fiscal_trailing_quarter_number     AS time_seq,\r\n       a.fiscal_quarter_code                AS time_value,\r\n       a.fiscal_trailing_quarter_number + 4 AS yago_time_seq\r\n  FROM\r\n       dw_fiscal_quarter_d a WHERE\r\n       a.fiscal_trailing_quarter_number BETWEEN 0 and 19\r\n   AND a.fiscal_period_set_name = (select parameter_value \r\n                                      from dw_content_param_config \r\n                                     where parameter_code = 'PARAM_GLOBAL_ENTERPRISE_CALENDAR' \r\n                                   )     \r\n\r\n/* Enterprise - Quarter from Fiscal - End */\r\n\r\nUNION ALL\r\n\r\n/* Enterprise - Quarter from Gregorian - Begin  */\r\n\r\nSELECT  \r\n       '03' as Calendar_Type,\r\n       null                              AS driving_dim_code, \r\n       null                              AS dimension_value,   \r\n       null                              AS dimension_value_code,       \r\n       'Quarter'                         AS time_level,\r\n       a.trailing_quarter_number         AS time_seq,\r\n       a.cal_quarter_code                AS time_value,\r\n       a.trailing_quarter_number + 4     AS yago_time_seq\r\n  FROM\r\n       dw_quarter_d a       \r\n WHERE a.trailing_quarter_number BETWEEN 0 AND 19\r\n   AND EXISTS (select   1  \r\n                        from dw_content_param_config \r\n                       where parameter_code = 'PARAM_GLOBAL_ENTERPRISE_CALENDAR'\r\n                         and parameter_value ='Gregorian'\r\n                     )\r\n /* Enterprise - Quarter from Gregorian - End */\r\n \r\n  /* Enterprise - Quarter - End */\r\n  \r\n  UNION ALL  \r\n\r\n/* Enterprise - Month - Begin */\r\n\r\n/* Enterprise - Month from Fiscal - Begin */ \r\nSELECT DISTINCT \r\n       '03'                               AS calendar_type,\r\n       null                               AS driving_dim_code,\r\n       null                               AS dimension_value, \r\n       null                               AS dimension_value_code,       \r\n       'Month'                            AS time_level,\r\n       a.fiscal_trailing_period_number    AS time_seq,\r\n       a.fiscal_period_name               AS time_value,\r\n       a.fiscal_trailing_period_number \r\n         + no_of_periods                  AS yago_time_seq \r\n  FROM\r\n       dw_fiscal_period_d a,\r\n      (\r\n        select fiscal_period_set_name,max(no_of_periods) as no_of_periods\r\n           from (\r\n            select fiscal_period_set_name,fiscal_year_number,count(distinct fiscal_period_name) as no_of_periods\r\n              from dw_fiscal_period_d\r\n             where adjustment_period_flag = 'N'\r\n             group by fiscal_period_set_name,fiscal_year_number\r\n           )\r\n           group by fiscal_period_set_name\r\n      ) m2       \r\n WHERE adjustment_period_flag = 'N'\r\n   AND (a.fiscal_trailing_period_number BETWEEN 0 and 19 OR a.fiscal_trailing_period_number IN (52,53))\r\n   AND a.fiscal_period_set_name = (select parameter_value \r\n                                     from dw_content_param_config \r\n                                    where parameter_code = 'PARAM_GLOBAL_ENTERPRISE_CALENDAR' \r\n                                  ) \r\n   AND a.fiscal_period_set_name = m2.fiscal_period_set_name                                  \r\n\r\n/* Enterprise - Month from Fiscal - End */\r\n\r\nUNION ALL\r\n\r\n/* Enterprise - Month from Gregorian - Begin */\r\n\r\nSELECT '03'                              AS calendar_type,\r\n       null                              AS driving_dim_code, \r\n       null                              AS dimension_value,    \r\n       null                              AS dimension_value_code,       \r\n       'Month'                           AS time_level,\r\n       a.trailing_month_number           AS time_seq,\r\n       a.cal_month_code                  AS time_value,\r\n       a.trailing_month_number + 12      AS yago_time_seq\r\n  FROM\r\n       dw_month_d a       \r\n WHERE a.trailing_month_number BETWEEN 0 AND 19\r\n   AND EXISTS (select   1  \r\n                        from dw_content_param_config \r\n                       where parameter_code = 'PARAM_GLOBAL_ENTERPRISE_CALENDAR'\r\n                         and parameter_value ='Gregorian'\r\n                     )\r\n\r\n /* Enterprise - Month from Gregorian - End */\r\n  "
+    } ],
+    "physicalColumns" : [ {
+      "name" : "DIMENSION_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    }, {
+      "name" : "DRIVING_DIM_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 255,
+      "nullable" : false
+    }, {
+      "name" : "CALENDAR_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "TIME_LEVEL",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "TIME_SEQ",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "TIME_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "YAGO_TIME_SEQ",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "DIMENSION_VALUE_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    }
+  }
+}

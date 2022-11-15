@@ -1,0 +1,1245 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - CX - Opportunity Activity",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Sales Pipeline" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "# of Opportunity Activities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Opportunity.ACTIVITY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity.ACTIVITY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "countDistinctOverrides" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Opportunity",
+          "rule" : "COUNT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity",
+          "rule" : "COUNT_DISTINCT"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Open Opportunity Activities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IN ('COMPLETE', 'CANCELED'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Activity Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Completed Opportunity Activities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 IN ('COMPLETE'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Activity Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Expired Opportunity Activities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IN ('COMPLETE', 'CANCELED') AND %3 <  CURRENT_DATE )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Activity Status Code", "logicalColumn:Core.Fact - CX - Opportunity Activity.Activity Due Date" ]
+        }
+      }
+    }, {
+      "name" : "# of Opportunity Tasks",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'TASK')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Activity Function Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Opportunity Appointments",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'APPOINTMENT')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Activity Function Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Opportunity Call Reports",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CALLREPORT')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Activity Function Code" ]
+        }
+      }
+    }, {
+      "name" : "Average Activity Duration For Completed Activities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Completed Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Duration For Completed Opportunity Activities" ]
+        }
+      }
+    }, {
+      "name" : "Average Activity Duration For Open Activities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Open Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Duration For Open Opportunity Activities" ]
+        }
+      }
+    }, {
+      "name" : "Average Number of Opportunity Activities Per Team Member",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Team Members", "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities" ]
+        }
+      }
+    }, {
+      "name" : "-----------------Opportunity Activity Facts--------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'-----------------Opportunity Activity Measures--------------------'"
+        }
+      }
+    }, {
+      "name" : "Activity Rate - Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities" ]
+        }
+      }
+    }, {
+      "name" : "Activity Rate - Open Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Open Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Activities for Open Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Activity Rate - Won Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Activities for Won Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Activity Rate - Lost Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Activities for Lost Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Activity Rate - No Sale Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of No Sale Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Activities for No Sale Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Task Rate - Open Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Open Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Tasks for Open Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Task Rate - Won Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Tasks for Won Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Task Rate - Lost Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Tasks for Lost Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Task Rate - No Sale Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of No Sale Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Tasks for No Sale Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Appointment Rate - Open Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Open Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Appointments for Open Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Appointment Rate - Won Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Appointments for Won Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Appointment Rate - Lost Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Appointments for Lost Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Appointment Rate - No Sale Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of No Sale Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Appointments for No Sale Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Call Report Rate - Open Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Open Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Call Reports for Open Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Call Report Rate - Won Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Call Reports for Won Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Call Report Rate - Lost Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Call Reports for Lost Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Call Report Rate - No Sale Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of No Sale Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Call Reports for No Sale Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Average Number of Emails Sent for Won Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Emails Sent for Won Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Average Number of Emails Sent for Lost Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Emails Sent for Lost Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Average Number of Meetings for Won Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Meetings for Won Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Average Number of Meetings for Lost Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Meetings for Lost Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Average Number of Demos for Won Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Demos for Won Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Average Number of Demos for Lost Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Demos for Lost Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Average Number of Calls for Won Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Won Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Calls for Won Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "Average Number of Calls for Lost Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Lost Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Total Calls for Lost Opportuntiies" ]
+        }
+      }
+    }, {
+      "name" : "----------------Internal--------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'-----------------Opportunity Activity Measures--------------------'"
+        }
+      }
+    }, {
+      "name" : "Opportunity Status Category",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Opportunity.OPPORTUNITY_STATUS_CATEGORY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity.OPPORTUNITY_STATUS_CATEGORY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "# of Opportunities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Opportunity.OPPORTUNITY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity.ACTIVITY_OPPORTUNITY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Open Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'OPEN')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Won Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WON')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Lost Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'LOST')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of No Sale Opportunities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'NO_SALE')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Activities for Open Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'OPEN')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Activities for Won Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WON')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Activities for Lost Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'LOST')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Activities for No Sale Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'NO_SALE')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Tasks for Open Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'OPEN')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Tasks", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Tasks for Won Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WON')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Tasks", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Tasks for Lost Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'LOST')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Tasks", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Tasks for No Sale Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'NO_SALE')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Tasks", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Appointments for Open Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'OPEN')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Appointments", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Appointments for Won Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WON')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Appointments", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Appointments for Lost Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'LOST')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Appointments", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Appointments for No Sale Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'NO_SALE')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Appointments", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Call Reports for Open Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'OPEN')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Call Reports", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Call Reports for Won Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WON')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Call Reports", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Call Reports for Lost Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'LOST')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Call Reports", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Call Reports for No Sale Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'NO_SALE')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Call Reports", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Emails",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'EMAIL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Activity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Meetings",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'MEETING')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Activity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Demos",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'DEMO')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Activity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Calls",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CALL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Opportunity Activities", "logicalColumn:Core.Fact - CX - Opportunity Activity.Activity Type Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Emails Sent for Won Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WON')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Emails", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Emails Sent for Lost Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'LOST')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Emails", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Meetings for Won Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WON')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Meetings", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Meetings for Lost Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'LOST')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Meetings", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Demos for Won Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WON')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Demos", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Demos for Lost Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'LOST')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Demos", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Calls for Won Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WON')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Calls", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "Total Calls for Lost Opportuntiies",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'LOST')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.# of Calls", "logicalColumn:Core.Fact - CX - Opportunity Activity.Opportunity Status Category" ]
+        }
+      }
+    }, {
+      "name" : "# of Team Members",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity.RESOURCE_PARTY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Duration",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Opportunity.ACTIVITY_DURATION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity.ACTIVITY_DURATION" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Activity Resource",
+          "rule" : "FIRST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Activity",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Duration For Open Opportunity Activities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IN ('COMPLETE', 'CANCELED'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.Duration", "logicalColumn:Core.Fact - CX - Opportunity Activity.Activity Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration For Completed Opportunity Activities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'COMPLETE')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Activity.Duration", "logicalColumn:Core.Fact - CX - Opportunity Activity.Activity Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Activity Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Opportunity.ACTIVITY_STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity.ACTIVITY_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Activity Function Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Opportunity.ACTIVITY_FUNCTION_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity.ACTIVITY_FUNCTION_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Activity Due Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Opportunity.ACTIVITY_DUE_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity.ACTIVITY_DUE_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Activity Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Opportunity.ACTIVITY_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity.ACTIVITY_TYPE_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CXS_ACTIVITY_CF_Opportunity",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_OPPORTUNITY_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Opportunity" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_OPPORTUNITY_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Opportunity",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual End Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Activity.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual Start Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Opportunity Deal Horizon.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual End Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual Start Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Security - Account.Detail", "logicalLevel:Core.Dim - CX - Opportunity Risk Level.Detail", "logicalLevel:Core.Dim - CX - Activity All Day.Detail", "logicalLevel:Core.Dim - CX - Opportunity Status Category.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Created Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Created Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Activity Customer Type.Detail", "logicalLevel:Core.Dim - CX - Primary Partner.Detail", "logicalLevel:Core.Dim - CX - Activity Direction.Detail", "logicalLevel:Core.Dim - CX - Activity Function.Detail", "logicalLevel:Core.Dim - CX - Activity Outcome.Detail", "logicalLevel:Core.Dim - CX - Sales Stage.Detail", "logicalLevel:Core.Dim - CX - Activity Priority.Detail", "logicalLevel:Core.Dim - CX - Security - Opportunity Access Group.Detail", "logicalLevel:Core.Dim - CX - Opportunity Decision.Detail", "logicalLevel:Core.Dim - CX - Activity Status.Detail", "logicalLevel:Core.Dim - CX - Opportunity Line of Business.Detail", "logicalLevel:Core.Dim - CX - Activity Sub Type.Detail", "logicalLevel:Core.Dim - CX - Opportunity.Detail", "logicalLevel:Core.Dim - CX - Activity Type.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Actual Close Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Actual Close Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Opportunity Channel Type.Detail", "logicalLevel:Core.Dim - CX - Opportunity Close Reason.Detail", "logicalLevel:Core.Dim - CX - Opportunity Status.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Expected Close Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Expected Close Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Opportunity Strategic.Detail", "logicalLevel:Core.Dim - CX - Primary Competitor.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Primary Contact.Detail", "logicalLevel:Core.Dim - CX - Resource - Activity Owner.Detail", "logicalLevel:Core.Dim - CX - Resource - Opportunity Owner.Detail", "logicalLevel:Core.Dim - CX - Security - Opportunity.Detail", "logicalLevel:Core.Dim - CX - Opportunity Renewal Process.Detail", "logicalLevel:Core.Dim - CX - Opportunity Type.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 <> -(99999) AND %2 <> 'S' AND (%3 = 'N' OR %3 IS NULL )",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Opportunity.OPPORTUNITY_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Opportunity.RECURRENCE_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Opportunity.TEMPLATE_FLAG" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity",
+      "disable" : false,
+      "priority" : 5,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_OPPORTUNITY_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_ACTIVITY_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_OPPORTUNITY_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_ACTIVITY_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual End Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Activity.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual Start Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Opportunity Deal Horizon.Detail", "logicalLevel:Core.Dim - CX - Activity Resource Response.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual End Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Activity Resource Show Time.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual Start Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Security - Account.Detail", "logicalLevel:Core.Dim - CX - Activity All Day.Detail", "logicalLevel:Core.Dim - CX - Opportunity Status Category.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Created Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Created Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Activity Customer Type.Detail", "logicalLevel:Core.Dim - CX - Primary Partner.Detail", "logicalLevel:Core.Dim - CX - Activity Direction.Detail", "logicalLevel:Core.Dim - CX - Activity Function.Detail", "logicalLevel:Core.Dim - CX - Activity Outcome.Detail", "logicalLevel:Core.Dim - CX - Sales Stage.Detail", "logicalLevel:Core.Dim - CX - Activity Priority.Detail", "logicalLevel:Core.Dim - CX - Activity Resource.Detail", "logicalLevel:Core.Dim - CX - Activity Resource Set Reminder.Detail", "logicalLevel:Core.Dim - CX - Security - Opportunity Access Group.Detail", "logicalLevel:Core.Dim - CX - Opportunity Decision.Detail", "logicalLevel:Core.Dim - CX - Activity Status.Detail", "logicalLevel:Core.Dim - CX - Opportunity Line of Business.Detail", "logicalLevel:Core.Dim - CX - Activity Sub Type.Detail", "logicalLevel:Core.Dim - CX - Opportunity.Detail", "logicalLevel:Core.Dim - CX - Activity Type.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Actual Close Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Actual Close Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Opportunity Channel Type.Detail", "logicalLevel:Core.Dim - CX - Opportunity Close Reason.Detail", "logicalLevel:Core.Dim - CX - Opportunity Status.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Expected Close Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Opportunity Expected Close Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Primary Competitor.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Primary Contact.Detail", "logicalLevel:Core.Dim - CX - Resource - Activity Owner.Detail", "logicalLevel:Core.Dim - CX - Resource - Activity Team Member.Detail", "logicalLevel:Core.Dim - CX - Resource - Opportunity Owner.Detail", "logicalLevel:Core.Dim - CX - Security - Opportunity.Detail", "logicalLevel:Core.Dim - CX - Opportunity Renewal Process.Detail", "logicalLevel:Core.Dim - CX - Opportunity Type.Detail", "logicalLevel:Core.Dim - CX - Opportunity Risk Level.Detail", "logicalLevel:Core.Dim - CX - Opportunity Strategic.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 <> -(99999) AND %2 <> 'S' AND (%3 = 'N' OR %3 IS NULL )",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity.ACTIVITY_OPPORTUNITY_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity.ACTIVITY_RECURRENCE_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Opportunity.ACTIVITY_TEMPLATE_FLAG" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_CX_SALES_ACCNT_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Account.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SALES_OPTY_CUSTOM_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Opportunity Access Group.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SALES_OPTY_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Opportunity.Security Enabled Flag" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity All Day",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Customer Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Direction",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Function",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Outcome",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Priority",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Resource Response",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Resource Set Reminder",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Resource Show Time",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Resource",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Sub Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Actual End Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Actual End Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Actual Start Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Actual Start Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Created Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Created Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Opportunity Actual Close Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Opportunity Actual Close Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Opportunity Expected Close Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Opportunity Expected Close Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Channel Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Close Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Deal Horizon",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Decision",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Line of Business",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Renewal Process",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Risk Level",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Status Category",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Strategic",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Competitor",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Partner",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Activity Owner",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Activity Team Member",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Stage",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Account",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Opportunity Access Group",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Opportunity",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

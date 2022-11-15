@@ -1,0 +1,97 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Plan Enrollment Details (Recipient)",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Recipient Plan Enrollment Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Recipient Plan Enrollment Start Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ABS_PLAN_ENROLLMENT_D_Recipient",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_PLAN_ENROLLMENT_D_Recipient.ENRT_ST_DT" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Recipient Plan Enrollment End Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ABS_PLAN_ENROLLMENT_D_Recipient",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_PLAN_ENROLLMENT_D_Recipient.ENRT_END_DT" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Recipient Plan Enrollment Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_ABS_PLAN_ENROLLMENT_D_Recipient",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_PLAN_ENROLLMENT_D_Recipient.PLAN_ENRT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_ABS_PLAN_ENROLLMENT_D_Recipient",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF_Donations", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_PLAN_ENROLLMENT_D_Recipient" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF_Donations",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ABS_PLAN_ENROLLMENT_D_Recipient",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Plan Enrollment Details (Recipient).Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'ORA_ANC_DONATION' AND %2 <> -(99999)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF_Donations.TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF_Donations.RECIPIENT_PLAN_ENRT_ID" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Recipient Plan Enrollment Identifier" ],
+        "displayKey" : "Recipient Plan Enrollment Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Plan Enrollment Details (Recipient)",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

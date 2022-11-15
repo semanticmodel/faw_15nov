@@ -1,0 +1,140 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Expenditure Organization",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Expenditure Organization Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Expenditure Organization Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization_PromptOnly.ORGANIZATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization.ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Expenditure Organization Detail"
+    }, {
+      "name" : "Expenditure Organization Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Expenditure Organization Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INTERNAL_ORG_D_TL.ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization_PromptOnly.ORGANIZATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INTERNAL_ORG_D_TL.ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization.ORGANIZATION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Expenditure Organization Detail"
+    }, {
+      "name" : "Expenditure Organization Effective Start Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization_PromptOnly.EFFECTIVE_START_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization.EFFECTIVE_START_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Expenditure Organization Effective End Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization_PromptOnly.EFFECTIVE_END_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization.EFFECTIVE_END_DATE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Expenditure Organization.Expenditure Organization Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'Y' OR %2 = -(99999)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization_PromptOnly.EXPENDITURE_ORGANIZATION_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization_PromptOnly.ORGANIZATION_ID" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INTERNAL_ORG_D_ExpenditureOrganization" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Expenditure Organization.Expenditure Organization Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "All",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "All",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Expenditure Organization Detail",
+        "numberOfElements" : 50,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Expenditure Organization Identifier" ],
+        "displayKey" : "Expenditure Organization Name",
+        "additionalKeys" : [ [ "Expenditure Organization Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Expenditure Organization",
+        "levels" : [ "All", "Expenditure Organization Detail" ]
+      } ]
+    }
+  }
+}

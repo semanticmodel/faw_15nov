@@ -1,0 +1,71 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Subscription Quote-to Contact",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Subscription Header Contact ID" ],
+    "logicalColumns" : [ {
+      "name" : "Subscription Header Contact ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTACT_D_SubscriptionQuoteToContact",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTACT_D_SubscriptionQuoteToContact.CONTACT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Subscription Header Contact Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTACT_D_SubscriptionQuoteToContact",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTACT_D_SubscriptionQuoteToContact.CONTACT_NAME" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CONTACT_D_SubscriptionQuoteToContact",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTACT_D_SubscriptionQuoteToContact" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Subscription Quote-to Contact.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Subscription Header Contact ID" ],
+        "displayKey" : "Subscription Header Contact ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Subscription Quote-to Contact",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

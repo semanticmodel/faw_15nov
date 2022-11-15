@@ -1,0 +1,126 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Payroll Run Balance Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Payroll Assignment Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "HR Assignment Identifer",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PAY_RUN_BALANCE_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.HR_ASSIGNMENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Payroll Assignment Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PAY_RUN_BALANCE_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.PAYROLL_ASSIGNMENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Payroll Rel Action Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PAY_RUN_BALANCE_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF.PAYROLL_REL_ACTION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_PAY_RUN_BALANCE_EF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PAY_RUN_BALANCE_EF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Payroll Assignment Identifier" ],
+        "displayKey" : "Payroll Assignment Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Payroll Run Balance Details",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_HCM_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "HCM_FACT_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - HCM - HR Business Unit.Security Context Code - HCM Business Unit" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_DEPARTMENT_DATA",
+      "functionalGroup" : "HCM_FACT_DEPT",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_DEPARTMENT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Department.Security Context Code - HCM Department" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_LEGAL_EMPLOYER_DATA",
+      "functionalGroup" : "HCM_FACT_LE",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_LEGAL_EMPLOYER_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Legal Employer.Security Context Code - HCM Legal Employer" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_VIEW_ALL_DATA",
+      "functionalGroup" : "HCM_FACT_ALL",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "1 = 1"
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_COUNTRY_DATA",
+      "functionalGroup" : "HCM_FACT_CTR",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_COUNTRY_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Country.Security Context Code - HCM Country List" ]
+      }
+    } ]
+  }
+}

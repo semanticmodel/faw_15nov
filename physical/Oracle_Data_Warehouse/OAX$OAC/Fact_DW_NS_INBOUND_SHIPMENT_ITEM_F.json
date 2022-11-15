@@ -1,0 +1,119 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_NS_INBOUND_SHIPMENT_ITEM_F",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar",
+        "joinExpression": {
+          "expressionTemplate": "%1 =  CAST (%2 AS DATE )",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.SHIPMENTCREATEDDATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_MERCHANDISE_HIERARCHY_DH",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 BETWEEN %4 AND %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_MERCHANDISE_HIERARCHY_DH.ITEM",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.ITEM",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.SHIPMENTCREATEDDATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_MERCHANDISE_HIERARCHY_DH.STARTDATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_MERCHANDISE_HIERARCHY_DH.ENDDATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_INBOUND_SHIPMENT_F",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.INBOUNDSHIPMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_INBOUND_SHIPMENT_F.ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_INCOTERM_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.INCOTERM",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_INCOTERM_D.ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ITEM_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.ITEM",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_ITEM_D.ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PURCHASEORDER_CLASSIFICATION_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.PURCHASEORDER_CLASS",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PURCHASEORDER_CLASSIFICATION_D.ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PURCHASEORDER_CURRENCY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.POCURRENCY",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PURCHASEORDER_CURRENCY_D.ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PURCHASEORDER_DEPARTMENT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.PURCHASEORDER_DEPARTMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PURCHASEORDER_DEPARTMENT_D.ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PURCHASEORDER_SUBSIDIARY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.PURCHASEORDER_SUBSIDIARY",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_PURCHASEORDER_SUBSIDIARY_D.ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_RECEIVING_LOCATION_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.RECEIVINGLOCATION",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_RECEIVING_LOCATION_D.ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_SHIPMENT_CURRENCY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.SHIPMENTBASECURRENCY",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_SHIPMENT_CURRENCY_D.ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_VENDOR_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INBOUND_SHIPMENT_ITEM_F.VENDORID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_VENDOR_D.ID"
+          }
+        ]
+      }
+    ]
+  }
+}

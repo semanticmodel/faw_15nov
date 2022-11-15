@@ -1,0 +1,150 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_CXM_CAMPAIGN_MEMBERS_CF",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_CXM_CAMPAIGN_MEMBERS_CF",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXM_CAMPAIGN_MEMBER_STATUS_D_TL",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXM_CAMPAIGN_MEMBER_STATUS_D_TL.CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.MEMBER_STATUS_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXM_CAMPAIGN_MEMBER_STATUS_D_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_AnalyticsCurrency",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.GLOBAL_CURRENCY_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_AnalyticsCurrency.CURRENCY_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_DocumentCurrency",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_CURRENCY_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_DocumentCurrency.CURRENCY_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXM_CAMPAIGN_CF",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXM_CAMPAIGN_CF.CAMPAIGN_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_CONTACT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CONTACT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_CONTACT_D.CONTACT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LEAD_CF_Camp_Member_Secure",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.LEAD_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LEAD_CF_Camp_Member_Secure.LEAD_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_RESOURCE_D_Campaign_Owner",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_OWNER_RESOURCE_PARTY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_RESOURCE_D_Campaign_Owner.RESOURCE_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SALES_ACCOUNT_CF_DN_DH",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CONTACT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SALES_ACCOUNT_CF_DN_DH.BASE_LEVEL_ACCOUNT_PARTY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SALES_ACCOUNT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CONTACT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SALES_ACCOUNT_D.PARTY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SALES_RESOURCE_CF_DN_DH_Campaign_Hierarchy",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_OWNER_RESOURCE_PARTY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_SALES_RESOURCE_CF_DN_DH_Campaign_Hierarchy.BASE_RESOURCE_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DAY_D_Campaign_Created_Date",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_CREATION_DATE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DAY_D_Campaign_Created_Date.CALENDAR_DATE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DAY_D_Campaign_End_Date",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_END_DATE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DAY_D_Campaign_End_Date.CALENDAR_DATE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DAY_D_Campaign_Start_Date",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_START_DATE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_DAY_D_Campaign_Start_Date.CALENDAR_DATE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_DATE_D_Campaign_Created_Date",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_CREATION_DATE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_DATE_D_Campaign_Created_Date.ENTERPRISE_DATE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_DATE_D_Campaign_End_Date",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_END_DATE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_DATE_D_Campaign_End_Date.ENTERPRISE_DATE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_DATE_D_Campaign_Start_Date",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXM_CAMPAIGN_MEMBERS_CF.CAMPAIGN_START_DATE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ENTERPRISE_DATE_D_Campaign_Start_Date.ENTERPRISE_DATE"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "CAMPAIGN_MEMBER_ID"
+      ]
+    ]
+  }
+}

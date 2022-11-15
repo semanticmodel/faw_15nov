@@ -1,0 +1,81 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_NS_DAY_D_GregorianCalendar",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_NS_DAY_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 OR %1 = %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D.FIRSTORDERDATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_CUSTOMER_D.LASTMODIFIEDDATE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORYITEMLOCATIONS_F",
+        "joinExpression": {
+          "expressionTemplate": "%1 =  CAST (%2 AS DATE )",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORYITEMLOCATIONS_F.INVENTORY_REFRESHED_DATE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_ISSUE_F",
+        "joinExpression": {
+          "expressionTemplate": "%1 =  CAST (%2 AS DATE )",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_ISSUE_F.CREATEDDATE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PAYCHECK_F",
+        "joinExpression": {
+          "expressionTemplate": "%1 =  CAST (%2 AS DATE )",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PAYCHECK_F.TRANDATE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PAYCHECK_LINES_F",
+        "joinExpression": {
+          "expressionTemplate": "%1 =  CAST (%2 AS DATE )",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_DAY_D_GregorianCalendar.CALENDAR_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_PAYCHECK_LINES_F.TRANDATE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      }
+    ],
+    "additionalKeys": [
+      [
+        "CALENDAR_DATE"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,1868 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - PRJ - Project Invoice",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Project Billing" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "------Metrics in Analytics Currency-----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "0"
+        }
+      }
+    }, {
+      "name" : "Invoice Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_INVOICE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_INVOICE_CF.GLOBAL_CURR_BILLED_AMT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'EX')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'IP')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'IC')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Write-Off Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WRITE_OFF')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Credit Memo Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CREDIT_MEMO')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Canceled Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CANCEL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Concession Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CONCESSION')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Invoice Amount - ITD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Calendar" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount - ITD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.External Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Calendar" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount - ITD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Intercompany Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Calendar" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount - ITD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Interproject Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Calendar" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Invoice Amount - YTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Year" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount - YTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.External Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Year" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount - YTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Intercompany Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Year" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount - YTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Interproject Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Year" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Invoice Amount - QTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Quarter" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount - QTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.External Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Quarter" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount - QTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Intercompany Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Quarter" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount - QTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Interproject Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Quarter" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Invoice Amount - PTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Period" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount - PTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.External Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Period" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount - PTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Intercompany Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Period" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount - PTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Interproject Invoice Amount", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Period" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "------Metrics in Ledger Currency-----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "0"
+        }
+      }
+    }, {
+      "name" : "Invoice Amount in Ledger Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_INVOICE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_INVOICE_CF.LEDGER_CURR_BILLED_AMT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount in Ledger Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'EX')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Ledger Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount in Ledger Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'IP')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Ledger Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount in Ledger Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'IC')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Ledger Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Write-Off Amount in Ledger Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WRITE_OFF')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Ledger Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Credit Memo Amount in Ledger Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CREDIT_MEMO')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Ledger Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Canceled Amount in Ledger Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CANCEL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Ledger Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Concession Amount in Ledger Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CONCESSION')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Ledger Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Invoice Amount in Ledger Currency - ITD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Calendar" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount in Ledger Currency - ITD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.External Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Calendar" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount in Ledger Currency - ITD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Intercompany Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Calendar" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount in Ledger Currency - ITD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Interproject Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Calendar" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Invoice Amount in Ledger Currency - YTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Year" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount in Ledger Currency - YTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.External Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Year" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount in Ledger Currency - YTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Intercompany Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Year" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount in Ledger Currency - YTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Interproject Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Year" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Invoice Amount in Ledger Currency - QTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Quarter" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount in Ledger Currency - QTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.External Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Quarter" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount in Ledger Currency - QTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Intercompany Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Quarter" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount in Ledger Currency - QTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Interproject Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Quarter" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Invoice Amount in Ledger Currency - PTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Period" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount in Ledger Currency - PTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.External Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Period" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount in Ledger Currency - PTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Intercompany Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Period" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount in Ledger Currency - PTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Interproject Invoice Amount in Ledger Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Period" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "------Metrics in Project Currency-----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "0"
+        }
+      }
+    }, {
+      "name" : "Invoice Amount in Project Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_INVOICE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_INVOICE_CF.PROJECT_CURR_BILLED_AMT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount in Project Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'EX')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Project Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount in Project Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'IP')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Project Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount in Project Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'IC')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Project Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Write-Off Amount in Project Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WRITE_OFF')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Project Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Credit Memo Amount in Project Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CREDIT_MEMO')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Project Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Canceled Amount in Project Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CANCEL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Project Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Concession Amount in Project Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CONCESSION')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Project Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Invoice Amount in Project Currency - ITD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Calendar" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount in Project Currency - ITD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.External Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Calendar" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount in Project Currency - ITD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Intercompany Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Calendar" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount in Project Currency - ITD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Interproject Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Calendar" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Invoice Amount in Project Currency - YTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Year" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount in Project Currency - YTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.External Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Year" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount in Project Currency - YTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Intercompany Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Year" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount in Project Currency - YTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Interproject Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Year" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Invoice Amount in Project Currency - QTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Quarter" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount in Project Currency - QTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.External Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Quarter" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount in Project Currency - QTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Intercompany Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Quarter" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount in Project Currency - QTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Interproject Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Quarter" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Invoice Amount in Project Currency - PTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Period" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount in Project Currency - PTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.External Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Period" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount in Project Currency - PTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Intercompany Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Period" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount in Project Currency - PTD",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " TODATE(%1, %2)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Interproject Invoice Amount in Project Currency", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Period" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "------Metrics in Contract Currency-----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "0"
+        }
+      }
+    }, {
+      "name" : "Invoice Amount in Contract Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_INVOICE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_INVOICE_CF.CONTRACT_CURR_BILLED_AMT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount in Contract Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'EX')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Contract Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount in Contract Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'IP')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Contract Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount in Contract Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'IC')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Contract Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Write-Off Amount in Contract Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WRITE_OFF')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Contract Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Credit Memo Amount in Contract Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CREDIT_MEMO')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Contract Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Canceled Amount in Contract Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CANCEL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Contract Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Concession Amount in Contract Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CONCESSION')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Contract Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "------Metrics in Invoice Currency-----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "0"
+        }
+      }
+    }, {
+      "name" : "Invoice Amount in Invoice Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_INVOICE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_INVOICE_CF.INVOICE_CURR_BILLED_AMT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount in Invoice Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'EX')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Invoice Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount in Invoice Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'IP')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Invoice Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount in Invoice Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'IC')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Invoice Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Write-Off Amount in Invoice Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WRITE_OFF')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Invoice Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Credit Memo Amount in Invoice Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CREDIT_MEMO')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Invoice Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Canceled Amount in Invoice Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CANCEL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Invoice Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Concession Amount in Invoice Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CONCESSION')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Invoice Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "------Metrics in Document Currency-----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "0"
+        }
+      }
+    }, {
+      "name" : "Invoice Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_INVOICE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_INVOICE_CF.TRNX_CURR_BILLED_AMT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "External Invoice Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'EX')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Document Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Interproject Invoice Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'IP')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Document Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Intercompany Invoice Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'IC')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Document Currency", "logicalColumn:Core.Dim - Project Invoice Details.Billing Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Write-Off Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'WRITE_OFF')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Document Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Credit Memo Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CREDIT_MEMO')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Document Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Canceled Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CANCEL')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Document Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "Concession Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CONCESSION')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRJ - Project Invoice.Invoice Amount in Document Currency", "logicalColumn:Core.Dim - Project Invoice Details.Invoice Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    }, {
+      "name" : "--------------Non Monetary Metrics-----------------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "0"
+        }
+      }
+    }, {
+      "name" : "Billed Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_PROJECT_INVOICE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_INVOICE_CF.INV_BILLED_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Project Costing Details.Expenditure Item" ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_PROJECT_INVOICE_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_INVOICE_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - Project Organization Hierarchy.Base Level", "logicalLevel:Core.Dim - Expenditure Type.Expenditure Type Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Task Hierarchy.Base task ID", "logicalLevel:Core.Dim - Customer Bill To Location.Detail", "logicalLevel:Core.Dim - Contract Business Unit.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Customer Account Bill To.Dim - Customer Account Bill To Detail", "logicalLevel:Core.Dim - Project Business Unit.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - Expenditure Category.Expenditure Category Detail", "logicalLevel:Core.Dim - Job.Details", "logicalLevel:Core.Dim - Associated Task.Associated Task Detail", "logicalLevel:Core.Dim - Project Ledger.Ledger Detail", "logicalLevel:Core.Dim - Event Type.Event Type Detail", "logicalLevel:Core.Dim - Project Legal Entity.Legal Entity Detail", "logicalLevel:Core.Dim - Created By.Detail", "logicalLevel:Core.Dim - Project.Project Detail", "logicalLevel:Core.Dim - Project Invoice Transaction Date.Invoice Transaction Fiscal Day Detail", "logicalLevel:Core.Dim - Project Organization.Project Organization Detail", "logicalLevel:Core.Dim - Invoice Creation Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Project Unit.Project Unit Detail", "logicalLevel:Core.Dim - Task.Task Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Project Contract.Contract Line", "logicalLevel:Core.Dim - Bill Plan.Dim - Bill Plan Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Invoice Approved Date Fiscal Calendar.Invoice Approved Day Detail", "logicalLevel:Core.Dim - Associated Task Hierarchy.Base Task ID", "logicalLevel:Core.Dim - Customer Bill To.Dim - Customer Bill To Detail", "logicalLevel:Core.Dim - Invoice Transferred Date Fiscal Calendar.Invoice Transferred Day Detail", "logicalLevel:Core.Dim - Contract Customer.Dim - Contract Customer Detail", "logicalLevel:Core.Dim - Contract Customer Account.Detail", "logicalLevel:Core.Dim - Date Project Accounting Calendar.Project Accounting Day Detail", "logicalLevel:Core.Dim - Date Receiver Fiscal Calendar.Receiver Fiscal Day Detail", "logicalLevel:Core.Dim - Revenue Category.Revenue Category Detail", "logicalLevel:Core.Dim - Project Invoice Details.Project Invoice Details", "logicalLevel:Core.Dim - Invoice Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Invoice Released Date Fiscal Calendar.Invoice Released Day Detail", "logicalLevel:Core.Dim - GL Accounting Date Calendar.Detail", "logicalLevel:Core.Dim - Project Costing Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_PPM_PROJECTS_CONTRACTS_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PROJ_SECURITY",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PPM_CONTRACT_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Project Invoice Details.Security Context Code - Contract BU" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_PPM_PROJECT_MANAGER_DATA",
+      "functionalGroup" : "PROJ_SECURITY",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PPM_PROJECT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Project Invoice Details.Security Context Code - Project List" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_PPM_PROJECT_ORGANIZATION_DATA",
+      "functionalGroup" : "PROJ_SECURITY",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PPM_PROJECT_ORGANIZATION_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Project Invoice Details.Security Context Code - Project Organization" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_PPM_PROJECT_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PROJ_SECURITY",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PPM_PROJECT_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Project Invoice Details.Security Context Code - Project BU" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Associated Task Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Associated Task",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Bill Plan",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Contract Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Contract Customer Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Contract Customer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Created By",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Account Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Bill To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Project Accounting Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Receiver Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Event Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Expenditure Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Expenditure Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - GL Accounting Date Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Approved Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Creation Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Released Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Invoice Transferred Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Contract",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Costing Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Invoice Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Invoice Transaction Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Organization Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Project",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Revenue Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Task Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Task",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

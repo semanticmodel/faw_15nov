@@ -1,0 +1,139 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Ledger Set",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Ledger Set Key" ],
+    "logicalColumns" : [ {
+      "name" : "Ledger Set Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_LEDGER_SET_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_SET_D.LEDGER_SET_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_LEDGER_SET_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_SET_ASSIGNMENTS_D.LEDGER_SET_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Ledger Set Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Ledger Set Key",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_LEDGER_SET_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_SET_D.LEDGER_SET_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_LEDGER_SET_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_SET_D.LEDGER_SET_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_SET_ASSIGNMENTS_D.LEDGER_SET_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Ledger Set Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Ledger Set Key",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_LEDGER_SET_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_SET_D.LEDGER_SET_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_LEDGER_SET_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  NULL , %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_SET_D.LEDGER_SET_DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_SET_ASSIGNMENTS_D.LEDGER_SET_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Dummy Column",
+      "description" : "This column is used to map a column from the physical table Dim_DW_LEDGER to avoid the warning \"Physical table mapped in LTS but not used in any column or expression'",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_LEDGER_SET_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D.LEDGER_ID" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_LEDGER_SET_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_SET_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Ledger Set.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_LEDGER_SET_ASSIGNMENTS_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_SET_ASSIGNMENTS_D" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_SET_ASSIGNMENTS_D",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Ledger Set.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Ledger Set Key" ],
+        "displayKey" : "Ledger Set Name",
+        "additionalKeys" : [ [ "Ledger Set Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Ledger Set",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

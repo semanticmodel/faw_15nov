@@ -1,0 +1,55 @@
+{
+  "physicalTable" : {
+    "name" : "DW_MULTI_CAL_TIME_FILTER_NETSUITE_SUB",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT DISTINCT\r\n       '01'                              AS calendar_type,\r\n       'SUBSIDIARY'                          AS driving_dim_code,\r\n       s.name                     AS dimension_value,\t\r\n       TO_CHAR(s.id)         dimension_value_code,\r\n       'Year' AS time_level,    \r\n       SUM(1)OVER(PARTITION BY s.name,b.fiscal_period_set_name ORDER BY b.fiscal_year_number DESC)-1 AS time_seq,\r\n       TO_CHAR(b.fiscal_year_name) AS time_value,\r\n        SUM(1)OVER(PARTITION BY s.name,b.fiscal_period_set_name ORDER BY b.fiscal_year_number DESC)-1+1 AS yago_time_seq\r\n FROM\r\n      dw_ns_subsidiary_D s,\r\n      (select distinct \r\nfiscalcalendar fiscal_period_set_name,\r\ntop_periodname fiscal_year_name, \r\nto_number(to_char(top_startdate,'yyyy')) fiscal_year_number, \r\ntop_startdate year_start_date, \r\ntop_enddate year_end_date, \r\ncase when trunc(sysdate) between top_startdate and top_enddate then 'Current' else null end current_fiscal_year_code\r\nfrom DW_NS_FISCALCALPERIOD_DH\r\n) a,\r\n(select distinct \r\nfiscalcalendar fiscal_period_set_name,\r\ntop_periodname fiscal_year_name, \r\nto_number(to_char(top_startdate,'yyyy')) fiscal_year_number, \r\ntop_startdate year_start_date, \r\ntop_enddate year_end_date, \r\ncase when trunc(sysdate) between top_startdate and top_enddate then 'Current' else null end current_fiscal_year_code\r\nfrom DW_NS_FISCALCALPERIOD_DH\r\n) b \r\nwhere a.fiscal_period_set_name=s.fiscalcalendar and a.fiscal_period_set_name = b.fiscal_period_set_name\r\nand a.current_fiscal_year_code = 'Current'\r\nAND b.fiscal_year_number BETWEEN a.fiscal_year_number - 19 AND a.fiscal_year_number\r\nUNION\r\nSELECT DISTINCT\r\n       '01'                              AS calendar_type,\r\n       'SUBSIDIARY'                          AS driving_dim_code,\r\n       s.name                     AS dimension_value,\t\r\n      TO_CHAR(s.id)         dimension_value_code,\r\n       'Quarter' AS time_level,  \r\nSUM(1)OVER(PARTITION BY s.name,b.fiscal_period_set_name ORDER BY b.runcount DESC)-1 AS time_seq,\r\nTO_CHAR(b.fiscal_quarter_name) AS time_value,\r\nSUM(1)OVER(PARTITION BY s.name,b.fiscal_period_set_name ORDER BY b.runcount DESC)-1+4 AS yago_time_seq\r\nfrom\r\ndw_ns_subsidiary_d s,\r\n(select fiscal_period_set_name, fiscal_quarter_name, current_fiscal_quarter_code,\r\nCOUNT(1)OVER(PARTITION BY fiscal_period_set_name ORDER BY fiscal_period_set_name,quarter_start_date,quarter_end_date) runcount\r\nfrom\r\n(select distinct \r\nfiscalcalendar fiscal_period_set_name,\r\nlevel1_periodname fiscal_quarter_name, \r\nlevel1_startdate quarter_start_date, \r\nlevel1_enddate quarter_end_date, \r\ncase when trunc(sysdate) between level1_startdate and level1_enddate then 'Current' else null end current_fiscal_quarter_code\r\nfrom DW_NS_FISCALCALPERIOD_DH\r\n)\r\n) a,\r\n(select fiscal_period_set_name, fiscal_quarter_name, current_fiscal_quarter_code,\r\nCOUNT(1)OVER(PARTITION BY fiscal_period_set_name ORDER BY fiscal_period_set_name,quarter_start_date,quarter_end_date) runcount\r\nfrom\r\n(select distinct \r\nfiscalcalendar fiscal_period_set_name,\r\nlevel1_periodname fiscal_quarter_name, \r\nlevel1_startdate quarter_start_date, \r\nlevel1_enddate quarter_end_date, \r\ncase when trunc(sysdate) between level1_startdate and level1_enddate then 'Current' else null end current_fiscal_quarter_code\r\nfrom DW_NS_FISCALCALPERIOD_DH\r\n)\r\n) b \r\nwhere a.fiscal_period_set_name=s.fiscalcalendar and a.fiscal_period_set_name = b.fiscal_period_set_name\r\nand a.current_fiscal_quarter_code = 'Current'\r\nAND b.runcount BETWEEN a.runcount - 19 AND a.runcount\r\nUNION\r\nSELECT DISTINCT\r\n       '01'                              AS calendar_type,\r\n       'SUBSIDIARY'                          AS driving_dim_code,\r\n       s.name                     AS dimension_value,\r\n       TO_CHAR(s.id)         dimension_value_code,\t\r\n       'Month' AS time_level,  \r\nSUM(1)OVER(PARTITION BY s.name,b.fiscal_period_set_name ORDER BY b.runcount DESC)-1 AS time_seq,\r\nTO_CHAR(b.fiscal_month_name) AS time_value,\r\nSUM(1)OVER(PARTITION BY s.name,b.fiscal_period_set_name ORDER BY b.runcount DESC)-1+12 AS yago_time_seq\r\nfrom\r\ndw_ns_subsidiary_d s,\r\n(select fiscal_period_set_name, fiscal_month_name, current_fiscal_month_code,\r\nCOUNT(1)OVER(PARTITION BY fiscal_period_set_name ORDER BY fiscal_period_set_name,month_start_date,month_end_date) runcount\r\nfrom\r\n(select distinct \r\nfiscalcalendar fiscal_period_set_name,\r\nlevel2_periodname fiscal_month_name, \r\nlevel2_startdate month_start_date, \r\nlevel2_enddate month_end_date, \r\ncase when trunc(sysdate) between level2_startdate and level2_enddate then 'Current' else null end current_fiscal_month_code\r\nfrom DW_NS_FISCALCALPERIOD_DH\r\n)\r\n) a,\r\n(select fiscal_period_set_name, fiscal_month_name, current_fiscal_month_code,\r\nCOUNT(1)OVER(PARTITION BY fiscal_period_set_name ORDER BY fiscal_period_set_name,month_start_date,month_end_date) runcount\r\nfrom\r\n(select distinct \r\nfiscalcalendar fiscal_period_set_name,\r\nlevel2_periodname fiscal_month_name, \r\nlevel2_startdate month_start_date, \r\nlevel2_enddate month_end_date, \r\ncase when trunc(sysdate) between level2_startdate and level2_enddate then 'Current' else null end current_fiscal_month_code\r\nfrom DW_NS_FISCALCALPERIOD_DH\r\n)\r\n) b \r\nwhere a.fiscal_period_set_name=s.fiscalcalendar and a.fiscal_period_set_name = b.fiscal_period_set_name\r\nand a.current_fiscal_month_code = 'Current'\r\nAND b.runcount BETWEEN a.runcount - 19 AND a.runcount"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "DIMENSION_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    }, {
+      "name" : "DRIVING_DIM_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 255,
+      "nullable" : false
+    }, {
+      "name" : "CALENDAR_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "TIME_LEVEL",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "TIME_SEQ",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "TIME_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 30,
+      "nullable" : false
+    }, {
+      "name" : "DIMENSION_VALUE_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    }, {
+      "name" : "YAGO_TIME_SEQ",
+      "dataType" : "INT",
+      "length" : 0,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    }
+  }
+}

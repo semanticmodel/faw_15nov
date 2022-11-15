@@ -1,0 +1,131 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Data Validation",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Metric", "Subject Area", "Validation Set Code" ],
+    "logicalColumns" : [ {
+      "name" : "Metric",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1 || '.' || %2",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS.METRIC_TABLE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS.METRIC_COLUMN" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Execution Time",
+      "dataType" : "TIMESTAMP",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS.PROCESS_DATETIME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Validation Run",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS.PROCESS_STATUS" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Subject Area",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS.SUBJECT_AREA" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Validation Set Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS.VALIDATION_SET_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Validation Set Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS.VALIDATION_SET_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Data Validation.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Metric", "Subject Area", "Validation Set Code" ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Data Validation",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,87 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - OM Original Inventory Item",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Item ID", "Organization ID" ],
+    "logicalColumns" : [ {
+      "name" : "Item ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INVENTORY_ITEM_D_OriginalItem",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_OriginalItem.INVENTORY_ITEM_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - OM Original Inventory Item Detail"
+    }, {
+      "name" : "Organization ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INVENTORY_ITEM_D_OriginalItem",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_OriginalItem.ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - OM Original Inventory Item Detail"
+    }, {
+      "name" : "Original Item",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_INVENTORY_ITEM_D_OriginalItem",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_OriginalItem.ITEM_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - OM Original Inventory Item Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_INVENTORY_ITEM_D_OriginalItem",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INVENTORY_ITEM_D_OriginalItem" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - OM Original Inventory Item.Dim - OM Original Inventory Item Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - OM Original Inventory Item Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - OM Original Inventory Item Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - OM Original Inventory Item Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Item ID" ],
+        "displayKey" : "Item ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "OM Original Inventory Item",
+        "levels" : [ "Dim - OM Original Inventory Item Total", "Dim - OM Original Inventory Item Detail" ]
+      } ]
+    }
+  }
+}

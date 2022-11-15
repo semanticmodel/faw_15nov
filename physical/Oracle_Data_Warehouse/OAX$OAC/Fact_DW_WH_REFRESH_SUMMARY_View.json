@@ -1,0 +1,109 @@
+{
+  "physicalTable" : {
+    "name" : "Fact_DW_WH_REFRESH_SUMMARY_View",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT DISTINCT(DW_WH_REFRESH_SUMMARY.JOB_ID),\r\nDW_WH_REFRESH_SUMMARY.JOB_ID AS WRH_SUMMARY_JOB_ID,\r\nDW_WH_REFRESH_SUMMARY.PROCESS_NAME as PROCESS_NAME,\r\nCAST(LISTAGG(DISTINCT DW_WH_REFRESH_SUMMARY.FUNCTIONAL_AREA_CODE,',') AS VARCHAR2(100 CHAR)) AS MODULE_CODE,\r\nCAST(LISTAGG(DISTINCT DW_WH_REFRESH_SUMMARY.FUNCTIONAL_AREA_NAME,',')WITHIN GROUP (ORDER BY DW_WH_REFRESH_SUMMARY.FUNCTIONAL_AREA_CODE desc,DW_WH_REFRESH_SUMMARY.FUNCTIONAL_AREA_NAME desc) AS VARCHAR2(255 CHAR)) AS MODULE_NAME,\r\nCAST(LISTAGG(DISTINCT NVL(CONTENT_FUNCTIONAL_AREA_MODULE_MAPPING.FUNCTIONAL_AREA_NAME,DW_WH_REFRESH_SUMMARY.FUNCTIONAL_AREA_NAME),',')WITHIN GROUP (ORDER BY DW_WH_REFRESH_SUMMARY.FUNCTIONAL_AREA_CODE desc,DW_WH_REFRESH_SUMMARY.FUNCTIONAL_AREA_NAME desc) AS VARCHAR2(255 CHAR)) AS FUNCTIONAL_AREA_NAME,\r\nDW_WH_REFRESH_SUMMARY.SOURCE_EXTRACT_DATETIME as SOURCE_EXTRACT_DATETIME,\r\nDW_WH_REFRESH_SUMMARY.WAREHOUSE_REFRESH_DATETIME as WAREHOUSE_REFRESH_DATETIME\r\nFROM DW_WH_REFRESH_SUMMARY INNER JOIN CONTENT_FUNCTIONAL_AREA_MODULE_MAPPING\r\nON DW_WH_REFRESH_SUMMARY.FUNCTIONAL_AREA_CODE=CONTENT_FUNCTIONAL_AREA_MODULE_MAPPING.MODULE_CODE(+)\r\nGROUP BY DW_WH_REFRESH_SUMMARY.JOB_ID,DW_WH_REFRESH_SUMMARY.PROCESS_NAME, DW_WH_REFRESH_SUMMARY.SOURCE_EXTRACT_DATETIME,DW_WH_REFRESH_SUMMARY.WAREHOUSE_REFRESH_DATETIME"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "MODULE_NAME",
+      "dataType" : "VARCHAR",
+      "length" : 255,
+      "nullable" : true
+    }, {
+      "name" : "PROCESS_NAME",
+      "dataType" : "VARCHAR",
+      "length" : 128,
+      "nullable" : false
+    }, {
+      "name" : "WAREHOUSE_REFRESH_DATETIME",
+      "dataType" : "TIMESTAMP",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "JOB_ID",
+      "dataType" : "VARCHAR",
+      "length" : 256,
+      "nullable" : false
+    }, {
+      "name" : "FUNCTIONAL_AREA_NAME",
+      "dataType" : "VARCHAR",
+      "length" : 255,
+      "nullable" : true
+    }, {
+      "name" : "MODULE_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 100,
+      "nullable" : false
+    }, {
+      "name" : "SOURCE_EXTRACT_DATETIME",
+      "dataType" : "TIMESTAMP",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "WRH_SUMMARY_JOB_ID",
+      "dataType" : "VARCHAR",
+      "length" : 256,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "additionalKeys" : [ [ "JOB_ID" ] ],
+    "joins" : [ {
+      "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_APPS_DAY_D_CommonGregorianCalendar",
+      "useJoinExpression" : true,
+      "joinExpression" : {
+        "expressionTemplate" : " CAST (%1 AS DATE ) = %2",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.WAREHOUSE_REFRESH_DATETIME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_APPS_DAY_D_CommonGregorianCalendar.CALENDAR_DATE" ]
+      },
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D",
+      "useJoinExpression" : true,
+      "joinExpression" : {
+        "expressionTemplate" : "%1 =  CAST (%2 AS DATE ) AND %3 = 'N'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.FISCAL_DAY_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.WAREHOUSE_REFRESH_DATETIME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.ADJUSTMENT_PERIOD_FLAG" ]
+      },
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MONTH_D_GregorianCalendar",
+      "useJoinExpression" : true,
+      "joinExpression" : {
+        "expressionTemplate" : " CAST (%1 AS DATE ) >= %2 AND  CAST (%1 AS DATE ) <= %3",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.WAREHOUSE_REFRESH_DATETIME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MONTH_D_GregorianCalendar.CAL_MONTH_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_MONTH_D_GregorianCalendar.CAL_MONTH_END_DATE" ]
+      },
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_QUARTER_D_GregorianCalendar",
+      "useJoinExpression" : true,
+      "joinExpression" : {
+        "expressionTemplate" : " CAST (%1 AS DATE ) >= %2 AND  CAST (%1 AS DATE ) <= %3",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.WAREHOUSE_REFRESH_DATETIME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_QUARTER_D_GregorianCalendar.CAL_QUARTER_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_QUARTER_D_GregorianCalendar.CAL_QUARTER_END_DATE" ]
+      },
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_YEAR_D_GregorianCalendar",
+      "useJoinExpression" : true,
+      "joinExpression" : {
+        "expressionTemplate" : " CAST (%1 AS DATE ) >= %2 AND  CAST (%1 AS DATE ) <= %3",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.WAREHOUSE_REFRESH_DATETIME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_YEAR_D_GregorianCalendar.CAL_YEAR_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_YEAR_D_GregorianCalendar.CAL_YEAR_END_DATE" ]
+      },
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ONE"
+    }, {
+      "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ERR_RECORDS",
+      "useJoinExpression" : false,
+      "joinConditions" : [ {
+        "leftColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.JOB_ID",
+        "rightColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ERR_RECORDS.JOB_ID"
+      } ]
+    } ]
+  }
+}

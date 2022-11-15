@@ -1,0 +1,26 @@
+{
+  "physicalTable" : {
+    "name" : "Dim_DW_TA_JOB_REQUISITION_Security",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT \r\n REQUISITION_ID, \r\n MANAGER_ID \r\nFROM (\r\nSELECT Distinct\r\n   TM.OBJECT_ID AS REQUISITION_ID,\r\n   TM.PERSON_ID AS MANAGER_ID\r\nFROM\r\n   DW_TA_TEAM_MEMBER_D TM \r\nWHERE\r\n   TM.OBJECT_TYPE =  'ORA_REQUISITION' AND \r\n   TM.PERSON_ID = VALUEOF(NQ_SESSION.HCM_PERSON_ID)\r\nUNION ALL   \r\nSELECT Distinct\r\n   TM.OBJECT_ID AS REQUISITION_ID,\r\n   MH.MANAGER_ID\r\nFROM\r\n   DW_TA_TEAM_MEMBER_D TM, \r\n   DW_MANAGER_DN_CURRENT_DH MH \r\nWHERE\r\n   TM.OBJECT_TYPE =  'ORA_REQUISITION' AND \r\n   TM.PERSON_ID = MH.PERSON_ID  AND\r\n   MH.MANAGER_TYPE = 'LINE_MANAGER' AND \r\n   MH.PRIMARY_MANAGER_FLAG  = 'Y' AND \r\n   MH.MANAGER_ID = VALUEOF(NQ_SESSION.HCM_PERSON_ID)\r\n)"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "REQUISITION_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "MANAGER_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "additionalKeys" : [ [ "REQUISITION_ID" ] ]
+  }
+}

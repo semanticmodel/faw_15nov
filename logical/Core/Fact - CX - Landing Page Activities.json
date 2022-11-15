@@ -1,0 +1,93 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - CX - Landing Page Activities",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Marketing Campaign Analytics" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Landing Page Time",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ELQ_LANDING_PAGE_ACTIVITIES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ELQ_LANDING_PAGE_ACTIVITIES_F.LANDING_PAGE_TIME" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Landing Page Views",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ELQ_LANDING_PAGE_ACTIVITIES_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ELQ_LANDING_PAGE_ACTIVITIES_F.LANDING_PAGE_VIEWS" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Landing Page Time",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Landing Page Activities.# of Landing Page Views", "logicalColumn:Core.Fact - CX - Landing Page Activities.Landing Page Time" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_ELQ_LANDING_PAGE_ACTIVITIES_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ELQ_CAMPAIGN_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ELQ_LANDING_PAGE_ACTIVITIES_F" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ELQ_CAMPAIGN_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ELQ_LANDING_PAGE_ACTIVITIES_F",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Eloqua - Campaign.Detail", "logicalLevel:Core.Dim - CX - Eloqua Date - Activity Date Hour.Date Hour", "logicalLevel:Core.Dim - CX - Eloqua Date - Campaign Created Date.Day", "logicalLevel:Core.Dim - CX - Eloqua Date - Campaign Start Date.Day", "logicalLevel:Core.Dim - CX - Eloqua Date - Campaign End Date.Day" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - CX - Eloqua - Campaign",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Eloqua Date - Activity Date Hour",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Eloqua Date - Campaign Created Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Eloqua Date - Campaign End Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Eloqua Date - Campaign Start Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

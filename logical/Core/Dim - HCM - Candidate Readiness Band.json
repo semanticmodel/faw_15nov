@@ -1,0 +1,73 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Candidate Readiness Band",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Parameter Code", "Parameter Value" ],
+    "logicalColumns" : [ {
+      "name" : "Parameter Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTENT_PARAM_CONFIG_CandidateReadiness",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_PARAM_CONFIG_CandidateReadiness.PARAMETER_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Parameter Value",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTENT_PARAM_CONFIG_CandidateReadiness",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_PARAM_CONFIG_CandidateReadiness.PARAMETER_VALUE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CONTENT_PARAM_CONFIG_CandidateReadiness",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_PARAM_CONFIG_CandidateReadiness" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Candidate Readiness Band.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Parameter Code", "Parameter Value" ],
+        "displayKey" : "Parameter Code",
+        "additionalKeys" : [ [ "Parameter Code" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Candidate Readiness Band",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

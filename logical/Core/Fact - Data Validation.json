@@ -1,0 +1,75 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Data Validation",
+    "tags" : [ "Project:Oracle Analytics for Fusion Common" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Warehouse Value",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS.OAX_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Source Value",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS.OTBI_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Variance",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "( IFNULL(%1, 0) -  IFNULL(%2, 0)) /  IFNULL(%1, 0) * 100",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Data Validation.Source Value", "logicalColumn:Core.Fact - Data Validation.Warehouse Value" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_CONTENT_DATA_RECON_VALIDATION_SET_TASK_RESULTS" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Data Validation.Detail", "logicalLevel:Core.Dim - Date Common Gregorian Calendar.Day" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Data Validation",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Common Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

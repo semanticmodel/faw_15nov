@@ -1,0 +1,753 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Job Application",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Job Application Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Job Application Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.JOB_APPLICATION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.JOB_APPLICATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Active Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.APPLICATION_ACTIVE_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.APPLICATION_ACTIVE_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Active",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Active Flag",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INDICATOR_Y_N_TL.YES_NO_IND_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.APPLICATION_ACTIVE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INDICATOR_Y_N_TL.YES_NO_IND_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.APPLICATION_ACTIVE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Candidate Person Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.SYSTEM_PERSON_TYPE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.SYSTEM_PERSON_TYPE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Candidate Person Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Candidate Person Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_SYSTEM_PERSON_TYPE_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.SYSTEM_PERSON_TYPE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_SYSTEM_PERSON_TYPE_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.SYSTEM_PERSON_TYPE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Confirmed Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.APPLICATION_CONFIRMED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.APPLICATION_CONFIRMED_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Confirmed",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Confirmed Flag",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INDICATOR_Y_N_TL.YES_NO_IND_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.APPLICATION_CONFIRMED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INDICATOR_Y_N_TL.YES_NO_IND_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.APPLICATION_CONFIRMED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Disqualified Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.DISQUALIFIED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.DISQUALIFIED_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Disqualified",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Disqualified Flag",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INDICATOR_Y_N_TL.YES_NO_IND_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.DISQUALIFIED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INDICATOR_Y_N_TL.YES_NO_IND_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.DISQUALIFIED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Internal Candidate Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.INTERNAL_CANDIDATE_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.INTERNAL_CANDIDATE_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Internal Candidate",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Internal Candidate Flag",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INDICATOR_Y_N_TL.YES_NO_IND_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.INTERNAL_CANDIDATE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INDICATOR_Y_N_TL.YES_NO_IND_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.INTERNAL_CANDIDATE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Job Application Submitted Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.CANDIDATE_JOB_APPL_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.CANDIDATE_JOB_APPL_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Job Application Confirmation Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.SUBMISSION_CONFIRMED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.SUBMISSION_CONFIRMED_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Job Application Last Modified Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.CAND_JOB_APPL_LAST_MOD_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.CAND_JOB_APPL_LAST_MOD_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Current Phase Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.CURRENT_PHASE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.CURRENT_PHASE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Current Phase Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D_JA_Current_DimOnly.PHASE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D_JA_Current.PHASE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Current Phase Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Current Phase Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 80 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_TA_PHASE_D_TL.PHASE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.CURRENT_PHASE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 80 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_TA_PHASE_D_TL.PHASE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.CURRENT_PHASE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Current State Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.CURRENT_STATE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.CURRENT_STATE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Current State Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D_JA_Current_DimOnly.STATE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D_JA_Current.STATE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Current State Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Current State Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 80 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_TA_STATE_D_TL.STATE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.CURRENT_STATE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 80 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_TA_STATE_D_TL.STATE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.CURRENT_STATE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Career Site Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.SITE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.SITE_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Career Site Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_CAREER_SITE_D_JA_DimOnly.CAREER_SITE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_CAREER_SITE_D_JA.CAREER_SITE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Career Site Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Career Site Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 80 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_TA_CAREER_SITE_D_TL.CAREER_SITE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_CAREER_SITE_D_JA_DimOnly.CAREER_SITE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 80 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_TA_CAREER_SITE_D_TL.CAREER_SITE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_CAREER_SITE_D_JA.CAREER_SITE_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Application Flow Version Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.APPLICATION_FLOW_VERSION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.APPLICATION_FLOW_VERSION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Application Flow Version Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_APPLICATION_FLOW_VERSION_D_JA_DimOnly.APPL_FLOW_VERSION_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_APPLICATION_FLOW_VERSION_D_JA.APPL_FLOW_VERSION_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Application Flow Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_APPLICATION_FLOW_VERSION_D_JA_DimOnly.APPLY_FLOW_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_APPLICATION_FLOW_VERSION_D_JA.APPLY_FLOW_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Application Flow Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_APPLICATION_FLOW_VERSION_D_JA_DimOnly.APPLY_FLOW_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_APPLICATION_FLOW_VERSION_D_JA.APPLY_FLOW_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Application Flow Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Application Flow Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 80 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_TA_APPLICATION_FLOW_D_TL.APPLY_FLOW_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_APPLICATION_FLOW_VERSION_D_JA_DimOnly.APPL_FLOW_VERSION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 80 )), %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_TA_APPLICATION_FLOW_D_TL.APPLY_FLOW_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_APPLICATION_FLOW_VERSION_D_JA.APPL_FLOW_VERSION_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Is Restricted Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.IS_RESTRICTED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.IS_RESTRICTED_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Is Restricted",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Is Restricted Flag",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INDICATOR_Y_N_TL.YES_NO_IND_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.IS_RESTRICTED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INDICATOR_Y_N_TL.YES_NO_IND_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.IS_RESTRICTED_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Requisition Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly.REQUISITION_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_TA_JOB_APPLICATION_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D.REQUISITION_ID" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_CAREER_SITE_D_JA_DimOnly", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_APPLICATION_FLOW_VERSION_D_JA_DimOnly", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D_JA_Current_DimOnly", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D_JA_Current_DimOnly" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_CAREER_SITE_D_JA_DimOnly",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_APPLICATION_FLOW_VERSION_D_JA_DimOnly",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D_JA_Current_DimOnly",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D_DimOnly",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D_JA_Current_DimOnly",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Job Application.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_TA_JOB_APPLICATION_D",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_APPLICATION_FLOW_VERSION_D_JA", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_CAREER_SITE_D_JA", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D_JA_Current", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D_JA_Current" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_APPLICATION_FLOW_VERSION_D_JA",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_CAREER_SITE_D_JA",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_STATE_D_JA_Current",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_JOB_APPLICATION_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TA_PHASE_D_JA_Current",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Job Application.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Job Application Identifier" ],
+        "displayKey" : "Job Application Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Job Application",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

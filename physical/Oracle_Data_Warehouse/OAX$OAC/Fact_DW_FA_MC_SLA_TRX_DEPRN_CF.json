@@ -1,0 +1,637 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_FA_MC_SLA_TRX_DEPRN_CF",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_FA_MC_SLA_TRX_DEPRN_CF",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 BETWEEN %4 AND %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D.CALENDAR_TYPE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.CALENDAR_TYPE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.TRANSACTION_DATE_ENTERED",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D.PERIOD_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CALENDAR_PERIODS_D.PERIOD_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CONVENTION_TYPE_D_Retirement_Convention",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 IN ('FULL RETIREMENT', 'PARTIAL RETIREMENT', 'REINSTATEMENT')",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CONVENTION_TYPE_D_Retirement_Convention.CONVENTION_TYPE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.CONVENTION_TYPE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.TRANSACTION_TYPE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_ASSET_SOURCE_LINES_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  TO_DATETIME('4712/12/31', 'YYYY/MM/DD') AND %4 = %5",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_ASSET_SOURCE_LINES_D.ASSET_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.ASSET_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_ASSET_SOURCE_LINES_D.DATE_INEFFECTIVE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_ASSET_SOURCE_LINES_D.LEDGER_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.LEDGER_ID"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 = %4 AND %5 IN ('N', '~NOVALUE~') AND %6 = %7",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.FISCAL_PERIOD_SET_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.FISCAL_DAY_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.XLA_ACCOUNTING_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.ADJUSTMENT_PERIOD_FLAG",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.FISCAL_PERIOD_TYPE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.FISCAL_PERIOD_TYPE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_ADDITIONS_DFF",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.ASSET_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_ADDITIONS_DFF.S_K_5000"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_ASSET_INVOICES_DFF",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.SOURCE_LINE_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_ASSET_INVOICES_DFF.S_K_5000"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_RETIREMENTS_DFF",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.RETIREMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_RETIREMENTS_DFF.S_K_5000"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_TRANSACTION_HEADERS_DFF",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.TRANSACTION_HEADER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_FA_SLA_TRANSACTIONS_CF_DW_FA_TRANSACTION_HEADERS_DFF.S_K_5000"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_BALANCING_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D.GL_BALANCING_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_BLNC_SGMNT_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D.GL_BLNC_SGMNT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_BALANCING_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base.GL_BALANCING_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_BLNC_SGMNT_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base.GL_BLNC_SGMNT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.COST_CENTER_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D.COST_CENTER_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.COST_CENTER_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D.COST_CENTER_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.COST_CENTER_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base.COST_CENTER_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.COST_CENTER_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_COST_CENTER_D_Base.COST_CENTER_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_AnalyticsCurrency",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GLOBAL_CURRENCY_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_AnalyticsCurrency.CURRENCY_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_LedgerCurrency",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.XLA_LEDGER_CURRENCY_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CURRENCY_DETAILS_D_TL_LedgerCurrency.CURRENCY_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.ASSET_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D.ASSET_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D_GroupAsset",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GROUP_ASSET_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_D_GroupAsset.ASSET_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_KEYWORDS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.ASSET_KEY_CCID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_ASSET_KEYWORDS_D.ASSET_KEY_CCID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.ASSET_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.ASSET_ID"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.BOOK_TYPE_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.BOOK_TYPE_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.TRANSACTION_HEADER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_BOOKS_D.TRANSACTION_HEADER_ID_IN"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CATEGORIES_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.CATEGORY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CATEGORIES_D.CATEGORY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CONVENTION_TYPES_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.CONVENTION_TYPE_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CONVENTION_TYPES_D.CONVENTION_TYPE_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_DISTRIBUTION_HISTORY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.BOOK_TYPE_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_DISTRIBUTION_HISTORY_D.BOOK_TYPE_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.DISTRIBUTION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_DISTRIBUTION_HISTORY_D.DISTRIBUTION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_IMPAIRMENTS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.IMPAIRMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_IMPAIRMENTS_D.IMPAIRMENT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_LOCATIONS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.LOCATION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_LOCATIONS_D.LOCATION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_BOOK_CONTROLS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.BOOK_TYPE_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_BOOK_CONTROLS_D.BOOK_TYPE_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.LEDGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_BOOK_CONTROLS_D.LEDGER_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyReservedPeriod",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.BOOK_TYPE_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyReservedPeriod.BOOK_TYPE_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.LEDGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyReservedPeriod.LEDGER_ID"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.PERIOD_COUNTER_FULLY_RESERVED",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyReservedPeriod.PERIOD_COUNTER"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyRetiredPeriod",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.BOOK_TYPE_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyRetiredPeriod.BOOK_TYPE_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.LEDGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyRetiredPeriod.LEDGER_ID"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.PERIOD_COUNTER_FULLY_RETIRED",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_DEPRN_PERIODS_D_AssetFullyRetiredPeriod.PERIOD_COUNTER"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_RETIREMENTS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.LEDGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_RETIREMENTS_D.LEDGER_ID"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.RETIREMENT_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_MC_RETIREMENTS_D.RETIREMENT_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_METHODS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.METHOD_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_METHODS_D.METHOD_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_REVALUATIONS_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.TRANSACTION_HEADER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_REVALUATIONS_D.TRANSACTION_HEADER_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_CODE_COMBINATION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_CODE_COMBINATION_D.CODE_COMBINATION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT1",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT1_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT10",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT10_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT10",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT10_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D10_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT1",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT1_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D1_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT2",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT2_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT2",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT2_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D2_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT3",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT3_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT3",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT3_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D3_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT4",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT4_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT4",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT4_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D4_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT5",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT5_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT5",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT5_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D5_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT6",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT6_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT6",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT6_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D6_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT7",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT7_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT7",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT7_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D7_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT8",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT8_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT8",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT8_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D8_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT9",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT9_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT9",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9_Base.GL_SEGMENT_CODE"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.GL_SEGMENT9_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SEGMENT_D9_Base.GL_SEGMENT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.XLA_LEDGER_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D.LEDGER_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_ENTITY_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.LEGAL_ENTITY_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_ENTITY_D.LEGAL_ENTITY_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.NATURAL_ACCOUNT_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D.NATURAL_ACCOUNT_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.NTRL_ACNT_SGMNT_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D.NTRL_ACNT_SGMNT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D_Base",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.NATURAL_ACCOUNT_SEGMENT",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D_Base.NATURAL_ACCOUNT_SEGMENT"
+          },
+          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.NTRL_ACNT_SGMNT_VALUESET_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NATURAL_ACCOUNT_D_Base.NTRL_ACNT_SGMNT_VALUESET_CODE"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_FA_BOOK_FATransactionsFact",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_FA_MC_SLA_TRX_DEPRN_CF.BOOK_TYPE_CODE",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_FA_BOOK_FATransactionsFact.SEC_OBJ_MEMBER_VAL"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "BOOK_TYPE_CODE",
+        "ADJUSTMENT_LINE_ID",
+        "AE_HEADER_ID",
+        "ASSET_ID",
+        "DISTRIBUTION_ID",
+        "REF_AE_HEADER_ID",
+        "TEMP_LINE_NUM",
+        "TRANSACTION_HEADER_ID",
+        "LEDGER_ID",
+        "DEPRN_RUN_ID",
+        "PERIOD_COUNTER"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,73 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - Agreement Submitted By",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Submitted by Id" ],
+    "logicalColumns" : [ {
+      "name" : "Submitted by Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PERSON_NAME_CURRENT_D_Agreement_Submitted_By",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Agreement_Submitted_By.PERSON_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Submitted by Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PERSON_NAME_CURRENT_D_Agreement_Submitted_By",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Agreement_Submitted_By.FULL_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_PERSON_NAME_CURRENT_D_Agreement_Submitted_By",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_CURRENT_D_Agreement_Submitted_By" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Agreement Submitted By.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Submitted by Id" ],
+        "displayKey" : "Submitted by Name",
+        "additionalKeys" : [ [ "Submitted by Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - Agreement Submitted By",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

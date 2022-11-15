@@ -1,0 +1,57 @@
+{
+  "physicalTable" : {
+    "name" : "Fact_DW_FA_MC_ASSET_FINANCIALS_CF_YTD",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "select a.book_type_code, a.distribution_id,a.PERIOD_COUNTER,a.ledger_id,\r\nsum(a.deprn_amount) OVER (PARTITION BY a.book_type_code, a.asset_number, a.FISCAL_YEAR, a.ledger_id\r\nORDER BY a.book_type_code, a.asset_number,  a.FISCAL_YEAR,  a.PERIOD_COUNTER, a.PERIOD_NAME,a.PERIOD_NUM,a.distribution_id, a.ledger_id rows between unbounded preceding and current row) as ytd_deprn,\r\nsum(a.global_deprn_amount) OVER (PARTITION BY a.book_type_code, a.asset_number, a.FISCAL_YEAR, a.ledger_id\r\nORDER BY a.book_type_code, a.asset_number,  a.FISCAL_YEAR,  a.PERIOD_COUNTER, a.PERIOD_NAME,a.PERIOD_NUM,a.distribution_id, a.ledger_id rows between unbounded preceding and current row) as global_ytd_deprn,\r\nsum(a.bonus_ytd_deprn_new) OVER (PARTITION BY a.book_type_code, a.asset_number, a.FISCAL_YEAR, a.ledger_id\r\nORDER BY a.book_type_code, a.asset_number,  a.FISCAL_YEAR,  a.PERIOD_COUNTER, a.PERIOD_NAME,a.PERIOD_NUM,a.distribution_id, a.ledger_id rows between unbounded preceding and current row) as bonus_ytd_deprn,\r\nsum(a.global_bonus_ytd_deprn_new) OVER (PARTITION BY a.book_type_code, a.asset_number, a.FISCAL_YEAR, a.ledger_id\r\nORDER BY a.book_type_code, a.asset_number,  a.FISCAL_YEAR,  a.PERIOD_COUNTER, a.PERIOD_NAME,a.PERIOD_NUM,a.distribution_id, a.ledger_id rows between unbounded preceding and current row) as global_bonus_ytd_deprn\r\nfrom ( select a.*,bonus_ytd_deprn-nvl(prev_bonus_ytd_deprn,0) as bonus_ytd_deprn_new,global_bonus_ytd_deprn-nvl(global_prev_bonus_ytd_deprn,0) as global_bonus_ytd_deprn_new\r\nfrom ( select a.book_type_code, a.distribution_id,a.PERIOD_COUNTER,a.ledger_id,a.PERIOD_NUM,a.FISCAL_YEAR,a.PERIOD_NAME,a.deprn_amount,a.global_deprn_amount,a.bonus_deprn_amount,a.bonus_ytd_deprn,a.global_bonus_ytd_deprn,a.asset_number,\r\nlag(a.bonus_ytd_deprn,1) OVER (partition by a.book_type_code, a.distribution_id,a.FISCAL_YEAR, a.ledger_id ORDER BY a.book_type_code, a.asset_number,  a.FISCAL_YEAR, a.PERIOD_COUNTER, a.PERIOD_NAME,a.PERIOD_NUM,a.distribution_id, a.ledger_id) as prev_bonus_ytd_deprn,\r\nlag(a.global_bonus_ytd_deprn,1) OVER (partition by a.book_type_code, a.distribution_id,a.FISCAL_YEAR, a.ledger_id ORDER BY a.book_type_code, a.asset_number,  a.FISCAL_YEAR, a.PERIOD_COUNTER, a.PERIOD_NAME,a.PERIOD_NUM,a.distribution_id, a.ledger_id) as global_prev_bonus_ytd_deprn\r\nfrom DW_FA_MC_ASSET_FINANCIALS_CF a\r\n)a\r\n)a\r\norder by 1,2,3"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "GLOBAL_YTD_DEPRN",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "BOOK_TYPE_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "DISTRIBUTION_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PERIOD_COUNTER",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "YTD_DEPRN",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "GLOBAL_BONUS_YTD_DEPRN",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "BONUS_YTD_DEPRN",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "LEDGER_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : true
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 1,
+      "expiryUnit" : "DAYS"
+    },
+    "additionalKeys" : [ [ "BOOK_TYPE_CODE", "DISTRIBUTION_ID", "PERIOD_COUNTER", "LEDGER_ID" ] ]
+  }
+}

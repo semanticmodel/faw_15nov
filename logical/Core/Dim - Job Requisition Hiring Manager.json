@@ -1,0 +1,133 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Job Requisition Hiring Manager",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Hiring Manager Person Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Hiring Manager Person Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PERSON_D_JobReqHiringMgr_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobReqHiringMgr_DimOnly.PERSON_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PERSON_D_JobReqHiringMgr",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobReqHiringMgr.PERSON_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Hiring Manager Person Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PERSON_D_JobReqHiringMgr_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobReqHiringMgr_DimOnly.PERSON_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PERSON_D_JobReqHiringMgr",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobReqHiringMgr.PERSON_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Hiring Manager Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PERSON_D_JobReqHiringMgr_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_JobReqHiringMgr_DimOnly.FULL_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PERSON_NAME_D_JobReqHiringMgr",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_JobReqHiringMgr.FULL_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_PERSON_D_JobReqHiringMgr_DimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_JobReqHiringMgr_DimOnly", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobReqHiringMgr_DimOnly" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_JobReqHiringMgr_DimOnly",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobReqHiringMgr_DimOnly",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Job Requisition Hiring Manager.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_PERSON_D_JobReqHiringMgr",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_D_JobReqHiringMgr" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Job Requisition Hiring Manager.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_PERSON_NAME_D_JobReqHiringMgr",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_JobReqHiringMgr" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Job Requisition Hiring Manager.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Hiring Manager Person Identifier" ],
+        "displayKey" : "Hiring Manager Person Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Job Requisition Hiring Manager",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

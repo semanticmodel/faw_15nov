@@ -1,0 +1,26 @@
+{
+  "physicalTable" : {
+    "name" : "DW_CONTENT_PARAM_CONFIG_D_ReOrgReason",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT\r\n    rsc.parameter_code,\r\n    act.action_reason_id parameter_value\r\nFROM\r\n    dw_content_param_config   rsc,\r\n    dw_action_reason_d        act\r\nWHERE\r\n    rsc.parameter_code = 'PARAM_REORG_REASON_ID'\r\n    AND rsc.parameter_value = 'ALL'\r\n    AND act.action_reason_id <> - 99999\r\nUNION\r\nSELECT\r\n    parameter_code,\r\n    CAST(parameter_value AS NUMERIC) parameter_value\r\nFROM\r\n    dw_content_param_config\r\nWHERE\r\n    parameter_code = 'PARAM_REORG_REASON_ID'\r\n    AND parameter_value <> 'ALL'"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "PARAMETER_VALUE",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PARAMETER_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 128,
+      "nullable" : true
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "additionalKeys" : [ [ "PARAMETER_VALUE", "PARAMETER_CODE" ] ]
+  }
+}

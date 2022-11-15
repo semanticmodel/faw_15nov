@@ -1,0 +1,128 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Resource",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "RBS Element Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "RBS Element Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_RBS_ELEMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_ELEMENT_D.RBS_ELEMENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "RBS Element Detail"
+    }, {
+      "name" : "RBS Element Name Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_RBS_ELEMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_ELEMENT_D.RBS_ELEMENT_NAME_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Resource",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "RBS Element Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_RBS_ELEMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_RBS_ELEMENT_NAME_TL.RBS_ELEMENT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_ELEMENT_D.RBS_ELEMENT_NAME_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "RBS Element Detail"
+    }, {
+      "name" : "Resource Format Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_RBS_ELEMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_ELEMENT_D.RESOURCE_FORMAT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Resource Format"
+    }, {
+      "name" : "Resource Format",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Resource Format Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_RBS_ELEMENT_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_RBS_RESOURCE_FORMAT_TL.RESOURCE_FORMAT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_ELEMENT_D.RESOURCE_FORMAT_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Resource Format"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_RBS_ELEMENT_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_ELEMENT_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Resource.RBS Element Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "All",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "All",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Resource Format",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Resource Format Identifier" ],
+        "displayKey" : "Resource Format",
+        "additionalKeys" : [ [ "Resource Format" ] ]
+      }, {
+        "name" : "RBS Element Detail",
+        "numberOfElements" : 20,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "RBS Element Identifier" ],
+        "displayKey" : "Resource",
+        "additionalKeys" : [ [ "Resource" ] ],
+        "preferredDrillPath" : [ "logicalLevel:Core.Dim - Expenditure Class.Detail" ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Resource",
+        "levels" : [ "All", "Resource Format", "RBS Element Detail" ]
+      } ]
+    }
+  }
+}

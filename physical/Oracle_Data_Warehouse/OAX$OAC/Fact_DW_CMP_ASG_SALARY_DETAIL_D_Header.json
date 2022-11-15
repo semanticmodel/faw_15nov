@@ -1,0 +1,79 @@
+{
+  "physicalTable": {
+    "name": "Fact_DW_CMP_ASG_SALARY_DETAIL_D_Header",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_CMP_ASG_SALARY_DETAIL_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_CompaRatio",
+        "joinExpression": {
+          "expressionTemplate": " IFNULL(%1, -(99999)) >= %2 AND  IFNULL(%1, -(99999)) <= %3",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_ASG_SALARY_DETAIL_D_Header.COMPARATIO",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_CompaRatio.MIN_RANGE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BAND_CONFIG_D_CompaRatio.MAX_RANGE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GRADE_RATE_D_Salary",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND  CURRENT_DATE  >= %3 AND  CURRENT_DATE  <= %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GRADE_RATE_D_Salary.RATE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_ASG_SALARY_DETAIL_D_Header.RATE_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GRADE_RATE_D_Salary.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GRADE_RATE_D_Salary.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SALARY_BASIS_D_TL_PrevSalName",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SALARY_BASIS_D_TL_PrevSalName.SALARY_BASIS_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_ASG_SALARY_DETAIL_D_Header.PREV_SALARY_BASIS",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SALARY_BASIS_D_TL_PrevSalName.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_D_Salary",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_ASG_SALARY_DETAIL_D_Header.ACTION_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_D_Salary.ACTION_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D_Salary",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CMP_ASG_SALARY_DETAIL_D_Header.ACTION_REASON_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ACTION_REASON_D_Salary.ACTION_REASON_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "SALARY_ID"
+      ],
+      [
+        "SALARY_ID",
+        "ASSIGNMENT_ID"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,96 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - Agreement Line Status",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Line Status Code" ],
+    "logicalColumns" : [ {
+      "name" : "Line Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_AGREEMENT_LINE_STATUS_D_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_AGREEMENT_LINE_STATUS_D_TL_PromptOnly.CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_AGREEMENT_LINE_STATUS_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_AGREEMENT_LINE_STATUS_D_TL.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Line Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Line Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_AGREEMENT_LINE_STATUS_D_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AGREEMENT_LINE_STATUS_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_AGREEMENT_LINE_STATUS_D_TL_PromptOnly.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_AGREEMENT_LINE_STATUS_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AGREEMENT_LINE_STATUS_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_AGREEMENT_LINE_STATUS_D_TL.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_PRC_LKP_DW_AGREEMENT_LINE_STATUS_D_TL_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_AGREEMENT_LINE_STATUS_D_TL_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Agreement Line Status.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_PRC_LKP_DW_AGREEMENT_LINE_STATUS_D_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_AGREEMENT_LINE_STATUS_D_TL" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Agreement Line Status.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Line Status Code" ],
+        "displayKey" : "Line Status",
+        "additionalKeys" : [ [ "Line Status" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - Agreement Line Status",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

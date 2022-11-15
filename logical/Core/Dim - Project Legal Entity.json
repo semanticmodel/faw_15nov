@@ -1,0 +1,88 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Project Legal Entity",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Project Legal Entity Id" ],
+    "logicalColumns" : [ {
+      "name" : "Project Legal Entity Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_LEGAL_ENTITY_D_Receiver",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_ENTITY_D_Receiver.LEGAL_ENTITY_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Legal Entity Detail"
+    }, {
+      "name" : "Project Legal Entity Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_LEGAL_ENTITY_D_Receiver",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_ENTITY_D_Receiver.LEGAL_ENTITY_IDENTIFIER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Legal Entity Detail"
+    }, {
+      "name" : "Project Legal Entity Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_LEGAL_ENTITY_D_Receiver",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_ENTITY_D_Receiver.LEGAL_ENTITY_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Legal Entity Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_LEGAL_ENTITY_D_Receiver",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEGAL_ENTITY_D_Receiver" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Project Legal Entity.Legal Entity Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "All",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "All",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Legal Entity Detail",
+        "numberOfElements" : 50,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Project Legal Entity Id" ],
+        "displayKey" : "Project Legal Entity Name",
+        "additionalKeys" : [ [ "Project Legal Entity Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Project Legal Entity",
+        "levels" : [ "All", "Legal Entity Detail" ]
+      } ]
+    }
+  }
+}

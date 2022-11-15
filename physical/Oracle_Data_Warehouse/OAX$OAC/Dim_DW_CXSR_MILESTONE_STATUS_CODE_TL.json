@@ -1,0 +1,46 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_CXSR_MILESTONE_STATUS_CODE_TL",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_MILESTONES_F_Secure",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL.CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_MILESTONES_F_Secure.MILESTONE_STATUS_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "UNKNOWN",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND %3 =  VALUEOF(NQ_SESSION.%4)",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL.CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_MILESTONES_F.MILESTONE_STATUS_CODE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_MILESTONE_STATUS_CODE_TL.LANGUAGE",
+            "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      }
+    ],
+    "additionalKeys": [
+      [
+        "CODE",
+        "LANGUAGE"
+      ]
+    ]
+  }
+}

@@ -1,0 +1,85 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - NetSuite Landed Cost Category",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Landed Cost Category Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Landed Cost Category Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_LANDEDCOSTCATEGORY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_LANDEDCOSTCATEGORY_D.ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Landed Cost Category Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_LANDEDCOSTCATEGORY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_LANDEDCOSTCATEGORY_D.NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Landed Cost Category - Is Inactive",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_LANDEDCOSTCATEGORY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_LANDEDCOSTCATEGORY_D.ISINACTIVE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_NS_LANDEDCOSTCATEGORY_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_LANDEDCOSTCATEGORY_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Landed Cost Category.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Landed Cost Category Identifier" ],
+        "displayKey" : "Landed Cost Category Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "NetSuite Landed Cost Category",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

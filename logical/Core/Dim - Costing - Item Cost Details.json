@@ -1,0 +1,256 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Costing - Item Cost Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Cost Organization Identifier", "Cost Book Identifier", "Effective Start Date", "Inventory Item Identifier", "Valuation Unit Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Cost Organization Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF.COST_ORG_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Costing - Item Cost Details Detail"
+    }, {
+      "name" : "Cost Book Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF.COST_BOOK_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Costing - Item Cost Details Detail"
+    }, {
+      "name" : "Effective Start Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF.EFFECTIVE_START_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Costing - Item Cost Details Detail"
+    }, {
+      "name" : "Inventory Item Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF.INVENTORY_ITEM_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Costing - Item Cost Details Detail"
+    }, {
+      "name" : "Valuation Unit Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF.VAL_UNIT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Costing - Item Cost Details Detail"
+    }, {
+      "name" : "Cost Profile Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_COST_PROFILES_D.COST_PROFILE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Costing - Item Cost Details Detail"
+    }, {
+      "name" : "Cost Profile",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Cost Profile Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CST_COST_PROFILES_D_TL.COST_PROFILE_DESC", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_COST_PROFILES_D.COST_PROFILE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Costing - Item Cost Details Detail"
+    }, {
+      "name" : "Cost Method Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF.COST_METHOD_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Costing - Item Cost Details Detail"
+    }, {
+      "name" : "Cost Method",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Cost Method Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CST_COST_METHODS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF.COST_METHOD_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Costing - Item Cost Details Detail"
+    }, {
+      "name" : "Unit Cost (Analytics Currency)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF.GLOBAL_UNIT_COST" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Costing - Item Cost Details Detail"
+    }, {
+      "name" : "Unit Cost (Cost Currency)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF.UNIT_COST" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Costing - Item Cost Details Detail"
+    }, {
+      "name" : "--------------------------Security Object --------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      },
+      "logicalLevel" : "Dim - Costing - Item Cost Details Detail"
+    }, {
+      "name" : "Security Context Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CST_ITEM_COST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_ItemCost.SEC_OBJ_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Costing - Item Cost Details Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CST_ITEM_COST_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_COST_PROFILES_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_ItemCost" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_COST_PROFILES_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CST_ITEM_COST_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_CST_COSTORG_ItemCost",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Costing - Item Cost Details.Dim - Costing - Item Cost Details Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - Costing - Item Cost Details Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - Costing - Item Cost Details Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - Costing - Item Cost Details Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Cost Organization Identifier", "Cost Book Identifier", "Effective Start Date", "Inventory Item Identifier", "Valuation Unit Identifier" ],
+        "displayKey" : "Cost Organization Identifier",
+        "additionalKeys" : [ [ "Cost Organization Identifier" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Costing - Item Cost Details",
+        "levels" : [ "Dim - Costing - Item Cost Details Total", "Dim - Costing - Item Cost Details Detail" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_SCM_CST_COSTING_ORG_DATA",
+      "functionalGroup" : "SCM_CST",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_CST_COST_ORG_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Costing - Item Cost Details.Security Context Code" ]
+      }
+    } ]
+  }
+}

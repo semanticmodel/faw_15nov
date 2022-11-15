@@ -1,0 +1,310 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Accrual Transaction Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Accrual Entry Detail Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Compensatory Absence Expiration Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.EXPIRATION_DT" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Absence Balance Adjustment Reason Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.ADJUSTMENT_REASON" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Absence Balance Adjustment Reason",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Absence Balance Adjustment Reason Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ABS_ADJ_REASON_D_TL.ADJUSTMENT_REASON_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.ADJUSTMENT_REASON", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Compensatory Adjustment Reason Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.COMP_ADJ_REASON_CD" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Compensatory Adjustment Reason",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Compensatory Adjustment Reason Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ABS_COMP_ADJ_REASON_D_TL.ADJUSTMENT_REASON_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.COMP_ADJ_REASON_CD", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Adjustment Expiration Reason Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.ADJ_EXP_DT_REASON_CD" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Adjustment Expiration Reason",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Adjustment Expiration Reason Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ABS_ADJ_EXP_REASON_D_TL.ADJUSTMENT_REASON_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.ADJ_EXP_DT_REASON_CD", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Approval Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.APPROVAL_STATUS_CD" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Approval Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Approval Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ABS_APPROVAL_STATUS_D_TL.APPROVAL_STATUS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.APPROVAL_STATUS_CD", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Processing Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.PROC_STATUS_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Processing Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Processing Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ABS_PROCESSING_STATUS_D_TL.PROCESSING_STATUS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.PROC_STATUS_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Accrual Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.TYPE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Accrual Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Accrual Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ABS_ACRL_ENTRY_TYPE_D_TL.TYPE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.TYPE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Accrual Entry Detail Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.ACCRUAL_ENTRY_DTL_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Accrual Transaction Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : " INDEXCOL( VALUEOF(NQ_SESSION.%1), %2, '-1') <>  INDEXCOL( VALUEOF(NQ_SESSION.%1),  VALUEOF(NQ_SESSION.%3), '-2')",
+        "expressionObjects" : [ "variable:Show Self Record.SEE_SELF_RCD", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_ABS_ACRL_ENTRY_DETAIL_EF.PERSON_ID", "variable:Logged In HCM Person ID.HCM_PERSON_ID" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Accrual Entry Detail Identifier" ],
+        "displayKey" : "Accrual Entry Detail Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Accrual Transaction Details",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_HCM_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "HCM_FACT_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_BUSINESSUNIT_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - HCM - HR Business Unit.Security Context Code - HCM Business Unit", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_DEPARTMENT_DATA",
+      "functionalGroup" : "HCM_FACT_DEPT",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_DEPARTMENT_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Department.Security Context Code - HCM Department", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_LEGAL_EMPLOYER_DATA",
+      "functionalGroup" : "HCM_FACT_LE",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_LEGAL_EMPLOYER_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Legal Employer.Security Context Code - HCM Legal Employer", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_LINE_MANAGER_DATA",
+      "functionalGroup" : "HCM_FACT_LM",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2) OR %3 =  VALUEOF(NQ_SESSION.%4)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Manager Security.Manager Identifier", "variable:Logged In HCM Person ID.HCM_PERSON_ID", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_VIEW_ALL_DATA",
+      "functionalGroup" : "HCM_FACT_ALL",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "1 = 1"
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_COUNTRY_DATA",
+      "functionalGroup" : "HCM_FACT_CTR",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_COUNTRY_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Country.Security Context Code - HCM Country List", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    } ]
+  }
+}

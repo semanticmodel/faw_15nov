@@ -1,0 +1,88 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - NetSuite Inventory Item Location Quantity Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Inventory Item", "Inventory Location" ],
+    "logicalColumns" : [ {
+      "name" : "Inventory Item",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_INVENTORYITEMLOCATIONS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORYITEMLOCATIONS_F.ITEM" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Inventory Location",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_INVENTORYITEMLOCATIONS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORYITEMLOCATIONS_F.LOCATION" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Inventory Refresh Date",
+      "dataType" : "TIMESTAMP",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_NS_INVENTORYITEMLOCATIONS_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORYITEMLOCATIONS_F.INVENTORY_REFRESHED_DATE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_NS_INVENTORYITEMLOCATIONS_F",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_NS_INVENTORYITEMLOCATIONS_F" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Inventory Item Location Quantity Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Inventory Refresh Date" ],
+        "displayKey" : "Inventory Refresh Date",
+        "additionalKeys" : [ [ "Inventory Item", "Inventory Location" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "NetSuite Inventory Item Location Details",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

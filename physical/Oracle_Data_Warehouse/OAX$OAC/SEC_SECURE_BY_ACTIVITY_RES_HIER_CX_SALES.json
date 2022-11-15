@@ -1,0 +1,26 @@
+{
+  "physicalTable" : {
+    "name" : "SEC_SECURE_BY_ACTIVITY_RES_HIER_CX_SALES",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "select\t\r\n    distinct A.ACTIVITY_ID AS ACTIVITY_ID,\r\n'Y' AS SECURITY_ENABLE_FLG\r\nfrom \r\n    DW_CXS_SALES_RESOURCE_CF_DN_DH H \r\n,   DW_CXS_ACTIVITY_ASSIGNEES_D A\r\nwhere \r\n    H.BASE_RESOURCE_ID = A.ASSIGNEE_ID and\r\n    H.CURRENT_FLAG = 'Y' and\r\n\tNVL(A.ACTIVITY_PRIVATE_FLAG,'N') = 'N' and\r\n \r\n    (\r\n    case CAST(VALUEOF(NQ_SESSION.USER_ORG_HIER_LEVEL) AS VARCHAR2(3))\r\n    when '0' then H.BASE_RESOURCE_ID\r\n    when '1' then H.LEVEL1_RESOURCE_ID\r\n    when '2' then H.LEVEL2_RESOURCE_ID\r\n    when '3' then H.LEVEL3_RESOURCE_ID\r\n    when '4' then H.LEVEL4_RESOURCE_ID\r\n    when '5' then H.LEVEL5_RESOURCE_ID\r\n    when '6' then H.LEVEL6_RESOURCE_ID\r\n    when '7' then H.LEVEL7_RESOURCE_ID\r\n    when '8' then H.LEVEL8_RESOURCE_ID\r\n    when '9' then H.LEVEL9_RESOURCE_ID\r\n    when '10' then H.LEVEL10_RESOURCE_ID\r\n    when '11' then H.LEVEL11_RESOURCE_ID\r\n    when '12' then H.LEVEL12_RESOURCE_ID\r\n    when '13' then H.LEVEL13_RESOURCE_ID\r\n    when '14' then H.LEVEL14_RESOURCE_ID\r\n    when '15' then H.LEVEL15_RESOURCE_ID\r\n    when '16' then H.LEVEL16_RESOURCE_ID\r\n    when '17' then H.TOP_LEVEL_RESOURCE_ID\r\n    else -99999 \r\n    end\r\n    ) = VALUEOF(NQ_SESSION.USER_PARTY_ID)"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "SECURITY_ENABLE_FLG",
+      "dataType" : "VARCHAR",
+      "length" : 3,
+      "nullable" : false
+    }, {
+      "name" : "ACTIVITY_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "additionalKeys" : [ [ "ACTIVITY_ID" ] ]
+  }
+}

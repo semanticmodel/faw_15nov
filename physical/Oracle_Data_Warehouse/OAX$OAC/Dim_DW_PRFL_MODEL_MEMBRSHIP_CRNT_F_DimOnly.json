@@ -1,0 +1,66 @@
+{
+  "physicalTable" : {
+    "name" : "Dim_DW_PRFL_MODEL_MEMBRSHIP_CRNT_F_DimOnly",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT\r\n    BUSINESS_GROUP_ID,\r\n    CALENDAR_DATE,\r\n    CONTENT_ITEM_ID,\r\n    OBJECT_ID,\r\n    PROFILE_ID,\r\n    PROFILE_ITEM_ID,\r\n    REQUIRED_FLAG,\r\n    CONTENT_TYPE_ID\r\nFROM\r\n    (\r\n        SELECT\r\n            BUSINESS_GROUP_ID,\r\n            CALENDAR_DATE,\r\n            CONTENT_ITEM_ID,\r\n            JOB_ID AS OBJECT_ID,\r\n            PROFILE_ID,\r\n            PROFILE_ITEM_ID,\r\n            REQUIRED_FLAG,\r\n            CONTENT_TYPE_ID\r\n        FROM\r\n            DW_PRFL_JOB_MEMBRSHIP_CRNT_F\r\n        UNION ALL\r\n        SELECT\r\n            BUSINESS_GROUP_ID,\r\n            CALENDAR_DATE,\r\n            CONTENT_ITEM_ID,\r\n            POSITION_ID AS OBJECT_ID,\r\n            PROFILE_ID,\r\n            PROFILE_ITEM_ID,\r\n            REQUIRED_FLAG,\r\n            CONTENT_TYPE_ID\r\n        FROM\r\n            DW_PRFL_POSN_MEMBRSHIP_CRNT_F\r\n    )"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "BUSINESS_GROUP_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "CALENDAR_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "CONTENT_ITEM_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "OBJECT_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PROFILE_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "PROFILE_ITEM_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    }, {
+      "name" : "REQUIRED_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 32,
+      "nullable" : true
+    }, {
+      "name" : "CONTENT_TYPE_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : true
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "additionalKeys" : [ [ "BUSINESS_GROUP_ID", "OBJECT_ID", "PROFILE_ITEM_ID", "CONTENT_TYPE_ID" ] ],
+    "joins" : [ {
+      "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_ITEM_D_TL_Model_Membership_DimOnly",
+      "useJoinExpression" : true,
+      "joinExpression" : {
+        "expressionTemplate" : "%1 = %2 AND %3 = %4 AND %5 =  VALUEOF(NQ_SESSION.%6)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_ITEM_D_TL_Model_Membership_DimOnly.BUSINESS_GROUP_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_MODEL_MEMBRSHIP_CRNT_F_DimOnly.BUSINESS_GROUP_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_ITEM_D_TL_Model_Membership_DimOnly.CONTENT_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_MODEL_MEMBRSHIP_CRNT_F_DimOnly.CONTENT_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTENT_ITEM_D_TL_Model_Membership_DimOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ONE"
+    } ]
+  }
+}

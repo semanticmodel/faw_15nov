@@ -1,0 +1,1127 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - INV Transfer Orders",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Inventory" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Header Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.HEADER_STATUS_LOOKUP" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.HEADER_STATUS_LOOKUP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Line Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.STATUS_LOOKUP" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.STATUS_LOOKUP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Source Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SOURCE_TYPE_LOOKUP" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.SOURCE_TYPE_LOOKUP" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Transfer Orders Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TRANSFER_ORDER_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.TRANSFER_ORDER_HEADER_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Transfer Order Lines Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TRANSFER_ORDER_LINE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF.TRANSFER_ORDER_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Open Transfer Orders Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'OPEN'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV Transfer Orders.Transfer Orders Count", "logicalColumn:Core.Fact - INV Transfer Orders.Header Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Open Transfer Order Lines Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'OPEN'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV Transfer Orders.Transfer Order Lines Count", "logicalColumn:Core.Fact - INV Transfer Orders.Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Return Transfer Order Lines Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'RETURN'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV Transfer Orders.Transfer Order Lines Count", "logicalColumn:Core.Fact - INV Transfer Orders.Source Type Code" ]
+        }
+      }
+    }, {
+      "name" : "Ordered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.REQUESTED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.REQUESTED_QTY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Return Transfer Order Delivered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'RETURN'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV Transfer Orders.Delivered Quantity", "logicalColumn:Core.Fact - INV Transfer Orders.Source Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Cancelled Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'CANCELED'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV Transfer Orders.Ordered Quantity", "logicalColumn:Core.Fact - INV Transfer Orders.Line Status Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Shipped Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SHIPPED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.SHIPPED_QTY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Received Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.RECEIVED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.RECEIVED_QTY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Delivered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.DELIVERED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.DELIVERED_QTY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "----Secondary Quantity----",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'Dummy'"
+        }
+      }
+    }, {
+      "name" : "Secondary Ordered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SECONDARY_REQUESTED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.SECONDARY_REQUESTED_QTY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Secondary Return Transfer Order Delivered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'RETURN'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV Transfer Orders.Secondary Delivered Quantity", "logicalColumn:Core.Fact - INV Transfer Orders.Source Type Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Secondary Cancelled Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'CANCELED'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV Transfer Orders.Secondary Ordered Quantity", "logicalColumn:Core.Fact - INV Transfer Orders.Line Status Code" ]
+        }
+      },
+      "aggregation" : {
+        "rule" : "NONE",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Secondary Shipped Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SECONDARY_SHIPPED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.SECONDARY_SHIPPED_QTY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Secondary Received Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SECONDARY_RECEIVED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.SECONDARY_RECEIVED_QTY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Secondary Delivered Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SECONDARY_DELIVERED_QTY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.SECONDARY_DELIVERED_QTY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "----Orders - Document Currency-----",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'Dummy'"
+        }
+      }
+    }, {
+      "name" : "Transfer Order Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TRANSFER_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TRANSFER_PRICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Item.Total", "logicalLevel:Core.Dim - Transfer Order Details.Total" ]
+      }
+    }, {
+      "name" : "Total Tax",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TOTAL_TAX" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TOTAL_TAX" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Item.Total", "logicalLevel:Core.Dim - Transfer Order Details.Total" ]
+      }
+    }, {
+      "name" : "Total Transfer Order Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TOTAL_TRANSFER_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TOTAL_TRANSFER_PRICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Item.Total", "logicalLevel:Core.Dim - Transfer Order Details.Total" ]
+      }
+    }, {
+      "name" : "----Lines - Document Currency----",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'Dummy'"
+        }
+      }
+    }, {
+      "name" : "Unit Price",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.UNIT_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.UNIT_PRICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Lines Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TRANSFER_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TRANSFER_PRICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Lines Tax",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TOTAL_TAX" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TOTAL_TAX" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Total Lines Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TOTAL_TRANSFER_PRICE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TOTAL_TRANSFER_PRICE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Shipped Lines Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SHIPPED_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.SHIPPED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Received Lines Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.RECEIVED_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.RECEIVED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Delivered Lines Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.DELIVERED_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.DELIVERED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "----Orders - Analytics Currency----",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'Dummy'"
+        }
+      }
+    }, {
+      "name" : "Transfer Order Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TRANSFER_PRICE_GLOBAL" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TRANSFER_PRICE_GLOBAL" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Item.Total", "logicalLevel:Core.Dim - Transfer Order Details.Total" ]
+      }
+    }, {
+      "name" : "Total Tax in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TOTAL_TAX_GLOBAL" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TOTAL_TAX_GLOBAL" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Item.Total", "logicalLevel:Core.Dim - Transfer Order Details.Total" ]
+      }
+    }, {
+      "name" : "Total Transfer Order Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TOTAL_TRANSFER_PRICE_GLOBAL" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TOTAL_TRANSFER_PRICE_GLOBAL" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Inventory Item.Total", "logicalLevel:Core.Dim - Transfer Order Details.Total" ]
+      }
+    }, {
+      "name" : "----Lines - Analytics Currency----",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'Dummy'"
+        }
+      }
+    }, {
+      "name" : "Unit Price in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.UNIT_PRICE_GLOBAL" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.UNIT_PRICE_GLOBAL" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Lines Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TRANSFER_PRICE_GLOBAL" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TOTAL_TRANSFER_PRICE_GLOBAL" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Lines Tax in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TOTAL_TAX_GLOBAL" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TOTAL_TAX_GLOBAL" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Total Lines Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.TOTAL_TRANSFER_PRICE_GLOBAL" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.TOTAL_TRANSFER_PRICE_GLOBAL" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Shipped Lines Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.SHIPPED_AMOUNT_GLOBAL" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.SHIPPED_AMOUNT_GLOBAL" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Received Lines Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.RECEIVED_AMOUNT_GLOBAL" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.RECEIVED_AMOUNT_GLOBAL" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Delivered Lines Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " IFNULL(%1, 0.0)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF.DELIVERED_AMOUNT_GLOBAL" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF.DELIVERED_AMOUNT_GLOBAL" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false,
+        "aggregateByLevels" : [ "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Line" ]
+      }
+    }, {
+      "name" : "Security Context Code - Inv Org",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_TransferOrder.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_TransferOrderDistribution.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Inv BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_TransferOrder.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_TransferOrderDistribution.SEC_OBJ_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Closed Transfer Order Lines Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'CLOSED'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV Transfer Orders.Transfer Order Lines Count", "logicalColumn:Core.Fact - INV Transfer Orders.Line Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Cancelled Transfer Order Lines Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'CANCELED'), 0.0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - INV Transfer Orders.Transfer Order Lines Count", "logicalColumn:Core.Fact - INV Transfer Orders.Line Status Code" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_INV_TRANSFER_ORDER_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_TransferOrder", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_TransferOrder" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_TransferOrder",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INV_TRANSFER_ORDER_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_TransferOrder",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Unit of Measure Secondary.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Destination Organization.Details", "logicalLevel:Core.Dim - Source Organization.Details", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Distribution" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_INV_TRANSFER_ORDER_DIST_CF",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_DIST_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_INV_TRANSFER_ORDER_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_BU_TransferOrderDistribution", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_INV_ORG_TransferOrderDistribution" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail", "logicalLevel:Core.Dim - Unit of Measure Secondary.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Inventory Organization.Detail", "logicalLevel:Core.Dim - Destination Organization.Details", "logicalLevel:Core.Dim - Source Organization.Details", "logicalLevel:Core.Dim - Transfer Order Details.Transfer Order Distribution", "logicalLevel:Core.Dim - Currency.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_SCM_INV_INVENTORY_ORG_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_ORG_TRANSACTIONS_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Fact - INV Transfer Orders.Security Context Code - Inv Org" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_SCM_INV_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "SCM_INV",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_INV_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Fact - INV Transfer Orders.Security Context Code - Inv BU" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Destination Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inv Item Catalog Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Item Category Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Source Organization",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Transfer Order Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure Secondary",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

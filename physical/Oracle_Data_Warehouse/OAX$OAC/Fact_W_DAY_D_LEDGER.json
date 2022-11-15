@@ -1,0 +1,69 @@
+{
+  "physicalTable" : {
+    "name" : "Fact_W_DAY_D_LEDGER",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT\r\nCOALESCE(LEDGER.LEDGER_ID,-99999) LEDGER_ID,\r\nFISCAL_DAY.FISCAL_PERIOD_SET_NAME FISCAL_CALENDAR,\r\nFISCAL_DAY.FISCAL_PERIOD_TYPE FISCAL_PERIOD_TYPE,\r\nFISCAL_DAY.FISCAL_DAY_DATE FISCAL_DAY_DATE,\r\nFISCAL_DAY.FISCAL_DAY_OF_YEAR FISCAL_DAY_OF_YEAR,\r\nFISCAL_DAY.ADJUSTMENT_PERIOD_FLAG ADJUSTMENT_PERIOD_FLAG\r\nFROM\r\nDW_FISCAL_DAY_D FISCAL_DAY\r\nINNER JOIN DW_FISCAL_CONTEXT_G FISCAL_CONTEXT ON FISCAL_DAY.FISCAL_PERIOD_SET_NAME = FISCAL_CONTEXT.FISCAL_PERIOD_SET_NAME\r\nAND FISCAL_DAY.FISCAL_PERIOD_TYPE = FISCAL_CONTEXT.FISCAL_PERIOD_TYPE\r\nLEFT OUTER JOIN DW_LEDGER_D LEDGER ON FISCAL_CONTEXT.LEDGER_ID = TO_CHAR(LEDGER.LEDGER_ID)\r\nWHERE FISCAL_DAY.ADJUSTMENT_PERIOD_FLAG = 'N'"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "LEDGER_ID",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "FISCAL_CALENDAR",
+      "dataType" : "VARCHAR",
+      "length" : 15,
+      "nullable" : false
+    }, {
+      "name" : "FISCAL_DAY_DATE",
+      "dataType" : "DATETIME",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "FISCAL_DAY_OF_YEAR",
+      "dataType" : "DOUBLE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "ADJUSTMENT_PERIOD_FLAG",
+      "dataType" : "VARCHAR",
+      "length" : 1,
+      "nullable" : false
+    }, {
+      "name" : "FISCAL_PERIOD_TYPE",
+      "dataType" : "VARCHAR",
+      "length" : 15,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "joins" : [ {
+      "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D",
+      "useJoinExpression" : false,
+      "joinConditions" : [ {
+        "leftColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_W_DAY_D_LEDGER.ADJUSTMENT_PERIOD_FLAG",
+        "rightColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.ADJUSTMENT_PERIOD_FLAG"
+      }, {
+        "leftColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_W_DAY_D_LEDGER.FISCAL_CALENDAR",
+        "rightColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.FISCAL_PERIOD_SET_NAME"
+      }, {
+        "leftColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_W_DAY_D_LEDGER.FISCAL_DAY_DATE",
+        "rightColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.FISCAL_DAY_DATE"
+      }, {
+        "leftColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_W_DAY_D_LEDGER.FISCAL_PERIOD_TYPE",
+        "rightColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FISCAL_DAY_D.FISCAL_PERIOD_TYPE"
+      } ]
+    }, {
+      "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D",
+      "useJoinExpression" : false,
+      "joinConditions" : [ {
+        "leftColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_W_DAY_D_LEDGER.LEDGER_ID",
+        "rightColumn" : "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_LEDGER_D.LEDGER_ID"
+      } ]
+    } ]
+  }
+}

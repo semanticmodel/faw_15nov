@@ -1,0 +1,104 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Inventory Created By",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Login Name" ],
+    "logicalColumns" : [ {
+      "name" : "Login Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_USER_D_InventoryCreated_By",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_InventoryCreated_By.USERNAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Inventory Created By Detail"
+    }, {
+      "name" : "User Full Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_USER_D_InventoryCreated_By",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_InventoryCreated_By.FULL_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Inventory Created By Detail"
+    }, {
+      "name" : "Department Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_USER_D_InventoryCreated_By",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_InventoryCreated_By.DEPARTMENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Inventory Created By Detail"
+    }, {
+      "name" : "Department Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Department Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_USER_D_InventoryCreated_By",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INV_ORGANIZATION_D_TL.INV_ORGANIZATION_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_InventoryCreated_By.DEPARTMENT_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Inventory Created By Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_USER_D_InventoryCreated_By",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_USER_D_InventoryCreated_By" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Inventory Created By.Inventory Created By Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Inventory Created By Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Inventory Created By Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Inventory Created By Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Login Name" ],
+        "displayKey" : "User Full Name",
+        "additionalKeys" : [ [ "User Full Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Inventory Created By",
+        "levels" : [ "Inventory Created By Total", "Inventory Created By Detail" ]
+      } ]
+    }
+  }
+}

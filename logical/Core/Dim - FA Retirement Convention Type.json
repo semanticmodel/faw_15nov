@@ -1,0 +1,93 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - FA Retirement Convention Type",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Convention Type ID" ],
+    "logicalColumns" : [ {
+      "name" : "Convention Type ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_CONVENTION_TYPE_D_Retirement_Convention_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CONVENTION_TYPE_D_Retirement_Convention_PromptOnly.CONVENTION_TYPE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_CONVENTION_TYPE_D_Retirement_Convention",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CONVENTION_TYPE_D_Retirement_Convention.CONVENTION_TYPE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Retirement Convention",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_FA_CONVENTION_TYPE_D_Retirement_Convention_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CONVENTION_TYPE_D_Retirement_Convention_PromptOnly.PRORATE_CONVENTION_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_FA_CONVENTION_TYPE_D_Retirement_Convention",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CONVENTION_TYPE_D_Retirement_Convention.PRORATE_CONVENTION_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_FA_CONVENTION_TYPE_D_Retirement_Convention_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CONVENTION_TYPE_D_Retirement_Convention_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - FA Retirement Convention Type.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_FA_CONVENTION_TYPE_D_Retirement_Convention",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_FA_CONVENTION_TYPE_D_Retirement_Convention" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - FA Retirement Convention Type.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Convention Type ID" ],
+        "displayKey" : "Convention Type ID"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "FA Retirement Convention Type",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

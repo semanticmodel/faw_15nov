@@ -1,0 +1,1471 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - Fins - AR Aging (Pre-SLA)",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Accounts Receivable", "Project:Oracle Analytics for Fusion Financials" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-----Non Monetary Metric-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Aging Count - Invoice Date Basis",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.ELAPSED_DAYS_OPEN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets.ELAPSED_DAYS_OPEN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Aging Count - Schedule Date Basis",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.ELAPSED_DAYS_DUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets.ELAPSED_DAYS_DUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Non Monetary Metric - Aging Buckets Total Level-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Avg Invoice Days Current",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Current Invoices Count", "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).internal Total Days Due" ]
+        }
+      }
+    }, {
+      "name" : "Avg Invoice Days Outstanding",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Total Outstanding Invoices Count", "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).internal Total Days Outstanding" ]
+        }
+      }
+    }, {
+      "name" : "Avg Invoice Days Overdue",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Overdue Invoices Count", "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).internal Total Days Overdue" ]
+        }
+      }
+    }, {
+      "name" : "Current Invoices Count",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.OVERDUE_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.OVERDUE_FLAG" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Current Count to Total Outstanding %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN  CAST (%2 AS DOUBLE PRECISION ) /  CAST (%1 AS DOUBLE PRECISION ) * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Total Outstanding Invoices Count", "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Current Invoices Count" ]
+        }
+      }
+    }, {
+      "name" : "Overdue Invoices Count",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.OVERDUE_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN 1 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.OVERDUE_FLAG" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Overdue Count to Total Outstanding %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN  CAST (%2 AS DOUBLE PRECISION ) /  CAST (%1 AS DOUBLE PRECISION ) * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Total Outstanding Invoices Count", "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Overdue Invoices Count" ]
+        }
+      }
+    }, {
+      "name" : "Total Outstanding Invoices Count",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "1"
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "1"
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Ledger Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Aging Amount - Invoice Date Basis",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.ELAPSED_DAYS_OPEN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.REMAINING_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets.ELAPSED_DAYS_OPEN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets.REMAINING_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Aging Amount - Schedule Date Basis",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.ELAPSED_DAYS_DUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.REMAINING_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets.ELAPSED_DAYS_DUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets.REMAINING_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Ledger Currency - Aging Buckets Total Level-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Outstanding Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.REMAINING_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA_FiscalPeriod.REMAINING_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.REMAINING_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.REMAINING_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Current Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.REMAINING_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.REMAINING_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Current Amount to Total Outstanding %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Total Outstanding Amount", "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Current Amount" ]
+        }
+      }
+    }, {
+      "name" : "Overdue Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.REMAINING_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.REMAINING_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Overdue Amount to Total Outstanding %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Total Outstanding Amount", "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Overdue Amount" ]
+        }
+      }
+    }, {
+      "name" : "Open Invoices Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA_FiscalPeriod.LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Closing Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.REMAINING_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA_FiscalPeriod.REMAINING_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.REMAINING_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.REMAINING_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Activity Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.NET_ACTIVITY_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA_FiscalPeriod.NET_ACTIVITY_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.NET_ACTIVITY_LEDGER_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.NET_ACTIVITY_LEDGER_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Opening Amount",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Closing Amount", "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Activity Amount" ]
+        }
+      }
+    }, {
+      "name" : "-----Analytics Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Aging Amount - Invoice Date Basis in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.ELAPSED_DAYS_OPEN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets.ELAPSED_DAYS_OPEN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Aging Amount - Schedule Date Basis in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.ELAPSED_DAYS_DUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets.ELAPSED_DAYS_DUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Analytics Currency - Aging Buckets Total Level-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Outstanding Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA_FiscalPeriod.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Current Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Current Amount to Total Outstanding % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Total Outstanding Amount in Analytics Currency", "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Current Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Overdue Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Overdue Amount to Total Outstanding % in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Total Outstanding Amount in Analytics Currency", "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Overdue Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Open Invoices Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA_FiscalPeriod.GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Closing Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA_FiscalPeriod.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.REMAINING_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Activity Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.NET_ACTIVITY_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA_FiscalPeriod.NET_ACTIVITY_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.NET_ACTIVITY_GLOBAL_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.NET_ACTIVITY_GLOBAL_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Opening Amount in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Closing Amount in Analytics Currency", "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Activity Amount in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "-----Internal: Non Monetary Metric - Aging Buckets Total Level-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "internal Total Days Outstanding",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 =  DATE '1901-01-01' AND (%2 =  DATE '1901-01-01' OR %2 IS NULL ) THEN 0 ELSE %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.SNAPSHOT_CAPTURED_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.TRANSACTION_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.ELAPSED_DAYS_OPEN" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 =  DATE '1901-01-01' AND (%2 =  DATE '1901-01-01' OR %2 IS NULL ) THEN 0 ELSE %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.SNAPSHOT_CAPTURED_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.TRANSACTION_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.ELAPSED_DAYS_OPEN" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "internal Total Days Due",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' THEN  CASE  WHEN %2 =  DATE '1901-01-01' AND (%3 =  DATE '1901-01-01' OR %3 IS NULL ) THEN 0 ELSE  ABS(%4) END  ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.SNAPSHOT_CAPTURED_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.PAYMENT_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.ELAPSED_DAYS_DUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' THEN  CASE  WHEN %2 =  DATE '1901-01-01' AND (%3 =  DATE '1901-01-01' OR %3 IS NULL ) THEN 0 ELSE  ABS(%4) END  ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.SNAPSHOT_CAPTURED_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.PAYMENT_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.ELAPSED_DAYS_DUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "internal Total Days Overdue",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN  CASE  WHEN %2 =  DATE '1901-01-01' AND (%3 =  DATE '1901-01-01' OR %3 IS NULL ) THEN 0 ELSE  ABS(%4) END  ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.SNAPSHOT_CAPTURED_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.PAYMENT_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.ELAPSED_DAYS_DUE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN  CASE  WHEN %2 =  DATE '1901-01-01' AND (%3 =  DATE '1901-01-01' OR %3 IS NULL ) THEN 0 ELSE  ABS(%4) END  ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.SNAPSHOT_CAPTURED_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.PAYMENT_DUE_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.ELAPSED_DAYS_DUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Document Currency-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Aging Amount - Invoice Date Basis in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.ELAPSED_DAYS_OPEN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets.ELAPSED_DAYS_OPEN", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Aging Amount - Schedule Date Basis in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.ELAPSED_DAYS_DUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 BETWEEN %2 AND %3 THEN %4 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets.ELAPSED_DAYS_DUE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_FROM", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets.DAYS_TO", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----Document Currency - Aging Buckets Total Level-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "Total Outstanding Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA_FiscalPeriod.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Current Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Current Amount to Total Outstanding % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Total Outstanding Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Current Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Overdue Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.OVERDUE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Overdue Amount to Total Outstanding % in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN %2 / %1 * 100 ELSE 0 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Total Outstanding Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Overdue Amount in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Open Invoices Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA_FiscalPeriod.TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Closing Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA_FiscalPeriod.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.REMAINING_TRANSACTION_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Activity Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod.NET_ACTIVITY_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA_FiscalPeriod.NET_ACTIVITY_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA.NET_ACTIVITY_AMOUNT" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AR_AGING_CUSTOMER_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA.NET_ACTIVITY_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+          "rule" : "LAST"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Opening Amount in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL(%1, 0) -  IFNULL(%2, 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Closing Amount in Document Currency", "logicalColumn:Core.Fact - Fins - AR Aging (Pre-SLA).Activity Amount in Document Currency" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AR_AGING_INVOICE_CA_FiscalPeriod",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_FiscalPeriod" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Aging Bucket.Total", "logicalLevel:Core.Dim - AR Transaction Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AR_AGING_CUSTOMER_CA_FiscalPeriod",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA_FiscalPeriod" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Transaction Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Aging Bucket.Detail", "logicalLevel:Core.Dim - AR Transaction Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AR_AGING_INVOICE_CA",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Aging Bucket.Total", "logicalLevel:Core.Dim - AR Transaction Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AR_AGING_CUSTOMER_CA",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_CUSTOMER_CA" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Transaction Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AR_AGING_INVOICE_CA_Aging_Buckets",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_AR_AGING_BUCKETS_D_Aging_Buckets",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AR_SLA_AGING_INVOICE_CA_Aging_Buckets",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AR Aging Bucket.Detail", "logicalLevel:Core.Dim - AR Transaction Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - AR Aging Bucket",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - AR Transaction Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

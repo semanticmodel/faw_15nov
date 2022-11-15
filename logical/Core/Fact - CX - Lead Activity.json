@@ -1,0 +1,1016 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - CX - Lead Activity",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Sales Pipeline" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "# of Lead Activities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.ACTIVITY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.ACTIVITY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "countDistinctOverrides" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "rule" : "COUNT"
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "rule" : "COUNT_DISTINCT"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Open Lead Activities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IN ('COMPLETE', 'CANCELED'))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Activity Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Completed Lead Activities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'COMPLETE')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Activity Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Expired Lead Activities",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING  NOT %2 IN ('COMPLETE', 'CANCELED') AND %3 <  CURRENT_DATE )",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Activity Status Code", "logicalColumn:Core.Fact - CX - Lead Activity.Activity Due Date" ]
+        }
+      }
+    }, {
+      "name" : "# of Lead Tasks",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'TASK')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Activity Function Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Lead Appointments",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'APPOINTMENT')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Activity Function Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Lead Call Reports",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CALLREPORT')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Activity Function Code" ]
+        }
+      }
+    }, {
+      "name" : "Average Activity Duration For Completed Activities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Completed Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Total Duration for Completed Lead Activities" ]
+        }
+      }
+    }, {
+      "name" : "--------------------------Lead Activity Facts--------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'Lead Activity Facts'"
+        }
+      }
+    }, {
+      "name" : "Lead Activity Rate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Leads", "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities" ]
+        }
+      }
+    }, {
+      "name" : "Activity Rate - Qualified Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Qualified Leads", "logicalColumn:Core.Fact - CX - Lead Activity.Total Activities for Qualified Leads" ]
+        }
+      }
+    }, {
+      "name" : "Activity Rate - Converted Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Converted Leads", "logicalColumn:Core.Fact - CX - Lead Activity.Total Activities for Converted Leads" ]
+        }
+      }
+    }, {
+      "name" : "Activity Rate - Unassigned Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Unassigned Leads", "logicalColumn:Core.Fact - CX - Lead Activity.Total Activities for Unassigned Leads" ]
+        }
+      }
+    }, {
+      "name" : "Activity Rate - Unconverted Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Unconverted Leads", "logicalColumn:Core.Fact - CX - Lead Activity.Total Activities for Unconverted Leads" ]
+        }
+      }
+    }, {
+      "name" : "Activity Rate - Unaccepted Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Unaccepted Leads", "logicalColumn:Core.Fact - CX - Lead Activity.Total Activities for Unaccepted Leads" ]
+        }
+      }
+    }, {
+      "name" : "Activity Rate - Rejected Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Rejected Leads", "logicalColumn:Core.Fact - CX - Lead Activity.Total Activities for Rejected Leads" ]
+        }
+      }
+    }, {
+      "name" : "Activity Rate - Retired Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Retired Leads", "logicalColumn:Core.Fact - CX - Lead Activity.Total Activities for Retired Leads" ]
+        }
+      }
+    }, {
+      "name" : "Average Number of Lead Activities Per Team Member",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Team Members", "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities" ]
+        }
+      }
+    }, {
+      "name" : "Lead Idle Days",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('REJECTED') OR  NOT %2 IN ('RETIRED') THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %3,  CURRENT_DATE ) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.LEAD_ASSIGNMENT_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.LEAD_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.LEAD_ACTIVITY_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('REJECTED') OR  NOT %2 IN ('RETIRED') THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %3,  CURRENT_DATE ) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.LEAD_ASSIGNMENT_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.LEAD_STATUS_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.LEAD_ACTIVITY_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Activity",
+          "rule" : "MIN"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Lead",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Lead First Response Time",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 / %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.First Response Time", "logicalColumn:Core.Fact - CX - Lead Activity.# of Leads" ]
+        }
+      }
+    }, {
+      "name" : "# of Lead Activities for Highly Ranked Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = '0~HOT')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Lead Rank Code" ]
+        }
+      }
+    }, {
+      "name" : "--------------------------Internal--------------------------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "# of Leads",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.LEAD_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.ACTIVITY_LEAD_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Qualified Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'QUALIFIED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Leads", "logicalColumn:Core.Fact - CX - Lead Activity.Lead Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Converted Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CONVERTED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Leads", "logicalColumn:Core.Fact - CX - Lead Activity.Lead Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Assigned Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ASSIGNED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Leads", "logicalColumn:Core.Fact - CX - Lead Activity.Lead Assignment Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Unassigned Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Leads", "logicalColumn:Core.Fact - CX - Lead Activity.# of Assigned Leads" ]
+        }
+      }
+    }, {
+      "name" : "# of Unconverted Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Leads", "logicalColumn:Core.Fact - CX - Lead Activity.# of Converted Leads" ]
+        }
+      }
+    }, {
+      "name" : "# of Accepted Leads",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.LEAD_ACCEPTED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.LEAD_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 ELSE  NULL  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.LEAD_ACCEPTED_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.ACTIVITY_LEAD_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Unaccepted Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 - %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Leads", "logicalColumn:Core.Fact - CX - Lead Activity.# of Accepted Leads" ]
+        }
+      }
+    }, {
+      "name" : "# of Rejected Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'REJECTED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Leads", "logicalColumn:Core.Fact - CX - Lead Activity.Lead Assignment Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Activities for Qualified Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'QUALIFIED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Lead Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Activities for Converted Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'CONVERTED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Lead Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Activities for Retired Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'RETIRED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Lead Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Activities for Rejected Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'REJECTED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Lead Assignment Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Activities for Unassigned Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> 'ASSIGNED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Lead Assignment Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Activities for Unaccepted Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Lead Accepted Flag" ]
+        }
+      }
+    }, {
+      "name" : "Total Activities for Unconverted Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> 'CONVERTED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Lead Activities", "logicalColumn:Core.Fact - CX - Lead Activity.Lead Status Code" ]
+        }
+      }
+    }, {
+      "name" : "First Response Time",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 >= %2 THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %2, %1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.ACTIVITY_CREATED_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.LEAD_ACCEPTED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > %2 THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %2, %1) ELSE 0 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.ACTIVITY_CREATION_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.LEAD_ACCEPTED_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Activity",
+          "rule" : "MIN"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Lead",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Team Members",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.RESOURCE_PARTY_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Retired Leads",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'RETIRED')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.# of Leads", "logicalColumn:Core.Fact - CX - Lead Activity.Lead Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Duration",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.ACTIVITY_DURATION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.ACTIVITY_DURATION" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Activity Resource",
+          "rule" : "FIRST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - CX - Activity",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Total Duration for Completed Lead Activities",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'COMPLETE')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Lead Activity.Duration", "logicalColumn:Core.Fact - CX - Lead Activity.Activity Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Lead Assignment Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.LEAD_ASSIGNMENT_STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.LEAD_ASSIGNMENT_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Lead Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.LEAD_STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.LEAD_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Lead Rank Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.LEAD_RANK_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LEAD_CF.LEAD_RANK_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Lead Accepted Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.LEAD_ACCEPTED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.LEAD_ACCEPTED_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Activity Due Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.ACTIVITY_DUE_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.ACTIVITY_DUE_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Activity Function Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.ACTIVITY_FUNCTION_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.ACTIVITY_FUNCTION_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Activity Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.ACTIVITY_STATUS_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.ACTIVITY_STATUS_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CXS_ACTIVITY_CF_Lead",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LEAD_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LEAD_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Lead Organization Size.Detail", "logicalLevel:Core.Dim - CX - Activity Status.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Converted Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Lead Reject Reason.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Created Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Resource - Lead Owner.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual Start Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Lead Retired Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Activity Sub Type.Detail", "logicalLevel:Core.Dim - CX - Security - Lead.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Created Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Lead Channel.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Created Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Lead Industry Classification.Detail", "logicalLevel:Core.Dim - CX - Lead Status.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual End Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Lead Created Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Converted Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Resource - Activity Owner.Detail", "logicalLevel:Core.Dim - CX - Activity Priority.Detail", "logicalLevel:Core.Dim - CX - Primary Sales Product.Detail", "logicalLevel:Core.Dim - CX - Activity Function.Detail", "logicalLevel:Core.Dim - CX - Activity Type.Detail", "logicalLevel:Core.Dim - CX - Activity Customer Type.Detail", "logicalLevel:Core.Dim - CX - Activity Outcome.Detail", "logicalLevel:Core.Dim - CX - Primary Partner.Detail", "logicalLevel:Core.Dim - CX - Activity Direction.Detail", "logicalLevel:Core.Dim - CX - Lead Organization Type.Detail", "logicalLevel:Core.Dim - CX - Activity All Day.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual Start Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual End Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Primary Contact.Detail", "logicalLevel:Core.Dim - CX - Lead Budget Status.Detail", "logicalLevel:Core.Dim - CX - Lead Reassign Reason.Detail", "logicalLevel:Core.Dim - CX - Lead Timeframe.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Retired Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Lead Rank.Detail", "logicalLevel:Core.Dim - CX - Lead Partner Type.Detail", "logicalLevel:Core.Dim - CX - Lead Retire Reason.Detail", "logicalLevel:Core.Dim - CX - Lead Channel Type.Detail", "logicalLevel:Core.Dim - CX - Lead Customer Type.Detail", "logicalLevel:Core.Dim - CX - Lead Assignment Status.Detail", "logicalLevel:Core.Dim - CX - Lead.Detail", "logicalLevel:Core.Dim - CX - Activity.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - CX - Security - Lead Access Group.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 <> -(99999) AND %2 <> 'S' AND (%3 = 'N' OR %3 IS NULL )",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.LEAD_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.RECURRENCE_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_CF_Lead.TEMPLATE_FLAG" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+      "disable" : false,
+      "priority" : 5,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LEAD_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_ACTIVITY_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_LEAD_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_ACTIVITY_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Lead Organization Size.Detail", "logicalLevel:Core.Dim - CX - Activity Status.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Converted Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Lead Retired Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Resource - Lead Owner.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual Start Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Lead Reject Reason.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Created Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Security - Lead.Detail", "logicalLevel:Core.Dim - CX - Activity Sub Type.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Created Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Lead Channel.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Created Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual End Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Lead Status.Detail", "logicalLevel:Core.Dim - CX - Lead Industry Classification.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Converted Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Created Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Resource - Activity Owner.Detail", "logicalLevel:Core.Dim - CX - Primary Sales Product.Detail", "logicalLevel:Core.Dim - CX - Activity Priority.Detail", "logicalLevel:Core.Dim - CX - Activity Function.Detail", "logicalLevel:Core.Dim - CX - Activity Type.Detail", "logicalLevel:Core.Dim - CX - Activity Customer Type.Detail", "logicalLevel:Core.Dim - CX - Activity Outcome.Detail", "logicalLevel:Core.Dim - CX - Activity Direction.Detail", "logicalLevel:Core.Dim - CX - Primary Partner.Detail", "logicalLevel:Core.Dim - CX - Activity All Day.Detail", "logicalLevel:Core.Dim - CX - Lead Organization Type.Detail", "logicalLevel:Core.Dim - CX - Activity Resource Set Reminder.Detail", "logicalLevel:Core.Dim - CX - Activity Resource Show Time.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual Start Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Activity Resource Response.Detail", "logicalLevel:Core.Dim - CX - Date - Activity Actual End Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Primary Contact.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Lead Budget Status.Detail", "logicalLevel:Core.Dim - CX - Lead Reassign Reason.Detail", "logicalLevel:Core.Dim - CX - Lead Timeframe.Detail", "logicalLevel:Core.Dim - CX - Lead Rank.Detail", "logicalLevel:Core.Dim - CX - Date - Lead Retired Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Lead Partner Type.Detail", "logicalLevel:Core.Dim - CX - Lead Retire Reason.Detail", "logicalLevel:Core.Dim - CX - Lead Channel Type.Detail", "logicalLevel:Core.Dim - CX - Lead Customer Type.Detail", "logicalLevel:Core.Dim - CX - Activity Resource.Detail", "logicalLevel:Core.Dim - CX - Lead.Detail", "logicalLevel:Core.Dim - CX - Activity.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - CX - Lead Assignment Status.Detail", "logicalLevel:Core.Dim - CX - Resource - Activity Team Member.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Security - Lead Access Group.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 <> -(99999) AND %2 <> 'S' AND (%3 = 'N' OR %3 IS NULL )",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.ACTIVITY_LEAD_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.ACTIVITY_RECURRENCE_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_ACTIVITY_RESOURCE_CF_Lead.ACTIVITY_TEMPLATE_FLAG" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_CX_SALES_LEADS_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Lead.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SALES_LEAD_CUSTOM_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Lead Access Group.Security Enabled Flag" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity All Day",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Customer Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Direction",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Function",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Outcome",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Priority",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Resource Response",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Resource Set Reminder",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Resource Show Time",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Resource",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Sub Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Activity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Actual End Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Actual End Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Actual Start Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Actual Start Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Created Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Activity Created Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Lead Converted Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Lead Converted Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Lead Created Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Lead Created Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Lead Retired Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Lead Retired Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Assignment Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Budget Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Channel Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Channel",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Customer Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Industry Classification",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Organization Size",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Organization Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Partner Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Rank",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Reassign Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Reject Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Retire Reason",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead Timeframe",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Lead",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Partner",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Sales Product",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Activity Owner",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Activity Team Member",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Lead Owner",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Lead Access Group",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Lead",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

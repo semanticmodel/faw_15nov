@@ -1,0 +1,171 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Warehouse Refresh Job Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Job Identifier Key" ],
+    "logicalColumns" : [ {
+      "name" : "Job Identifier Key",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WH_REFRESH_SUMMARY_View",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.JOB_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Details"
+    }, {
+      "name" : "Process Type",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WH_REFRESH_SUMMARY_View",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.PROCESS_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Process Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Process Type",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WH_REFRESH_SUMMARY_View",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'WAREHOUSE_REFRESH_ONBOARDING' THEN 'Onboarding Warehouse Refresh' WHEN %1 = 'WAREHOUSE_REFRESH_ADHOC' THEN 'Adhoc Warehouse Refresh' WHEN %1 = 'WAREHOUSE_REFRESH_SCHEDULED' THEN 'Scheduled Warehouse Refresh' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.PROCESS_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Functional Area",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WH_REFRESH_SUMMARY_View",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.FUNCTIONAL_AREA_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Module Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WH_REFRESH_SUMMARY_View",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.MODULE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Module Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Module Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WH_REFRESH_SUMMARY_View",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.MODULE_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Warehouse Refresh Date Time",
+      "dataType" : "TIMESTAMP",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WH_REFRESH_SUMMARY_View",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.WAREHOUSE_REFRESH_DATETIME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Source Refresh Date Time",
+      "dataType" : "TIMESTAMP",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WH_REFRESH_SUMMARY_View",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.SOURCE_EXTRACT_DATETIME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Job Identifier",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_WH_REFRESH_SUMMARY_View",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View.WRH_SUMMARY_JOB_ID" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_WH_REFRESH_SUMMARY_View",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_WH_REFRESH_SUMMARY_View" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Warehouse Refresh Job Details.Details" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "All",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "All",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Details",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Job Identifier Key" ],
+        "displayKey" : "Job Identifier Key"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Warehouse Refresh Job Details",
+        "levels" : [ "All", "Details" ]
+      } ]
+    }
+  }
+}

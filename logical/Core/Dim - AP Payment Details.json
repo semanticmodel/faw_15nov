@@ -1,0 +1,705 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - AP Payment Details",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Payment History Distribution ID", "Journal Header Key", "Journal Line Number", "Temporary Line Number", "Accounting Header Key", "Reference Accounting Header Key" ],
+    "logicalColumns" : [ {
+      "name" : "Payment History Distribution ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_HIST_DIST_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_HIST_DIST_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_HIST_DIST_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_HIST_DIST_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution"
+    }, {
+      "name" : "Payment Distribution Type Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution"
+    }, {
+      "name" : "Payment Distribution Type",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Payment Distribution Type Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AP_PAYMNT_DIST_TYPE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_AP_PAYMNT_DIST_TYPE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_DISTRIBUTION_TYPE_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution"
+    }, {
+      "name" : "Payment Cancelled Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_CANCELLED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_CANCELLED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_CANCELLED_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.PAYMENT_CANCELLED_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Distribution"
+    }, {
+      "name" : "Reference Accounting Header Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.REF_AE_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.REF_AE_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "SLA Distirbution"
+    }, {
+      "name" : "Temporary Line Number",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.TEMP_LINE_NUM" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.TEMP_LINE_NUM" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "SLA Distirbution"
+    }, {
+      "name" : "Accounting Header Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.AE_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.AE_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "SLA Distirbution"
+    }, {
+      "name" : "GL Journal ID",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " CONCAT( CONCAT( CAST (%1 AS VARCHAR ( 80 )), '~'),  CAST (%2 AS VARCHAR ( 80 )))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_HEADER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_LINE_NUM" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " CONCAT( CONCAT( CAST (%1 AS VARCHAR ( 80 )), '~'),  CAST (%2 AS VARCHAR ( 80 )))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_HEADER_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_LINE_NUM" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Batch",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_BATCH_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_BATCH_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Header",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_HEADER_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_HEADER_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Journal Header ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Journal Header Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_HEADER_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_HEADER_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Reversal Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_REVERSAL_STATUS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_REVERSAL_STATUS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Reversal Status",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Reversal Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GL_JOURNAL_REV_STAT_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_REVERSAL_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GL_JOURNAL_REV_STAT_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_REVERSAL_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Source Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_SOURCE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_SOURCE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Source Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Journal Source Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_JOURNAL_SOURCE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_SOURCE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_JOURNAL_SOURCE_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_SOURCE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Category Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_CATEGORY" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_CATEGORY" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Category Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Journal Category Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_JOURNAL_CATEGORY_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_CATEGORY", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_JOURNAL_CATEGORY_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_SOURCE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Header Created By Login Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_HEADER_CREATED_BY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_HEADER_CREATED_BY_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Header Creation Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_HEADER_CREATION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_HEADER_CREATION_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Journal Line Number",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_LINE_NUM" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_LINE_NUM" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Journal Line Description",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_LINE_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_LINE_DESCRIPTION" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "GL Journal Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JRNL_HDR_DFLT_EFFECTIVE_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JRNL_HDR_DFLT_EFFECTIVE_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Posted Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_LINE_STATUS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_LINE_STATUS" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Posted Status Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Posted Status Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GL_JOURNAL_STATUS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_LINE_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GL_JOURNAL_STATUS_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.JOURNAL_LINE_STATUS", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Ledger Key",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.LEDGER_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Ledger Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Ledger Key",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_LEDGER_D_Linkage.LEDGER_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT.LEDGER_ID" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AP Payment Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_SLA_PAYMENTS_CF_GLJournalID",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AP Payment Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_PAYMENTS_CF",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_PAYMENTS_CF_DW_JG_AP_CHECKS_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_PAYMENTS_CF_DW_AP_CHECKS_DFF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_PAYMENTS_CF_DW_JG_AP_CHECKS_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_PAYMENTS_CF_DW_AP_CHECKS_DFF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_PAYMENTS_CF_GLJournalID",
+      "disable" : true,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_PAYMENTS_CF_DW_JG_AP_CHECKS_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_PAYMENTS_CF_DW_AP_CHECKS_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_GL_SLA_SUBLEDGER_LINKAGE_G_APPMT",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_PAYMENTS_CF_DW_JG_AP_CHECKS_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_PAYMENTS_CF_DW_AP_CHECKS_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Distribution",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Payment History Distribution ID" ],
+        "displayKey" : "Payment History Distribution ID"
+      }, {
+        "name" : "SLA Distirbution",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Payment History Distribution ID", "Reference Accounting Header Key", "Temporary Line Number", "Accounting Header Key" ],
+        "displayKey" : "Reference Accounting Header Key",
+        "additionalKeys" : [ [ "Reference Accounting Header Key" ] ]
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Payment History Distribution ID", "Reference Accounting Header Key", "Temporary Line Number", "Accounting Header Key", "Journal Header Key", "Journal Line Number" ],
+        "displayKey" : "Journal Header Key",
+        "additionalKeys" : [ [ "Journal Header Key" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "AP Payment Details",
+        "levels" : [ "Total", "Distribution", "SLA Distirbution", "Detail" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_FIN_AP_PAYMENT_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "AP_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_AP_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - AP Payment Header Details.Security Context Code - AP Payment BU" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_FIN_AP_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "AP_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_AP_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - AP Payment Header Details.Security Context Code - AP Invoicing BU" ]
+      }
+    } ]
+  }
+}

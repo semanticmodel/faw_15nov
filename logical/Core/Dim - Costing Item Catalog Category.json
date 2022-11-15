@@ -1,0 +1,272 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Costing Item Catalog Category",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Item Identifier", "Category Identifier", "Catalog Identifier", "Organization Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Item Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D.INVENTORY_ITEM_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Organization Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D.ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Item Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Item Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CAST (%2 AS VARCHAR ( 38 )),  CAST (%2 AS VARCHAR ( 38 )),  VALUEOF(NQ_SESSION.%3), %4)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INVENTORY_ITEM_D_TL.ITEM_DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D.INVENTORY_ITEM_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D.ORGANIZATION_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Category Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D.CATEGORY_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Category"
+    }, {
+      "name" : "Category Code",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Category Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ITEM_CATEGORIES_D.CATEGORY_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D.CATEGORY_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Category"
+    }, {
+      "name" : "Category",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Category Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ITEM_CATEGORIES_D_TL.CATEGORY_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D.CATEGORY_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Category"
+    }, {
+      "name" : "Category Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Category Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ITEM_CATEGORIES_D_TL.DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D.CATEGORY_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Category"
+    }, {
+      "name" : "Catalog Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D.CATEGORY_SET_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Catalog"
+    }, {
+      "name" : "Catalog Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORY_SETS_D.CATALOG_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Catalog"
+    }, {
+      "name" : "Catalog",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Catalog Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ITEM_CATEGORY_SETS_D_TL.CATEGORY_SET_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D.CATEGORY_SET_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Catalog"
+    }, {
+      "name" : "Catalog Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Catalog Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_ITEM_CATEGORY_SETS_D_TL.DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D.CATEGORY_SET_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Catalog"
+    }, {
+      "name" : "Functional Area Identifier",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CATALOG_FUNCTIONAL_AREAS_D_Costing.FUNCTIONAL_AREA_ID_VARCHAR" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Catalog"
+    }, {
+      "name" : "Functional Area",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Functional Area Identifier",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_EGP_CAT_FUNC_AREAS_LKP_TL_Costing.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CATALOG_FUNCTIONAL_AREAS_D_Costing.FUNCTIONAL_AREA_ID_VARCHAR", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Catalog"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORY_SETS_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CATALOG_FUNCTIONAL_AREAS_D_Costing" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_ITEM_CATEGORY_SETS_D",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CST_ITEM_CAT_ASSIGNMENTS_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CATALOG_FUNCTIONAL_AREAS_D_Costing",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Costing Item Catalog Category.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Catalog",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Catalog Identifier" ],
+        "displayKey" : "Catalog",
+        "additionalKeys" : [ [ "Catalog" ] ]
+      }, {
+        "name" : "Category",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Category Identifier" ],
+        "displayKey" : "Category",
+        "additionalKeys" : [ [ "Category" ] ]
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Item Identifier", "Organization Identifier" ],
+        "displayKey" : "Item Name",
+        "additionalKeys" : [ [ "Item Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Costing Item Catalog Category",
+        "levels" : [ "Total", "Catalog", "Category", "Detail" ]
+      } ]
+    }
+  }
+}

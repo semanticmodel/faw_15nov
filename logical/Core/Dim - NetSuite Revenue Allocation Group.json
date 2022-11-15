@@ -1,0 +1,85 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - NetSuite Revenue Allocation Group",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Revenue Allocation Group Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Revenue Allocation Group Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_REVENUEALLOCATIONGROUP_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_REVENUEALLOCATIONGROUP_D.ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Revenue Allocation Group Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_REVENUEALLOCATIONGROUP_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_REVENUEALLOCATIONGROUP_D.NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Revenue Allocation Group - Is Inactive",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_NS_REVENUEALLOCATIONGROUP_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_REVENUEALLOCATIONGROUP_D.ISINACTIVE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_NS_REVENUEALLOCATIONGROUP_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_NS_REVENUEALLOCATIONGROUP_D" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - NetSuite Revenue Allocation Group.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Revenue Allocation Group Identifier" ],
+        "displayKey" : "Revenue Allocation Group Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "NetSuite Revenue Allocation Group",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

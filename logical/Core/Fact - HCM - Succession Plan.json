@@ -1,0 +1,328 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - HCM - Succession Plan",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Succession Management" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "-----------Base Measures-----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Number of Succession Plans",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_SUMMARY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Active Plan Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_SUMMARY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.ACTIVE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Inactive Plan Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_SUMMARY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'N' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.ACTIVE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Incumbent Plan Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_SUMMARY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.INCUMBENT_PLAN_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Job Plan Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_SUMMARY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.JOB_PLAN_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Position Plan Count",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_SUMMARY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.POSITION_PLAN_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Succession Plans with Candidates",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_SUMMARY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 > 0 THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.CANDIDATE_COUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Succession Plans without Candidates",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_SUMMARY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 0 THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.CANDIDATE_COUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Active Plans without Candidate",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_SUMMARY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 = 0 THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.ACTIVE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.CANDIDATE_COUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Jobs with Plan without Incumbents",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_SUMMARY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 = 0 THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.JOB_PLAN_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.INCUMBENT_COUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Positions with Plan without Incumbents",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_SUMMARY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'Y' AND %2 = 0 THEN %3 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.POSITION_PLAN_TYPE_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.INCUMBENT_COUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Plans with Single Owner",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_SUCCSSN_PLAN_SUMMARY_D",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 1 THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.OWNER_COUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.PLAN_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-----------Derived Measures-----------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Number of Private Plans",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'PRIVATE')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Succession Plan.Number of Succession Plans", "logicalColumn:Core.Dim - HCM - Succession Plan Details.Privacy Code" ]
+        }
+      }
+    }, {
+      "name" : "Plans with Inactive Owner",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 1 AND  CAST ( VALUEOF(NQ_SESSION.%3) AS DATE ) >= %4)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Succession Plan.Number of Succession Plans", "logicalColumn:Core.Dim - HCM - Succession Plan Owner.Termination Event Indicator", "variable:Gregorian Calendar - Current Gregorian Day.CURRENT_GREGORIAN_DAY", "logicalColumn:Core.Dim - HCM - Succession Plan Owner.Event Date" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_SUCCSSN_PLAN_SUMMARY_D",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUCCSSN_PLAN_D" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_SUCCSSN_PLAN_D",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Succession Plan Owner.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - HCM - Succession Plan Details.Detail", "logicalLevel:Core.Dim - HCM - Succession Plan Owner Security.Detail", "logicalLevel:Core.Dim - HCM - Department Hierarchy (Role Playing).Detail", "logicalLevel:Core.Dim - Date Enterprise Calendar.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 > 0",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_SUCCSSN_PLAN_SUMMARY_D.PLAN_ID" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_HCM_VIEW_ALL_DATA",
+      "functionalGroup" : "HCM_FACT_ALL",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "1 = 1"
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_SUCCESSION_LINE_MANAGER_DATA",
+      "functionalGroup" : "HCM_FACT_LM",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - HCM - Succession Plan Owner Security.Person Identifier", "variable:Logged In HCM Person ID.HCM_PERSON_ID" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Department Hierarchy (Role Playing)",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Succession Plan Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Succession Plan Owner Security",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Succession Plan Owner",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

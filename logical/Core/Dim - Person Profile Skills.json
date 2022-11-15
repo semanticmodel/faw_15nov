@@ -1,0 +1,139 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Person Profile Skills",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Profile Item Identifier", "Business Group Identifer" ],
+    "logicalColumns" : [ {
+      "name" : "Profile Item Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PRFL_PRSN_SKILL_CRNT_FDimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_SKILL_CRNT_FDimOnly.PROFILE_ITEM_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PRFL_PRSN_SKILL_CRNT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_SKILL_CRNT_F.PROFILE_ITEM_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Business Group Identifer",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PRFL_PRSN_SKILL_CRNT_FDimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_SKILL_CRNT_FDimOnly.BUSINESS_GROUP_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PRFL_PRSN_SKILL_CRNT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_SKILL_CRNT_F.BUSINESS_GROUP_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Skill",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PRFL_PRSN_SKILL_CRNT_FDimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_SKILL_CRNT_FDimOnly.SKILLS" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PRFL_PRSN_SKILL_CRNT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_SKILL_CRNT_F.SKILLS" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Years Of Experience",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PRFL_PRSN_SKILL_CRNT_FDimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_SKILL_CRNT_FDimOnly.YEARS_OF_EXPERIENCE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_PRFL_PRSN_SKILL_CRNT_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_SKILL_CRNT_F.YEARS_OF_EXPERIENCE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_PRFL_PRSN_SKILL_CRNT_FDimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_SKILL_CRNT_FDimOnly" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : " NOT %1 IS NULL ",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PRFL_PRSN_SKILL_CRNT_FDimOnly.PROFILE_ITEM_ID" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_PRFL_PRSN_SKILL_CRNT_F",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PRFL_PRSN_SKILL_CRNT_F" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Profile Item Identifier", "Business Group Identifer" ],
+        "displayKey" : "Profile Item Identifier"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Person Profile Skills",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

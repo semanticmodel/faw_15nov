@@ -1,0 +1,844 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - HCM - Talent Review Meeting",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Talent Review" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Number of Reviewees",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TLNTRVW_MEETING_SUMMARY_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TLNTRVW_MEETING_SUMMARY_EF.PERSON_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of Facilitators",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TLNTRVW_MEETING_SUMMARY_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_FACILITATOR_D.FACILITATOR_PERSON_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of Participants",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TLNTRVW_MEETING_SUMMARY_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_PARTICIPANT_D.PARTICIPANT_PERSON_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of Meetings",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_TLNTRVW_MEETING_SUMMARY_EF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TLNTRVW_MEETING_SUMMARY_EF.MEETING_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Number of High Performers",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - Performance Rating.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Medium Performers",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Medium'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - Performance Rating.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Low Performers",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - Performance Rating.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of High Potential",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - Potential Rating.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Medium Potential",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Medium'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - Potential Rating.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Low Potential",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - Potential Rating.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of High Risk of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Medium Risk of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Medium'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Low Risk of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of High Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Medium Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Medium'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Low Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Top Talent",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High' AND %3 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - Performance Rating.Name", "logicalColumn:Core.Dim - Potential Rating.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Low Talent",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low' AND %3 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - Performance Rating.Name", "logicalColumn:Core.Dim - Potential Rating.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Top Talent at High Risk of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Top Talent", "logicalColumn:Core.Dim - HCM - Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of High Performers at High Risk of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of High Performers", "logicalColumn:Core.Dim - HCM - Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of High Potential at High Risk of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of High Potential", "logicalColumn:Core.Dim - HCM - Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Top Talent at High Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Top Talent", "logicalColumn:Core.Dim - HCM - Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Top Talent at Low Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Top Talent", "logicalColumn:Core.Dim - HCM - Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of High Performers at High Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of High Performers", "logicalColumn:Core.Dim - HCM - Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of High Potential at High Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of High Potential", "logicalColumn:Core.Dim - HCM - Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of High Performers at Low Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of High Performers", "logicalColumn:Core.Dim - HCM - Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of High Risk of Loss Terminated within 1 year",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <=  CURRENT_DATE  AND  TIMESTAMPDIFF( SQL_TSI_MONTH , %3, %2) <= 12)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of High Risk of Loss", "logicalColumn:Core.Dim - HCM - Talent Review Meeting Details.Termination Date", "logicalColumn:Core.Dim - HCM - Talent Review Meeting Details.Meeting Submission Date" ]
+        }
+      }
+    }, {
+      "name" : "Number of Low Risk of Loss Terminated within 1 year",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <=  CURRENT_DATE  AND  TIMESTAMPDIFF( SQL_TSI_MONTH , %3, %2) <= 12)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Low Risk of Loss", "logicalColumn:Core.Dim - HCM - Talent Review Meeting Details.Termination Date", "logicalColumn:Core.Dim - HCM - Talent Review Meeting Details.Meeting Submission Date" ]
+        }
+      }
+    }, {
+      "name" : "Number of High Risk of Loss Active Workers after an year",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING (%2 >  CURRENT_DATE  OR %2 IS NULL ) AND  TIMESTAMPDIFF( SQL_TSI_MONTH , %3,  CURRENT_DATE ) > 12)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of High Risk of Loss", "logicalColumn:Core.Dim - HCM - Talent Review Meeting Details.Termination Date", "logicalColumn:Core.Dim - HCM - Talent Review Meeting Details.Meeting Submission Date" ]
+        }
+      }
+    }, {
+      "name" : "Number of Workers - Improved Performance rating",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High' AND %3 IN ('Low', 'Medium') OR %2 = 'Medium' AND %3 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - Performance Rating.Name", "logicalColumn:Core.Dim - HCM - Manager Assessed Performance.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Workers - Improved Potential rating",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High' AND %3 IN ('Low', 'Medium') OR %2 = 'Medium' AND %3 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - Potential Rating.Name", "logicalColumn:Core.Dim - HCM - Manager Assessed Potential.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Workers - Decreased Performance rating",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low' AND %3 IN ('High', 'Medium') OR %2 = 'Medium' AND %3 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - Performance Rating.Name", "logicalColumn:Core.Dim - HCM - Manager Assessed Performance.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Workers - Decreased Potential rating",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low' AND %3 IN ('High', 'Medium') OR %2 = 'Medium' AND %3 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - Potential Rating.Name", "logicalColumn:Core.Dim - HCM - Manager Assessed Potential.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Workers - Increased Risk of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High' AND %3 IN ('Low', 'Medium') OR %2 = 'Medium' AND %3 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Risk of Loss.Name", "logicalColumn:Core.Dim - HCM - Manager Assessed Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Workers - Decreased Risk of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low' AND %3 IN ('High', 'Medium') OR %2 = 'Medium' AND %3 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Risk of Loss.Name", "logicalColumn:Core.Dim - HCM - Manager Assessed Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Workers - Increased Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High' AND %3 IN ('Low', 'Medium') OR %2 = 'Medium' AND %3 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Impact of Loss.Name", "logicalColumn:Core.Dim - HCM - Manager Assessed Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Workers - Decreased Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low' AND %3 IN ('High', 'Medium') OR %2 = 'Medium' AND %3 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Impact of Loss.Name", "logicalColumn:Core.Dim - HCM - Manager Assessed Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of High Performers Terminated within 1 year",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <=  CURRENT_DATE  AND  TIMESTAMPDIFF( SQL_TSI_MONTH , %3, %2) <= 12)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of High Performers", "logicalColumn:Core.Dim - HCM - Talent Review Meeting Details.Termination Date", "logicalColumn:Core.Dim - HCM - Talent Review Meeting Details.Meeting Submission Date" ]
+        }
+      }
+    }, {
+      "name" : "Number of Low Performers Terminated within 1 year",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <=  CURRENT_DATE  AND  TIMESTAMPDIFF( SQL_TSI_MONTH , %3, %2) <= 12)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Low Performers", "logicalColumn:Core.Dim - HCM - Talent Review Meeting Details.Termination Date", "logicalColumn:Core.Dim - HCM - Talent Review Meeting Details.Meeting Submission Date" ]
+        }
+      }
+    }, {
+      "name" : "--------Pre Talent Review Meeting Measures--------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Number of Manager Assessed High Performers",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Manager Assessed Performance.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Manager Assessed Medium Performers",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Medium'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Manager Assessed Performance.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Manager Assessed Low Performers",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Manager Assessed Performance.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Manager Assessed High Potential",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Manager Assessed Potential.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Manager Assessed Medium Potential",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Medium'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Manager Assessed Potential.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Manager Assessed Low Potential",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Manager Assessed Potential.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Manager Assessed High Risk of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Manager Assessed Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Manager Assessed Medium Risk of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Medium'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Manager Assessed Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Manager Assessed Low Risk of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Manager Assessed Risk of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Manager Assessed High Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Manager Assessed Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Manager Assessed Medium Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Medium'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Manager Assessed Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Manager Assessed Low Impact of Loss",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Manager Assessed Impact of Loss.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Manager Assessed Top Talent",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'High' AND %3 = 'High'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Manager Assessed Performance.Name", "logicalColumn:Core.Dim - HCM - Manager Assessed Potential.Name" ]
+        }
+      }
+    }, {
+      "name" : "Number of Manager Assessed Low Talent",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " IFNULL( FILTER(%1 USING %2 = 'Low' AND %3 = 'Low'), 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - HCM - Talent Review Meeting.Number of Reviewees", "logicalColumn:Core.Dim - HCM - Manager Assessed Performance.Name", "logicalColumn:Core.Dim - HCM - Manager Assessed Potential.Name" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_TLNTRVW_MEETING_SUMMARY_EF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_PARTICIPANT_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_FACILITATOR_D", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TLNTRVW_MEETING_SUMMARY_EF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_PARTICIPANT_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TLNTRVW_MEETING_SUMMARY_EF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_TLNTRVW_FACILITATOR_D",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TLNTRVW_MEETING_SUMMARY_EF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - HR Business Unit.Detail", "logicalLevel:Core.Dim - HCM - Manager Assessed Performance.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - HCM - Impact of Loss.Detail", "logicalLevel:Core.Dim - Performance Rating.Detail", "logicalLevel:Core.Dim - HCM - Manager Assessed Impact of Loss.Detail", "logicalLevel:Core.Dim - HCM - Talent Review Meeting Facilitator.Detail", "logicalLevel:Core.Dim - HCM - Manager Assessed Potential.Detail", "logicalLevel:Core.Dim - HCM - Manager Assessed Risk of Loss.Detail", "logicalLevel:Core.Dim - HCM - Risk of Loss.Detail", "logicalLevel:Core.Dim - HCM - Manager Assessed Talent Score.Detail", "logicalLevel:Core.Dim - HCM - Talent Review Meeting Participant.Detail", "logicalLevel:Core.Dim - HCM - Talent Score.Detail", "logicalLevel:Core.Dim - Potential Rating.Detail", "logicalLevel:Core.Dim - Assignment Details.Details", "logicalLevel:Core.Dim - Legal Employer.Detail", "logicalLevel:Core.Dim - Assignment Manager List.Detail", "logicalLevel:Core.Dim - Country.Detail", "logicalLevel:Core.Dim - Department.Detail", "logicalLevel:Core.Dim - Tenure Band.Detail", "logicalLevel:Core.Dim - Department Hierarchy.Detail", "logicalLevel:Core.Dim - Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - Grade.Details", "logicalLevel:Core.Dim - Organization Hierarchy.Detail", "logicalLevel:Core.Dim - HCM - Bargaining Unit.Detail", "logicalLevel:Core.Dim - Job.Details", "logicalLevel:Core.Dim - Manager.Details", "logicalLevel:Core.Dim - Manager Hierarchy.Detail", "logicalLevel:Core.Dim - Manager Security.Detail", "logicalLevel:Core.Dim - Position.Details", "logicalLevel:Core.Dim - Reporting Establishment.Details", "logicalLevel:Core.Dim - Worker.Details", "logicalLevel:Core.Dim - Worker Age Band.Detail", "logicalLevel:Core.Dim - Worker Location.Details", "logicalLevel:Core.Dim - HCM - Talent Review Meeting Details.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : " INDEXCOL( VALUEOF(NQ_SESSION.%1), %2, '-1') <>  INDEXCOL( VALUEOF(NQ_SESSION.%1),  VALUEOF(NQ_SESSION.%3), '-2')",
+        "expressionObjects" : [ "variable:Show Self Record.SEE_SELF_RCD", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_TLNTRVW_MEETING_SUMMARY_EF.PERSON_ID", "variable:Logged In HCM Person ID.HCM_PERSON_ID" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_HCM_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "HCM_FACT_BU",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_BUSINESSUNIT_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - HCM - HR Business Unit.Security Context Code - HCM Business Unit", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_DEPARTMENT_DATA",
+      "functionalGroup" : "HCM_FACT_DEPT",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_DEPARTMENT_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Department.Security Context Code - HCM Department", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_LEGAL_EMPLOYER_DATA",
+      "functionalGroup" : "HCM_FACT_LE",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_LEGAL_EMPLOYER_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Legal Employer.Security Context Code - HCM Legal Employer", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_LINE_MANAGER_DATA",
+      "functionalGroup" : "HCM_FACT_LM",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2) OR %3 =  VALUEOF(NQ_SESSION.%4)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Manager Security.Manager Identifier", "variable:Logged In HCM Person ID.HCM_PERSON_ID", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_VIEW_ALL_DATA",
+      "functionalGroup" : "HCM_FACT_ALL",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "1 = 1"
+      }
+    }, {
+      "accessor" : "role:OA4F_HCM_COUNTRY_DATA",
+      "functionalGroup" : "HCM_FACT_CTR",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_HCM_COUNTRY_LIST' OR %2 =  VALUEOF(NQ_SESSION.%3)",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - Country.Security Context Code - HCM Country List", "logicalColumn:Core.Dim - Worker.Person Identifier", "variable:Self Record Id.SELF_RCD_ID" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Assignment Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Assignment Manager List",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Country",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Department Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Department",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Grade",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Bargaining Unit",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - HR Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Impact of Loss",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Manager Assessed Impact of Loss",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Manager Assessed Performance",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Manager Assessed Potential",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Manager Assessed Risk of Loss",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Manager Assessed Talent Score",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Risk of Loss",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Talent Review Meeting Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Talent Review Meeting Facilitator",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Talent Review Meeting Participant",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - HCM - Talent Score",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Job",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Employer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Manager Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Manager Security",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Manager",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Organization Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Performance Rating",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Position",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Potential Rating",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Reporting Establishment",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Tenure Band",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Worker Age Band",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Worker Location",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Worker",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

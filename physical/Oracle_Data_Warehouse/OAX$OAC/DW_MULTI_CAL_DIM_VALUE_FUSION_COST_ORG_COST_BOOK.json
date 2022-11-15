@@ -1,0 +1,30 @@
+{
+  "physicalTable" : {
+    "name" : "DW_MULTI_CAL_DIM_VALUE_FUSION_COST_ORG_COST_BOOK",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT \r\n'COST ORG COST BOOK' AS driving_dim_code,\r\nb.organization_name || ' | '|| a.cost_book_code  AS dimension_value,\r\nTO_CHAR(b.organization_id) || ' | '|| a.cost_book_code  AS dimension_value_code\r\nFROM DW_CST_COST_ORG_BOOKS_D a,\r\nDW_INTERNAL_ORG_D_TL b\r\nWHERE a.cost_org_id = b.organization_id\r\nAND b.language = 'VALUEOF(NQ_SESSION.USER_LANGUAGE_CODE)'\r\n"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "DIMENSION_VALUE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    }, {
+      "name" : "DRIVING_DIM_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 255,
+      "nullable" : false
+    }, {
+      "name" : "DIMENSION_VALUE_CODE",
+      "dataType" : "VARCHAR",
+      "length" : 512,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    }
+  }
+}

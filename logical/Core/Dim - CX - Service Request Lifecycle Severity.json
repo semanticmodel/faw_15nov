@@ -1,0 +1,99 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - CX - Service Request Lifecycle Severity",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "SR Lifecycle Severity Code" ],
+    "logicalColumns" : [ {
+      "name" : "SR Lifecycle Severity Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXSR_SEVERITY_CODE_D_TL_Lifecycle_Severity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_SEVERITY_CODE_D_TL_Lifecycle_Severity.CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXSR_SEVERITY_CODE_D_TL_PromptOnly_Lifecycle_Severity",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_SEVERITY_CODE_D_TL_PromptOnly_Lifecycle_Severity.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "SR Lifecycle Severity",
+      "dataType" : "VARCHAR",
+      "sortBy" : "SR Lifecycle Severity Code",
+      "descriptorColumn" : "SR Lifecycle Severity Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CXSR_SEVERITY_CODE_D_TL_Lifecycle_Severity",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_SEVERITY_CODE_D_TL_Lifecycle_Severity.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_SEVERITY_CODE_D_TL_Lifecycle_Severity.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CXSR_SEVERITY_CODE_D_TL_PromptOnly_Lifecycle_Severity",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_SEVERITY_CODE_D_TL_PromptOnly_Lifecycle_Severity.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_SEVERITY_CODE_D_TL_PromptOnly_Lifecycle_Severity.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CXSR_SEVERITY_CODE_D_TL_Lifecycle_Severity",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_SEVERITY_CODE_D_TL_Lifecycle_Severity" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Service Request Lifecycle Severity.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_CXSR_SEVERITY_CODE_D_TL_PromptOnly_Lifecycle_Severity",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_SEVERITY_CODE_D_TL_PromptOnly_Lifecycle_Severity" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Service Request Lifecycle Severity.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_SEVERITY_CODE_D_TL_PromptOnly_Lifecycle_Severity.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "SR Lifecycle Severity Code" ],
+        "displayKey" : "SR Lifecycle Severity Code"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "CX - Service Request Lifecycle Severity",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

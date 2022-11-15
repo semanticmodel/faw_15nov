@@ -1,0 +1,77 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM Payroll Balance UOM",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Balance UOM Code" ],
+    "logicalColumns" : [ {
+      "name" : "Balance UOM Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PAY_UNIT_D_TL_PayrollBalanceUOM",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_UNIT_D_TL_PayrollBalanceUOM.PAY_UNIT_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Balance UOM",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Balance UOM Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PAY_UNIT_D_TL_PayrollBalanceUOM",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_UNIT_D_TL_PayrollBalanceUOM.PAY_UNIT_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_PAY_UNIT_D_TL_PayrollBalanceUOM",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_UNIT_D_TL_PayrollBalanceUOM" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_UNIT_D_TL_PayrollBalanceUOM.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Balance UOM Code" ],
+        "displayKey" : "Balance UOM",
+        "additionalKeys" : [ [ "Balance UOM" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM Payroll Balance UOM",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

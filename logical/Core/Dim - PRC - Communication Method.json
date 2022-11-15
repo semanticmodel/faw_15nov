@@ -1,0 +1,96 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - Communication Method",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Communication Method Code" ],
+    "logicalColumns" : [ {
+      "name" : "Communication Method Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_DOC_COMM_METHOD_D_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_DOC_COMM_METHOD_D_TL_PromptOnly.CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_DOC_COMM_METHOD_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_DOC_COMM_METHOD_D_TL.CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Communication Method",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Communication Method Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_DOC_COMM_METHOD_D_TL_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_DOC_COMM_METHOD_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_DOC_COMM_METHOD_D_TL_PromptOnly.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_PRC_LKP_DW_DOC_COMM_METHOD_D_TL",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_DOC_COMM_METHOD_D_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_DOC_COMM_METHOD_D_TL.CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_PRC_LKP_DW_DOC_COMM_METHOD_D_TL_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_DOC_COMM_METHOD_D_TL_PromptOnly" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Communication Method.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_PRC_LKP_DW_DOC_COMM_METHOD_D_TL",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_PRC_LKP_DW_DOC_COMM_METHOD_D_TL" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Communication Method.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Communication Method Code" ],
+        "displayKey" : "Communication Method",
+        "additionalKeys" : [ [ "Communication Method" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - Communication Method",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

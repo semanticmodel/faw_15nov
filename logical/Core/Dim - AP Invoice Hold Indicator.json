@@ -1,0 +1,156 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - AP Invoice Hold Indicator",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Hold Indicator" ],
+    "logicalColumns" : [ {
+      "name" : "Hold Indicator",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_YESNO_LKP_TL_HoldIndicator_PromptOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_YESNO_LKP_TL_HoldIndicator_PromptOnly.YESNO_LKP_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.HOLD_STATUS_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' THEN 'YES' ELSE  CASE  WHEN %2 = 'YES' THEN 'NO' ELSE '~NOVALUE~' END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_HOLD_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' THEN 'YES' ELSE  CASE  WHEN %2 = 'YES' THEN 'NO' ELSE '~NOVALUE~' END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.INVOICE_HOLD_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' THEN 'YES' ELSE  CASE  WHEN %2 = 'YES' THEN 'NO' ELSE '~NOVALUE~' END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod.INVOICE_HOLD_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' THEN 'YES' ELSE  CASE  WHEN %2 = 'YES' THEN 'NO' ELSE '~NOVALUE~' END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets.INVOICE_HOLD_FLAG" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'YES' THEN 'YES' ELSE  CASE  WHEN %2 = 'YES' THEN 'NO' ELSE '~NOVALUE~' END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA.HOLD_STATUS_FLAG", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA.INVOICE_HOLD_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_YESNO_LKP_TL_HoldIndicator_PromptOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_YESNO_LKP_TL_HoldIndicator_PromptOnly" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_YESNO_LKP_TL_HoldIndicator_PromptOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_HOLDS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AP Invoice Hold Indicator.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AP Invoice Hold Indicator.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AP Invoice Hold Indicator.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AP Invoice Hold Indicator.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AP Invoice Hold Indicator.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_SLA_AGING_INVOICE_CA",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - AP Invoice Hold Indicator.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Hold Indicator" ],
+        "displayKey" : "Hold Indicator"
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "AP Invoice Hold Indicator",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

@@ -1,0 +1,41 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_PROJECT_TASK_HIERARCHY_DH",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PROJECT_TASK_HIERARCHY_DH",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_COMMITMENT_CF",
+        "joinExpression": {
+          "expressionTemplate": " CAST (%1 AS VARCHAR ( 38 )) = %2",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_COMMITMENT_CF.TASK_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_TASK_HIERARCHY_DH.BASE_ELEMENT_ID"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF",
+        "joinExpression": {
+          "expressionTemplate": "%1 =  CAST (%2 AS VARCHAR ( 38 ))",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_TASK_HIERARCHY_DH.BASE_ELEMENT_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_SLA_COST_CF.TASK_ID"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      }
+    ],
+    "additionalKeys": [
+      [
+        "BASE_ELEMENT_ID"
+      ]
+    ]
+  }
+}

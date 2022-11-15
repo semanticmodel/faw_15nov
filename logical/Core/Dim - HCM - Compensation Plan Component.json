@@ -1,0 +1,170 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Compensation Plan Component",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Component Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Component Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_PLAN_COMPONENT_D_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_PLAN_COMPONENT_D_CompEvent.COMPONENT_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_PLAN_COMPONENT_D_TL_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_PLAN_COMPONENT_D_TL_CompEvent.COMPONENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Component Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_PLAN_COMPONENT_D_TL_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_PLAN_COMPONENT_D_TL_CompEvent.COMPONENT_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Post As Salary",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_PLAN_COMPONENT_D_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_PLAN_COMPONENT_D_CompEvent.POST_AS_SALARY_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Salary Component",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Salary Component Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_PLAN_COMPONENT_D_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CMP_SALARY_COMPONENTS_D_TL.SALARY_COMPONENTS_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_PLAN_COMPONENT_D_CompEvent.SALARY_COMPONENT", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Salary Component Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_PLAN_COMPONENT_D_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_PLAN_COMPONENT_D_CompEvent.SALARY_COMPONENT" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Non Monetary UOM",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Non Monetary UOM Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_PLAN_COMPONENT_D_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CMP_NONMONETARY_UOM_D_TL.NONMONETARY_UOM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_PLAN_COMPONENT_D_CompEvent.NON_MONETARY_UOM", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Non Monetary UOM Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_PLAN_COMPONENT_D_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_PLAN_COMPONENT_D_CompEvent.NON_MONETARY_UOM" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CMP_PLAN_COMPONENT_D_CompEvent",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_PLAN_COMPONENT_D_CompEvent" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Compensation Plan Component.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_CMP_PLAN_COMPONENT_D_TL_CompEvent",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_PLAN_COMPONENT_D_TL_CompEvent" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Compensation Plan Component.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_PLAN_COMPONENT_D_TL_CompEvent.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Component Identifier" ],
+        "displayKey" : "Component Name",
+        "additionalKeys" : [ [ "Component Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Compensation Plan Component",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

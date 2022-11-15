@@ -1,0 +1,120 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Balancing Segment",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Balancing Segment Value Set Code", "Balancing Segment Code" ],
+    "logicalColumns" : [ {
+      "name" : "Balancing Segment Value Set Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_BALANCING_SEGMENT_D_Base",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base.GL_BLNC_SGMNT_VALUESET_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Balancing Segment Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_BALANCING_SEGMENT_D_Base",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base.GL_BALANCING_SEGMENT" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Balancing Segment Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Balancing Segment Key",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_BALANCING_SEGMENT_D_Base",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2, %3,  VALUEOF(NQ_SESSION.%4))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GL_SEGMENT_D_TL.GL_SEGMENT_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base.GL_BALANCING_SEGMENT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base.GL_BLNC_SGMNT_VALUESET_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Balancing Segment Description",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Balancing Segment Key",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_BALANCING_SEGMENT_D_Base",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2, %3,  VALUEOF(NQ_SESSION.%4))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_GL_SEGMENT_D_TL.GL_SEGMENT_DESCRIPTION", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base.GL_BALANCING_SEGMENT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base.GL_BLNC_SGMNT_VALUESET_CODE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Balancing Segment Key",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_BALANCING_SEGMENT_D_Base",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base.GL_BALANCING_SEGMENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_BALANCING_SEGMENT_D_Base",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_BALANCING_SEGMENT_D_Base" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Balancing Segment.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Balancing Segment Value Set Code", "Balancing Segment Code" ],
+        "displayKey" : "Balancing Segment Code",
+        "additionalKeys" : [ [ "Balancing Segment Code" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Balancing Segment",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

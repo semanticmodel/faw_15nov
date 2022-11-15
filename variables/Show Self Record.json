@@ -1,0 +1,24 @@
+{
+  "initBlock" : {
+    "name" : "Show Self Record",
+    "description" : "This Init Block check of Self record is enabled YES - returns 1 and NO retunrs 0. By default 1",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Absence Management", "Project:Fusion Analytics Warehouse - Absence Management - Skeleton", "Project:Fusion Analytics Warehouse - Diversity Analysis", "Project:Fusion Analytics Warehouse - Expense Management", "Project:Fusion Analytics Warehouse - Expense Management - Skeleton", "Project:Fusion Analytics Warehouse - General Ledger", "Project:Fusion Analytics Warehouse - Goals and Career Development", "Project:Fusion Analytics Warehouse - Goals and Career Development - Skeleton", "Project:Fusion Analytics Warehouse - Journeys", "Project:Fusion Analytics Warehouse - Learning Management", "Project:Fusion Analytics Warehouse - Learning Management - Skeleton", "Project:Fusion Analytics Warehouse - Payroll Management", "Project:Fusion Analytics Warehouse - Payroll Management - Skeleton", "Project:Fusion Analytics Warehouse - Performance Management and Check-ins", "Project:Fusion Analytics Warehouse - Performance Management and Check-ins - Skeleton", "Project:Fusion Analytics Warehouse - Profile Matching", "Project:Fusion Analytics Warehouse - Project Assets", "Project:Fusion Analytics Warehouse - Project Billing - Skeleton", "Project:Fusion Analytics Warehouse - Project Control", "Project:Fusion Analytics Warehouse - Salary Basis", "Project:Fusion Analytics Warehouse - Salary Basis - Skeleton", "Project:Fusion Analytics Warehouse - Succession Management", "Project:Fusion Analytics Warehouse - Succession Management - Skeleton", "Project:Fusion Analytics Warehouse - Talent Acquisition", "Project:Fusion Analytics Warehouse - Talent Acquisition - Skeleton", "Project:Fusion Analytics Warehouse - Talent Profile Management", "Project:Fusion Analytics Warehouse - Talent Profile Management - Skeleton", "Project:Fusion Analytics Warehouse - Talent Review", "Project:Fusion Analytics Warehouse - Talent Review - Skeleton", "Project:Fusion Analytics Warehouse - Time and Labor", "Project:Fusion Analytics Warehouse - Time and Labor - Skeleton", "Project:Fusion Analytics Warehouse - Workforce Compensation", "Project:Fusion Analytics Warehouse - Workforce Compensation - Skeleton", "Project:Fusion Analytics Warehouse - Workforce Management", "Project:Fusion Analytics Warehouse - Workforce Management - Skeleton" ],
+    "type" : "SESSION",
+    "connectionPool" : "connectionPool:Oracle_Data_Warehouse.Oracle_Data_Warehouse_Repository_Initblocks_Connection_Pool",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT\r\n    nvl(lclset, gblset) AS SEE_SELF_RCD\r\nFROM\r\n    (\r\n        SELECT\r\n            CASE\r\n                WHEN ( 'VALUEOF(NQ_SESSION.HCM_VIEW_OWN_CONTEXT)' = 'Y'\r\n                       AND sec_obj_member_val = 'NO' ) \r\n                        THEN\r\n                    0\r\n                WHEN ( 'VALUEOF(NQ_SESSION.HCM_VIEW_OWN_CONTEXT)' = 'N'\r\n                       AND sec_obj_member_val = 'YES' ) \r\n                        THEN\r\n                    1\r\n                WHEN ( 'VALUEOF(NQ_SESSION.HCM_VIEW_OWN_CONTEXT)' = 'Y'\r\n                       AND sec_obj_member_val = 'YES' ) \r\n                        THEN\r\n                    1\r\n                ELSE\r\n                    0\r\n            END  AS lclset,\r\n            NULL AS gblset\r\n        FROM\r\n            sec_secure_by_obj_member_user\r\n        WHERE\r\n                sec_obj_code = 'OA4F_SEC_HCM_SEE_SELF_RECORD'\r\n            AND username = 'VALUEOF(NQ_SESSION.USER)'\r\n        UNION ALL\r\n        SELECT\r\n            NULL                                                      AS lclset,\r\n            decode('VALUEOF(NQ_SESSION.HCM_VIEW_OWN_CONTEXT)', 'Y', 1, 'N', 0) AS gblset\r\n        FROM\r\n            dual\r\n    )"
+    } ],
+    "variables" : [ {
+      "name" : "SEE_SELF_RCD",
+      "value" : "1",
+      "enableUsersToSetValue" : false,
+      "securitySensitive" : false
+    } ],
+    "dependencies" : [ "HCM View Default Self Record" ],
+    "disable" : false,
+    "queryReturnsVariableNamesAndValues" : false,
+    "allowDeferredExecution" : true,
+    "cacheQueryResult" : true
+  }
+}

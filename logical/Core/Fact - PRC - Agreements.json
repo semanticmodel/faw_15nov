@@ -1,0 +1,1264 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - PRC - Agreements",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Purchase Agreements", "Project:Fusion Analytics Warehouse - Purchasing" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Agreement Header Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Agreement Lines Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'BLANKET' AND %2 <> -(99999) THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Agreement Approval Cycle Time",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IS NULL  THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGRMNT_APPR_CYCLE_TIME" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Negotiation to Agreement Approval Cycle Time",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IS NULL  THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.NEGO_TO_AGRMNT_APPR_CYCLE_TIME" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "AVG",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Approvers Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.APPROVER_COUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Item Count",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN  CAST (%1 AS VARCHAR ( 4000 )) WHEN %2 <> -(99999) AND %3 <> '~NOVALUE~' THEN  CAST (%2 AS VARCHAR ( 4000 )) || '(' || %3 || ')' WHEN %4 <> -(99999) THEN  CAST (%4 AS VARCHAR ( 4000 )) || '~' || %5 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.INVENTORY_ITEM_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.VENDOR_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.SUPPLIER_ITEM_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.PURCHASING_CATEGORY_ID", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.INVENTORY_ITEM_DESCRIPTION" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Supplier Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.VENDOR_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Supplier Site Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.VENDOR_SITE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Buyer Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.BUYER_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Header Expiring Days",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <>  TO_DATETIME('4712/31/12', 'YYYY/DD/MM') AND %1 >  CURRENT_DATE  THEN  TIMESTAMPDIFF( SQL_TSI_DAY ,  CURRENT_DATE , %1) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_END_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Line Header Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> 'CONTRACT' THEN %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.LINE_EXPIRY_AGRMNT_END_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Line Expiring Days",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> 'CONTRACT' THEN  CASE  WHEN %2 <>  TO_DATETIME('4712/31/12', 'YYYY/DD/MM') AND %2 >  CURRENT_DATE  THEN  TIMESTAMPDIFF( SQL_TSI_DAY ,  CURRENT_DATE , %2) END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_TYPE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.LINE_EXPIRY_AGRMNT_END_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "AVG",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Number of Revisions",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_REVISION_NUM" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Amendments Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.TOTAL_AMENDMENT_COUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Internal Amendments Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.BUYER_AMENDMENT_COUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Supplier Amendments Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.SUPPLIER_AMENDMENT_COUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "AVG"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+          "rule" : "AVG"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Agreement Line Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.LINE_AGREEMENT_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Header Agreed Amount Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.GLOBAL_AGREEMENT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Header Released Amount Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.GLOBAL_AGREEMENT_RELEASED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Header Released %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN  FILTER( IFNULL(%2, 0.00) USING %3 = 'NO') * 100.00 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Header Agreed Amount Analytics Currency", "logicalColumn:Core.Fact - PRC - Agreements.Header Released Amount Analytics Currency", "logicalColumn:Core.Dim - PRC - Agreement Header Details.Agreement Amount Null Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Line Agreed Amount Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.GLOBAL_LINE_AGREEMENT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Line Released Amount Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.GLOBAL_LINE_RELEASED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Line Released Amount %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN  FILTER( IFNULL(%2, 0.00) USING %3 = 'NO') * 100.00 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Line Agreed Amount Analytics Currency", "logicalColumn:Core.Fact - PRC - Agreements.Line Released Amount Analytics Currency", "logicalColumn:Core.Dim - PRC - Agreement Line Details.Agreement Line Amount Null Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Remaining Header Amount Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IS NULL  THEN  CASE  WHEN %1 >=  IFNULL(%2, 0) THEN %1 -  IFNULL(%2, 0) ELSE 0 END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.GLOBAL_AGREEMENT_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.GLOBAL_AGREEMENT_RELEASED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Remaining Header Amount %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN  IFNULL(%2, 0.00) * 100.00 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Header Agreed Amount Analytics Currency", "logicalColumn:Core.Fact - PRC - Agreements.Remaining Header Amount Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Remaining Line Amount Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IS NULL  THEN  CASE  WHEN %1 >=  IFNULL(%2, 0) THEN %1 -  IFNULL(%2, 0) ELSE 0 END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.GLOBAL_LINE_AGREEMENT_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.GLOBAL_LINE_RELEASED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Remaining Line Amount %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN  IFNULL(%2, 0.00) * 100.00 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Line Agreed Amount Analytics Currency", "logicalColumn:Core.Fact - PRC - Agreements.Remaining Line Amount Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Expired Header Released %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN  FILTER( IFNULL(%2, 0.00) USING %3 = 'Yes' AND %4 = 'NO') * 100.00 /  FILTER(%1 USING %3 = 'Yes' AND %4 = 'NO') END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Header Agreed Amount Analytics Currency", "logicalColumn:Core.Fact - PRC - Agreements.Header Released Amount Analytics Currency", "logicalColumn:Core.Dim - PRC - Agreement Header Details.Expired Indicator", "logicalColumn:Core.Dim - PRC - Agreement Header Details.Agreement Amount Null Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Expired Line Released %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN  FILTER( IFNULL(%2, 0.00) USING %3 = 'Yes' AND %4 = 'NO') * 100.00 /  FILTER(%1 USING %3 = 'Yes' AND %4 = 'NO') END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Line Agreed Amount Analytics Currency", "logicalColumn:Core.Fact - PRC - Agreements.Line Released Amount Analytics Currency", "logicalColumn:Core.Dim - PRC - Agreement Line Details.Expired Line Indicator", "logicalColumn:Core.Dim - PRC - Agreement Line Details.Agreement Line Amount Null Indicator" ]
+        }
+      }
+    }, {
+      "name" : "Average Unit Price",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.UNIT_PRICE_DERIVED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "AVG",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Header Agreed Amount Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Header Released Amount Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_RELEASED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Header Released Document Currency %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN  FILTER( IFNULL(%2, 0.00) USING %3 = 'NO') * 100.00 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Header Agreed Amount Document Currency", "logicalColumn:Core.Fact - PRC - Agreements.Header Released Amount Document Currency", "logicalColumn:Core.Dim - PRC - Agreement Header Details.Agreement Amount Null Indicator Doc Currency" ]
+        }
+      }
+    }, {
+      "name" : "Line Agreed Amount Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.LINE_AGREEMENT_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Line Released Amount Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.LINE_RELEASED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Line Released Amount Document Currency %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN  FILTER( IFNULL(%2, 0.00) USING %3 = 'NO') * 100.00 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Line Agreed Amount Document Currency", "logicalColumn:Core.Fact - PRC - Agreements.Line Released Amount Document Currency", "logicalColumn:Core.Dim - PRC - Agreement Line Details.Agreement Line Amount Null Indicator Doc Currency" ]
+        }
+      }
+    }, {
+      "name" : "Remaining Header Amount Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IS NULL  THEN  CASE  WHEN %1 >=  IFNULL(%2, 0) THEN %1 -  IFNULL(%2, 0) ELSE 0 END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_RELEASED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "BASED_ON_DIMENSION",
+        "dimensionBasedRules" : [ {
+          "dimension" : "OTHER",
+          "rule" : "SUM"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+          "rule" : "LAST"
+        }, {
+          "dimension" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+          "rule" : "SUM"
+        } ],
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Remaining Header Amount Document Currency %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN  IFNULL(%2, 0.00) * 100.00 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Header Agreed Amount Document Currency", "logicalColumn:Core.Fact - PRC - Agreements.Remaining Header Amount Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Remaining Line Amount Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IS NULL  THEN  CASE  WHEN %1 >=  IFNULL(%2, 0) THEN %1 -  IFNULL(%2, 0) ELSE 0 END  END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.LINE_AGREEMENT_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.LINE_RELEASED_AMOUNT" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Remaining Line Amount Document Currency %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN  IFNULL(%2, 0.00) * 100.00 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Line Agreed Amount Document Currency", "logicalColumn:Core.Fact - PRC - Agreements.Remaining Line Amount Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Expired Header Released Document Currency %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN  FILTER( IFNULL(%2, 0.00) USING %3 = 'Yes' AND %4 = 'NO') * 100.00 /  FILTER(%1 USING %3 = 'Yes' AND %4 = 'NO') END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Header Agreed Amount Document Currency", "logicalColumn:Core.Fact - PRC - Agreements.Header Released Amount Document Currency", "logicalColumn:Core.Dim - PRC - Agreement Header Details.Expired Indicator", "logicalColumn:Core.Dim - PRC - Agreement Header Details.Agreement Amount Null Indicator Doc Currency" ]
+        }
+      }
+    }, {
+      "name" : "Expired Line Released Document Currency %",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 <> 0 THEN  FILTER( IFNULL(%2, 0.00) USING %3 = 'Yes' AND %4 = 'NO') * 100.00 /  FILTER(%1 USING %3 = 'Yes' AND %4 = 'NO') END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Line Agreed Amount Document Currency", "logicalColumn:Core.Fact - PRC - Agreements.Line Released Amount Document Currency", "logicalColumn:Core.Dim - PRC - Agreement Line Details.Expired Line Indicator", "logicalColumn:Core.Dim - PRC - Agreement Line Details.Agreement Line Amount Null Indicator Doc Currency" ]
+        }
+      }
+    }, {
+      "name" : "Average Unit Price Analytics Currency",
+      "description" : "Average of unit price at lines",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.GLOBAL_UNIT_PRICE_DERIVED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "AVG",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Header Expiring Days Transaction Level",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <>  TO_DATETIME('4712/31/12', 'YYYY/DD/MM') AND %1 >  CURRENT_DATE  THEN  TIMESTAMPDIFF( SQL_TSI_DAY ,  CURRENT_DATE , %1) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_END_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Count Expired in Next 7 Days",
+      "description" : "Count of agreement header which will expire in the next 7 days",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <= 7)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Agreement Header Count", "logicalColumn:Core.Fact - PRC - Agreements.Header Expiring Days Transaction Level" ]
+        }
+      }
+    }, {
+      "name" : "Count Expired in Next 8 - 30 Days",
+      "description" : "Count of agreement header which will expire in the next 8 to 30 days",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 BETWEEN 8 AND 30)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Agreement Header Count", "logicalColumn:Core.Fact - PRC - Agreements.Header Expiring Days Transaction Level" ]
+        }
+      }
+    }, {
+      "name" : "Header Release % Transaction Level",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> 0 AND  NOT %1 IS NULL  THEN  IFNULL(%2, 0) / %1 * 100 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_AMOUNT", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.AGREEMENT_RELEASED_AMOUNT" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Count by Release 0 - 20%",
+      "description" : "Count of Agreement Header that release % is under 20%",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 BETWEEN 0 AND 20)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Agreement Header Count", "logicalColumn:Core.Fact - PRC - Agreements.Header Release % Transaction Level" ]
+        }
+      }
+    }, {
+      "name" : "Count by Release 20% - 40%",
+      "description" : "Count of Agreement Header that release % is between 20% and 40%",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 BETWEEN 20 AND 40)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Agreement Header Count", "logicalColumn:Core.Fact - PRC - Agreements.Header Release % Transaction Level" ]
+        }
+      }
+    }, {
+      "name" : "Count by Release 40% - 60%",
+      "description" : "Count of Agreement Header that release % is between 40% and 60%",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 BETWEEN 40 AND 60)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Agreement Header Count", "logicalColumn:Core.Fact - PRC - Agreements.Header Release % Transaction Level" ]
+        }
+      }
+    }, {
+      "name" : "Count by Release 60% - 80%",
+      "description" : "Count of Agreement Header that release % is between 60% and 80%",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 BETWEEN 60 AND 80)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Agreement Header Count", "logicalColumn:Core.Fact - PRC - Agreements.Header Release % Transaction Level" ]
+        }
+      }
+    }, {
+      "name" : "Count by Release 80% - 100%",
+      "description" : "Count of Agreement Header that release % is between 80% and 100%",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 BETWEEN 80 AND 100)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Agreement Header Count", "logicalColumn:Core.Fact - PRC - Agreements.Header Release % Transaction Level" ]
+        }
+      }
+    }, {
+      "name" : "Count by Release Over 100%",
+      "description" : "Count of Agreement Header that release % is over 100%",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 > 100)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - PRC - Agreements.Agreement Header Count", "logicalColumn:Core.Fact - PRC - Agreements.Header Release % Transaction Level" ]
+        }
+      }
+    }, {
+      "name" : "Buyers Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.BUYER_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Suppliers Count",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 <> -(99999) THEN %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.VENDOR_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Agreement Line Primary Quantity",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.PUOM_LINE_AGREEMENT_QUANTITY" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Unit Price in Analytics Currency (Primary UOM)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IS NULL  AND %1 <> 0 THEN %2 / %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.PUOM_CONVERSION_FACTOR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.GLOBAL_UNIT_PRICE_DERIVED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "AVG",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Average Unit Price (Primary UOM)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_AGREEMENT_CF_Line",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IS NULL  AND %1 <> 0 THEN %2 / %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.PUOM_CONVERSION_FACTOR", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.UNIT_PRICE_DERIVED" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "AVG",
+        "dataIsDense" : false
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_AGREEMENT_CF_Line",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Agreement Final Approved By.Detail", "logicalLevel:Core.Dim - Ledger.Detail", "logicalLevel:Core.Dim - PRC - Agreement Line Expiration Date.Detail", "logicalLevel:Core.Dim - PRC - Agreement Line Expiration Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Procurement Category Hierarchy.Detail", "logicalLevel:Core.Dim - PRC - Agreement Line Status.Detail", "logicalLevel:Core.Dim - PRC - Agreement Submit Date.Detail", "logicalLevel:Core.Dim - PRC - Agreement Creation Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - PRC - Agreement End Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - PRC - Agreement Header Details.Agreement Header Detail", "logicalLevel:Core.Dim - PRC - Agreement Procurement Business Unit.Detail", "logicalLevel:Core.Dim - PRC - Agreement Line Cancelled Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - PRC - Agreement Line Details.Agreement Line Detail", "logicalLevel:Core.Dim - Legal Entity.Detail", "logicalLevel:Core.Dim - PRC - Agreement Open Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - PRC - Agreement Price Break Details.Agreement Price Break Detail", "logicalLevel:Core.Dim - PRC - Agreement Document Type.Detail", "logicalLevel:Core.Dim - PRC - Agreement Submit Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - PRC - Agreement Start Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - PRC - PO Line Type.Detail", "logicalLevel:Core.Dim - PRC - Agreement Submitted By.Detail", "logicalLevel:Core.Dim - PRC - Agreement Header Created By.Detail", "logicalLevel:Core.Dim - Unit of Measure.Detail", "logicalLevel:Core.Dim - PRC - Shipping Method.Detail", "logicalLevel:Core.Dim - Inventory Item.Detail", "logicalLevel:Core.Dim - PRC - Agreement Document Style.Detail", "logicalLevel:Core.Dim - Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - PRC - Procurement Item.Procurement Item", "logicalLevel:Core.Dim - PRC - PO Payment Term.Detail", "logicalLevel:Core.Dim - PRC - Consumption Advice Frequency.Detail", "logicalLevel:Core.Dim - Supplier Category Hierarchy.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - PRC - Agreement Creation Date.Detail", "logicalLevel:Core.Dim - PRC - Communication Method.Detail", "logicalLevel:Core.Dim - PRC - Consumption Advice Summary.Detail", "logicalLevel:Core.Dim - Category.Detail", "logicalLevel:Core.Dim - PRC - Agreement Status.Detail", "logicalLevel:Core.Dim - Supplier Sites.Detail", "logicalLevel:Core.Dim - PRC - Agreement Start Date.Detail", "logicalLevel:Core.Dim - Supplier.Detail", "logicalLevel:Core.Dim - PRC - Agreement End Date.Detail", "logicalLevel:Core.Dim - PRC - Agreement Price Break Type.Detail", "logicalLevel:Core.Dim - PRC - Document Creation Method.Detail", "logicalLevel:Core.Dim - Date Fiscal Calendar.Detail", "logicalLevel:Core.Dim - PRC - Agreement Line Cancelled Date.Detail", "logicalLevel:Core.Dim - PRC - Purchase Buyer.Detail", "logicalLevel:Core.Dim - PRC - Agreement Open Date.Detail", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - Item Category Hierarchy.Detail", "logicalLevel:Core.Dim - Inv Item Catalog Category.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AGREEMENT_CF_Line.UNIQUE_AGREEMENT_LINE_INDICATOR" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_PROC_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PRCSPEND",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PROC_SPEND_PRC_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Agreement Line Details.Security Context Code - Procurement Business Unit" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Fiscal Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inv Item Catalog Category",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Inventory Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Item Category Hierarchy",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Ledger",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Legal Entity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Creation Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Creation Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Document Style",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Document Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement End Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement End Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Final Approved By",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Header Created By",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Header Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Line Cancelled Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Line Cancelled Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Line Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Line Expiration Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Line Expiration Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Line Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Open Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Open Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Price Break Details",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Price Break Type",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Procurement Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Start Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Start Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Status",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Submit Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Submit Date",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Agreement Submitted By",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Communication Method",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Consumption Advice Frequency",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Consumption Advice Summary",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Document Creation Method",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - PO Line Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - PO Payment Term",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Procurement Item",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Purchase Buyer",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - PRC - Shipping Method",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Procurement Category Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Supplier Category Hierarchy",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Supplier Sites",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Supplier",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Unit of Measure",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

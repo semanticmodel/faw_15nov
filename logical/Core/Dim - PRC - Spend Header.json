@@ -1,0 +1,826 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - PRC - Spend Header",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Invoice Header Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Invoice Number",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.INVOICE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.INVOICE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod.INVOICE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets.INVOICE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA.INVOICE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_NUMBER" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_NUMBER" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Header"
+    }, {
+      "name" : "Invoice Description",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.INVOICE_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_DESCRIPTION" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_DESCRIPTION" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Inter Company Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.INVOICE_INTER_COMPANY_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Inter Company Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Inter Company Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YESNO_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.INVOICE_INTER_COMPANY_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Invoice Accounting Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.INVOICE_ACCOUNTING_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.INVOICE_ACCOUNTING_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod.INVOICE_ACCOUNTING_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets.INVOICE_ACCOUNTING_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA.INVOICE_ACCOUNTING_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_ACCOUNTING_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_ACCOUNTING_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_ACCOUNTING_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Invoice Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.INVOICED_ON_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.INVOICED_ON_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod.INVOICED_ON_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets.INVOICED_ON_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA.INVOICED_ON_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICED_ON_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICED_ON_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICED_ON_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Invoice Received Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.INVOICE_RECEIVED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.INVOICE_RECEIVED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod.INVOICE_RECEIVED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets.INVOICE_RECEIVED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA.INVOICE_RECEIVED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_RECEIVED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_RECEIVED_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_RECEIVED_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Invoice Cancel Date",
+      "dataType" : "DATE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  EXTRACT( YEAR  FROM %1) = '1901' AND  EXTRACT( MONTH  FROM %1) = '01' AND  DAYOFMONTH(%1) = '01' THEN  NULL  ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.INVOICE_CANCELLED_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Invoice Creation Date",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.INVOICE_CREATION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.INVOICE_CREATION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod.INVOICE_CREATION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets.INVOICE_CREATION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA.INVOICE_CREATION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_CREATION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_CREATION_DATE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_CREATION_DATE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Invoice Header Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF.INVOICE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod.INVOICE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod.INVOICE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets.INVOICE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA.INVOICE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF.INVOICE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF.INVOICE_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF.INVOICE_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Invoice Header"
+    }, {
+      "name" : "-----DFF Keys-----------------------------------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'n/a'"
+        }
+      }
+    }, {
+      "name" : "AP_INVOICES_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INVOICE_SPEND_CF_DW_AP_INVOICES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod_DW_AP_INVOICES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_FIscalPeriod_DW_AP_INVOICES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_DW_AP_INVOICES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_DW_AP_INVOICES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF_DW_AP_INVOICES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_HOLDS_CF_DW_AP_INVOICES_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "JG_AP_INVOICES_S_K_5000",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INVOICE_SPEND_CF_DW_JG_AP_INVOICES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod_DW_JG_AP_INVOICES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod_DW_JG_AP_INVOICES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_DW_JG_AP_INVOICES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_DW_JG_AP_INVOICES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF_DW_JG_AP_INVOICES_DFF.S_K_5000" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_HOLDS_CF_DW_JG_AP_INVOICES_DFF.S_K_5000" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Procurement BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_PRC_BU_SpendFact.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_PROC_SPEND_PRC_BUSINESSUNIT_LIST'"
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_PROC_SPEND_PRC_BUSINESSUNIT_LIST'"
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_PROC_SPEND_PRC_BUSINESSUNIT_LIST'"
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_PROC_SPEND_PRC_BUSINESSUNIT_LIST'"
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_PROC_SPEND_PRC_BUSINESSUNIT_LIST'"
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_PROC_SPEND_PRC_BUSINESSUNIT_LIST'"
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_PROC_SPEND_PRC_BUSINESSUNIT_LIST'"
+          }
+        } ]
+      }
+    }, {
+      "name" : "Security Context Code - Payable BU",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_INVOICE_SPEND_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_AP_BU_SpendFact.SEC_OBJ_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_FIN_AP_BUSINESSUNIT_LIST'"
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_FIN_AP_BUSINESSUNIT_LIST'"
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_FIN_AP_BUSINESSUNIT_LIST'"
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_AGING_INVOICE_CA",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_FIN_AP_BUSINESSUNIT_LIST'"
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_FIN_AP_BUSINESSUNIT_LIST'"
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_FIN_AP_BUSINESSUNIT_LIST'"
+          }
+        }, {
+          "logicalTableSource" : "Fact_DW_AP_HOLDS_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "'OA4F_SEC_FIN_AP_BUSINESSUNIT_LIST'"
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_INVOICE_SPEND_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INVOICE_SPEND_CF_DW_AP_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INVOICE_SPEND_CF_DW_JG_AP_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_PRC_BU_SpendFact", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_AP_BU_SpendFact" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INVOICE_SPEND_CF_DW_JG_AP_INVOICES_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_INVOICE_SPEND_CF_DW_AP_INVOICES_DFF",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_PRC_BU_SpendFact",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_INVOICE_SPEND_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Security_SEC_SECURE_BY_OBJ_MEMBER_USER_SESSION_AP_BU_SpendFact",
+          "joinType" : "LEFT_OUTER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - PRC - Spend Header.Invoice Header" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod_DW_AP_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod_DW_JG_AP_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod_DW_AP_INVOICES_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod_DW_JG_AP_INVOICES_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_FiscalPeriod",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_FIscalPeriod_DW_AP_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod_DW_JG_AP_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_FIscalPeriod_DW_AP_INVOICES_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod_DW_JG_AP_INVOICES_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_FiscalPeriod",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_DW_AP_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_DW_JG_AP_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_DW_AP_INVOICES_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets_DW_JG_AP_INVOICES_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA_Aging_Buckets",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_SLA_AGING_INVOICE_CA",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_DW_AP_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_DW_JG_AP_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_DW_AP_INVOICES_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_AGING_INVOICE_CA_DW_JG_AP_INVOICES_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_AGING_INVOICE_CA",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF_DW_JG_AP_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF_DW_AP_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF_DW_JG_AP_INVOICES_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF_DW_AP_INVOICES_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_INVOICE_SCHEDULE_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_SLA_PAYMENTS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_SLA_PAYMENTS_CF" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Fact_DW_AP_HOLDS_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_HOLDS_CF_DW_AP_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_HOLDS_CF_DW_JG_AP_INVOICES_DFF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_HOLDS_CF_DW_AP_INVOICES_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Desc_Flex_Fact_DW_AP_HOLDS_CF_DW_JG_AP_INVOICES_DFF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_AP_HOLDS_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Invoice Header",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Invoice Header Identifier" ],
+        "displayKey" : "Invoice Number",
+        "additionalKeys" : [ [ "Invoice Number" ] ],
+        "preferredDrillPath" : [ "logicalLevel:Core.Dim - PRC - Spend.Invoice Line" ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "PRC - Spend Header",
+        "levels" : [ "Total", "Invoice Header" ]
+      } ]
+    },
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_PROC_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PRCSPEND",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_PROC_SPEND_PRC_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Spend Header.Security Context Code - Procurement BU" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_FIN_AP_BUSINESS_UNIT_DATA",
+      "functionalGroup" : "PRCSPEND",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'OA4F_SEC_FIN_AP_BUSINESSUNIT_LIST'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - PRC - Spend Header.Security Context Code - Payable BU" ]
+      }
+    } ]
+  }
+}

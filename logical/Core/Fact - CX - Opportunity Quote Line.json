@@ -1,0 +1,1116 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - CX - Opportunity Quote Line",
+    "tags" : [ "Project:Fusion Analytics Warehouse - Sales CPQ Integrated Analytics" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "Quote Line Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.QUOTE_LINE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "# of Quote Lines",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.QUOTE_LINE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Lines for Active Quotes",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Quote Lines", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Unique Quotes with Lines",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.QUOTE_EXTERNAL_QUOTE_NUMBER" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Active Quotes with Lines",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Unique Quotes with Lines", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Quotes with Lines",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.QUOTE_HEADER_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Won Lines for Active Quotes",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ZCA_WIN')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Win Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Lost Lines for Active Quotes",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ZCA_LOST')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Win Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of In-Progress Lines for Active Quotes",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ZCA_IN_PROGRESS')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Win Status Code" ]
+        }
+      }
+    }, {
+      "name" : "# of Closed Lines for Active Quotes",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "%1 + %2",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Won Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lost Lines for Active Quotes" ]
+        }
+      }
+    }, {
+      "name" : "Line Win Rate for Active Quotes",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 100.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Closed Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Won Lines for Active Quotes" ]
+        }
+      }
+    }, {
+      "name" : "Line Loss Rate for Active Quotes",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 100.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Closed Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lost Lines for Active Quotes" ]
+        }
+      }
+    }, {
+      "name" : "Line Conversion Rate for Active Quotes",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 100.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Won Lines for Active Quotes" ]
+        }
+      }
+    }, {
+      "name" : "Average Line Cycle Time for Active Quotes",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Active Cycle Time" ]
+        }
+      }
+    }, {
+      "name" : "Average Length of the Contract for Active Quote Lines",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Active Length of the Contract" ]
+        }
+      }
+    }, {
+      "name" : "Average Active Quote Line Contract Value  (ACV) in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Contract Value (Active Quote Lines) in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Average Non-Recurring Revenue (Active Quote Lines) in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Non-Recurring Revenue (Active Quote Lines) in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Average Recurring Revenue (Active Quote Lines) in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Recurring Revenue (Active Quote Lines) in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Average Usage Revenue (Active Quote Lines) in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Usage Revenue (Active Quote Lines) in Document Currency" ]
+        }
+      }
+    }, {
+      "name" : "Average Active Quote Line Contract Value  (ACV) in CX Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Contract Value (Active Quote Lines) in CX Currency" ]
+        }
+      }
+    }, {
+      "name" : "Average Non-Recurring Revenue (Active Quote Lines) in CX Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Non-Recurring Revenue (Active Quote Lines) in CX Currency" ]
+        }
+      }
+    }, {
+      "name" : "Average Recurring Revenue (Active Quote Lines) in CX Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Recurring Revenue (Active Quote Lines) in CX Currency" ]
+        }
+      }
+    }, {
+      "name" : "Average Usage Revenue (Active Quote Lines) in CX Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Usage Revenue (Active Quote Lines) in CX Currency" ]
+        }
+      }
+    }, {
+      "name" : "Average Active Quote Line Contract Value  (ACV) in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Contract Value (Active Quote Lines) in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Average Non-Recurring Revenue (Active Quote Lines) in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Non-Recurring Revenue (Active Quote Lines) in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Average Recurring Revenue (Active Quote Lines) in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Recurring Revenue (Active Quote Lines) in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Average Usage Revenue (Active Quote Lines) in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 = 0 THEN  NULL  ELSE 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.# of Lines for Active Quotes", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Usage Revenue (Active Quote Lines) in Analytics Currency" ]
+        }
+      }
+    }, {
+      "name" : "Contract Value (Active Quote Lines) in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Raw Quote Line Contract Value in Document Currency", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "Non-Recurring Revenue (Active Quote Lines) in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Raw Quote Line Non-Recurring Revenue in Document Currency", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "Recurring Revenue (Active Quote Lines) in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Raw Quote Line Recurring Revenue in Document Currency", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "Usage Revenue (Active Quote Lines) in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Raw Quote Line Usage Revenue  in Document Currency", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "Contract Value (Active Quote Lines) in CX Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Raw Quote Line Contract Value in CX Currency", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "Non-Recurring Revenue (Active Quote Lines) in CX Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Raw Quote Line Non-Recurring Revenue in CX Currency", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "Recurring Revenue (Active Quote Lines) in CX Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Raw Quote Line Recurring Revenue  in CX Currency", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "Usage Revenue (Active Quote Lines) in CX Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Raw Quote Line Usage Revenue in CX Currency", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "Contract Value (Active Quote Lines) in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Raw Quote Line Contract Value in Analytics Currency", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "Non-Recurring Revenue (Active Quote Lines) in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Raw Quote Line Non-Recurring Revenue in Analytics Currency", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "Recurring Revenue (Active Quote Lines) in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Raw Quote Line Recurring Revenue in Analytics Currency", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "Usage Revenue (Active Quote Lines) in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Raw Quote Line Usage Revenue in Analytics Currency", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "Raw Quote Line Contract Value in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.CONTRACT_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw Quote Line Non-Recurring Revenue in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.NON_RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw Quote Line Recurring Revenue in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.RECURRING_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw Quote Line Usage Revenue  in Document Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.USAGE_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw Quote Line Contract Value in CX Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.CRM_CURRENCY_CONTRACT_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw Quote Line Non-Recurring Revenue in CX Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.CRM_CURRENCY_NON_RECUR_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw Quote Line Recurring Revenue  in CX Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.CRM_CURRENCY_RECUR_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw Quote Line Usage Revenue in CX Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.CRM_CURRENCY_USAGE_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw Quote Line Contract Value in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.GLOBAL_CURRENCY_CONTRACT_VALUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw Quote Line Non-Recurring Revenue in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.GLOBAL_CURRENCY_NON_RECUR_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw Quote Line Recurring Revenue in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.GLOBAL_CURRENCY_RECUR_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Raw Quote Line Usage Revenue in Analytics Currency",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.GLOBAL_CURRENCY_USAGE_REVENUE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-------- Filters --------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Quote Active Version Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.QUOTE_ACTIVE_VERSION_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Quote Win Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.WIN_LOSS_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Quote Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.QUOTE_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Quote Proposal Exist Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.QUOTE_PROPOSAL_EXIST_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "----------------Internal Calc Metrics--------------------",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "'-----------------Opportunity Activity Measures--------------------'"
+        }
+      }
+    }, {
+      "name" : "Cycle Time",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('01-Jan-1901', '31-Dec-4712') AND  NOT %2 IN ('01-Jan-1901', '31-Dec-4712') THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %2, %1) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.ORDER_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.CREATION_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Active Cycle Time",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Cycle Time", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    }, {
+      "name" : "Length of the Contract",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXS_QUOTE_LINES_CF",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN  NOT %1 IN ('01-Jan-1901', '31-Dec-4712') AND  NOT %2 IN ('01-Jan-1901', '31-Dec-4712') THEN  TIMESTAMPDIFF( SQL_TSI_DAY , %1, %2) END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.CONTRACT_START_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.CONTRACT_END_DATE" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Active Length of the Contract",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Length of the Contract", "logicalColumn:Core.Fact - CX - Opportunity Quote Line.Quote Active Version Flag" ]
+        }
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CXS_QUOTE_LINES_CF",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_OPPORTUNITY_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_OPPORTUNITY_REVENUE_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_QUOTE_CF" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_OPPORTUNITY_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_OPPORTUNITY_REVENUE_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        }, {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXS_QUOTE_CF",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - CX - Date - Quote Line Contract End Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Opportunity Quote Line.Detail", "logicalLevel:Core.Dim - CX - Date - Quote Line Contract End Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Opportunity Quote Line Item Type.Detail", "logicalLevel:Core.Dim - CX - Opportunity Quote Renewal Process.Detail", "logicalLevel:Core.Dim - CX - Opportunity Quote Line Price Period.Detail", "logicalLevel:Core.Dim - CX - Opportunity Quote Type Category.Detail", "logicalLevel:Core.Dim - CX - Opportunity Quote Line Price Type.Detail", "logicalLevel:Core.Dim - CX - Opportunity Type.Detail", "logicalLevel:Core.Dim - CX - Date - Quote Line Contract Start Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Quote Line Request Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Quote Line Creation Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Opportunity Renewal Process.Detail", "logicalLevel:Core.Dim - CX - Date - Quote Line Order Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Resource - Opportunity Owner.Detail", "logicalLevel:Core.Dim - CX - Date - Quote Line Request Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Quote Line Order Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Quote Line Creation Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Quote Line Contract Start Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - CX - Opportunity Quote Line Root Line.Detail", "logicalLevel:Core.Dim - CX - Opportunity.Detail", "logicalLevel:Core.Dim - CX - Primary Contact.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - CX - Security - Opportunity Access Group.Detail", "logicalLevel:Core.Dim - CX - Opportunity Quote Line Status.Detail", "logicalLevel:Core.Dim - CX - Security - Opportunity.Detail", "logicalLevel:Core.Dim - CX - Opportunity Quote Line Win Status.Detail", "logicalLevel:Core.Dim - CX - Opportunity Revenue Line.Detail", "logicalLevel:Core.Dim - Currency.Detail", "logicalLevel:Core.Dim - CX - Opportunity Quote Status.Detail", "logicalLevel:Core.Dim - CX - Opportunity Quote Win Status.Detail", "logicalLevel:Core.Dim - CX - Opportunity Quote.Detail", "logicalLevel:Core.Dim - CX - Sales Product.Detail", "logicalLevel:Core.Dim - CX - Date - Quote Creation Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Quote Creation Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Opportunity Quote Line Unit of Measure.Detail", "logicalLevel:Core.Dim - CX - Security - Account.Detail", "logicalLevel:Core.Dim - CX - Security - Opportunity Quote Access Group.Detail", "logicalLevel:Core.Dim - CX - Revenue Split Type.Detail", "logicalLevel:Core.Dim - CX - Revenue Status Category.Detail", "logicalLevel:Core.Dim - CX - Revenue Line Type.Detail", "logicalLevel:Core.Dim - CX - Revenue Status.Detail", "logicalLevel:Core.Dim - CX - Revenue Close Reason.Detail", "logicalLevel:Core.Dim - CX - Revenue Sales Credit Type.Detail", "logicalLevel:Core.Dim - CX - Revenue Product Unit of Measure.Detail", "logicalLevel:Core.Dim - CX - Revenue Category.Detail", "logicalLevel:Core.Dim - CX - Opportunity Decision.Detail", "logicalLevel:Core.Dim - CX - Opportunity Risk Level.Detail", "logicalLevel:Core.Dim - CX - Revenue Type.Detail", "logicalLevel:Core.Dim - CX - Revenue Type Category.Detail", "logicalLevel:Core.Dim - CX - Revenue Recurring Frequency.Detail", "logicalLevel:Core.Dim - CX - Revenue Recurring Type.Detail", "logicalLevel:Core.Dim - CX - Opportunity Channel Type.Detail", "logicalLevel:Core.Dim - CX - Opportunity Close Reason.Detail", "logicalLevel:Core.Dim - CX - Opportunity Deal Horizon.Detail", "logicalLevel:Core.Dim - CX - Opportunity Line of Business.Detail", "logicalLevel:Core.Dim - CX - Opportunity Status.Detail", "logicalLevel:Core.Dim - CX - Opportunity Status Category.Detail", "logicalLevel:Core.Dim - CX - Opportunity Strategic.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXS_QUOTE_LINES_CF.QUOTE_OPPORTUNITY_BASED_QUOTE_FLAG" ]
+      },
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_CX_SALES_ACCNT_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Account.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SALES_OPTY_CUSTOM_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Opportunity Access Group.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SALES_OPTY_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Opportunity.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SALES_OPTY_QUOTE_CUSTOM_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Opportunity Quote Access Group.Security Enabled Flag" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Quote Creation Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Quote Creation Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Quote Line Contract End Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Quote Line Contract End Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Quote Line Contract Start Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Quote Line Contract Start Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Quote Line Creation Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Quote Line Creation Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Quote Line Order Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Quote Line Order Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Quote Line Request Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Quote Line Request Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Channel Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Close Reason",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Deal Horizon",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Decision",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Line of Business",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Quote Line Item Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Quote Line Price Period",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Quote Line Price Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Quote Line Root Line",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Quote Line Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Quote Line Unit of Measure",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Quote Line Win Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Quote Line",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Quote Renewal Process",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Quote Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Quote Type Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Quote Win Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Quote",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Renewal Process",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Revenue Line",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Risk Level",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Status Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Strategic",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Opportunity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Primary Contact",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Opportunity Owner",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Revenue Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Revenue Close Reason",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Revenue Line Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Revenue Product Unit of Measure",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Revenue Recurring Frequency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Revenue Recurring Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Revenue Sales Credit Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Revenue Split Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Revenue Status Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Revenue Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Revenue Type Category",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Revenue Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Product",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Account",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Opportunity Access Group",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Opportunity Quote Access Group",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Opportunity",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Currency",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

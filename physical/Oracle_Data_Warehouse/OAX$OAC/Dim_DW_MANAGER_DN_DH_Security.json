@@ -1,0 +1,41 @@
+{
+  "physicalTable" : {
+    "name" : "Dim_DW_MANAGER_DN_DH_Security",
+    "sourceType" : "SELECT",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT PERSON_ID,\r\n  assignment_id,\r\n  effective_start_date,\r\n  effective_end_date,\r\nmanager_id\r\nFROM\r\n  (SELECT person_id,\r\n    assignment_id,\r\n    effective_start_date,\r\n    effective_end_date,\r\nmanager_id\r\n  FROM dw_manager_dn_dh\r\n  WHERE MANAGER_TYPE = 'LINE_MANAGER'\r\n  AND MANAGER_ID    =  VALUEOF(NQ_SESSION.HCM_PERSON_ID)\r\nUNION ALL\r\n  SELECT person_id,\r\n    assignment_id,\r\n    effective_start_date,\r\n    effective_end_date,\r\nVALUEOF(NQ_SESSION.HCM_PERSON_ID) as manager_id\r\n  FROM dw_WRKFRC_ASG_F\r\n  WHERE person_id = VALUEOF(NQ_SESSION.HCM_PERSON_ID)\r\nAND VALUEOF(NQ_SESSION.SEE_SELF_RCD)  = 1\r\n  )\r\n"
+    } ],
+    "physicalColumns" : [ {
+      "name" : "PERSON_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "EFFECTIVE_START_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "EFFECTIVE_END_DATE",
+      "dataType" : "DATE",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "ASSIGNMENT_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : false
+    }, {
+      "name" : "MANAGER_ID",
+      "dataType" : "NUMERIC",
+      "length" : 0,
+      "nullable" : false
+    } ],
+    "caching" : {
+      "enable" : true,
+      "expiryTime" : 0
+    },
+    "additionalKeys" : [ [ "PERSON_ID", "EFFECTIVE_END_DATE", "EFFECTIVE_START_DATE", "ASSIGNMENT_ID" ] ]
+  }
+}

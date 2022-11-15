@@ -1,0 +1,147 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - Revenue Plan",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Revenue Plan Id", "Major Version" ],
+    "logicalColumns" : [ {
+      "name" : "Revenue Method ID",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_BILL_PLAN_D_Revenue",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_BILL_PLAN_D_Revenue.BILL_METHOD_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Revenue Plan Detail"
+    }, {
+      "name" : "Revenue Plan Id",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_BILL_PLAN_D_Revenue",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_BILL_PLAN_D_Revenue.BILL_PLAN_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Revenue Plan Detail"
+    }, {
+      "name" : "Revenue Plan on Hold Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_BILL_PLAN_D_Revenue",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_BILL_PLAN_D_Revenue.ON_HOLD_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Dim - Revenue Plan Detail"
+    }, {
+      "name" : "Revenue Plan",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Revenue Plan Id",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_BILL_PLAN_D_Revenue",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3), %4)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_BILL_PLAN_D_TL.BILL_PLAN_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_BILL_PLAN_D_Revenue.BILL_PLAN_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_BILL_PLAN_D_Revenue.MAJOR_VERSION" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Revenue Method Name",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Revenue Method ID",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_BILL_PLAN_D_Revenue",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2, %2,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CONTRACT_BILLING_METHOD_TL.BILL_METHOD_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_BILL_PLAN_D_Revenue.BILL_METHOD_ID", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Revenue Plan on Hold",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Revenue Plan on Hold Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_BILL_PLAN_D_Revenue",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_BILL_PLAN_D_Revenue.ON_HOLD_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Major Version",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CONTRACT_BILL_PLAN_D_Revenue",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_BILL_PLAN_D_Revenue.MAJOR_VERSION" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CONTRACT_BILL_PLAN_D_Revenue",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CONTRACT_BILL_PLAN_D_Revenue" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Revenue Plan.Dim - Revenue Plan Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Dim - Revenue Plan Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Dim - Revenue Plan Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Dim - Revenue Plan Detail",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Revenue Plan Id", "Major Version" ],
+        "displayKey" : "Revenue Plan",
+        "additionalKeys" : [ [ "Revenue Plan" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Revenue Plan",
+        "levels" : [ "Dim - Revenue Plan Total", "Dim - Revenue Plan Detail" ]
+      } ]
+    }
+  }
+}

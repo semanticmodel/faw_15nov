@@ -1,0 +1,41 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_RBS_REVENUE_CATEGORY_D",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_RBS_REVENUE_CATEGORY_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXPENDITURE_TYPE_D_RevCat_CMTS",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_REVENUE_CATEGORY_D.REVENUE_CATEGORY_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_EXPENDITURE_TYPE_D_RevCat_CMTS.REVENUE_CATEGORY_CODE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_INVOICE_CF",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_RBS_REVENUE_CATEGORY_D.REVENUE_CATEGORY_NAME",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_PROJECT_INVOICE_CF.REVENUE_CATEGORY_CODE"
+          ]
+        },
+        "cardinality": "ONE_TO_ONE",
+        "joinType": "INNER"
+      }
+    ],
+    "additionalKeys": [
+      [
+        "REVENUE_CATEGORY_ID"
+      ]
+    ]
+  }
+}

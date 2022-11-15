@@ -1,0 +1,182 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Payroll Balance Category",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Balance Category Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Balance Category Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PAY_BALANCE_CATEGORY_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_DimOnly.BALANCE_CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PAY_BALANCE_CATEGORY_D_TL_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_TL_DimOnly.BALANCE_CATEGORY_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PAY_BALANCE_CATEGORY_PayrollBalanceCategory",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_PayrollBalanceCategory.BALANCE_CATEGORY_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Base Category Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PAY_BALANCE_CATEGORY_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_DimOnly.BASE_CATEGORY_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PAY_BALANCE_CATEGORY_PayrollBalanceCategory",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_PayrollBalanceCategory.BASE_CATEGORY_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Save Run Balance Indicator Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PAY_BALANCE_CATEGORY_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_DimOnly.SAVE_RUN_BALANCE_ENABLED" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PAY_BALANCE_CATEGORY_PayrollBalanceCategory",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_PayrollBalanceCategory.SAVE_RUN_BALANCE_ENABLED" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "User Category Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PAY_BALANCE_CATEGORY_D_TL_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_TL_DimOnly.USER_CATEGORY_NAME" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PAY_BALANCE_CATEGORY_PayrollBalanceCategory",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_TL_PayrollBalancecategoryTL.USER_CATEGORY_NAME" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Save Run Balance Indicator",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Save Run Balance Indicator Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_PAY_BALANCE_CATEGORY_D_DimOnly",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INDICATOR_Y_N_TL.YES_NO_IND_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_DimOnly.SAVE_RUN_BALANCE_ENABLED", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_PAY_BALANCE_CATEGORY_PayrollBalanceCategory",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_INDICATOR_Y_N_TL.YES_NO_IND_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_PayrollBalanceCategory.SAVE_RUN_BALANCE_ENABLED", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_PAY_BALANCE_CATEGORY_D_DimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_DimOnly" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_PAY_BALANCE_CATEGORY_D_TL_DimOnly",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_TL_DimOnly" ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_TL_DimOnly.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_PAY_BALANCE_CATEGORY_PayrollBalanceCategory",
+      "disable" : false,
+      "priority" : 1,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_PayrollBalanceCategory", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_TL_PayrollBalancecategoryTL" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_PayrollBalanceCategory",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PAY_BALANCE_CATEGORY_D_TL_PayrollBalancecategoryTL",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Balance Category Identifier" ],
+        "displayKey" : "Base Category Name",
+        "additionalKeys" : [ [ "Base Category Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "HCM - Payroll Balance Category",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

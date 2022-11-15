@@ -1,0 +1,1581 @@
+{
+  "logicalTable" : {
+    "name" : "Fact - CX - Service Request Lifecycle",
+    "tags" : [ "Project:Fusion Analytics Warehouse - B2B Service Analytics" ],
+    "type" : "FACT",
+    "logicalColumns" : [ {
+      "name" : "# of SRs (Lifecycle)",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of Raw SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of Distinct SR Assignees",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Distinct SR Assignees", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Service Request Deleted Flag", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Assignee Resource Identifier" ]
+        }
+      }
+    }, {
+      "name" : "# of Distinct SR Queues Assigned",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Distinct SR Queues", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Service Request Deleted Flag", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Queue Identifier" ]
+        }
+      }
+    }, {
+      "name" : "# of SR Lifecycle Changes",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Raw SR Lifecycle Changes", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of SR Queue Assignments",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 <> -(99999) AND %4 <> %3)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SR Queues", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Service Request Deleted Flag", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Queue Identifier", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Old Queue Identifier" ]
+        }
+      }
+    }, {
+      "name" : "# of SR Reopen Events",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 = 'Y')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Raw SR Lifecycle Changes", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Service Request Deleted Flag", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Reopen Event Flag" ]
+        }
+      }
+    }, {
+      "name" : "# of SR Resource Assignments",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 <> -(99999) AND %4 <> %3)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SR Assignees", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Service Request Deleted Flag", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Assignee Resource Identifier", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Old Assignee Resource Identifier" ]
+        }
+      }
+    }, {
+      "name" : "# of SR Status Change Events",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N' AND %3 <> %4)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Raw SR Lifecycle Changes", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Service Request Deleted Flag", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Old Status Code", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration SR Unassigned to Assignee (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Days)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Assignee Resource Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration SR Unassigned to Assignee (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Hours)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Assignee Resource Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration SR Unassigned to Assignee (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Minutes)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Assignee Resource Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration with SR Assignee (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Days)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Assignee Resource Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration with SR Assignee (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Hours)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Assignee Resource Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration with SR Assignee (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Minutes)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Assignee Resource Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration SR Unassigned to Queue (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Days)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Queue Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration SR Unassigned to Queue (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Hours)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Queue Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration SR Unassigned to Queue (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Minutes)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Queue Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration in SR Queue (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Days)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Queue Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration in SR Queue (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Hours)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Queue Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration in SR Queue (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Minutes)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Queue Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as High Severity SR (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV1')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Days)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as High Severity SR (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV1')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Hours)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as High Severity SR (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV1')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Minutes)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as Medium Severity SR (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV2')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Days)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as Medium Severity SR (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV2')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Hours)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as Medium Severity SR (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV2')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Minutes)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as Low Severity SR (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV3')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Days)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as Low Severity SR (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV3')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Hours)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as Low Severity SR (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV3')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Minutes)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as New SR (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_NEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Days)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as New SR (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_NEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Hours)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as New SR (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_NEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Minutes)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as In Progress SR (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_INPROGRESS')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Days)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as In Progress SR (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_INPROGRESS')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Hours)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as In Progress SR (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_INPROGRESS')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Minutes)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as Waiting SR (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_WAITING')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Days)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as Waiting SR (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_WAITING')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Hours)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as Waiting SR (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_WAITING')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Minutes)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as Resolved SR until Reopen (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_RESOLVED' AND %3 > 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Days)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Audit Duration Millisecond" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as Resolved SR until Reopen (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_RESOLVED' AND %3 > 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Hours)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Severity Code", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Audit Duration Millisecond" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration as Resolved SR until Reopen (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_RESOLVED' AND %3 > 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Minutes)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Severity Code", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Audit Duration Millisecond" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration of SR Lifecycle Change (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - Total Duration of SR Lifecycle Change (Days)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration of SR Lifecycle Change (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - Total Duration of SR Lifecycle Change (Hours)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "Total Duration of SR Lifecycle Change (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'N')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - Total Duration of SR Lifecycle Change (Minutes)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Service Request Deleted Flag" ]
+        }
+      }
+    }, {
+      "name" : "Average # of Distinct SR Assignees",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs with Assignee", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of Distinct SR Assignees" ]
+        }
+      }
+    }, {
+      "name" : "Average # of Distinct SR Queues Assigned",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs in Queue", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of Distinct SR Queues Assigned" ]
+        }
+      }
+    }, {
+      "name" : "Average # of SR Queue Assignments",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs in Queue", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SR Queue Assignments" ]
+        }
+      }
+    }, {
+      "name" : "Average # of SR Resource Assignments",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs with Assignee", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SR Resource Assignments" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration SR Unassigned to Assignee (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs with Unassigned Assignee", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration SR Unassigned to Assignee (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration SR Unassigned to Assignee (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs with Unassigned Assignee", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration SR Unassigned to Assignee (Hours)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration SR Unassigned to Assignee (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs with Unassigned Assignee", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration SR Unassigned to Assignee (Minutes)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration with SR Assignee (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs with Assignee", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration with SR Assignee (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration with SR Assignee (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs with Assignee", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration with SR Assignee (Hours)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration with SR Assignee (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs with Assignee", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration with SR Assignee (Minutes)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration SR Unassigned to Queue (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs in Unassigned Queue", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration SR Unassigned to Queue (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration SR Unassigned to Queue (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs in Unassigned Queue", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration SR Unassigned to Queue (Hours)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration SR Unassigned to Queue (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs in Unassigned Queue", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration SR Unassigned to Queue (Minutes)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration in SR Queue (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs in Queue", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration in SR Queue (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration in SR Queue (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs in Queue", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration in SR Queue (Hours)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration in SR Queue (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of SRs in Queue", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration in SR Queue (Minutes)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as High Severity SR (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of High Severity SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as High Severity SR (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as High Severity SR (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of High Severity SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as High Severity SR (Hours)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as High Severity SR (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of High Severity SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as High Severity SR (Minutes)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as Medium Severity SR (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Medium Severity SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as Medium Severity SR (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as Medium Severity SR (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Medium Severity SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as Medium Severity SR (Hours)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as Medium Severity SR (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Medium Severity SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as Medium Severity SR (Minutes)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as Low Severity SR (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Low Severity SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as Low Severity SR (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as Low Severity SR (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Low Severity SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as Low Severity SR (Hours)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as Low Severity SR (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Low Severity SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as Low Severity SR (Minutes)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as New SR (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of New SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as New SR (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as New SR (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of New SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as New SR (Hours)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as New SR (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of New SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as New SR (Minutes)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as In Progress SR (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of In Progress SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as In Progress SR (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as In Progress SR (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of In Progress SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as In Progress SR (Hours)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as In Progress SR (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of In Progress SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as In Progress SR (Minutes)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as Waiting SR (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Waiting SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as Waiting SR (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as Waiting SR (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Waiting SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as Waiting SR (Hours)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as Waiting SR (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Waiting SRs", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as Waiting SR (Minutes)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as Resolved SR until Reopen (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Resolved SRs until Reopen", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as Resolved SR until Reopen (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as Resolved SR until Reopen (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Resolved SRs until Reopen", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as Resolved SR until Reopen (Hours)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration as Resolved SR until Reopen (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Internal - # of Resolved SRs until Reopen", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration as Resolved SR until Reopen (Minutes)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration of SR Lifecycle Change (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Days)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration of SR Lifecycle Change (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Hours)" ]
+        }
+      }
+    }, {
+      "name" : "Average Duration of SR Lifecycle Change (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " CASE  WHEN %1 > 0 THEN 1.0d * %2 / %1 END ",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Total Duration of SR Lifecycle Change (Minutes)" ]
+        }
+      }
+    }, {
+      "name" : "Minimum Change Start Date Time",
+      "dataType" : "TIMESTAMP",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.AUDIT_START_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "MIN",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Maximum Change End Date Time",
+      "dataType" : "DATETIME",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 =  TO_DATETIME('31/12/4712 00:00', 'dd/mm/yyyy hh:mi') THEN  CURRENT_TIMESTAMP(0) ELSE %2 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.AUDIT_END_DATE", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.AUDIT_END_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "MAX",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "# of Raw SRs (Lifecycle)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.SERVICE_REQUEST_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "-------- Filter --------",
+      "dataType" : "INT",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : "1"
+        }
+      }
+    }, {
+      "name" : "Internal - # of Raw SR Lifecycle Changes",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.LIFECYCLE_SERVICE_REQUEST_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Internal - Total Duration of SR Lifecycle Change (Days)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %1,  CASE  WHEN %2 =  TO_DATETIME('31/12/4712 00:00', 'dd/mm/yyyy hh:mi') THEN  CURRENT_TIMESTAMP(0) ELSE %2 END ) / 1440.0d",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.AUDIT_START_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.AUDIT_END_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Internal - Total Duration of SR Lifecycle Change (Hours)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %1,  CASE  WHEN %2 =  TO_DATETIME('31/12/4712 00:00', 'dd/mm/yyyy hh:mi') THEN  CURRENT_TIMESTAMP(0) ELSE %2 END ) / 60.0d",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.AUDIT_START_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.AUDIT_END_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Internal - Total Duration of SR Lifecycle Change (Minutes)",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "1.0d *  TIMESTAMPDIFF( SQL_TSI_MINUTE , %1,  CASE  WHEN %2 =  TO_DATETIME('31/12/4712 00:00', 'dd/mm/yyyy hh:mi') THEN  CURRENT_TIMESTAMP(0) ELSE %2 END )",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.AUDIT_START_TIMESTAMP", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.AUDIT_END_TIMESTAMP" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "SUM",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Internal - # of SRs with Assignee",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Assignee Resource Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Internal - # of SRs in Queue",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 <> -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Queue Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Internal - # of SRs with Unassigned Assignee",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Assignee Resource Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Internal - # of SRs in Unassigned Queue",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = -(99999))",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Queue Identifier" ]
+        }
+      }
+    }, {
+      "name" : "Internal - # of High Severity SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV1')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "Internal - # of Medium Severity SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV2')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "Internal - # of Low Severity SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_SEV3')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Severity Code" ]
+        }
+      }
+    }, {
+      "name" : "Internal - # of New SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_NEW')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Internal - # of In Progress SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_INPROGRESS')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Internal - # of Waiting SRs",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_WAITING')",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code" ]
+        }
+      }
+    }, {
+      "name" : "Internal - # of Resolved SRs until Reopen",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "LOGICAL_COLUMNS",
+        "logicalExpression" : {
+          "expressionTemplate" : " FILTER(%1 USING %2 = 'ORA_SVC_RESOLVED' AND %3 > 0)",
+          "expressionObjects" : [ "logicalColumn:Core.Fact - CX - Service Request Lifecycle.# of SRs (Lifecycle)", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.New Status Code", "logicalColumn:Core.Fact - CX - Service Request Lifecycle.Audit Duration Millisecond" ]
+        }
+      }
+    }, {
+      "name" : "Service Request Deleted Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.SERVICE_REQUEST_DELETED_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "New Assignee Resource Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.NEW_ASSIGNEE_RESOURCE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "New Queue Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.NEW_QUEUE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "New Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.NEW_STATUS_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "New Severity Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.NEW_SEVERITY_CODE" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Audit Duration Millisecond",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.AUDIT_DURATION_MILLISECOND" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Reopen Event Flag",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.REOPEN_EVENT_FLAG" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Internal - # of Distinct SR Assignees",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.NEW_ASSIGNEE_RESOURCE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Internal - # of Distinct SR Queues",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.NEW_QUEUE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT_DISTINCT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Internal - # of SR Assignees",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.NEW_ASSIGNEE_RESOURCE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Internal - # of SR Queues",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.NEW_QUEUE_ID" ]
+          }
+        } ]
+      },
+      "aggregation" : {
+        "rule" : "COUNT",
+        "dataIsDense" : false
+      }
+    }, {
+      "name" : "Old Queue Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.OLD_QUEUE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Old Assignee Resource Identifier",
+      "dataType" : "DOUBLE",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.OLD_ASSIGNEE_RESOURCE_ID" ]
+          }
+        } ]
+      }
+    }, {
+      "name" : "Old Status Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Fact_DW_CXSR_LIFECYCLE_F",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F.OLD_STATUS_CODE" ]
+          }
+        } ]
+      }
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Fact_DW_CXSR_LIFECYCLE_F",
+      "description" : "\"Oracle_Data_Warehouse\".\"\".\"OAX$OAC\".\"Fact_DW_CXSR_LIFECYCLE_F\".\"SERVICE_REQUEST_STRIPE_CODE\"  = 'ORA_SVC_CRM'",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_SERVICE_REQUESTS_F", "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F" ],
+        "logicalTableSourceJoins" : [ {
+          "leftTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CXSR_SERVICE_REQUESTS_F",
+          "rightTable" : "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Fact_DW_CXSR_LIFECYCLE_F",
+          "joinType" : "INNER",
+          "disable" : false
+        } ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - Business Unit.Detail", "logicalLevel:Core.Dim - CX - Sales Account.Detail", "logicalLevel:Core.Dim - Customer Sold To.Detail", "logicalLevel:Core.Dim - CX - Resource - Service Request Assignee Lifecycle.Detail", "logicalLevel:Core.Dim - CX - Security - Account.Detail", "logicalLevel:Core.Dim - CX - Service Request Lifecycle Previous Severity.Detail", "logicalLevel:Core.Dim - CX - Security - Service Request Access Group.Detail", "logicalLevel:Core.Dim - CX - Service Queue Lifecycle.Detail", "logicalLevel:Core.Dim - CX - Service Request.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Change End Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Change End Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Service Request Change Start Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Change Start Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Service Request Close Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Close Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Service Request Lifecycle.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Open Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Open Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Date - Service Request Resolution Date Enterprise Calendar.Detail", "logicalLevel:Core.Dim - CX - Date - Service Request Resolution Date Gregorian Calendar.Day", "logicalLevel:Core.Dim - CX - Service Request Lifecycle Severity.Detail", "logicalLevel:Core.Dim - CX - Service Request Lifecycle Status Type.Detail", "logicalLevel:Core.Dim - CX - Service Request Lifecycle Previous Status.Detail", "logicalLevel:Core.Dim - CX - Service Request Lifecycle Previous Status Type.Detail", "logicalLevel:Core.Dim - CX - Service Request Lifecycle Status.Detail", "logicalLevel:Core.Dim - CX - Service Request Resolution.Detail", "logicalLevel:Core.Dim - CX - Service Request Channel Type.Detail", "logicalLevel:Core.Dim - CX - Service Request Owner Type.Detail", "logicalLevel:Core.Dim - CX - Service Request Priority.Detail", "logicalLevel:Core.Dim - CX - Service Request Problem.Detail", "logicalLevel:Core.Dim - CX - Service Request Resolution Outcome.Detail", "logicalLevel:Core.Dim - CX - Service Request Severity.Detail", "logicalLevel:Core.Dim - CX - Service Request Source.Detail", "logicalLevel:Core.Dim - CX - Service Request Status.Detail", "logicalLevel:Core.Dim - CX - Service Request Status Type.Detail", "logicalLevel:Core.Dim - CX - Service Request Transfer Reason.Detail", "logicalLevel:Core.Dim - CX - Service Stripe.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    } ],
+    "dataFilters" : [ {
+      "accessor" : "role:OA4F_CX_SALES_ACCNT_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Account.Security Enabled Flag" ]
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SERVICE_REQUEST_ALL_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "1 = 1"
+      }
+    }, {
+      "accessor" : "role:OA4F_CX_SERVICE_REQUEST_CUSTOM_DATA",
+      "status" : "ENABLED",
+      "filter" : {
+        "expressionTemplate" : "%1 = 'Y'",
+        "expressionObjects" : [ "logicalColumn:Core.Dim - CX - Security - Service Request Access Group.Security Enabled Flag" ]
+      }
+    } ],
+    "joins" : [ {
+      "rightTable" : "logicalTable:Core.Dim - Business Unit",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Change End Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Change End Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Change Start Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Change Start Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Close Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Close Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Open Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Open Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Resolution Date Enterprise Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Date - Service Request Resolution Date Gregorian Calendar",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Resource - Service Request Assignee Lifecycle",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Sales Account",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Account",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Security - Service Request Access Group",
+      "joinType" : "LEFT_OUTER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Queue Lifecycle",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Channel Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Lifecycle Previous Severity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Lifecycle Previous Status Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Lifecycle Previous Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Lifecycle Severity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Lifecycle Status Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Lifecycle Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Lifecycle",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Owner Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Priority",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Problem",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Resolution Outcome",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Resolution",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Severity",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Source",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Status Type",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request Status",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - CX - Service Request",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    }, {
+      "rightTable" : "logicalTable:Core.Dim - Customer Sold To",
+      "joinType" : "INNER",
+      "cardinality" : "MANY_TO_ZERO_OR_ONE"
+    } ]
+  }
+}

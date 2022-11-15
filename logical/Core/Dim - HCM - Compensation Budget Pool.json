@@ -1,0 +1,201 @@
+{
+  "logicalTable" : {
+    "name" : "Dim - HCM - Compensation Budget Pool",
+    "type" : "DIMENSION",
+    "primaryKey" : [ "Pool Identifier" ],
+    "logicalColumns" : [ {
+      "name" : "Pool Identifier",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_BUDGET_POOL_D_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_BUDGET_POOL_D_CompEvent.BUDGET_POOL_ID" ]
+          }
+        }, {
+          "logicalTableSource" : "Dim_DW_CMP_BUDGET_POOL_D_TL_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_BUDGET_POOL_D_TL_CompEvent.BUDGET_POOL_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Budget Pool Name",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_BUDGET_POOL_D_TL_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_BUDGET_POOL_D_TL_CompEvent.BUDGET_POOL_NAME" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Budget Pool Storage Method",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Budget Pool Storage Method Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_BUDGET_POOL_D_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CASE  WHEN %2 = 'EMP' THEN 'AMT' ELSE %2 END ,  CASE  WHEN %2 = 'EMP' THEN 'AMT' ELSE %2 END ,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CMP_BUDGETING_STYLE_D_TL.BUDGETING_STYLE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_BUDGET_POOL_D_CompEvent.BUDGETING_STYLE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Budget Pool Storage Method Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_BUDGET_POOL_D_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EMP' THEN 'AMT' ELSE %1 END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_BUDGET_POOL_D_CompEvent.BUDGETING_STYLE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Budgeting Method",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Budgeting Method Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_BUDGET_POOL_D_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1,  CASE  WHEN %2 = 'EMP' THEN %2 ELSE 'MGR' END ,  CASE  WHEN %2 = 'EMP' THEN %2 ELSE 'MGR' END ,  VALUEOF(NQ_SESSION.%3))",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_CMP_BUDGETING_STYLE_D_TL.BUDGETING_STYLE_NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_BUDGET_POOL_D_CompEvent.BUDGETING_STYLE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Budgeting Method Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_BUDGET_POOL_D_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : " CASE  WHEN %1 = 'EMP' THEN %1 ELSE 'MGR' END ",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_BUDGET_POOL_D_CompEvent.BUDGETING_STYLE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Primary Component Linked to Plan",
+      "dataType" : "NUMERIC",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_BUDGET_POOL_D_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_BUDGET_POOL_D_CompEvent.PRIMARY_COMPONENT_ID" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Auto Issue",
+      "dataType" : "VARCHAR",
+      "descriptorColumn" : "Auto Issue Code",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_BUDGET_POOL_D_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : " LOOKUP( SPARSE %1, %2,  VALUEOF(NQ_SESSION.%3), %2)",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Lookup_DW_YN_LKP_TL.NAME", "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_BUDGET_POOL_D_CompEvent.AUTO_ISSUE_FLAG", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    }, {
+      "name" : "Auto Issue Code",
+      "dataType" : "VARCHAR",
+      "writeable" : false,
+      "logicalColumnSource" : {
+        "derivedFrom" : "PHYSICAL_COLUMNS",
+        "physicalMappings" : [ {
+          "logicalTableSource" : "Dim_DW_CMP_BUDGET_POOL_D_CompEvent",
+          "physicalExpression" : {
+            "expressionTemplate" : "%1",
+            "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_BUDGET_POOL_D_CompEvent.AUTO_ISSUE_FLAG" ]
+          }
+        } ]
+      },
+      "logicalLevel" : "Detail"
+    } ],
+    "logicalTableSources" : [ {
+      "name" : "Dim_DW_CMP_BUDGET_POOL_D_CompEvent",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_BUDGET_POOL_D_CompEvent" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Compensation Budget Pool.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "distinctValues" : false
+    }, {
+      "name" : "Dim_DW_CMP_BUDGET_POOL_D_TL_CompEvent",
+      "disable" : false,
+      "tableMapping" : {
+        "tables" : [ "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_BUDGET_POOL_D_TL_CompEvent" ]
+      },
+      "dataGranularity" : [ "logicalLevel:Core.Dim - HCM - Compensation Budget Pool.Detail" ],
+      "combineWithOtherFragments" : false,
+      "enableFragmentSelection" : false,
+      "dataFilter" : {
+        "expressionTemplate" : "%1 =  VALUEOF(NQ_SESSION.%2)",
+        "expressionObjects" : [ "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_CMP_BUDGET_POOL_D_TL_CompEvent.LANGUAGE", "variable:INIT_USER_LANGUAGE_CODE.USER_LANGUAGE_CODE" ]
+      },
+      "distinctValues" : false
+    } ],
+    "hierarchyType" : "LEVEL_BASED",
+    "levelBasedHierarchy" : {
+      "defaultRootLevel" : "Total",
+      "ragged" : false,
+      "skipped" : false,
+      "logicalLevels" : [ {
+        "name" : "Total",
+        "numberOfElements" : 1,
+        "grandTotalLevel" : true,
+        "disableAggregateToHigherLevel" : false
+      }, {
+        "name" : "Detail",
+        "numberOfElements" : 10,
+        "grandTotalLevel" : false,
+        "disableAggregateToHigherLevel" : false,
+        "primaryKey" : [ "Pool Identifier" ],
+        "displayKey" : "Budget Pool Name",
+        "additionalKeys" : [ [ "Budget Pool Name" ] ]
+      } ],
+      "logicalHierarchies" : [ {
+        "name" : "Compensation Budget Pool",
+        "levels" : [ "Total", "Detail" ]
+      } ]
+    }
+  }
+}

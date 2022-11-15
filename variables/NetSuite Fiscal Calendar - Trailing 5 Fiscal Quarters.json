@@ -1,0 +1,23 @@
+{
+  "initBlock" : {
+    "name" : "NetSuite Fiscal Calendar - Trailing 5 Fiscal Quarters",
+    "tags" : [ "Project:NetSuite Analytics Warehouse - NetSuite Inventory", "Project:NetSuite Analytics Warehouse - NetSuite Inventory Snapshot", "Project:NetSuite Analytics Warehouse - NetSuite Manufacturing", "Project:NetSuite Analytics Warehouse - NetSuite Project and Support Management", "Project:NetSuite Analytics Warehouse - NetSuite Purchases", "Project:NetSuite Analytics Warehouse - NetSuite Sales", "Project:NetSuite Analytics Warehouse - NetSuite Sales Snapshots" ],
+    "type" : "SESSION",
+    "connectionPool" : "connectionPool:Oracle_Data_Warehouse.Oracle_Data_Warehouse_Repository_Initblocks_Connection_Pool",
+    "selectStatements" : [ {
+      "databaseType" : "DEFAULT",
+      "query" : "SELECT DISTINCT 'NETSUITE_TRAILING_5_FISCAL_QUARTERS',B.LEVEL1_PERIODNAME FROM \r\n(SELECT DISTINCT FISCALCALENDAR,LEVEL1_PERIODNAME,LEVEL1_STARTDATE,LEVEL1_ENDDATE,(COUNT(1) OVER (PARTITION BY FISCALCALENDAR\r\nORDER BY FISCALCALENDAR,LEVEL1_STARTDATE)) AS RUN_COUNT FROM (SELECT DISTINCT FISCALCALENDAR,LEVEL1_PERIODNAME,LEVEL1_STARTDATE,LEVEL1_ENDDATE FROM DW_NS_FISCALCALPERIOD_DH)) A,\r\n(SELECT DISTINCT FISCALCALENDAR,LEVEL1_PERIODNAME,LEVEL1_STARTDATE,LEVEL1_ENDDATE,(COUNT(1) OVER (PARTITION BY FISCALCALENDAR\r\nORDER BY FISCALCALENDAR,LEVEL1_STARTDATE)) AS RUN_COUNT FROM (SELECT DISTINCT FISCALCALENDAR,LEVEL1_PERIODNAME,LEVEL1_STARTDATE,LEVEL1_ENDDATE FROM DW_NS_FISCALCALPERIOD_DH)) B\r\nWHERE A.FISCALCALENDAR=B.FISCALCALENDAR\r\nAND SYSDATE BETWEEN A.LEVEL1_STARTDATE AND A.LEVEL1_ENDDATE\r\nAND A.FISCALCALENDAR='VALUEOF(NQ_SESSION.NETSUITE_SUBSIDIARY_CALENDAR)'\r\nAND B.RUN_COUNT BETWEEN A.RUN_COUNT-5 AND A.RUN_COUNT"
+    } ],
+    "variables" : [ {
+      "name" : "NETSUITE_TRAILING_5_FISCAL_QUARTERS",
+      "value" : "'-1'",
+      "enableUsersToSetValue" : false,
+      "securitySensitive" : false
+    } ],
+    "dependencies" : [ "NetSuite - Fiscal Calendar" ],
+    "disable" : false,
+    "queryReturnsVariableNamesAndValues" : true,
+    "allowDeferredExecution" : true,
+    "cacheQueryResult" : false
+  }
+}

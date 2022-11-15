@@ -1,0 +1,49 @@
+{
+  "physicalTable": {
+    "name": "Dim_DW_PROJECT_ASSET_D",
+    "sourceTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.DW_PROJECT_ASSET_D",
+    "caching": {
+      "enable": true
+    },
+    "joins": [      {
+        "useJoinExpression": true,
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_DimProjAssetAssignedTo",
+        "joinExpression": {
+          "expressionTemplate": "%1 = %2 AND  CURRENT_DATE  > %3 AND  CURRENT_DATE  < %4",
+          "expressionObjects": [
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_DimProjAssetAssignedTo.PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ASSET_D.ASSIGNED_TO_PERSON_ID",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_DimProjAssetAssignedTo.EFFECTIVE_START_DATE",
+            "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PERSON_NAME_D_DimProjAssetAssignedTo.EFFECTIVE_END_DATE"
+          ]
+        },
+        "cardinality": "MANY_TO_ONE",
+        "joinType": "INNER"
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ASSET_D_DimProjParentAsset",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ASSET_D.PARENT_ASSET_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ASSET_D_DimProjParentAsset.PROJECT_ASSET_ID"
+          }
+        ]
+      },
+      {
+        "rightTable": "physicalTable:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ASSET_GRP_LEVEL_TYPE",
+        "joinConditions": [          {
+            "leftColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ASSET_D.PROJECT_ASSET_ID",
+            "rightColumn": "physicalColumn:Oracle_Data_Warehouse.OAX$OAC.Dim_DW_PROJECT_ASSET_GRP_LEVEL_TYPE.PROJECT_ASSET_ID"
+          }
+        ]
+      }
+    ],
+    "additionalKeys": [
+      [
+        "PROJECT_ASSET_ID"
+      ],
+      [
+        "PARENT_ASSET_ID"
+      ]
+    ]
+  }
+}
